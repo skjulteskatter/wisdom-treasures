@@ -16,7 +16,7 @@ export default defineConfig({
       manifest: {
         name: 'WisdomTreasures',
         short_name: 'WT',
-        description: 'Everyday words of wisdom!',
+        description: 'Write a description here yo',
         theme_color: '#ffffff',
       }
     })
