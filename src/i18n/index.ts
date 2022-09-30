@@ -1,17 +1,27 @@
 import { createI18n } from "vue-i18n";
+import "isomorphic-fetch"
 
 const VALIDLANGUAGES = ["en", "no"];
 
-const fetchTranslations = async (language: string) => (await (await fetch(`/locales/${language}.json`)).json()) as {
-    [key: string]: string;
-};
+async function fetchTranslations(language: string) : Promise<{ [key: string]: string; }> {
+    try {
+        const translation =  await (await fetch(`/locales/${language}.json`)).json() as {
+        [key: string]: string;
+        }
+        return translation;
+    } catch (e) {
+        console.log("Couldn't fetch translation: " + language + "\nReturn test message");
+    }
+    return {
+        "test": "This is a test",
+    };
+}
 
-async function getAllMessages(){
-    const message : { [key: string]: {} } = {};
+async function getAllMessages() {
+    const message : { [key: string]: {}} = {};
     for (const lang of VALIDLANGUAGES) {
         message[lang] = await fetchTranslations(lang)
     }
-    console.log(message);
     return message;
 }
 
