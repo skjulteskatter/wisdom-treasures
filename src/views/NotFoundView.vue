@@ -1,6 +1,6 @@
 <template>
   <main>
-    <h1>Hello, and welcome to the home view</h1>
+    <h1>404 - Page not found</h1>
   </main>
 </template>
 
@@ -8,7 +8,7 @@
   import { defineComponent } from 'vue';
 
   export default defineComponent({
-    name: "Home-component",
+    name: "NotFound-component",
     props: {
     },
     components: {

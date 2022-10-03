@@ -13,7 +13,7 @@ async function fetchTranslations(language: string) : Promise<{ [key: string]: st
         console.log("Couldn't fetch translation: " + language + "\nReturn test message");
     }
     return {
-        "test": "This is a test",
+        "test": "This is a test (for vitest)",
     };
 }
 

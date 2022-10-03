@@ -1,35 +1,41 @@
-import { firebaseConfig } from "../components/config"
-import { FirebaseError, initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import {
-    getAuth,
-    signInWithEmailAndPassword,
-    GoogleAuthProvider,
-    TwitterAuthProvider,
-    FacebookAuthProvider,
-    createUserWithEmailAndPassword,
-    type UserCredential,
-
+/* eslint-disable no-console */
+import { initializeApp } from "firebase/app";
+import { 
+    applyActionCode, 
+    browserLocalPersistence, 
+    browserSessionPersistence, 
+    createUserWithEmailAndPassword, 
+    FacebookAuthProvider, 
+    fetchSignInMethodsForEmail, 
+    getAuth, 
+    GoogleAuthProvider, 
+    OAuthProvider, 
+    onAuthStateChanged, 
+    signInWithCustomToken, 
+    signInWithEmailAndPassword, 
+    signInWithPopup, 
+    TwitterAuthProvider, 
+    updatePassword, 
+    updateProfile, 
 } from "firebase/auth";
-import { AuthErrorCodesDict, notify } from "./notifications";
+import type { User, UserCredential, AuthProvider } from 'firebase/auth';
+import "firebase/compat/performance";
+import router from "@/router";
+import { useSessionStore } from "@/stores/session";
+import { sessionType } from "@/@types/sessionTypes";
+import { notify } from "./notify";
+import { firebaseConfig } from "@/config";
+import http from "./http";
 
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);
+export const firebaseApp = initializeApp(firebaseConfig);
 
-export const auth = getAuth(app);
+export const auth = getAuth(firebaseApp);
 
 export async function loginWithEmailAndPassword(email: string, password: string){
-    try {
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-    } catch (error : any){
-        notify(AuthErrorCodesDict.get(error.code) ?? "Error: " + error , "error");
-    }
+    const userCredentials = await signInWithEmailAndPassword(auth, email, password);
+    console.log(userCredentials)
 }
 
-export async function signupWithEmailAndPassword(email: string, password: string){
-    try {
-        const userCredential: UserCredential = await createUserWithEmailAndPassword(auth, email, password);
-    } catch (error : any){
-        notify(AuthErrorCodesDict.get(error.code) ?? "Error: " + error , "error");
-    }
+export async function getBearerToken(): Promise<string>{
+    return "";
 }
