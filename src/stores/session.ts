@@ -2,6 +2,7 @@ import { defineStore } from 'pinia'
 import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { sessionType } from '@/@types/sessionTypes'
+import { auth } from '@/services/auth'
 
 export const useSessionStore = defineStore('session', {
     state: ()=> {
@@ -21,6 +22,20 @@ export const useSessionStore = defineStore('session', {
         }
     },
     getters: {
-        
+        userEmail(){
+            return auth.currentUser?.email ?? null;
+        },
+        userdisplayName(){
+            return auth.currentUser?.displayName ?? null;
+        },
+        userPhotoURL(){
+            return auth.currentUser?.photoURL ?? null;
+        },
+        userEmailVerified(){
+            return auth.currentUser?.emailVerified?? false;
+        },
+        async userToken() : Promise<string>{
+            return await auth.currentUser?.getIdToken() ?? "";
+        }
     }
 })

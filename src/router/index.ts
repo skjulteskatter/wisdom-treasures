@@ -3,32 +3,36 @@ import HomeView from '../views/HomeView.vue'
 import { useSessionStore } from '@/stores/session'
 import { sessionType } from '@/@types/sessionTypes'
 
+export const routes = [
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView,
+    meta: {
+      requiresAuth: true
+    }
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('../views/LoginView.vue'),
+    meta: {
+      requiresAuth: false
+    }
+  },
+  {
+    path: '/404',
+    name: 'notfound',
+    component: () => import('../views/NotFoundView.vue'),
+  }
+]
+
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: '/',
-      name: 'home',
-      component: HomeView,
-      meta: {
-        requiresAuth: true
-      }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../views/LoginView.vue'),
-      meta: {
-        requiresAuth: false
-      }
-    },
-    {
-      path: '/404',
-      name: 'notfound',
-      component: () => import('../views/NotFoundView.vue'),
-    }
-  ]
+  routes: routes,
 })
+
+let stackCount = 0;
 
 router.beforeEach((to, _from, next) => {
 
@@ -44,3 +48,16 @@ router.beforeEach((to, _from, next) => {
 });
 
 export default router
+
+export async function navigateTo(to: string | undefined){
+  console.log(stackCount);
+  if(to) {
+    router.push({name : to});
+    stackCount++;
+  } else if (stackCount <= 0) {
+      router.push({name: "home"});
+  } else {
+      router.back();
+      stackCount--;
+  }
+}

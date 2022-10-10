@@ -13,7 +13,7 @@
 <script lang="ts">
   import { defineComponent } from 'vue';
   import { useSessionStore } from '@/stores/session';
-import { loginWithEmailAndPassword } from '@/services/auth';
+import { loginWithEmailAndPassword, signupWithEmailAndPassword } from '@/services/auth';
 
   export default defineComponent({
     name: "chordtooltip-component",
@@ -35,7 +35,7 @@ import { loginWithEmailAndPassword } from '@/services/auth';
         loginWithEmailAndPassword(this.email, this.password);
       },
       async signup(){
-        
+        signupWithEmailAndPassword(this.email, this.password);
       },
       async changeLanguage(){
         if (this.store.locale == "en") this.store.setLocale("no");
