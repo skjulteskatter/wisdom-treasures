@@ -8,16 +8,6 @@
   import { defineComponent } from 'vue';
 
   export default defineComponent({
-    name: "NotFound-component",
-    props: {
-    },
-    components: {
-    },
-    computed: {
-    },
-    mounted() { 
-    },
-    methods: {
-    },
+    name: "NotFoundView",
   });
 </script>

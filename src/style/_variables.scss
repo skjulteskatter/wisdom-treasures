@@ -1,0 +1,32 @@
+:root {
+    /* Colors */
+    // - Branding
+    --wt-color-primary: #9360bd;
+    --wt-color-secondary: #271E53;
+    // - Interface
+    --wt-color-ui-lm-dark: #d5d5d5;
+    --wt-color-ui-lm-medium: #e7e7e7;
+    --wt-color-ui-lm-light: #f5f5f5;
+    --wt-color-ui-dm-dark: #0A181C;
+    --wt-color-ui-dm-medium: #162f35;
+    --wt-color-ui-dm-light: #213F47;
+    // - Text
+    --wt-color-text-lm: #1b1b27;
+    --wt-color-text-dm: #f1f1f4;
+    // - Feedback
+    --wt-color-success: #44ae34;
+    --wt-color-error: #ba3f3f;
+
+    /* Font */
+    --wt-font-family: 'Inter', sans-serif;
+
+    /* Layout */
+    --wt-border-radius: 4px;
+    --wt-spacing: 1rem;
+    --wt-max-width: 1600px;
+
+    /* Breakpoints */
+    --wt-breakpoint-small: 620px;
+    --wt-breakpoint-medium: 1020px;
+    --wt-breakpoint-large: 1200px;
+}

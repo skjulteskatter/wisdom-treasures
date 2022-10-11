@@ -1,4 +1,6 @@
 {
     "common_login": "Log in!",
-    "common_logout": "Log out!"
+    "common_logout": "Log out!",
+    "common_register": "Register user",
+    "common_loading": "Loading"
 }

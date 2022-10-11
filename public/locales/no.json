@@ -1,4 +1,6 @@
 {
     "common_login": "Logg inn!",
-    "common_logout": "Log ut!"
+    "common_logout": "Log ut!",
+    "common_register": "Registrer bruker",
+    "common_loading": "Laster"
 }

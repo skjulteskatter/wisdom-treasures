@@ -1,5 +1,5 @@
 import { useSessionStore } from '../stores/session'
-import { describe, expect, it, beforeAll, beforeEach} from 'vitest';
+import { describe, expect, it, beforeEach} from 'vitest';
 import i18n from '@/i18n';
 import { createPinia, setActivePinia } from 'pinia';
 

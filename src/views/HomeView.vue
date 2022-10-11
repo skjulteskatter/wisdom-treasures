@@ -5,17 +5,30 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
+import { publicationService } from '@/services/publications';
+import { defineComponent } from 'vue';
 
   export default defineComponent({
-    name: "Home-component",
+    name: "HomeView",
+    data() {
+      return {
+        publications : [],
+        articles : [],
+      }
+    },
     props: {
     },
     components: {
     },
     computed: {
     },
-    mounted() { 
+    async mounted() {
+      //console.log(await publicationService.list());
+      await publicationService.retrieve({
+        parentIds: ["aa7d92e3-c92f-41f8-87a1-333375125a1c"],
+      }).then(r => {
+        console.log(r);
+      });
     },
     methods: {
     },
