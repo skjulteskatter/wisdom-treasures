@@ -1,8 +1,9 @@
 import { createApp } from 'vue';
 import { createPinia } from 'pinia';
 import i18n from './i18n';
-import './style/main.scss';
+import 'tailwindcss/tailwind.css';
 import './style/tailwind.css';
+import './style/main.scss';
 
 //GLOBAL COMPONENTS
 import LoaderComponent from './components/Loader.vue';

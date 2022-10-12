@@ -46,9 +46,9 @@ export default defineComponent({
         height: var(--size);
 
         border-radius: 100%;
-        border-bottom: var(--thickness) solid var(--st-color-primary);
-        border-top: var(--thickness) solid var(--st-color-primary);
-        border-left: var(--thickness) solid var(--st-color-primary);
+        border-bottom: var(--thickness) solid var(--wt-color-primary);
+        border-top: var(--thickness) solid var(--wt-color-primary);
+        border-left: var(--thickness) solid var(--wt-color-primary);
         border-right: var(--thickness) solid rgba(white, .1);
 
         animation: loading .7s infinite linear;
@@ -63,7 +63,7 @@ export default defineComponent({
     }
 
     &__text {
-        margin-top: var(--st-spacing);
+        margin-top: var(--wt-spacing);
     }
 }
 

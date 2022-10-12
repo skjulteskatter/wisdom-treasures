@@ -1,11 +1,17 @@
-/** @type {import('tailwindcss').Config} */
 module.exports = {
-  content: [
-    "./index.html",
-    "./src/**/*.{vue,js,ts,jsx,tsx}",
-  ],
+  content: ["./public/**/*.html", "./src/**/*.{vue,js,ts,jsx,tsx}"],
+  darkMode: "class", // or 'media' or 'class'
   theme: {
-    extend: {},
+    fontFamily: {
+      sans: ["Inter", "sans-serif"],
+      serif: ["serif"],
+    },
+    extend: {
+      colors: {
+        primary: "#9360bd",
+        secondary: "#271E53",
+      },
+    },
   },
   plugins: [],
-}
+};
