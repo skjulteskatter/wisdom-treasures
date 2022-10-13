@@ -11,10 +11,11 @@ async function fetchTranslations(language: string) : Promise<{ [key: string]: st
         return translation;
     } catch (e) {
         console.log("Couldn't fetch translation: " + language + "\nReturn test message");
+        return {
+            "test": "This is a test (for vitest)",
+        };
     }
-    return {
-        "test": "This is a test (for vitest)",
-    };
+
 }
 
 async function getAllMessages() {
