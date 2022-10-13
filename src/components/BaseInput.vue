@@ -1,6 +1,9 @@
 <template>
     <label class="border-none p-0 bg-transparent">
-        <small class="block tracking-wide font-semibold" v-if="label">{{ label }}</small>
+        <div class="flex justify-between">
+            <slot name="default" class="block tracking-wide"></slot>
+            <slot name="secondary" class="block tracking-wide"></slot>
+        </div>
         <input
             class="px-2 py-1 text-base rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 w-full dark:border-white/20 dark:bg-secondary"
             v-bind="$attrs"
@@ -18,9 +21,6 @@ import { defineComponent } from 'vue';
 export default defineComponent({
     name: "base-input",
     props: {
-        label: {
-            type: String,
-        },
         modelValue: {
             type: String,
         },
