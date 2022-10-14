@@ -1,6 +1,6 @@
 <template>
     <div class="bg-white rounded-lg shadow-md dark:bg-secondary flex flex-col">
-        <div class="px-4 py-3 border-b border-black/10 dark:border-white/10" v-if="$slots.header">
+        <div class="px-4 py-3 border-b border-black/10 dark:border-white/10 font-serif" v-if="$slots.header">
             <slot name="header" />
         </div>
         <div class="p-4 flex-grow" v-if="$slots.default">
