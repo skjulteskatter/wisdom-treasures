@@ -1,16 +1,14 @@
 <template>
     <label class="border-none p-0 bg-transparent">
-        <div class="flex justify-between">
-            <div :class="[error ? 'text-[color:var(--wt-color-error)]' : '']">
-                <slot name="default" class="block tracking-wide"></slot>
-            </div>
+        <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '']">
+            <slot name="default" class="block tracking-wide"></slot>
             <slot name="secondary" class="block tracking-wide"></slot>
         </div>
         <div class="flex items-center">
             <input
                 :type="getType"
-                class="px-2 py-1 text-base rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 w-full"
-                :class="[error ? 'focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : '']"
+                class="px-2 py-1 rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
+                :class="[error ? 'focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : 'focus-visible:ring-primary']"
                 v-bind="$attrs"
                 :value="modelValue"
                 :disabled="disabled"
@@ -18,7 +16,7 @@
                 @input="(event: any) => $emit('update:modelValue', event.target?.value ?? '')"
             />
             <div v-if="modelValue && password">
-                <div class="w-5 absolute -left-7 -top-[0.35rem] cursor-pointer z-10" @click="showPassword = !showPassword" >
+                <div class="w-5 absolute -left-7 -top-[0.35rem] cursor-pointer" @click="showPassword = !showPassword" >
                     <EyeIcon v-if="!showPassword"></EyeIcon>
                     <EyeOffIcon v-else></EyeOffIcon>
                 </div>

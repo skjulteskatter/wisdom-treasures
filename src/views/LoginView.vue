@@ -4,7 +4,7 @@
       <template #header>
         <div ref="widening" class="w-96"/>
         <div class="flex justify-center">
-          <div class="text-2xl">
+          <div>
             <p v-if="!register">Login to Your Account</p>
             <p v-else>Create Your Account</p>
           </div>
@@ -12,20 +12,20 @@
       </template>
       <template #default>
         <div class="flex flex-col">
-          <BaseInput v-model="email" class="p-4 border mt-2" :error="true">
+          <BaseInput v-model="email" class="p-4 border mt-2" :error="!!errors.email">
             <p>Email</p>
           </BaseInput>
 
-          <BaseInput v-if="register" v-model="fullName" class="p-4 border mt-2">
+          <BaseInput v-if="register" v-model="fullName" class="p-4 border mt-2" :error="!!errors.fullName">
             <p>Full name</p>
           </BaseInput>
 
-          <BaseInput v-model="password" class="p-4 border mt-2" :password="true">
+          <BaseInput v-model="password" class="p-4 border mt-2" :password="true" :error="!!errors.password">
             <p>Password</p>
             <ClickableLink v-if="!register">Forgot password?</ClickableLink>
           </BaseInput>
 
-          <BaseInput v-if="register" v-model="repeatPassword" class="p-4 border mt-2" :password="true">
+          <BaseInput v-if="register" v-model="repeatPassword" class="p-4 border mt-2" :password="true" :error="!!errors.password">
             <p>Repeat password</p>
           </BaseInput>
 
@@ -135,16 +135,28 @@ import ClickableLink from '../components/ClickableLink.vue'
       store: useSessionStore(),
       register: false as boolean,
       recievePromotionalEmails: false,
-      errorMessage: "",
+      errors: {email: "", password: "", fullName: ""} as {email: string, password: string, fullName: string},
     }),
     computed: {
+      errorMessage() : string{
+        if (this.errors.email !== "")
+          return this.errors.email;
+        
+        if (this.errors.fullName !== "")
+          return this.errors.fullName;
+
+        if (this.errors.password!== "")
+          return this.errors.password;
+
+        return "";
+      }
     },
     mounted() { 
     },
     methods: {
       async login(provider : string | undefined = undefined){
 
-        if (!this.validate()) return;
+        if (!this.isValidForm()) return;
 
         if (provider){
           loginWithProvider(provider, this.rememberMe);
@@ -156,7 +168,7 @@ import ClickableLink from '../components/ClickableLink.vue'
         
       },
       async signup(){
-        if (!this.validate()) return;
+        if (!this.isValidForm()) return;
         signupWithEmailAndPassword(this.email, this.password);
       },
       viewPrivacyPolicy(){
@@ -164,20 +176,48 @@ import ClickableLink from '../components/ClickableLink.vue'
         this.recievePromotionalEmails = !this.recievePromotionalEmails;
         console.log("Privacy Policy is not implemented");
       },
-      validate(): boolean {
-        if (!this.password) this.errorMessage = "Password is required";
-        if (!this.email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g)?.length) this.errorMessage = "Invalid email address";
-        if (!this.email) this.errorMessage = "Email is required"
-        if (this.errorMessage) return false;
-        if (!this.register) return true;
-        if (this.password != this.repeatPassword) this.errorMessage = "Passwords must match";
-        if (this.errorMessage) return false;
+      validateEmail(): boolean {
+        if (!this.email){
+          this.errors.email = "Email is required";
+          return false;
+        }
+
+        if (!this.email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g)?.length){ 
+          this.errors.email = "Invalid email address";
+          return false;
+        }
+        this.errors.email = "";
+        return true;
+      },
+      validateFullName(): boolean {
+        if (!this.fullName && this.register){
+          this.errors.fullName = "Name is required";
+          return false;
+        }
+        this.errors.fullName = "";
+        return true;
+      },
+      validatePassword(): boolean {
+        if (!this.password){
+          this.errors.password = "Password is required";
+          return false;
+        } else if (this.register && (this.password != this.repeatPassword)){
+          this.errors.password = "Passwords doesn't match";
+          return false;
+        }
+        this.errors.password = "";
+        return true;
+      },
+      isValidForm(): boolean {
+        if (!this.validateEmail()) return false;
+        if (!this.validateFullName()) return false;
+        if (!this.validatePassword()) return false;
         return true;
       },
       changeForm(changeToRegisterForm : boolean) {
-        this.errorMessage = "";
+        this.errors = {email: "", password: "", fullName: ""};
         this.register = changeToRegisterForm;
-      }
+      },
     },
   });
 </script>
