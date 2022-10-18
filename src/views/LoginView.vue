@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="col-span-2">
     <BaseCard>
       <template #header>
         <div ref="widening" class="w-96"/>
@@ -42,8 +42,8 @@
             </div>
           </label>
 
-          <p v-if="errorMessage" class="text-xs text-[color:var(--wt-color-error)] mt-4">
-            {{errorMessage}}
+          <p v-if="errorMessage || placeholderErrorMessage" class="text-xs text-[color:var(--wt-color-error)] mt-4">
+            {{errorMessage}}&nbsp;
           </p>
 
           <div class="grid grid-cols-1 mt-4">
@@ -136,6 +136,7 @@ import ClickableLink from '../components/ClickableLink.vue'
       register: false as boolean,
       recievePromotionalEmails: false,
       errors: {email: "", password: "", fullName: ""} as {email: string, password: string, fullName: string},
+      placeholderErrorMessage: false,
     }),
     computed: {
       errorMessage() : string{
@@ -156,7 +157,7 @@ import ClickableLink from '../components/ClickableLink.vue'
     methods: {
       async login(provider : string | undefined = undefined){
 
-        if (!this.isValidForm()) return;
+        if (!(await this.isValidForm())) return;
 
         if (provider){
           loginWithProvider(provider, this.rememberMe);
@@ -168,7 +169,8 @@ import ClickableLink from '../components/ClickableLink.vue'
         
       },
       async signup(){
-        if (!this.isValidForm()) return;
+        if (!(await this.isValidForm())) return;
+
         signupWithEmailAndPassword(this.email, this.password);
       },
       viewPrivacyPolicy(){
@@ -208,15 +210,24 @@ import ClickableLink from '../components/ClickableLink.vue'
         this.errors.password = "";
         return true;
       },
-      isValidForm(): boolean {
+      async isValidForm(): Promise<boolean> {
+        // Make every error empty before recheck. This makes the animation happen again
+        if ((this.errors.password + this.errors.email + this.errors.fullName).length > 0){
+          this.placeholderErrorMessage = true;
+          this.errors = {email: "", password: "", fullName: ""};
+        }
+        
+        await new Promise(r => setTimeout(r, 0));
         if (!this.validateEmail()) return false;
         if (!this.validateFullName()) return false;
         if (!this.validatePassword()) return false;
+        this.placeholderErrorMessage = false;
         return true;
       },
       changeForm(changeToRegisterForm : boolean) {
         this.errors = {email: "", password: "", fullName: ""};
         this.register = changeToRegisterForm;
+        this.placeholderErrorMessage = false;
       },
     },
   });
