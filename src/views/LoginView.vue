@@ -16,7 +16,7 @@
             <p>Email</p>
           </BaseInput>
 
-          <BaseInput v-if="register" v-model="fullName" class="p-4 border mt-2" :error="!!errors.fullName">
+          <BaseInput v-model="fullName" class="p-4 border mt-2" :error="!!errors.fullName" :class="[register ? 'smoothOpenInput' : 'smoothCloseInput']">
             <p>Full name</p>
           </BaseInput>
 
@@ -25,7 +25,7 @@
             <ClickableLink v-if="!register">Forgot password?</ClickableLink>
           </BaseInput>
 
-          <BaseInput v-if="register" v-model="repeatPassword" class="p-4 border mt-2" :password="true" :error="!!errors.password">
+          <BaseInput v-model="repeatPassword" class="p-4 border mt-2" :password="true" :error="!!errors.password" :class="[register ? 'smoothOpenInput' : 'smoothCloseInput']">
             <p>Repeat password</p>
           </BaseInput>
 
@@ -42,7 +42,7 @@
             </div>
           </label>
 
-          <p v-if="errorMessage || placeholderErrorMessage" class="text-xs text-[color:var(--wt-color-error)] mt-4">
+          <p class="text-xs text-[color:var(--wt-color-error)] mt-4 smoothOpen" :class="[errorMessage || placeholderErrorMessage ? 'smoothOpenError' : 'smoothCloseError']">
             {{errorMessage}}&nbsp;
           </p>
 
@@ -232,3 +232,79 @@ import ClickableLink from '../components/ClickableLink.vue'
     },
   });
 </script>
+
+<style>
+
+.smoothOpenError{
+    animation: smoothOpenError 0.2s both linear;
+}
+
+@keyframes smoothOpenError {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+
+  to {
+    opacity: 1;
+    max-height: 1em;
+  }
+}
+
+.smoothCloseError{
+    animation: smoothCloseError 0.2s both linear;
+}
+
+@keyframes smoothCloseError {
+  from {
+    opacity: 1;
+    max-height: 1em;
+  }
+
+  to {
+    opacity: 0;
+    max-height: 0em;
+  }
+}
+
+.smoothOpenInput{
+    animation: smoothOpenInput 0.35s both linear;
+}
+
+@keyframes smoothOpenInput {
+  0% {
+    opacity: 0;
+    max-height: 0;
+    transform: translateX(-30%);
+  }
+
+  50% {
+    opacity: 0;
+    max-height: 5em;
+    transform: translateX(-30%);
+  }
+
+  100% {
+    opacity: 1;
+    max-height: 5em;
+    transform: translateX(0%);
+  }
+}
+
+.smoothCloseInput{
+    animation: smoothCloseInput 0.25s both linear;
+}
+
+@keyframes smoothCloseInput {
+  from {
+    opacity: 1;
+    max-height: 5em;
+  }
+
+  to {
+    opacity: 0;
+    max-height: 0em;
+  }
+}
+
+</style>
