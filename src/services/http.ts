@@ -1,5 +1,6 @@
 import config from "../config";
 import { useSessionStore } from "@/stores/session";
+import { auth } from "./auth";
 
 export type Result<T> = {
     result: T;
@@ -205,7 +206,7 @@ class Http {
 
     public async uploadAndDownload(path: string, content: string) {
         path = `${config.api.basePath}${path}`;
-        const token : string = this._token ?? await useSessionStore().userToken;
+        const token : string = this._token ?? (await auth.currentUser?.getIdToken() ?? "");
         if (!token) throw new Error("No Authorization token available " + path);
 
         const headers = {
@@ -232,7 +233,7 @@ class Http {
 
     public async apifetch(path: string, options: RequestInit, bypassAuth = false, json = true, apiVersion = "3.0") {
         path = `${config.api.basePath}${path}`;
-        const token = this._token ?? await useSessionStore().userToken;
+        const token : string = this._token ?? (await auth.currentUser?.getIdToken() ?? "");
         if (!token && !bypassAuth) throw new Error("No Authorization token available " + path);
 
         const headers = Object.assign({

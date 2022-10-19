@@ -16,23 +16,5 @@ export const useSessionStore = defineStore('session', {
         },
     },
     getters: {
-        userExist(){
-            return !!auth.currentUser;
-        },
-        userEmail(){
-            return auth.currentUser?.email ?? null;
-        },
-        userdisplayName(){
-            return auth.currentUser?.displayName ?? null;
-        },
-        userPhotoURL(){
-            return auth.currentUser?.photoURL ?? null;
-        },
-        userEmailVerified(){
-            return auth.currentUser?.emailVerified?? false;
-        },
-        async userToken() : Promise<string>{
-            return await auth.currentUser?.getIdToken() ?? "";
-        }
     }
 })

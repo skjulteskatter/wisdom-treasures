@@ -42,7 +42,7 @@
             </div>
           </label>
 
-          <p class="text-xs text-[color:var(--wt-color-error)] mt-4 smoothOpen" :class="[errorMessage || placeholderErrorMessage ? 'smoothOpenError' : 'smoothCloseError']">
+          <p class="text-xs text-[color:var(--wt-color-error)] mt-4 smoothOpen" :class="[errorMessage || keepErrorMessageWhileValidating ? 'smoothOpenError' : 'smoothCloseError']">
             {{errorMessage}}&nbsp;
           </p>
 
@@ -109,7 +109,6 @@
 
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { useSessionStore } from '@/stores/session';
   import { loginWithEmailAndPassword, signupWithEmailAndPassword, loginWithProvider} from '@/services/auth';
   import BaseCard from '../components/BaseCard.vue'
 import BaseButton from '../components/BaseButton.vue'
@@ -132,11 +131,10 @@ import ClickableLink from '../components/ClickableLink.vue'
       fullName: "",
       repeatPassword: "",
       rememberMe: false,
-      store: useSessionStore(),
       register: false as boolean,
       recievePromotionalEmails: false,
       errors: {email: "", password: "", fullName: ""} as {email: string, password: string, fullName: string},
-      placeholderErrorMessage: false,
+      keepErrorMessageWhileValidating: false,
     }),
     computed: {
       errorMessage() : string{
@@ -157,16 +155,16 @@ import ClickableLink from '../components/ClickableLink.vue'
     methods: {
       async login(provider : string | undefined = undefined){
 
-        if (!(await this.isValidForm())) return;
+        if (provider)
+          return await loginWithProvider(provider, this.rememberMe);
 
-        if (provider){
-          loginWithProvider(provider, this.rememberMe);
-        } else if (this.register) {
-          await this.signup();
-        } else {
-          loginWithEmailAndPassword(this.email, this.password, this.rememberMe);
-        }
+        if (!(await this.isValidForm())) 
+          return;
+
+        if (this.register) 
+          return await this.signup();
         
+        return await loginWithEmailAndPassword(this.email, this.password, this.rememberMe);
       },
       async signup(){
         if (!(await this.isValidForm())) return;
@@ -213,7 +211,7 @@ import ClickableLink from '../components/ClickableLink.vue'
       async isValidForm(): Promise<boolean> {
         // Make every error empty before recheck. This makes the animation happen again
         if ((this.errors.password + this.errors.email + this.errors.fullName).length > 0){
-          this.placeholderErrorMessage = true;
+          this.keepErrorMessageWhileValidating = true;
           this.errors = {email: "", password: "", fullName: ""};
         }
         
@@ -221,13 +219,13 @@ import ClickableLink from '../components/ClickableLink.vue'
         if (!this.validateEmail()) return false;
         if (!this.validateFullName()) return false;
         if (!this.validatePassword()) return false;
-        this.placeholderErrorMessage = false;
+        this.keepErrorMessageWhileValidating = false;
         return true;
       },
       changeForm(changeToRegisterForm : boolean) {
         this.errors = {email: "", password: "", fullName: ""};
         this.register = changeToRegisterForm;
-        this.placeholderErrorMessage = false;
+        this.keepErrorMessageWhileValidating = false;
       },
     },
   });
