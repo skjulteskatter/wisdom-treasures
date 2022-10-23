@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { useSessionStore } from '@/stores/session'
 import { auth } from '@/services/auth';
 
 export const routes = [
@@ -31,8 +30,6 @@ const router = createRouter({
   routes: routes,
 })
 
-let stackCount = 0;
-
 router.beforeEach((to, _from, next) => {
 
   const loggedIn = auth.currentUser?.uid && auth.currentUser?.emailVerified;
@@ -47,16 +44,3 @@ router.beforeEach((to, _from, next) => {
 });
 
 export default router
-
-export async function navigateTo(to: string | undefined){
-  console.log(stackCount);
-  if(to) {
-    router.push({name : to});
-    stackCount++;
-  } else if (stackCount <= 0) {
-      router.push({name: "home"});
-  } else {
-      router.back();
-      stackCount--;
-  }
-}

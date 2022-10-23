@@ -7,16 +7,14 @@
 </template>
 
 <script lang="ts">
-  import { sessionType } from '@/@types/sessionTypes';
-import { useSessionStore } from '@/stores/session';
+import { auth } from '@/services/auth';
 import { defineComponent } from 'vue';
 
   export default defineComponent({
     name: "NotFoundView",
     computed: {
       isLoggedIn() {
-        const store = useSessionStore();
-        return store.sessionStates[sessionType.LOGGED_IN] && store.sessionStates[sessionType.EMAIL_VERIFIED]
+        return !!auth.currentUser
       }
     }
   });

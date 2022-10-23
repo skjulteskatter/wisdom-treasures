@@ -5,7 +5,7 @@
         <div ref="widening" class="w-96"/>
         <div class="flex justify-center">
           <div>
-            <p v-if="!register">Login to Your Account</p>
+            <p v-if="!registerViewActive">Login to Your Account</p>
             <p v-else>Create Your Account</p>
           </div>
         </div>
@@ -16,20 +16,20 @@
             <p>Email</p>
           </BaseInput>
 
-          <BaseInput v-model="fullName" class="p-4 border mt-2" :error="!!errors.fullName" :class="[register ? 'smoothOpenInput' : 'smoothCloseInput']">
+          <BaseInput v-model="fullName" :disabled=!registerViewActive class="p-4 border mt-2 max-h-0 opacity-0" :error="!!errors.fullName" :class="[registerViewActive ? 'smoothOpenInput' : [ !firstAppear ? 'smoothCloseInput' : '']]">
             <p>Full name</p>
           </BaseInput>
 
           <BaseInput v-model="password" class="p-4 border mt-2" :password="true" :error="!!errors.password">
             <p>Password</p>
-            <ClickableLink v-if="!register">Forgot password?</ClickableLink>
+            <ClickableLink v-if="!registerViewActive">Forgot password?</ClickableLink>
           </BaseInput>
 
-          <BaseInput v-model="repeatPassword" class="p-4 border mt-2" :password="true" :error="!!errors.password" :class="[register ? 'smoothOpenInput' : 'smoothCloseInput']">
+          <BaseInput v-model="repeatPassword" :disabled=!registerViewActive :password="true" :error="!!errors.password" class="p-4 border mt-2 max-h-0 opacity-0" :class="[registerViewActive ? 'smoothOpenInput' : [!firstAppear ? 'smoothCloseInput' : '']]">
             <p>Repeat password</p>
           </BaseInput>
 
-          <label v-if="!register" class="flex gap-2 mt-4 items-center cursor-pointer select-none">
+          <label v-if="!registerViewActive" class="flex gap-2 mt-4 items-center cursor-pointer select-none">
             <input type="checkbox" v-model="rememberMe" class="rounded border border-black/20 focus-visible:ring-primary text-primary"/>
             Stay signed in
           </label>
@@ -38,11 +38,11 @@
             <input type="checkbox" v-model="recievePromotionalEmails" class="rounded border border-black/20 focus-visible:ring-primary text-primary"/>
             <div>
               Get emails from WisdomTreasures about product updates, news, or events. If you change your mind, you can unsubscribe at any time.
-            <ClickableLink @click="viewPrivacyPolicy" >Privacy Policy</ClickableLink>
+            <ClickableLink @link-clicked="viewPrivacyPolicy" >Privacy Policy</ClickableLink>
             </div>
           </label>
 
-          <p class="text-xs text-[color:var(--wt-color-error)] mt-4 smoothOpen" :class="[errorMessage || keepErrorMessageWhileValidating ? 'smoothOpenError' : 'smoothCloseError']">
+          <p class="text-xs text-[color:var(--wt-color-error)] mt-4 opacity-0 max-h-0" :class="[errorMessage || keepErrorMessageWhileValidating ? 'smoothOpenError' : [!firstAppear ? 'smoothCloseError' : '']]">
             {{errorMessage}}&nbsp;
           </p>
 
@@ -50,12 +50,12 @@
             <BaseButton 
             @click="login()"  
             theme="primary">
-              <div v-if="!register">{{$t("common_login")}}</div>
+              <div v-if="!registerViewActive">{{$t("common_login")}}</div>
               <div v-else>{{$t("common_register")}}</div>
             </BaseButton>
           </div>
 
-          <div v-if="register" class="flex gap-4 mt-4 select-none">
+          <div v-if="registerViewActive" class="flex gap-4 mt-4 select-none">
             <div class="grow h-px bg-black/30 self-center"/>
             <p class="grow-0 text-black/30 self-center">or use a provider</p>
             <div class="grow h-px bg-black/30 self-center"/>
@@ -81,21 +81,21 @@
             </BaseButton>
           </div>
 
-          <div v-if="!register" class="flex gap-4 mt-4 select-none">
+          <div v-if="!registerViewActive" class="flex gap-4 mt-4 select-none">
             <div class="grow h-px bg-black/30 self-center"/>
             <p class="grow-0 text-black/30 self-center">or</p>
             <div class="grow h-px bg-black/30 self-center"/>
           </div>
           
           <div class="my-4 flex justify-center flex-row">
-              <span v-if="!register">
-                <ClickableLink v-on:click="changeForm(true)">
+              <span v-if="!registerViewActive">
+                <ClickableLink @link-clicked="changeForm(true)">
                   Create an account
                 </ClickableLink>
               </span>
               <span v-else class="flex flex-row">
                 <div>Have an account?&nbsp;</div>
-                <ClickableLink v-on:click="changeForm(false)">
+                <ClickableLink @link-clicked="changeForm(false)">
                   Sign in
                 </ClickableLink>
               </span>
@@ -131,10 +131,11 @@ import ClickableLink from '../components/ClickableLink.vue'
       fullName: "",
       repeatPassword: "",
       rememberMe: false,
-      register: false as boolean,
+      registerViewActive: false as boolean,
       recievePromotionalEmails: false,
       errors: {email: "", password: "", fullName: ""} as {email: string, password: string, fullName: string},
       keepErrorMessageWhileValidating: false,
+      firstAppear: true,
     }),
     computed: {
       errorMessage() : string{
@@ -150,8 +151,6 @@ import ClickableLink from '../components/ClickableLink.vue'
         return "";
       }
     },
-    mounted() { 
-    },
     methods: {
       async login(provider : string | undefined = undefined){
 
@@ -161,7 +160,7 @@ import ClickableLink from '../components/ClickableLink.vue'
         if (!(await this.isValidForm())) 
           return;
 
-        if (this.register) 
+        if (this.registerViewActive) 
           return await this.signup();
         
         return await loginWithEmailAndPassword(this.email, this.password, this.rememberMe);
@@ -190,7 +189,7 @@ import ClickableLink from '../components/ClickableLink.vue'
         return true;
       },
       validateFullName(): boolean {
-        if (!this.fullName && this.register){
+        if (!this.fullName && this.registerViewActive){
           this.errors.fullName = "Name is required";
           return false;
         }
@@ -201,7 +200,7 @@ import ClickableLink from '../components/ClickableLink.vue'
         if (!this.password){
           this.errors.password = "Password is required";
           return false;
-        } else if (this.register && (this.password != this.repeatPassword)){
+        } else if (this.registerViewActive && (this.password != this.repeatPassword)){
           this.errors.password = "Passwords doesn't match";
           return false;
         }
@@ -223,8 +222,9 @@ import ClickableLink from '../components/ClickableLink.vue'
         return true;
       },
       changeForm(changeToRegisterForm : boolean) {
+        this.firstAppear = false;
         this.errors = {email: "", password: "", fullName: ""};
-        this.register = changeToRegisterForm;
+        this.registerViewActive = changeToRegisterForm;
         this.keepErrorMessageWhileValidating = false;
       },
     },

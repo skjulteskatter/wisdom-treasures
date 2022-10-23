@@ -16,7 +16,7 @@ import {
 import type { UserCredential } from 'firebase/auth';
 import "firebase/compat/performance";
 import config from "@/config";
-import { navigateTo } from "@/router";
+import router from "@/router";
 
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
@@ -70,10 +70,10 @@ export async function signupWithEmailAndPassword(email: string, password: string
 onAuthStateChanged(auth, async user => {
     if (user) {
         console.log("Logged in", auth.currentUser); //TODO remove this
-        await navigateTo("home");
+        router.push({ name: 'home' })
     } else {
         console.log("Logged out", auth.currentUser); //TODO remove this
-        await navigateTo("login");
+        router.push({ name: 'login' })
     }
 });
 
