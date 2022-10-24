@@ -185,7 +185,6 @@ import ClickableLink from '../components/ClickableLink.vue'
       },
       async signup(){
         if (!(await this.isValidForm())) return;
-
         signupWithEmailAndPassword(this.email, this.password);
       },
       viewPrivacyPolicy(){

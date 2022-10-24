@@ -32,18 +32,23 @@ appleAuthProvider.addScope("name");
 
 export async function loginWithEmailAndPassword(email: string, password: string, rememberMe: boolean) {
     console.log("Logging in with email and password..."); // TODO remove this
-    setPersistence(rememberMe);
+
+
+    await setPersistence(rememberMe);
 
     const userCredentials : UserCredential = await signInWithEmailAndPassword(auth, email, password);
+    console.log(userCredentials)
     if (!userCredentials.user.emailVerified){
         await sendEmailVerification(userCredentials.user);
         console.log("Verification email sent: " + email); // TODO remove this
+    } else {
+        router.push({ name: 'home' });
     }
 }
 
 export async function loginWithProvider(providerName : string, rememberMe: boolean){
 
-    setPersistence(rememberMe);
+    await setPersistence(rememberMe);
 
     let provider = undefined;
     switch (providerName) {
@@ -56,8 +61,7 @@ export async function loginWithProvider(providerName : string, rememberMe: boole
         default:
             return;
     }
-    console.log(providerName);
-    console.log(provider);
+
     const userCredentials : UserCredential = await signInWithPopup(auth, provider);
 }
 
@@ -91,10 +95,9 @@ export async function updateUser(displayName : string = auth.currentUser?.displa
     }
 }
 
-function setPersistence(rememberMe : boolean = false){
-    if (rememberMe){
-        auth.setPersistence(browserLocalPersistence);
-    } else {
-        auth.setPersistence(browserSessionPersistence);
-    }
+async function setPersistence(rememberMe : boolean = false){
+    if (rememberMe)
+        return await auth.setPersistence(browserLocalPersistence);
+
+    await auth.setPersistence(browserSessionPersistence);
 }
