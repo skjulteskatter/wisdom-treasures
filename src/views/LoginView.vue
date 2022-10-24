@@ -12,20 +12,20 @@
       </template>
       <template #default>
         <div class="flex flex-col">
-          <BaseInput v-model="email" class="p-4 border mt-2" :error="!!errors.email">
+          <BaseInput v-model="email" class="p-4 border mt-2" :error="!!errors.email" v-on:keydown.enter="login()">
             <p>Email</p>
           </BaseInput>
 
-          <BaseInput v-model="fullName" :disabled=!registerViewActive class="p-4 border mt-2 max-h-0 opacity-0" :error="!!errors.fullName" :class="[registerViewActive ? 'smoothOpenInput' : [ !firstAppear ? 'smoothCloseInput' : '']]">
+          <BaseInput v-model="fullName" v-on:keydown.enter="login()" :disabled=!registerViewActive class="p-4 border mt-2 max-h-0 opacity-0" :error="!!errors.fullName" :class="[registerViewActive ? 'smoothOpenInput' : [ !firstAppear ? 'smoothCloseInput' : '']]">
             <p>Full name</p>
           </BaseInput>
 
-          <BaseInput v-model="password" class="p-4 border mt-2" :password="true" :error="!!errors.password">
+          <BaseInput v-model="password" v-on:keydown.enter="login()" class="p-4 border mt-2" :password="true" :error="!!errors.password">
             <p>Password</p>
-            <ClickableLink v-if="!registerViewActive">Forgot password?</ClickableLink>
+            <ClickableLink v-if="!registerViewActive" :disabled="loginLoading">Forgot password?</ClickableLink>
           </BaseInput>
 
-          <BaseInput v-model="repeatPassword" :disabled=!registerViewActive :password="true" :error="!!errors.password" class="p-4 border mt-2 max-h-0 opacity-0" :class="[registerViewActive ? 'smoothOpenInput' : [!firstAppear ? 'smoothCloseInput' : '']]">
+          <BaseInput v-model="repeatPassword" v-on:keydown.enter="login()" :disabled=!registerViewActive :password="true" :error="!!errors.password" class="p-4 border mt-2 max-h-0 opacity-0" :class="[registerViewActive ? 'smoothOpenInput' : [!firstAppear ? 'smoothCloseInput' : '']]">
             <p>Repeat password</p>
           </BaseInput>
 
@@ -38,7 +38,7 @@
             <input type="checkbox" v-model="recievePromotionalEmails" class="rounded border border-black/20 focus-visible:ring-primary text-primary"/>
             <div>
               Get emails from WisdomTreasures about product updates, news, or events. If you change your mind, you can unsubscribe at any time.
-            <ClickableLink @link-clicked="viewPrivacyPolicy" >Privacy Policy</ClickableLink>
+            <ClickableLink @link-clicked="viewPrivacyPolicy" :disabled="loginLoading">Privacy Policy</ClickableLink>
             </div>
           </label>
 
@@ -48,10 +48,13 @@
 
           <div class="grid grid-cols-1 mt-4">
             <BaseButton 
+            :loading="loginLoading"
             @click="login()"  
             theme="primary">
-              <div v-if="!registerViewActive">{{$t("common_login")}}</div>
-              <div v-else>{{$t("common_register")}}</div>
+              <div v-if="!registerViewActive && !loginLoading">Sign in</div>
+              <div v-else-if="!registerViewActive">Signing in...</div>
+              <div v-else-if="!loginLoading">Create Account</div>
+              <div v-else>Creating Account...</div>
             </BaseButton>
           </div>
 
@@ -89,13 +92,13 @@
           
           <div class="my-4 flex justify-center flex-row">
               <span v-if="!registerViewActive">
-                <ClickableLink @link-clicked="changeForm(true)">
+                <ClickableLink @link-clicked="changeForm(true)" :disabled="loginLoading">
                   Create an account
                 </ClickableLink>
               </span>
               <span v-else class="flex flex-row">
                 <div>Have an account?&nbsp;</div>
-                <ClickableLink @link-clicked="changeForm(false)">
+                <ClickableLink @link-clicked="changeForm(false)" :disabled="loginLoading">
                   Sign in
                 </ClickableLink>
               </span>
@@ -136,6 +139,7 @@ import ClickableLink from '../components/ClickableLink.vue'
       errors: {email: "", password: "", fullName: ""} as {email: string, password: string, fullName: string},
       keepErrorMessageWhileValidating: false,
       firstAppear: true,
+      loginLoading: false,
     }),
     computed: {
       errorMessage() : string{
@@ -154,16 +158,30 @@ import ClickableLink from '../components/ClickableLink.vue'
     methods: {
       async login(provider : string | undefined = undefined){
 
-        if (provider)
-          return await loginWithProvider(provider, this.rememberMe);
-
-        if (!(await this.isValidForm())) 
+        if (!provider && !(await this.isValidForm())) 
           return;
 
-        if (this.registerViewActive) 
-          return await this.signup();
-        
-        return await loginWithEmailAndPassword(this.email, this.password, this.rememberMe);
+        this.loginLoading = true;
+
+        try {
+
+          this.errors = {email: "", password: "", fullName: ""}
+
+          if (provider)
+            return await loginWithProvider(provider, this.rememberMe);
+
+          if (this.registerViewActive) 
+            await this.signup();
+          else {
+            await loginWithEmailAndPassword(this.email, this.password, this.rememberMe);
+          }
+
+        } catch (e: any) {
+          this.errors = {email: e, password: " ", fullName: " "};
+        }
+
+        this.loginLoading = false;
+
       },
       async signup(){
         if (!(await this.isValidForm())) return;

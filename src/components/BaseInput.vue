@@ -4,11 +4,11 @@
             <slot name="default" class="block tracking-wide"></slot>
             <slot name="secondary" class="block tracking-wide"></slot>
         </div>
-        <div class="flex items-center">
+        <div class="flex items-center" :class="[error ? 'shake' : '']">
             <input
                 :type="getType"
                 class="px-2 py-1 rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
-                :class="[error ? 'focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)] shake' : 'focus-visible:ring-primary']"
+                :class="[error ? 'focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : 'focus-visible:ring-primary']"
                 v-bind="$attrs"
                 :value="modelValue"
                 :disabled="disabled"
