@@ -1,5 +1,4 @@
 import config from "../config";
-import { useSessionStore } from "@/stores/session";
 import { auth } from "./auth";
 
 export type Result<T> = {
