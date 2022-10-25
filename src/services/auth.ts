@@ -71,7 +71,14 @@ export async function signupWithEmailAndPassword(email: string, password: string
     console.log("Verification email: " + email); //TODO remove this
 }
 
+let initialStateChanged = false;
+
 onAuthStateChanged(auth, async user => {
+    if (!initialStateChanged){
+        initialStateChanged = true;
+        return;
+    }
+    console.log("Auth state changed: ");
     if (user) {
         console.log("Logged in", auth.currentUser); //TODO remove this
         router.push({ name: 'home' })
