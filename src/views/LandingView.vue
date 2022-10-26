@@ -31,6 +31,10 @@ import { defineComponent } from 'vue';
               isCompleted: false,
               id: 2
             },
+            { name: "test",
+              isCompleted: false,
+              id: 3
+            }
           ]
         }
       },
