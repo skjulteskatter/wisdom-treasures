@@ -17,6 +17,7 @@ import type { UserCredential } from 'firebase/auth';
 import "firebase/compat/performance";
 import config from "@/config";
 import router from "@/router";
+import { useSessionStore } from "@/stores/session";
 
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
@@ -69,7 +70,8 @@ export async function signupWithEmailAndPassword(email: string, password: string
 }
 
 onAuthStateChanged(auth, async user => {
-
+    const loggedIn = !!auth.currentUser;
+    useSessionStore().loggedIn = loggedIn;
 });
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? "" ): Promise<boolean> {

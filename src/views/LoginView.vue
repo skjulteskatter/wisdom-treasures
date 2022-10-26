@@ -134,6 +134,8 @@ import BaseButton from '../components/BaseButton.vue'
 import BaseInput from '../components/BaseInput.vue'
 import ClickableLink from '../components/ClickableLink.vue'
 import api from '../services/api'
+import { useSessionStore } from '@/stores/session';
+import router from '@/router';
 
   export default defineComponent({
     name: "LoginView",
@@ -179,6 +181,9 @@ import api from '../services/api'
 
         return "";
       },
+      loggedInPinia() : boolean | undefined{
+        return useSessionStore().loggedIn;
+      },
     },
     watch: {
       successMessage(newValue : string) {
@@ -191,6 +196,10 @@ import api from '../services/api'
           this.errorSuccessMessageLoaded = true;
           this.successMessage = "";
         }
+      },
+      loggedInPinia(newValue: boolean | undefined){
+        if (newValue)
+          router.push({ name: 'home' });
       },
     },
     methods: {
