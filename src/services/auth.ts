@@ -71,7 +71,7 @@ export async function signupWithEmailAndPassword(email: string, password: string
     console.log("Verification email: " + email); //TODO remove this
 }
 
-let initialStateChanged = false;
+let initialStateChanged = false; //TODO find a better way of doing this
 
 onAuthStateChanged(auth, async user => {
     if (!initialStateChanged){

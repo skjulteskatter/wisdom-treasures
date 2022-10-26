@@ -5,69 +5,79 @@
         <div ref="widening" class="w-96"/>
         <div class="flex justify-center">
           <div>
-            <p v-if="!registerViewActive">Login to Your Account</p>
-            <p v-else>Create Your Account</p>
+            <p v-if="include([forms.login])">Login to your account</p>
+            <p v-else-if="include([forms.register])">Create your account</p>
+            <p v-else>Reset your password</p>
           </div>
         </div>
       </template>
       <template #default>
         <div class="flex flex-col">
-          <BaseInput v-model="email" class="p-4 border mt-2" :error="!!errors.email" v-on:keydown.enter="login()">
+          <BaseInput v-model="email" class="p-4 border mt-2" :error="!!errors.email" v-on:keydown.enter="action()">
             <p>Email</p>
           </BaseInput>
 
-          <BaseInput v-model="fullName" v-on:keydown.enter="login()" :disabled=!registerViewActive class="p-4 border mt-2 max-h-0 opacity-0" :error="!!errors.fullName" :class="[registerViewActive ? 'smoothOpenInput' : [ !firstAppear ? 'smoothCloseInput' : '']]">
+          <BaseInput v-model="fullName" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) class="p-4 border mt-2 max-h-0 opacity-0" 
+            :error="!!errors.fullName" :class="[include([forms.register]) ? 'smoothOpenInput' : [ registerFormLoaded ? 'smoothCloseInput' : '']]">
             <p>Full name</p>
           </BaseInput>
 
-          <BaseInput v-model="password" v-on:keydown.enter="login()" class="p-4 border mt-2" :password="true" :error="!!errors.password">
+          <BaseInput v-model="password" v-on:keydown.enter="action()" :disabled=include([forms.forgotPassword]) class="p-4 border mt-2" :password="true" :error="!!errors.password" 
+            :class="[include([forms.register, forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : [ forgotPasswordFormLoaded ? 'smoothCloseInput' : '']]">
             <p>Password</p>
-            <ClickableLink v-if="!registerViewActive" :disabled="loginLoading">Forgot password?</ClickableLink>
+            <ClickableLink v-if="include([forms.login])" :disabled="actionLoading" v-on:click="changeForm('forgotPassword')">Forgot password?</ClickableLink>
           </BaseInput>
 
-          <BaseInput v-model="repeatPassword" v-on:keydown.enter="login()" :disabled=!registerViewActive :password="true" :error="!!errors.password" class="p-4 border mt-2 max-h-0 opacity-0" :class="[registerViewActive ? 'smoothOpenInput' : [!firstAppear ? 'smoothCloseInput' : '']]">
+          <BaseInput v-model="repeatPassword" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) :password="true" :error="!!errors.password" 
+            class="p-4 border mt-2 max-h-0 opacity-0" 
+            :class="[include([forms.register]) ? 'smoothOpenInput' : [registerFormLoaded ? 'smoothCloseInput' : '']]">
             <p>Repeat password</p>
           </BaseInput>
 
-          <label v-if="!registerViewActive" class="flex gap-2 mt-4 items-center cursor-pointer select-none">
+          <label v-if="include([forms.login])" class="flex gap-2 mt-4 items-center cursor-pointer select-none">
             <input type="checkbox" v-model="rememberMe" class="rounded border border-black/20 focus-visible:ring-primary text-primary"/>
             Stay signed in
           </label>
 
-          <label v-else class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap w-96">
+          <label v-if="include([forms.register])" class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap w-96">
             <input type="checkbox" v-model="recievePromotionalEmails" class="rounded border border-black/20 focus-visible:ring-primary text-primary"/>
             <div>
               Get emails from WisdomTreasures about product updates, news, or events. If you change your mind, you can unsubscribe at any time.
-            <ClickableLink @link-clicked="viewPrivacyPolicy" :disabled="loginLoading">Privacy Policy</ClickableLink>
+            <ClickableLink @link-clicked="viewPrivacyPolicy" :disabled="actionLoading">Privacy Policy</ClickableLink>
             </div>
           </label>
 
-          <p class="text-xs text-[color:var(--wt-color-error)] mt-4 opacity-0 max-h-0" :class="[errorMessage || keepErrorMessageWhileValidating ? 'smoothOpenError' : [!firstAppear ? 'smoothCloseError' : '']]">
+          <p class="text-xs text-[color:var(--wt-color-error)] mt-2 opacity-0 max-h-0" 
+            :class="[errorMessage || keepErrorMessageWhileValidating ? 'smoothOpenError' : [hasErrerMessageLoaded ? 'smoothCloseError' : '']]">
             {{errorMessage}}&nbsp;
           </p>
 
           <div class="grid grid-cols-1 mt-4">
             <BaseButton 
-            :loading="loginLoading"
-            @click="login()"  
+            :loading="actionLoading"
+            @click="action()"  
             theme="primary">
-              <div v-if="!registerViewActive && !loginLoading">Sign in</div>
-              <div v-else-if="!registerViewActive">Signing in...</div>
-              <div v-else-if="!loginLoading">Create Account</div>
-              <div v-else>Creating Account...</div>
+              <div v-if="include([forms.login]) && !actionLoading">Sign in</div>
+              <div v-else-if="include([forms.login])">Signing in...</div>
+              <div v-else-if="include([forms.register]) && !actionLoading">Create Account</div>
+              <div v-else-if="include([forms.register])">Creating Account...</div>
+              <div v-else-if="include([forms.forgotPassword]) && !actionLoading">Reset Password</div>
+              <div v-else-if="include([forms.forgotPassword])">Resetting Password...</div>
             </BaseButton>
           </div>
 
-          <div v-if="registerViewActive" class="flex gap-4 mt-4 select-none">
+          <div v-if="include([forms.register])" class="flex gap-4 mt-4 select-none">
             <div class="grow h-px bg-black/30 self-center"/>
             <p class="grow-0 text-black/30 self-center">or use a provider</p>
             <div class="grow h-px bg-black/30 self-center"/>
           </div>
 
-          <div class="grid grid-cols-2 mt-4 gap-4">
+          <div class="grid grid-cols-2 pt-4 gap-4" :class="[include([forms.register,forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : 'smoothCloseInput']">
             <BaseButton
               class="border border-primary" 
-              @click="login('google')" theme="tertiary">
+              :disabled=include([forms.forgotPassword])
+              :class="[include([forms.register,forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : 'smoothCloseInput']"
+              @click="action('google')" theme="tertiary">
               <div class="flex items-center gap-4">
                 <img class="w-8 object-contain" src="/img/google.svg"/>
                 <b class="align-middle">Google</b>
@@ -76,7 +86,9 @@
 
             <BaseButton
               class="border border-primary" 
-              @click="login('apple')" theme="tertiary">
+              :class="[include([forms.register,forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : 'smoothCloseInput']"
+              :disabled=include([forms.forgotPassword])
+              @click="action('apple')" theme="tertiary">
               <div class="flex items-center gap-4">
                 <img class="w-8 object-contain" src="/img/apple.svg"/>
                 <b class="align-middle">Apple</b>
@@ -84,22 +96,27 @@
             </BaseButton>
           </div>
 
-          <div v-if="!registerViewActive" class="flex gap-4 mt-4 select-none">
+          <div v-if="include([forms.login])" class="flex gap-4 mt-4 select-none">
             <div class="grow h-px bg-black/30 self-center"/>
             <p class="grow-0 text-black/30 self-center">or</p>
             <div class="grow h-px bg-black/30 self-center"/>
           </div>
           
           <div class="my-4 flex justify-center flex-row">
-              <span v-if="!registerViewActive">
-                <ClickableLink @link-clicked="changeForm(true)" :disabled="loginLoading">
+              <span v-if="include([forms.login])">
+                <ClickableLink @link-clicked="changeForm('register')" :disabled="actionLoading">
                   Create an account
                 </ClickableLink>
               </span>
-              <span v-else class="flex flex-row">
+              <span v-else-if="include([forms.register])" class="flex flex-row">
                 <div>Have an account?&nbsp;</div>
-                <ClickableLink @link-clicked="changeForm(false)" :disabled="loginLoading">
+                <ClickableLink @link-clicked="changeForm('login')" :disabled="actionLoading">
                   Sign in
+                </ClickableLink>
+              </span>
+              <span v-else class="flex flex-row">
+                <ClickableLink @link-clicked="changeForm('login')" :disabled="actionLoading">
+                  Return to sign in
                 </ClickableLink>
               </span>
           </div>
@@ -111,9 +128,9 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  import { loginWithEmailAndPassword, signupWithEmailAndPassword, loginWithProvider} from '@/services/auth';
-  import BaseCard from '../components/BaseCard.vue'
+import { defineComponent } from 'vue';
+import { loginWithEmailAndPassword, signupWithEmailAndPassword, loginWithProvider} from '@/services/auth';
+import BaseCard from '../components/BaseCard.vue'
 import BaseButton from '../components/BaseButton.vue'
 import BaseInput from '../components/BaseInput.vue'
 import ClickableLink from '../components/ClickableLink.vue'
@@ -134,15 +151,20 @@ import ClickableLink from '../components/ClickableLink.vue'
       fullName: "",
       repeatPassword: "",
       rememberMe: false,
-      registerViewActive: false as boolean,
+      currentForm: "login" as "login" | "register" | "forgotPassword",
       recievePromotionalEmails: false,
       errors: {email: "", password: "", fullName: ""} as {email: string, password: string, fullName: string},
       keepErrorMessageWhileValidating: false,
-      firstAppear: true,
-      loginLoading: false,
+      registerFormLoaded: false,
+      forgotPasswordFormLoaded: false,
+      errorMessageLoaded: false,
+      actionLoading: false,
+
+      forms: {login: "login" as "login", register: "register" as "register", forgotPassword: "forgotPassword" as "forgotPassword"} 
     }),
     computed: {
       errorMessage() : string{
+
         if (this.errors.email !== "")
           return this.errors.email;
         
@@ -153,15 +175,18 @@ import ClickableLink from '../components/ClickableLink.vue'
           return this.errors.password;
 
         return "";
+      },
+      hasErrerMessageLoaded() : boolean{
+        return this.errorMessageLoaded || (this.errors.email + this.errors.fullName + this.errors.password).length > 0;
       }
     },
     methods: {
-      async login(provider : string | undefined = undefined){
+      async action(provider : string | undefined = undefined){
 
         if (!provider && !(await this.isValidForm())) 
           return;
 
-        this.loginLoading = true;
+        this.actionLoading = true;
 
         try {
 
@@ -170,18 +195,19 @@ import ClickableLink from '../components/ClickableLink.vue'
           if (provider)
             return await loginWithProvider(provider, this.rememberMe);
 
-          if (this.registerViewActive) 
+          if (this.include([this.forms.register])) 
             await this.signup();
-          else {
+          else if (this.include([this.forms.login])) {
             await loginWithEmailAndPassword(this.email, this.password, this.rememberMe);
+          } else {
+            console.log("resetting password is not implemented yet");
           }
 
         } catch (e: any) {
           this.errors = {email: e, password: " ", fullName: " "};
         }
 
-        this.loginLoading = false;
-
+        this.actionLoading = false;
       },
       async signup(){
         if (!(await this.isValidForm())) return;
@@ -202,26 +228,34 @@ import ClickableLink from '../components/ClickableLink.vue'
           this.errors.email = "Invalid email address";
           return false;
         }
-        this.errors.email = "";
+
         return true;
       },
       validateFullName(): boolean {
-        if (!this.fullName && this.registerViewActive){
+
+        if (this.include([this.forms.login, this.forms.forgotPassword]))
+          return true;
+
+        if (!this.fullName){
           this.errors.fullName = "Name is required";
           return false;
         }
-        this.errors.fullName = "";
+
         return true;
       },
       validatePassword(): boolean {
+
+        if (this.include([this.forms.forgotPassword]))
+          return true;
+
         if (!this.password){
           this.errors.password = "Password is required";
           return false;
-        } else if (this.registerViewActive && (this.password != this.repeatPassword)){
+        } else if (this.password != this.repeatPassword && this.include([this.forms.register])){
           this.errors.password = "Passwords doesn't match";
           return false;
         }
-        this.errors.password = "";
+
         return true;
       },
       async isValidForm(): Promise<boolean> {
@@ -238,11 +272,15 @@ import ClickableLink from '../components/ClickableLink.vue'
         this.keepErrorMessageWhileValidating = false;
         return true;
       },
-      changeForm(changeToRegisterForm : boolean) {
-        this.firstAppear = false;
-        this.errors = {email: "", password: "", fullName: ""};
-        this.registerViewActive = changeToRegisterForm;
+      changeForm(form : "login" | "register" | "forgotPassword") {
         this.keepErrorMessageWhileValidating = false;
+        this.registerFormLoaded = this.registerFormLoaded || form == this.forms.register;
+        this.forgotPasswordFormLoaded = this.forgotPasswordFormLoaded || form == this.forms.forgotPassword;
+        this.errors = {email: "", password: "", fullName: ""};
+        this.currentForm = form;
+      },
+      include(forms : ("login" | "register" | "forgotPassword")[]) {
+        return forms.includes(this.currentForm);
       },
     },
   });
@@ -284,6 +322,7 @@ import ClickableLink from '../components/ClickableLink.vue'
 
 .smoothOpenInput{
     animation: smoothOpenInput 0.35s both linear;
+    margin-top: 0.5rem;
 }
 
 @keyframes smoothOpenInput {
@@ -295,19 +334,20 @@ import ClickableLink from '../components/ClickableLink.vue'
 
   50% {
     opacity: 0;
-    max-height: 5em;
+    max-height: 6em;
     transform: translateX(-30%);
   }
 
   100% {
     opacity: 1;
-    max-height: 5em;
+    max-height: 6em;
     transform: translateX(0%);
   }
 }
 
 .smoothCloseInput{
     animation: smoothCloseInput 0.25s both linear;
+    margin-top: 0rem;
 }
 
 @keyframes smoothCloseInput {

@@ -22,9 +22,6 @@ export const routes = [
     path: '/landingview',
     name: 'landingview',
     component: () => import('../views/LandingView.vue'),
-    meta: {
-      requiresAuth: false
-    }
   },
   {
     path: '/:pathMatch(.*)*',
