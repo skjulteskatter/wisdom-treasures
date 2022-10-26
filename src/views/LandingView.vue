@@ -1,36 +1,62 @@
+<!-- html -->
 <template>
-    <main>
-      <h1>Hello, and welcome to the home view</h1>
-    </main>
-  </template>
+  <body>
+    <div>
+      <input type="text" placeholder="Add an item">
+      <button>ADD</button>
+    </div>
+    <div>
+      <ul v-for="item in items" v-bind:key="item.id">
+        <li>{{ item.name }}</li>
+      </ul>
+    </div>
+  </body>
+</template>
   
-  <script lang="ts">
-  import { publicationService } from '@/services/publications';
-  import { defineComponent } from 'vue';
+
+
+<script lang="ts">
+  import { isCompletionStatement } from '@babel/types';
+import { defineComponent } from 'vue';
   
     export default defineComponent({
-      name: "HomeView",
       data() {
         return {
-          publications : [],
-          articles : [],
+          items: [
+            { name: 'make the landingview page',
+              isCompleted: false,
+              id: 1
+            },
+            { name: 'do the dishes',
+              isCompleted: false,
+              id: 2
+            },
+          ]
         }
       },
-      props: {
+      methods: {
+
       },
-      components: {
+      watch: {
+
       },
       computed: {
-      },
-      async mounted() {
-        //console.log(await publicationService.list());
-        await publicationService.retrieve({
-          parentIds: ["aa7d92e3-c92f-41f8-87a1-333375125a1c"],
-        }).then(r => {
-          console.log(r);
-        });
-      },
-      methods: {
-      },
-    });
-  </script>
+
+      }
+      });
+</script>
+
+
+<!-- css -->
+<style>
+button {
+  font-weight: bold;
+  border: solid black 1px;
+  border-radius: 4px;
+  padding: 4px;
+  margin-top: 1em
+}
+input{
+  border: solid red 3px;
+}
+</style>
