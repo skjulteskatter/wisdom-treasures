@@ -30,20 +30,18 @@ appleAuthProvider.addScope("email");
 appleAuthProvider.addScope("name");
 
 
-export async function loginWithEmailAndPassword(email: string, password: string, rememberMe: boolean) {
-    console.log("Logging in with email and password..."); // TODO remove this
-
-
+export async function loginWithEmailAndPassword(email: string, password: string, rememberMe: boolean): Promise<boolean> {
     await setPersistence(rememberMe);
 
     const userCredentials : UserCredential = await signInWithEmailAndPassword(auth, email, password);
     console.log(userCredentials)
     if (!userCredentials.user.emailVerified){
         await sendEmailVerification(userCredentials.user);
-        console.log("Verification email sent: " + email); // TODO remove this
-    } else {
-        router.push({ name: 'home' });
+        return false;
     }
+    
+    router.push({ name: 'home' });
+    return true;
 }
 
 export async function loginWithProvider(providerName : string, rememberMe: boolean){
@@ -68,24 +66,10 @@ export async function loginWithProvider(providerName : string, rememberMe: boole
 export async function signupWithEmailAndPassword(email: string, password: string){
     const userCredentials : UserCredential = await createUserWithEmailAndPassword(auth, email, password);
     await sendEmailVerification(userCredentials.user);
-    console.log("Verification email: " + email); //TODO remove this
 }
 
-let initialStateChanged = false; //TODO find a better way of doing this
-
 onAuthStateChanged(auth, async user => {
-    if (!initialStateChanged){
-        initialStateChanged = true;
-        return;
-    }
-    console.log("Auth state changed: ");
-    if (user) {
-        console.log("Logged in", auth.currentUser); //TODO remove this
-        router.push({ name: 'home' })
-    } else {
-        console.log("Logged out", auth.currentUser); //TODO remove this
-        router.push({ name: 'login' })
-    }
+
 });
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? "" ): Promise<boolean> {

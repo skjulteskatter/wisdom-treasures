@@ -40,3 +40,7 @@ export const session = {
         return http.get("api/Session/ResetPassword/" + email, true);
     },
 };
+
+export default {
+    session
+};

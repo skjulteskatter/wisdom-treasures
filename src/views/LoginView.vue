@@ -47,9 +47,9 @@
             </div>
           </label>
 
-          <p class="text-xs text-[color:var(--wt-color-error)] mt-2 opacity-0 max-h-0" 
-            :class="[errorMessage || keepErrorMessageWhileValidating ? 'smoothOpenError' : [hasErrerMessageLoaded ? 'smoothCloseError' : '']]">
-            {{errorMessage}}&nbsp;
+          <p class="text-[color:var(--wt-color-error)] mt-2 opacity-0 max-h-0 text-wrap w-96 bg-[color:var(--wt-color-error)/[.06]] rounded-md" 
+            :class="{'text-[color:var(--wt-color-success)]' : successMessage, 'smoothOpenError' : errorMessage || successMessage || keepErrorMessageWhileValidating, 'smoothCloseError' : (!successMessage && !errorMessage && !keepErrorMessageWhileValidating) && errorSuccessMessageLoaded}">
+            {{successMessage || errorMessage}}&nbsp;
           </p>
 
           <div class="grid grid-cols-1 mt-4">
@@ -72,9 +72,9 @@
             <div class="grow h-px bg-black/30 self-center"/>
           </div>
 
-          <div class="grid grid-cols-2 pt-4 gap-4" :class="[include([forms.register,forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : 'smoothCloseInput']">
+          <div class="grid grid-cols-2 mt-2 gap-4" :class="[include([forms.register,forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : 'smoothCloseInput']">
             <BaseButton
-              class="border border-primary" 
+              class="border border-primary mt-2" 
               :disabled=include([forms.forgotPassword])
               :class="[include([forms.register,forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : 'smoothCloseInput']"
               @click="action('google')" theme="tertiary">
@@ -85,7 +85,7 @@
             </BaseButton>
 
             <BaseButton
-              class="border border-primary" 
+              class="border border-primary mt-2" 
               :class="[include([forms.register,forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : 'smoothCloseInput']"
               :disabled=include([forms.forgotPassword])
               @click="action('apple')" theme="tertiary">
@@ -120,7 +120,6 @@
                 </ClickableLink>
               </span>
           </div>
-        
         </div>
       </template>
     </BaseCard>
@@ -134,17 +133,18 @@ import BaseCard from '../components/BaseCard.vue'
 import BaseButton from '../components/BaseButton.vue'
 import BaseInput from '../components/BaseInput.vue'
 import ClickableLink from '../components/ClickableLink.vue'
+import api from '../services/api'
 
   export default defineComponent({
     name: "LoginView",
     props: {
     },
-    components: {
-    BaseCard,
-    BaseButton,
-    BaseInput,
-    ClickableLink,
-},
+      components: {
+      BaseCard,
+      BaseButton,
+      BaseInput,
+      ClickableLink,
+    },
     data: () => ({
       email: "",
       password: "",
@@ -155,10 +155,13 @@ import ClickableLink from '../components/ClickableLink.vue'
       recievePromotionalEmails: false,
       errors: {email: "", password: "", fullName: ""} as {email: string, password: string, fullName: string},
       keepErrorMessageWhileValidating: false,
+
       registerFormLoaded: false,
       forgotPasswordFormLoaded: false,
-      errorMessageLoaded: false,
+      errorSuccessMessageLoaded: false,
+      
       actionLoading: false,
+      successMessage: "",
 
       forms: {login: "login" as "login", register: "register" as "register", forgotPassword: "forgotPassword" as "forgotPassword"} 
     }),
@@ -176,9 +179,19 @@ import ClickableLink from '../components/ClickableLink.vue'
 
         return "";
       },
-      hasErrerMessageLoaded() : boolean{
-        return this.errorMessageLoaded || (this.errors.email + this.errors.fullName + this.errors.password).length > 0;
-      }
+    },
+    watch: {
+      successMessage(newValue : string) {
+        if (newValue.length > 0){
+          this.errorSuccessMessageLoaded = true;
+        }
+      },
+      errorMessage(newValue : string) {
+        if (newValue.length > 0){
+          this.errorSuccessMessageLoaded = true;
+          this.successMessage = "";
+        }
+      },
     },
     methods: {
       async action(provider : string | undefined = undefined){
@@ -196,22 +209,33 @@ import ClickableLink from '../components/ClickableLink.vue'
             return await loginWithProvider(provider, this.rememberMe);
 
           if (this.include([this.forms.register])) 
+          {
             await this.signup();
-          else if (this.include([this.forms.login])) {
-            await loginWithEmailAndPassword(this.email, this.password, this.rememberMe);
-          } else {
-            console.log("resetting password is not implemented yet");
+            this.successMessage = "Account created successfully. A verification email was sent to " + this.email;
+            this.changeForm(this.forms.login);
+          }
+          else if (this.include([this.forms.login])) 
+          {
+            if (!await loginWithEmailAndPassword(this.email, this.password, this.rememberMe))
+              throw new Error("Email not verified");
+            
+          } else 
+          {
+            await api.session.resetPassword(this.email);
+            this.successMessage = "Password was reset successfully. The new password was sent to " + this.email;
+            this.changeForm(this.forms.login);
           }
 
         } catch (e: any) {
-          this.errors = {email: e, password: " ", fullName: " "};
+          //Use email field as general purpose error message because it gets checked and displayed first.
+          this.errors = {email: e.toString(), password: " ", fullName: " "};
         }
 
         this.actionLoading = false;
       },
       async signup(){
         if (!(await this.isValidForm())) return;
-        signupWithEmailAndPassword(this.email, this.password);
+        await signupWithEmailAndPassword(this.email, this.password);
       },
       viewPrivacyPolicy(){
         //Change recievePromotionalEmails variable because when you click the link, the variable gets changed automatically 😐
@@ -300,7 +324,7 @@ import ClickableLink from '../components/ClickableLink.vue'
 
   to {
     opacity: 1;
-    max-height: 1em;
+    max-height: 2em;
   }
 }
 
@@ -311,7 +335,7 @@ import ClickableLink from '../components/ClickableLink.vue'
 @keyframes smoothCloseError {
   from {
     opacity: 1;
-    max-height: 1em;
+    max-height: 2em;
   }
 
   to {

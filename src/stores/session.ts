@@ -1,7 +1,6 @@
 import { defineStore } from 'pinia'
 import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
-import { auth } from '@/services/auth'
 
 export const useSessionStore = defineStore('session', {
     state: ()=> {
