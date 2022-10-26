@@ -47,8 +47,8 @@
             </div>
           </label>
 
-          <p class="text-[color:var(--wt-color-error)] mt-2 opacity-0 max-h-0 text-wrap w-96 bg-[color:var(--wt-color-error)/[.06]] rounded-md" 
-            :class="{'text-[color:var(--wt-color-success)]' : successMessage, 'smoothOpenError' : errorMessage || successMessage || keepErrorMessageWhileValidating, 'smoothCloseError' : (!successMessage && !errorMessage && !keepErrorMessageWhileValidating) && errorSuccessMessageLoaded}">
+          <p class="text-[color:var(--wt-color-error)] opacity-0 max-h-0 text-wrap w-96 rounded-md bg-red-100 px-2" 
+            :class="{'text-[color:var(--wt-color-success)] bg-green-100' : successMessage, 'smoothOpenError' : errorMessage || successMessage || keepErrorMessageWhileValidating, 'smoothCloseError' : (!successMessage && !errorMessage && !keepErrorMessageWhileValidating) && errorSuccessMessageLoaded}">
             {{successMessage || errorMessage}}&nbsp;
           </p>
 
@@ -221,7 +221,11 @@ import api from '../services/api'
             
           } else 
           {
-            await api.session.resetPassword(this.email);
+            try {
+              await api.session.resetPassword(this.email);
+            } catch (e: any){
+              throw new Error(e.error);
+            }
             this.successMessage = "Password was reset successfully. The new password was sent to " + this.email;
             this.changeForm(this.forms.login);
           }
@@ -313,34 +317,55 @@ import api from '../services/api'
 <style>
 
 .smoothOpenError{
-    animation: smoothOpenError 0.2s both linear;
+    animation: smoothOpenError 0.35s both linear;
+
 }
 
 @keyframes smoothOpenError {
-  from {
+  0% {
     opacity: 0;
     max-height: 0;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    margin-top: 0rem;
   }
 
-  to {
+  50% {
     opacity: 1;
-    max-height: 2em;
+    max-height: 3rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 1rem;
+  }
+
+  100% {
+    opacity: 1;
+    max-height: 6rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 1rem;
   }
 }
 
 .smoothCloseError{
-    animation: smoothCloseError 0.2s both linear;
+    animation: smoothCloseError 0.25s both linear;
 }
 
 @keyframes smoothCloseError {
-  from {
+  0% {
     opacity: 1;
-    max-height: 2em;
+    max-height: 6rem;
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+    margin-top: 1rem;
   }
 
-  to {
+  100% {
     opacity: 0;
-    max-height: 0em;
+    max-height: 0;
+    padding-top: 0rem;
+    padding-bottom: 0rem;
+    margin-top: 0rem;
   }
 }
 
