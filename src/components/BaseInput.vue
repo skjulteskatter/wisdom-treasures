@@ -8,7 +8,7 @@
             <input
                 :type="getType"
                 class="px-2 py-1 rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
-                :class="[error ? 'focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : 'focus-visible:ring-primary']"
+                :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary']"
                 v-bind="$attrs"
                 :value="modelValue"
                 :disabled="disabled"
@@ -72,6 +72,7 @@ export default defineComponent({
 .shake{
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform: translate3d(0, 0, 0);
+    border-color: var(--wt-color-error) !important;
 }
 
 @keyframes shake {
