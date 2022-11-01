@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { auth } from '@/services/auth';
-import { useSessionStore } from '@/stores/session';
 
 export const routes = [
   {
@@ -38,9 +37,7 @@ const router = createRouter({
 
 router.beforeEach((to, _from, next) => {
 
-  const loggedIn = useSessionStore().loggedIn;
-
-  console.log("Logged in: "  + loggedIn); // TODO Remove this
+  const loggedIn = !!auth.currentUser;
 
   //If the site requires auth and the user is not logged in: redirect to login
   if (to.matched.some(x => x.meta.requiresAuth) && loggedIn === false) next({ name: "login"});

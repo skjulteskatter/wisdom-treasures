@@ -11,13 +11,13 @@ import {
     signInWithPopup, 
     updateProfile,
     browserLocalPersistence, 
-    browserSessionPersistence, 
+    browserSessionPersistence,
+    signOut, 
 } from "firebase/auth";
 import type { UserCredential } from 'firebase/auth';
 import "firebase/compat/performance";
 import config from "@/config";
 import router from "@/router";
-import { useSessionStore } from "@/stores/session";
 
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
@@ -69,10 +69,19 @@ export async function signupWithEmailAndPassword(email: string, password: string
     await sendEmailVerification(userCredentials.user);
 }
 
-onAuthStateChanged(auth, async user => {
-    const loggedIn = !!auth.currentUser;
-    useSessionStore().loggedIn = loggedIn;
-});
+let userLoaded: boolean = false || !!auth.currentUser;
+export function getCurrentUser() {
+  return new Promise((resolve, reject) => {
+     if (userLoaded) {
+          resolve(auth.currentUser);
+     }
+     const unsubscribe = auth.onAuthStateChanged(user => {
+        userLoaded = true;
+        unsubscribe();
+        resolve(user);
+     }, reject);
+  });
+}
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? "" ): Promise<boolean> {
 
@@ -86,6 +95,10 @@ export async function updateUser(displayName : string = auth.currentUser?.displa
     } catch {
         return false;
     }
+}
+
+export async function logOut(){
+    await signOut(auth);
 }
 
 async function setPersistence(rememberMe : boolean = false){
