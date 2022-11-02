@@ -18,6 +18,7 @@ import type { UserCredential } from 'firebase/auth';
 import "firebase/compat/performance";
 import config from "@/config";
 import router from "@/router";
+import { useSessionStore } from "@/stores/session";
 
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
@@ -41,11 +42,11 @@ export async function loginWithEmailAndPassword(email: string, password: string,
         return false;
     }
     
-    router.push({ name: 'home' });
+    pushToHomeOrRedirectLink();
     return true;
 }
 
-export async function loginWithProvider(providerName : string, rememberMe: boolean){
+export async function loginWithProvider(providerName : string, rememberMe: boolean) {
 
     await setPersistence(rememberMe);
 
@@ -62,6 +63,18 @@ export async function loginWithProvider(providerName : string, rememberMe: boole
     }
 
     const userCredentials : UserCredential = await signInWithPopup(auth, provider);
+    pushToHomeOrRedirectLink();
+}
+
+function pushToHomeOrRedirectLink(){
+    const store = useSessionStore();
+    let name = store.$state.redirectAfterLoginName;
+    store.$state.redirectAfterLoginName = "";
+
+    if (name.length <= 0)
+      name = "home";
+
+    router.push({name: name});
 }
 
 export async function signupWithEmailAndPassword(email: string, password: string){

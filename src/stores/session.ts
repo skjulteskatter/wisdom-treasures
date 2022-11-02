@@ -7,6 +7,7 @@ export const useSessionStore = defineStore('session', {
         return {
             //When store is created take languge from i18n if it exist
             locale: i18n.global.locale ?? "en",
+            redirectAfterLoginName: "",
         }
     },
     actions: {

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { auth } from '@/services/auth';
+import { useSessionStore } from '@/stores/session';
 
 export const routes = [
   {
@@ -24,6 +25,14 @@ export const routes = [
     component: () => import('../views/LandingView.vue'),
   },
   {
+    path: '/profile',
+    name: 'profile',
+    component: () => import('../views/ProfileView.vue'),
+    meta: {
+      requiresAuth: true,
+    }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'notfound',
     component: () => import('../views/NotFoundView.vue'),
@@ -40,7 +49,10 @@ router.beforeEach((to, _from, next) => {
   const loggedIn = !!auth.currentUser;
 
   //If the site requires auth and the user is not logged in: redirect to login
-  if (to.matched.some(x => x.meta.requiresAuth) && loggedIn === false) next({ name: "login"});
+  if (to.matched.some(x => x.meta.requiresAuth) && loggedIn === false) {
+    useSessionStore().$state.redirectAfterLoginName = to.name?.toString() ?? "";
+    next({ name: "login"});
+  }
 
   //If the site requires the user to be logged off and the user is logged in: redirect to home
   else if (to.matched.some(x => x.meta.requiresAuth === false) && loggedIn) next({ name : "home"}); 
