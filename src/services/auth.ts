@@ -83,7 +83,7 @@ export async function signupWithEmailAndPassword(email: string, password: string
 }
 
 let userLoaded: boolean = false || !!auth.currentUser;
-export function getCurrentUser() {
+export function getCurrentUserPromise() {
   return new Promise((resolve, reject) => {
      if (userLoaded) {
           resolve(auth.currentUser);
