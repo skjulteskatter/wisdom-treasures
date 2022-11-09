@@ -6,10 +6,14 @@ export const routes = [
   {
     path: '/',
     name: 'home',
-    component: () => import('../views/HomeView.vue'),
-    meta: {
-      requiresAuth: true
-    }
+    component: () => import('../views/MainLayout.vue'),
+    children: [
+      {
+        path: '/',
+        name: 'dashboard',
+        component: () => import('../views/HomeView.vue'),
+      },
+    ]
   },
   {
     path: '/login',

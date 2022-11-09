@@ -1,6 +1,6 @@
 <template>
     <div :class="{'text-primary hover:text-[color:var(--color-text)] cursor-pointer' : !disabled, 'text-black/30 cursor-not-allowed' : disabled}" 
-    tabindex="0" v-on:click="clickEvent()" v-on:keydown.space="clickEvent()" v-on:keydown.enter="clickEvent()">
+    tabindex="0" v-on:click="clickEvent()" v-on:keydown.space="clickEvent()" v-on:keydown.enter="clickEvent()" class="select-none">
         <slot></slot>
     </div>
 </template>
