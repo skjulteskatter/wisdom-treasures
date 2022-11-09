@@ -3,7 +3,7 @@
     <BaseCard>
       <template #header>
         <div ref="widening" class="w-96"/>
-        <div class="flex justify-center">
+        <div class="flex justify-center my-2">
           <div>
             <p v-if="include([forms.login])">Login to your account</p>
             <p v-else-if="include([forms.register])">Create your account</p>
@@ -35,19 +35,19 @@
           </BaseInput>
 
           <label v-if="include([forms.login])" class="flex gap-2 mt-4 items-center cursor-pointer select-none">
-            <input type="checkbox" v-model="rememberMe" class="rounded border border-black/20 focus-visible:ring-primary text-primary"/>
+            <BaseCheckbox v-model="rememberMe"/>
             Stay signed in
           </label>
 
-          <label v-if="include([forms.register])" class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap w-96">
-            <input type="checkbox" v-model="recievePromotionalEmails" class="rounded border border-black/20 focus-visible:ring-primary text-primary"/>
-            <div>
+          <span v-if="include([forms.register])" class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap lg:w-96">
+            <BaseCheckbox v-model="recievePromotionalEmails"/>
+            <span>
               Get emails from WisdomTreasures about product updates, news, or events. If you change your mind, you can unsubscribe at any time.
-            <ClickableLink @link-clicked="viewPrivacyPolicy" :disabled="actionLoading">Privacy Policy</ClickableLink>
-            </div>
-          </label>
+              <ClickableLink @link-clicked="viewPrivacyPolicy" :disabled="actionLoading">Privacy Policy</ClickableLink>
+            </span>
+          </span>
 
-          <p class="text-[color:var(--wt-color-error)] opacity-0 max-h-0 text-wrap w-96 rounded-md bg-red-100 px-2" 
+          <p class="text-[color:var(--wt-color-error)] opacity-0 max-h-0 text-wrap w-full rounded-md bg-red-100 px-2" 
             :class="{'text-[color:var(--wt-color-success)] bg-green-100' : successMessage, 'smoothOpenError' : errorMessage || successMessage || keepErrorMessageWhileValidating, 'smoothCloseError' : (!successMessage && !errorMessage && !keepErrorMessageWhileValidating) && errorSuccessMessageLoaded}">
             {{successMessage || errorMessage}}&nbsp;
           </p>
@@ -134,6 +134,7 @@ import BaseButton from '../components/BaseButton.vue'
 import BaseInput from '../components/BaseInput.vue'
 import ClickableLink from '../components/ClickableLink.vue'
 import api from '../services/api'
+import BaseCheckbox from '@/components/BaseCheckbox.vue';
 
   export default defineComponent({
     name: "LoginView",
@@ -144,6 +145,7 @@ import api from '../services/api'
       BaseButton,
       BaseInput,
       ClickableLink,
+      BaseCheckbox,
     },
     data: () => ({
       email: "",
@@ -242,8 +244,6 @@ import api from '../services/api'
         await signupWithEmailAndPassword(this.email, this.password);
       },
       viewPrivacyPolicy(){
-        //Change recievePromotionalEmails variable because when you click the link, the variable gets changed automatically 😐
-        this.recievePromotionalEmails = !this.recievePromotionalEmails;
         console.log("Privacy Policy is not implemented");
       },
       validateEmail(): boolean {
@@ -408,6 +408,13 @@ import api from '../services/api'
   to {
     opacity: 0;
     max-height: 0em;
+  }
+}
+
+@media (min-width: 1024px) {
+  body {
+    display: flex;
+    place-items: center;
   }
 }
 
