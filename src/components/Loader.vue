@@ -1,14 +1,14 @@
 <template>
     <div
         class="loader"
-        v-if="Loading"
-    >
-        <strong class="loader__text">{{ $t("common_loading") }}</strong>
+        v-if="loading">
+        <strong>Loading</strong>
     </div>
     <slot v-else />
 </template>
 
-<script lang="ts">import { defineComponent } from 'vue';
+<script lang="ts">
+import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "loader-component",
@@ -17,11 +17,6 @@ export default defineComponent({
             type: Boolean,
             default: false,
         }
-    },
-    computed: {
-        Loading(): boolean {
-            return this.loading === true;
-        },
     },
 });
 </script>
