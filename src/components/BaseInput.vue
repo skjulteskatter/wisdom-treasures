@@ -1,24 +1,33 @@
 <template>
     <label class="border-none p-0 bg-transparent">
-        <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '']">
+        <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '', $slots.default || $slots.secondary ? 'mb-2' : '']">
             <slot name="default" class="block tracking-wide"></slot>
             <slot name="secondary" class="block tracking-wide"></slot>
         </div>
         <div class="flex items-center" :class="[error ? 'shake' : '']">
+            <div v-if="styleType == 'search'">
+                <div class="w-5 absolute left-2 -top-[0.61rem] cursor-pointer z-40 opacity-40" @click="(event: any) => $emit('searchAction', modelValue)">
+                    <SearchIcon/>
+                </div>
+            </div>
             <input
                 :type="getType"
                 class="px-2 py-1 rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
-                :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary']"
-                v-bind="$attrs"
+                :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', styleType === 'search' ? 'indent-6 bg-black/10 border-0' : '']"
                 :value="modelValue"
                 :disabled="disabled"
                 :placeholder="placeholder"
                 @input="(event: any) => $emit('update:modelValue', event.target?.value ?? '')"
             />
-            <div v-if="modelValue && password">
-                <div class="w-5 absolute -left-7 -top-[0.35rem] cursor-pointer" @click="showPassword = !showPassword" >
+            <div v-if="modelValue && styleType == 'password'">
+                <div class="w-5 absolute -left-7 -top-[0.61rem] cursor-pointer" @click="showPassword = !showPassword">
                     <EyeIcon v-if="!showPassword"></EyeIcon>
                     <EyeOffIcon v-else></EyeOffIcon>
+                </div>
+            </div>
+            <div v-else-if="modelValue && styleType == 'search'">
+                <div class="w-5 absolute -left-7 -top-[0.61rem] cursor-pointer opacity-40" @click="(event: any) => $emit('update:modelValue', '')">
+                    <XIcon/>
                 </div>
             </div>
         </div>
@@ -27,13 +36,15 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { EyeIcon, EyeOffIcon } from "@heroicons/vue/solid";
+import { EyeIcon, EyeOffIcon, SearchIcon, XIcon } from "@heroicons/vue/solid";
 
 export default defineComponent({
     name: "base-input",
     components: {
         EyeIcon,
         EyeOffIcon,
+        SearchIcon,
+        XIcon,
     },
     data() {
         return {
@@ -51,17 +62,19 @@ export default defineComponent({
         placeholder: {
             type: String,
         },
-        password: {
-            type: Boolean,
+        styleType: {
+            type: String,
+            //validator: (propValue: string | undefined) => ["default", "password", "search"].includes(propValue + "") || !propValue,
+            default: "default",
         },
         error:{
             type: Boolean,
-        }
+        },
     },
-    emits: ["update:modelValue"],
+    emits: ["update:modelValue", "searchAction"],
     computed: {
         getType(): string{
-            return this.password && !this.showPassword ? "password" : "text";
+            return this.styleType === "password" && !this.showPassword ? "password" : "text";
         },
     },
 });

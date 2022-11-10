@@ -1,12 +1,12 @@
 <template>
     <button
         class="overflow-hidden text-white select-none cursor-pointer flex justify-center items-center gap-2 rounded-md relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ring-offset-2 active:text-opacity-50"
-        :class="[`button--${theme} button`, { 'opacity-75 cursor-wait button--loading': loading, 'button--disabled': disabled, 'py-1 px-2': size == 'small', 'py-2 px-4': size == 'medium', 'py-3 px-6': size == 'large' }]"
+        :class="[`button--${theme} button`, { 'opacity-75 cursor-wait button--loading': loading, 'button--disabled': disabled, 'py-1 px-2': size == 'small', 'py-2 px-4': size == 'medium', 'py-3 px-6': size == 'large'}]"
         :disabled="loading || disabled"
         v-bind="$attrs"
     >
         <span
-            :class="{ 'text-sm': size == 'medium', 'text-xs': size == 'small', 'text-base': size == 'large' }"
+            :class="{ 'text-sm': size == 'medium', 'text-xs': size == 'small', 'text-base': size == 'large', 'font-semibold': theme == 'menuButton' }"
             v-if="$slots.default"
         >
             <slot />
@@ -36,6 +36,7 @@ export default defineComponent({
                         "error",
                         "warning",
                         "neutral",
+                        "menuButton",
                     ].includes(value)
                 );
             },
@@ -57,6 +58,10 @@ export default defineComponent({
             default: "medium",
             validator: (v: string) => ["small", "medium", "large"].includes(v),
         },
+        clicked: { //This is just for styling purposes
+            type: Boolean,
+            default: false,
+        }
     },
     computed: {
         isLoading() {
@@ -91,6 +96,15 @@ export default defineComponent({
 
     &--tertiary {
         @apply text-primary hover:bg-primary/20 dark:hover:bg-transparent;
+
+        &:hover:after {
+            content: "";
+            display: none;
+        }
+    }
+
+    &--menuButton {
+        @apply text-[color:var(--wt-color-text-lm)] hover:bg-black/10 dark:hover:bg-transparent;
 
         &:hover:after {
             content: "";

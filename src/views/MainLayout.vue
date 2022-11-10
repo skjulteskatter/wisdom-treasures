@@ -41,10 +41,7 @@ export default defineComponent({
 		currentUser : undefined as unknown,
 	}),
 	async mounted() {
-
-		console.log(this.currentUser);
 		this.currentUser = await getCurrentUserPromise();
-		console.log(this.currentUser);
     },
 	methods: {
 	},

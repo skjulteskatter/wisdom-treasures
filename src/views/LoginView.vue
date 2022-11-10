@@ -22,13 +22,13 @@
             <p>Full name</p>
           </BaseInput>
 
-          <BaseInput v-model="password" v-on:keydown.enter="action()" :disabled=include([forms.forgotPassword]) class="p-4 border mt-2" :password="true" :error="!!errors.password" 
+          <BaseInput v-model="password" v-on:keydown.enter="action()" :disabled=include([forms.forgotPassword]) class="p-4 border mt-2" style-type="password" :error="!!errors.password" 
             :class="[include([forms.register, forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : [ forgotPasswordFormLoaded ? 'smoothCloseInput' : '']]">
             <p>Password</p>
             <ClickableLink v-if="include([forms.login])" :disabled="actionLoading" v-on:click="changeForm('forgotPassword')">Forgot password?</ClickableLink>
           </BaseInput>
 
-          <BaseInput v-model="repeatPassword" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) :password="true" :error="!!errors.password" 
+          <BaseInput v-model="repeatPassword" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) style-type="password" :error="!!errors.password" 
             class="p-4 border mt-2 max-h-0 opacity-0" 
             :class="[include([forms.register]) ? 'smoothOpenInput' : [registerFormLoaded ? 'smoothCloseInput' : '']]">
             <p>Repeat password</p>
