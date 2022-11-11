@@ -6,7 +6,7 @@
 					<img class="h-10 cursor-pointer" src="/img/logo.svg" @click="$router.push({name: 'home'})"/>
 				</div>
 				<div id="middleNav" class="self-center flex grow place-content-center gap-x-3">
-					<BaseButton theme="menuButton">Menu1!</BaseButton>
+					<BaseButton theme="menuButton" :clicked="true">Menu1!</BaseButton>
 					<BaseButton theme="menuButton">Menu2!</BaseButton>
 					<BaseButton theme="menuButton">Menu3!</BaseButton>
 					<BaseButton theme="menuButton">Menu4!</BaseButton>
