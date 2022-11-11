@@ -50,16 +50,20 @@ const router = createRouter({
 
 router.beforeEach(async (to, _from, next) => {
 
-  const loggedIn = !!(await getCurrentUserPromise());
+  const requiresAuth : boolean | undefined = to.matched.some(x => x.meta.requiresAuth);
+  let loggedIn = undefined;
+
+  if (requiresAuth !== undefined)
+    loggedIn = !!(await getCurrentUserPromise());
 
   //If the site requires auth and the user is not logged in: redirect to login
-  if (to.matched.some(x => x.meta.requiresAuth) && loggedIn === false) {
+  if (requiresAuth && loggedIn === false) {
     useSessionStore().$state.redirectAfterLoginName = to.name?.toString() ?? "";
     next({ name: "login"});
   }
 
   //If the site requires the user to be logged off and the user is logged in: redirect to home
-  else if (to.matched.some(x => x.meta.requiresAuth === false) && loggedIn) next({ name : "home"}); 
+  else if (requiresAuth === false && loggedIn === true) next({ name : "home"}); 
 
   else next();
 });
