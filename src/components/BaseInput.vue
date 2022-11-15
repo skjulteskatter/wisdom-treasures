@@ -4,16 +4,23 @@
             <slot name="default" class="block tracking-wide"></slot>
             <slot name="secondary" class="block tracking-wide"></slot>
         </div>
-        <div class="flex items-center" :class="[error ? 'shake' : '']">
+        <div 
+            class="flex items-center" 
+            :class="[error ? 'shake' : '']"
+            @mouseover="hover = true"
+            @mouseleave="hover = false"
+            >
             <div v-if="styleType == 'search'">
                 <div class="w-5 absolute left-2 -top-[0.61rem] cursor-pointer z-40 opacity-40" @click="(event: any) => $emit('searchAction', modelValue)">
                     <SearchIcon/>
                 </div>
             </div>
             <input
+                @focusin="focus = true"
+                @focusout="focus = false"
                 :type="getType"
                 class="px-2 py-1 rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
-                :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', styleType === 'search' ? 'indent-6 bg-black/10 border-0' : '']"
+                :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', styleType === 'search' ? 'pl-8 pr-8 bg-black/10 border-0' : '', styleType === 'password' ? 'pr-8' : '']"
                 :value="modelValue"
                 :disabled="disabled"
                 :placeholder="placeholder"
@@ -25,8 +32,11 @@
                     <EyeOffIcon v-else></EyeOffIcon>
                 </div>
             </div>
-            <div v-else-if="modelValue && styleType == 'search'">
-                <div class="w-5 absolute -left-7 -top-[0.61rem] cursor-pointer opacity-40" @click="(event: any) => $emit('update:modelValue', '')">
+            <div v-else-if="modelValue && (focus || hover) && styleType == 'search'">
+                <div 
+                class="w-5 absolute -left-7 -top-[0.61rem] cursor-pointer opacity-40" 
+                @click="(event: any) => $emit('update:modelValue', '')"
+                >
                     <XIcon/>
                 </div>
             </div>
@@ -49,6 +59,8 @@ export default defineComponent({
     data() {
         return {
             showPassword: false,
+            hover: false as Boolean,
+            focus: false as Boolean,
         }
     },
     props: {
