@@ -50,9 +50,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, _from, next) => {
 
-  next();
-
-  const requiresAuth : boolean | undefined = to.matched.some(x => x.meta.requiresAuth);
+  const requiresAuth : boolean | undefined = to.matched.every(x => x.meta.requiresAuth === undefined) ? undefined : to.matched.some(x => x.meta.requiresAuth);
   let loggedIn = undefined;
 
   if (requiresAuth !== undefined)
@@ -65,7 +63,8 @@ router.beforeEach(async (to, _from, next) => {
   }
 
   //If the site requires the user to be logged off and the user is logged in: redirect to dashboard
-  else if (requiresAuth === false && loggedIn === true) next({ name : "dashboard"}); 
+  else if (requiresAuth === false && loggedIn === true) 
+    next({ name : "dashboard"}); 
 
   else next();
 });

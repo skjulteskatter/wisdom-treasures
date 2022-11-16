@@ -3,7 +3,7 @@
 		<div class="w-full bg-white/50">
 			<div class="h-full max-w-7xl mx-auto flex min-h-[4rem]">
 				<div id="leftNav" class="self-center flex gap-x-3">
-					<img class="h-10 cursor-pointer" src="/img/logo.svg" @click="navigate('dashboard')"/>
+					<img class="h-10 min-w-[2.5rem] cursor-pointer" src="/img/logo.svg" @click="navigate('dashboard')"/>
 				</div>
 				<div id="middleNav" class="self-center flex grow place-content-center gap-x-3">
 					<BaseButton theme="menuButton" :clicked="$route.name === 'dashboard'" @click="navigate('dashboard')">Home</BaseButton>

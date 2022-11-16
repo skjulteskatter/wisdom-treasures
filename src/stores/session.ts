@@ -5,7 +5,7 @@ import i18n from '@/i18n'
 export const useSessionStore = defineStore('session', {
     state: ()=> {
         return {
-            // When store is created take languge from i18n if it exist
+            // When store is created take language from i18n if it exist
             locale: i18n.global.locale ?? "en",
             // The name og the page to redirect to if trying to reach restricted to auth site when not logged in
             redirectAfterLoginName: "",
