@@ -50,7 +50,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, _from, next) => {
 
-  const requiresAuth : boolean | undefined = to.matched.every(x => x.meta.requiresAuth === undefined) ? undefined : to.matched.some(x => x.meta.requiresAuth);
+  const requiresAuth : true | false | undefined = to.matched.every(x => x.meta.requiresAuth === undefined) ? undefined : to.matched.some(x => x.meta.requiresAuth);
   let loggedIn = undefined;
 
   if (requiresAuth !== undefined)

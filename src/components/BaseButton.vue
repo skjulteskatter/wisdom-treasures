@@ -110,7 +110,7 @@ export default defineComponent({
     }
 
     &--menuButton {
-        @apply text-[color:var(--wt-color-text-lm)] hover:bg-black/10 dark:hover:bg-transparent;
+        @apply text-[color:var(--color-text)] hover:bg-black/10 dark:hover:bg-transparent;
 
         &:hover:after {
             content: "";
