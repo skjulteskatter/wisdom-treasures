@@ -5,6 +5,9 @@
         :disabled="loading || disabled"
         v-bind="$attrs"
     >
+        <span v-if="$slots.firstIcon">
+            <slot name="firstIcon" />
+        </span>
         <span
             :class="{ 'text-sm': size == 'medium', 'text-xs': size == 'small', 'text-base': size == 'large', 'font-semibold': theme == 'menuButton' }"
             v-if="$slots.default"
