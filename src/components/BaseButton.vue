@@ -40,6 +40,7 @@ export default defineComponent({
                         "warning",
                         "neutral",
                         "menuButton",
+                        "magic",
                     ].includes(value)
                 );
             },
@@ -110,12 +111,25 @@ export default defineComponent({
     }
 
     &--menuButton {
-        @apply text-[color:var(--color-text)] hover:bg-black/10 dark:hover:bg-transparent;
+        @apply text-[color:var(--color-text)] hover:bg-black/10;
 
         &:hover:after {
             content: "";
             display: none;
         }
+    
+    }
+
+    &--magic {
+        @apply text-white;
+
+        &:hover:after {
+            content: "";
+            display: none;
+        }
+        background: linear-gradient(-60deg, var(--wt-color-primary), rgb(255, 67, 255), rgb(63, 169, 255), var(--wt-color-primary));
+        animation: gradientAnimated 7s ease infinite;
+        background-size: 400% 400%;
     }
 
     &--warning {
@@ -169,5 +183,23 @@ export default defineComponent({
     to {
         transform: translateX(500%);
     }
+}
+
+@keyframes gradientAnimated {
+	0% {
+		background-position: 0% 50%;
+	}
+	25% {
+		background-position: 100% 50%;
+	}
+	50% {
+		background-position: 0% 50%;
+	}
+    75% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
 }
 </style>

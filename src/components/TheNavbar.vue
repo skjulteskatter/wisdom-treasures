@@ -12,15 +12,18 @@
 					<BaseButton theme="menuButton">Menu4!</BaseButton>
 
 				</div>
-				<div v-if="currentUser !== null" id="rightNav" class="self-center flex gap-x-3">
+				<div v-if="currentUser !== null" id="rightNavLoggedIn" class="self-center flex gap-x-3 max-h-8">
 					<BaseInput v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
-					<BaseButton theme="menuButton" size="small" class="max-h-8 w-8 self-center">
+					<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
 						<QuestionMarkCircleIcon  class="h-7 opacity-50"/>
 					</BaseButton>
-					<BaseButton theme="menuButton" size="small" class="max-h-8 w-8 self-center">
+					<BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8">
 						<BellIcon class="h-7 opacity-50"/>
 					</BaseButton>
-					<img :src="currentUser.photoURL || ''" alt="profile" class="w-8 h-8 rounded-full border-primary border cursor-pointer"/>
+					<img :src=" currentUser.photoURL || '/public/img/user.svg'" class="w-8 h-8 rounded-full border-primary border cursor-pointer"/>
+				</div>
+				<div v-else id="rightNavLoggedOut" class="self-center flex gap-x-3 max-h-8">
+					<BaseButton theme="magic"><b>Login</b></BaseButton>
 				</div>
 			</div>
 		</div>
