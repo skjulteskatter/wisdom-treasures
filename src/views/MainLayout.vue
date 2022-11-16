@@ -2,7 +2,7 @@
 	<div class="flex flex-col h-full">
 		<TheNavbar/>
 		<main class="flex-grow">
-			<div class="h-full max-w-7xl mx-auto sm:px-6 lg:px-8 border border-red-600 border-dashed">
+			<div class="h-full max-w-7xl mx-auto border border-black/25 border-dashed">
 				<!-- Route transitions -->
 				<router-view v-slot="{ Component }">
 					<transition

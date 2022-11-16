@@ -1,6 +1,6 @@
 <template>
-  <div class="col-span-2">
-    <BaseCard>
+  <main class="col-span-2 w-full h-full main">
+    <BaseCard class="mx-auto">
       <template #header>
         <div ref="widening" class="w-96"/>
         <div class="flex justify-center my-2">
@@ -123,7 +123,7 @@
         </div>
       </template>
     </BaseCard>
-  </div>
+  </main>
 </template>
 
 <script lang="ts">
@@ -314,11 +314,10 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue';
   });
 </script>
 
-<style>
+<style scoped>
 
 .smoothOpenError{
     animation: smoothOpenError 0.35s both linear;
-
 }
 
 @keyframes smoothOpenError {
@@ -412,7 +411,7 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue';
 }
 
 @media (min-width: 1024px) {
-  body {
+  .main {
     display: flex;
     place-items: center;
   }

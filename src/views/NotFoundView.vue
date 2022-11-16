@@ -1,11 +1,11 @@
 <template>
   <main class="col-span-2">
     <div class="flex items-center flex-col text-[1.5rem]">
-      <div class="text-[6rem] text-primary font font-bold">404</div>
-      <div class="h-[1px] bg-black/30 w-full" />
+      <div class="text-[6rem] gradient font font-bold">404</div>
+      <div class="h-[1px] bg-black/30 w-full max-w-xs" />
       <div class="mt-3 font-bold">Page not Found</div>
-      <ClickableLink class="font-bold" v-if="isLoggedIn" @link-clicked="redirect('home')">Go to home page</ClickableLink>
-      <ClickableLink class="font-bold" v-else @link-clicked="redirect('login')">Go to login page</ClickableLink>
+      <ClickableLink class="font-bold" v-if="isLoggedIn" @link-clicked="navigate('dashboard')">Go to home page</ClickableLink>
+      <ClickableLink class="font-bold" v-else @link-clicked="navigate('login')">Go to login page</ClickableLink>
     </div>
   </main>
 </template>
@@ -25,7 +25,7 @@ import { defineComponent } from 'vue';
     },
     components: { ClickableLink },
     methods: {
-      redirect(name: string) {
+      navigate(name: string) {
         router.push({name: name});
       }
     }
