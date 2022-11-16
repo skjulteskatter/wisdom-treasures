@@ -1,15 +1,27 @@
 <template>
   <main>
-    <h1>Hello, and welcome to the home view</h1>
-    <br/>
-    <h1>Here's a big list</h1>
-    <br/>
-    <p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p><p>Yo!</p>
+    <h1 class="my-6 text-3xl font-bold">
+      <span v-if="currentUser" class="font-bold gradient">
+        Welcome, {{currentUser.displayName}}
+      </span>
+      <span v-else class="font-bold"> 
+        Welcome to 
+        <span class="gradient font-bold">
+          WisdomTreasures
+        </span> 
+      </span>
+    </h1>
+    <h2>Here's a big list</h2>
+    <div v-for="(index) in Array<number>(50)" :key="index">
+      <div>Hello! This is just some random content to try to fill up the page</div>
+    </div>
   </main>
 </template>
 
 <script lang="ts">
+import { getCurrentUserPromise } from '@/services/auth';
 import { articleService, publicationService } from '@/services/publications';
+import type { User } from '@firebase/auth';
 import type { Article, Publication } from 'hiddentreasures-js';
 import { defineComponent } from 'vue';
 
@@ -19,6 +31,7 @@ import { defineComponent } from 'vue';
       return {
         publications : [] as Publication[],
         articles : [],
+        currentUser : null as User | null,
       }
     },
     props: {
@@ -28,6 +41,9 @@ import { defineComponent } from 'vue';
     computed: {
     },
     async mounted() {
+
+      this.currentUser = await getCurrentUserPromise() as User;
+
       if ("".toString() == "") return; //TODO remove this. This is just for testing and understanding the HT-JS package.
 
       this.publications = await publicationService.retrieve({
@@ -44,8 +60,6 @@ import { defineComponent } from 'vue';
       }))
 
       console.log(articles);
-    },
-    methods: {
     },
   });
 </script>

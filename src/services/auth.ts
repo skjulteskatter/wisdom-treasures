@@ -12,7 +12,8 @@ import {
     updateProfile,
     browserLocalPersistence, 
     browserSessionPersistence,
-    signOut, 
+    signOut,
+    type User, 
 } from "firebase/auth";
 import type { UserCredential } from 'firebase/auth';
 import "firebase/compat/performance";
@@ -42,7 +43,7 @@ export async function loginWithEmailAndPassword(email: string, password: string,
         return false;
     }
     
-    pushToHomeOrRedirectLink();
+    pushToDashboardOrRedirectLink();
     return true;
 }
 
@@ -63,16 +64,16 @@ export async function loginWithProvider(providerName : string, rememberMe: boole
     }
 
     const userCredentials : UserCredential = await signInWithPopup(auth, provider);
-    pushToHomeOrRedirectLink();
+    pushToDashboardOrRedirectLink();
 }
 
-function pushToHomeOrRedirectLink(){
+function pushToDashboardOrRedirectLink(){
     const store = useSessionStore();
     let name = store.$state.redirectAfterLoginName;
     store.$state.redirectAfterLoginName = "";
 
     if (name.length <= 0)
-      name = "home";
+      name = "dashboard";
 
     router.push({name: name});
 }
@@ -88,7 +89,7 @@ export function getCurrentUserPromise() {
      if (userLoaded) {
           resolve(auth.currentUser);
      }
-     const unsubscribe = auth.onAuthStateChanged(user => {
+     const unsubscribe = auth.onAuthStateChanged((user : User | null) => {
         userLoaded = true;
         unsubscribe();
         resolve(user);

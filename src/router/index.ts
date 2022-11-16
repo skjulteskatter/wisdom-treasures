@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import { auth, getCurrentUserPromise } from '@/services/auth';
+import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
 
 export const routes = [
@@ -13,6 +13,19 @@ export const routes = [
         name: 'dashboard',
         component: () => import('../views/HomeView.vue'),
       },
+      {
+        path: '/search',
+        name: 'search',
+        component: () => import('../views/SearchView.vue'),
+      },
+      {
+        path: '/profile',
+        name: 'profile',
+        component: () => import('../views/ProfileView.vue'),
+        meta: {
+          requiresAuth: true,
+        }
+      },
     ]
   },
   {
@@ -21,19 +34,6 @@ export const routes = [
     component: () => import('../views/LoginView.vue'),
     meta: {
       requiresAuth: false
-    }
-  },
-  {
-    path: '/landingview',
-    name: 'landingview',
-    component: () => import('../views/LandingView.vue'),
-  },
-  {
-    path: '/profile',
-    name: 'profile',
-    component: () => import('../views/ProfileView.vue'),
-    meta: {
-      requiresAuth: true,
     }
   },
   {
@@ -50,6 +50,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, _from, next) => {
 
+  next();
+
   const requiresAuth : boolean | undefined = to.matched.some(x => x.meta.requiresAuth);
   let loggedIn = undefined;
 
@@ -62,8 +64,8 @@ router.beforeEach(async (to, _from, next) => {
     next({ name: "login"});
   }
 
-  //If the site requires the user to be logged off and the user is logged in: redirect to home
-  else if (requiresAuth === false && loggedIn === true) next({ name : "home"}); 
+  //If the site requires the user to be logged off and the user is logged in: redirect to dashboard
+  else if (requiresAuth === false && loggedIn === true) next({ name : "dashboard"}); 
 
   else next();
 });
