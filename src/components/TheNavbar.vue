@@ -12,18 +12,21 @@
 					<BaseButton theme="menuButton">Menu4!</BaseButton>
 
 				</div>
-				<div v-if="currentUser !== null" id="rightNavLoggedIn" class="self-center flex gap-x-3 max-h-8">
+				<div id="rightNavLoggedIn" class="self-center flex gap-x-3 max-h-8">
 					<BaseInput v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
-					<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
-						<QuestionMarkCircleIcon  class="h-7 opacity-50"/>
-					</BaseButton>
-					<BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8">
-						<BellIcon class="h-7 opacity-50"/>
-					</BaseButton>
-					<img :src=" currentUser.photoURL || '/public/img/user.svg'" class="w-8 h-8 rounded-full border-primary border cursor-pointer"/>
-				</div>
-				<div v-else id="rightNavLoggedOut" class="self-center flex gap-x-3 max-h-8">
-					<BaseButton theme="magic"><b>Login</b></BaseButton>
+					<div v-if="currentUser !== null" class="flex gap-x-3 ml-2">
+						<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
+							<QuestionMarkCircleIcon  class="h-7 opacity-50"/>
+						</BaseButton>
+						<BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8">
+							<BellIcon class="h-7 opacity-50"/>
+						</BaseButton>
+						<img :src="currentUser?.photoURL || '/public/img/user.svg'" class="w-8 h-8 rounded-full border-primary border cursor-pointer"/>
+					</div>
+					<div v-else class="flex gap-x-3">
+						<BaseButton theme="tertiary" @click="navigate('login')" class="border border-primary"><b>Log in</b></BaseButton>
+						<BaseButton theme="magic" @click="navigate('register')"><b>Sign up</b></BaseButton>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -53,6 +56,7 @@ export default defineComponent({
 		open: false,
 		searchWord: "",
 		currentUser: null as User | null,
+		store: useSessionStore(),
 	}),
 	computed: {
 		
@@ -66,6 +70,10 @@ export default defineComponent({
 			router.push({name: "search"});
 		},
 		navigate(name: string){
+			if (name === "register"){
+				this.store.loginFormBridge = "register";
+				name = "login";
+			}
 			router.push({name: name});
 		},
 		test(){

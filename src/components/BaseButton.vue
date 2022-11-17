@@ -127,9 +127,15 @@ export default defineComponent({
             content: "";
             display: none;
         }
-        background: linear-gradient(-60deg, var(--wt-color-primary), rgb(255, 67, 255), rgb(63, 169, 255), var(--wt-color-primary));
-        animation: gradientAnimated 7s ease infinite;
-        background-size: 400% 400%;
+        &:hover{
+            box-shadow: 
+                0 0 15px 3px var(--wt-color-primary),
+                inset 0 0 7px 0.5px rgba(255, 255, 255, 0.63),
+                inset 0 0 2px 1px rgba(255, 255, 255, 0.801);
+        }
+        background: linear-gradient(-60deg, var(--wt-color-primary), rgb(255, 67, 255), rgb(63, 169, 255), var(--wt-color-primary), rgb(255, 67, 255), rgb(63, 169, 255), var(--wt-color-primary));
+        animation: gradientAnimated 20s ease infinite;
+        background-size: 700% 700%;
     }
 
     &--warning {

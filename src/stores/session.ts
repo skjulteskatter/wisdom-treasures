@@ -11,6 +11,8 @@ export const useSessionStore = defineStore('session', {
             redirectAfterLoginName: "",
             // The searchword to automatically search from when pushing to new search view (used in navbar when searching and redirecteing)
             searchWordBridge: "",
+            // The login form to start from when pushing from another view.
+            loginFormBridge: "login" as "login" | "register" | "forgotPassword",
         }
     },
     actions: {

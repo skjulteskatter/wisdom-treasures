@@ -135,6 +135,7 @@ import BaseInput from '../components/BaseInput.vue'
 import ClickableLink from '../components/ClickableLink.vue'
 import api from '../services/api'
 import BaseCheckbox from '@/components/BaseCheckbox.vue';
+import { useSessionStore } from '@/stores/session';
 
   export default defineComponent({
     name: "LoginView",
@@ -165,7 +166,9 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue';
       actionLoading: false,
       successMessage: "",
 
-      forms: {login: "login" as "login", register: "register" as "register", forgotPassword: "forgotPassword" as "forgotPassword"} 
+      forms: {login: "login" as "login", register: "register" as "register", forgotPassword: "forgotPassword" as "forgotPassword"} ,
+
+      store: useSessionStore(),
     }),
     computed: {
       errorMessage() : string{
@@ -194,6 +197,14 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue';
           this.successMessage = "";
         }
       },
+    },
+    mounted(){
+      if (this.currentForm !== this.store.loginFormBridge){
+        this.currentForm = this.store.loginFormBridge;
+        this.store.loginFormBridge = "login";
+        if (this.currentForm === "register") this.registerFormLoaded = true;
+        if (this.currentForm === "forgotPassword") this.forgotPasswordFormLoaded = true;
+      }
     },
     methods: {
       async action(provider : string | undefined = undefined){
