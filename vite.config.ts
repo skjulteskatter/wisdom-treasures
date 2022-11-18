@@ -16,6 +16,10 @@ export default defineConfig({
       devOptions: {
         enabled: true
       },
+      injectRegister: 'script',
+      workbox: {
+        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+      },
       manifest: {
         name: 'WisdomTreasures',
         short_name: 'WT',
