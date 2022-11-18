@@ -78,3 +78,31 @@ body {
   background-clip: text;
   color: transparent;
 }
+
+.animated-gradient {
+  background: linear-gradient(-60deg, var(--wt-color-primary), rgb(255, 67, 255), rgb(63, 169, 255), var(--wt-color-primary), rgb(255, 67, 255), rgb(63, 169, 255), var(--wt-color-primary));
+  animation: gradientAnimated 20s ease infinite;
+  background-size: 700% 700%;
+  background-clip: text;
+  text-fill-color: transparent;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+@keyframes gradientAnimated {
+	0% {
+		background-position: 0% 50%;
+	}
+	25% {
+		background-position: 100% 50%;
+	}
+	50% {
+		background-position: 0% 50%;
+	}
+    75% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0% 50%;
+	}
+}
