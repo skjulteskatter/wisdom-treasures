@@ -1,5 +1,5 @@
 <template>
-	<nav class="sticky top-0 shadow-md z-30 glass">
+	<nav class="shadow-md z-30 glass">
 		<div class="w-full bg-white/50">
 			<div class="h-full max-w-7xl mx-auto flex min-h-[4rem]">
 				<div id="leftNav" class="self-center flex gap-x-3">

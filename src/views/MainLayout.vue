@@ -1,6 +1,5 @@
 <template>
 	<div class="flex flex-col h-full">
-		<TheNavbar/>
 		<main class="flex-grow">
 			<div class="h-full max-w-7xl mx-auto border border-black/25 border-dashed">
 				<!-- Route transitions -->
@@ -19,6 +18,7 @@
 				</router-view>
 			</div>
 		</main>
+		<TheNavbar class="sm:order-first sticky bottom-0 sm:top-0"/>
 	</div>
 </template>
 

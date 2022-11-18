@@ -1,13 +1,6 @@
 <template>
   <main class="mt-4">
-    <BaseButton theme="menuButton" @click="$router.back()">
-        <template #default>
-            <div class="text-lg">Back</div>
-        </template>
-        <template #firstIcon>
-            <ArrowLeftIcon class="h-5"/>
-        </template>
-    </BaseButton>
+    <BackButton/>
     <BaseCard class="bg-primary text-white mt-4">
         <template #header> 
             <div class="">
@@ -32,7 +25,7 @@
 import { defineComponent } from 'vue';
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
-import BaseButton from '@/components/BaseButton.vue';
+import BackButton from '@/components/BackButton.vue';
 import { useSessionStore } from '@/stores/session';
 import { ArrowLeftIcon } from '@heroicons/vue/solid';
 
@@ -51,7 +44,7 @@ import { ArrowLeftIcon } from '@heroicons/vue/solid';
     components: {
         BaseCard,
         BaseInput,
-        BaseButton,
+        BackButton,
         ArrowLeftIcon,
     },
     computed: {

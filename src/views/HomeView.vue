@@ -6,7 +6,7 @@
       </span>
       <span v-else class="font-bold"> 
         Welcome to 
-        <span class="gradient font-bold">
+        <span class="animated-gradient font-bold">
           WisdomTreasures
         </span> 
       </span>

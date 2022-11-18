@@ -1,11 +1,5 @@
 const staticCacheName = 'site-static-v1';
-const assets = [ 
-    'https://fonts.gstatic.com/s/quando/v14/xMQVuFNaVa6YuW0ZAq-yGX8.woff2',
-    'https://fonts.googleapis.com/css2?family=Quando&display=swap',
-    '/',
-    'login',
-    'search',
-];
+const assets = [];
 
 self.addEventListener('install', async evt => {
     evt.waitUntil(

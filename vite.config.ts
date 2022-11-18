@@ -5,7 +5,7 @@ import vue from '@vitejs/plugin-vue'
 import { VitePWA } from 'vite-plugin-pwa'
 import { setDefaultResultOrder } from 'node:dns'
 
-setDefaultResultOrder('verbatim')
+setDefaultResultOrder('verbatim');
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -18,14 +18,14 @@ export default defineConfig({
       },
       injectRegister: 'script',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,vue}'],
       },
       manifest: {
         name: 'WisdomTreasures',
         short_name: 'WT',
         description: 'Write a description here yo',
         theme_color: '#ffffff',
-      }
+      },
     })
   ],
   resolve: {
