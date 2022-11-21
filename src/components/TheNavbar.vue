@@ -1,5 +1,6 @@
 <template>
-	<nav class="shadow-md z-30 glass max-h-16">
+	<nav class="shadow-md z-10 max-h-16">
+		<div id = "glassEffect" class="absolute glass w-full h-full"/>
 		<div class="w-full bg-white/50">
 			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex min-h-[4rem]">
 				<div id="leftNav" class="self-center flex gap-x-3">
@@ -28,7 +29,7 @@
 						<BaseButton theme="magic" @click="navigate('register')"><b>Sign up</b></BaseButton>
 					</div>
 				</div>
-				<div id="rightNavBurger" class="self-center flex gap-x-3 max-h-8 lg:hidden">
+				<div id="rightNavBurger" class="self-center flex gap-x-3 max-h-8 lg:hidden z-20">
 					<HUMenu as="div" class="self-center flex">
 						<MenuButton class="self-center">
 							<MenuIcon class="w-7"/>
@@ -43,9 +44,8 @@
 						leave-to-class="transform scale-95 opacity-0"
 						>
 						<MenuItems
-							class="absolute right-0 mt-12 w-56 origin-top-right rounded-md dropDownGlass backdrop-blur-3xl shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-						> <!--TODO Find out how to add nested backdrop filters-->
-							<div class="px-1 py-1">
+							class="absolute right-0 mt-12 w-56 origin-top-right rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+							<div class="px-1 py-1 rounded-t-md">
 							<MenuItem v-slot="{ active }">
 								<button
 								:class="[
@@ -105,7 +105,7 @@
 							</MenuItem>
 							</div>
 
-						<div class="px-1 py-1">
+						<div class="px-1 py-1 rounded-b-md">
 							<MenuItem v-slot="{ active }">
 								<button
 								:class="[
@@ -197,9 +197,12 @@ export default defineComponent({
 	-webkit-backdrop-filter: blur(5px);
 }
 
-.dropDownGlass {
-	background: rgba(255, 255, 255, 0.753);
-	backdrop-filter: blur(15px);
-	-webkit-backdrop-filter: blur(15px);
+.glassDropDown {
+	background: (255, 255, 255, 0.1);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+}
+.glassDropDown > div {
+	background: rgba(255, 255, 255, 0.5);
 }
 </style>
