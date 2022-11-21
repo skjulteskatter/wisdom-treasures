@@ -13,7 +13,7 @@
     </h1>
     <h2>Here's a big list</h2>
     <div v-for="(index) in Array<number>(50)" :key="index">
-      <div>Hello! This is just some random content to try to fill up the page</div>
+      <div>Hello! This is just some random content to try to fill up the page. This is a looooooooooooooooooooooooooooooooooooooooong word</div>
     </div>
   </main>
 </template>
