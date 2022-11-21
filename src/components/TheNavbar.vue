@@ -1,7 +1,7 @@
 <template>
-	<nav class="shadow-md z-30 glass">
+	<nav class="shadow-md z-30 glass max-h-16">
 		<div class="w-full bg-white/50">
-			<div class="h-full max-w-7xl mx-auto flex min-h-[4rem]">
+			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex min-h-[4rem]">
 				<div id="leftNav" class="self-center flex gap-x-3">
 					<img class="h-10 min-w-[2.5rem] cursor-pointer" src="/img/logo.svg" @click="navigate('dashboard')"/>
 				</div>
@@ -12,7 +12,7 @@
 					<BaseButton theme="menuButton">Menu4!</BaseButton>
 
 				</div>
-				<div id="rightNavLoggedIn" class="self-center flex gap-x-3 max-h-8">
+				<div id="rightNavLoggedIn" class="self-center flex gap-x-3 max-h-8 lg:visible invisible">
 					<BaseInput v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
 					<div v-if="currentUser !== null" class="flex gap-x-3 ml-2">
 						<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
@@ -42,6 +42,7 @@ import { useSessionStore } from "@/stores/session";
 import { BellIcon, QuestionMarkCircleIcon  } from "@heroicons/vue/outline";
 import { getCurrentUserPromise } from "@/services/auth";
 import type { User } from "firebase/auth";
+import breakpoints from "@/style/breakpoints";
 
 export default defineComponent({
 	name: "the-navbar",
@@ -50,13 +51,13 @@ export default defineComponent({
 	BaseButton,
 	BellIcon,
 	QuestionMarkCircleIcon,
-
 },
 	data: () => ({
 		open: false,
 		searchWord: "",
 		currentUser: null as User | null,
 		store: useSessionStore(),
+		breakpoints: breakpoints,
 	}),
 	computed: {
 		

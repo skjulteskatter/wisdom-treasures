@@ -1,6 +1,6 @@
 <template>
 	<div class="flex flex-col h-full">
-		<main class="flex-grow">
+		<main class="flex-grow pb-16 sm:pb-0 sm:pt-16">
 			<div class="h-full max-w-7xl mx-auto border border-black/25 border-dashed">
 				<!-- Route transitions -->
 				<router-view v-slot="{ Component }">
@@ -18,7 +18,7 @@
 				</router-view>
 			</div>
 		</main>
-		<TheNavbar class="sm:order-first sticky bottom-0 sm:top-0"/>
+		<TheNavbar class="sm:order-first w-full fixed bottom-0 sm:top-0"/>
 	</div>
 </template>
 
