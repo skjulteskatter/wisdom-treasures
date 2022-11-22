@@ -27,7 +27,6 @@ import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BackButton from '@/components/BackButton.vue';
 import { useSessionStore } from '@/stores/session';
-import { ArrowLeftIcon } from '@heroicons/vue/solid';
 
   export default defineComponent({
     name: "SearchView",
@@ -44,8 +43,7 @@ import { ArrowLeftIcon } from '@heroicons/vue/solid';
     components: {
         BaseCard,
         BaseInput,
-        BackButton,
-        ArrowLeftIcon,
+        BackButton
     },
     computed: {
         searchWordBridge(){

@@ -10,7 +10,7 @@
 					<BaseButton theme="menuButton" :clicked="$route.name === 'dashboard'" @click="navigate('dashboard')">Home</BaseButton>
 					<BaseButton theme="menuButton" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
 					<BaseButton theme="menuButton" :clicked="$route.name === 'categories'" @click="navigate('categories')">Themes</BaseButton>
-					<BaseButton theme="menuButton">History</BaseButton>
+					<BaseButton theme="menuButton" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
 
 				</div>
 				<div id="rightNav" class="self-center hidden gap-x-3 max-h-8 lg:flex">
@@ -43,83 +43,33 @@
 						leave-from-class="transform scale-100 opacity-100"
 						leave-to-class="transform scale-95 opacity-0"
 						>
-						<MenuItems
-							class="absolute right-0 mt-12 w-56 origin-top-right rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-							<div class="px-1 py-1 rounded-t-md">
-							<MenuItem v-slot="{ active }">
-								<button
-								:class="[
-									active ? 'bg-violet-500 text-white' : 'text-gray-900',
-									'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-								]"
-								>
-								Edit
-								</button>
+						<MenuItems :static="searchBoxInFocused && !searchedIconClicked"
+							class="absolute right-0 origin-bottom-right bottom-12 sm:top-12 sm:origin-top-right w-56 rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+							<div class="px-1 py-1 rounded-t-md flex flex-col sm:hidden">
+							<MenuItem>
+								<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'dashboard'" @click="navigate('dashboard')">Home</BaseButton>
 							</MenuItem>
-							<MenuItem v-slot="{ active }">
-								<button
-								:class="[
-									active ? 'bg-violet-500 text-white' : 'text-gray-900',
-									'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-								]"
-								>
-								<DuplicateIcon
-									:active="active"
-									class="mr-2 h-5 w-5 text-violet-400"
-									aria-hidden="true"
-								/>
-								Duplicate
-								</button>
+							<MenuItem>
+								<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
+							</MenuItem>
+							<MenuItem>
+								<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'categories'" @click="navigate('categories')">Themes</BaseButton>
+							</MenuItem>
+							<MenuItem>
+								<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
 							</MenuItem>
 							</div>
-							<div class="px-1 py-1">
-							<MenuItem v-slot="{ active }">
-								<button
-								:class="[
-									active ? 'bg-violet-500 text-white' : 'text-gray-900',
-									'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-								]"
-								>
-								<ArchiveIcon
-									:active="active"
-									class="mr-2 h-5 w-5 text-violet-400"
-									aria-hidden="true"
-								/>
-								Archive
-								</button>
-							</MenuItem>
-							<MenuItem v-slot="{ active }">
-								<button
-								:class="[
-									active ? 'bg-violet-500 text-white' : 'text-gray-900',
-									'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-								]"
-								>
-								<MoveIcon
-									:active="active"
-									class="mr-2 h-5 w-5 text-violet-400"
-									aria-hidden="true"
-								/>
-								Move
-								</button>
-							</MenuItem>
+							<div class="px-1 py-1 rounded-t-none sm:rounded-t-md flex">
+							<BaseInput v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
 							</div>
 
-						<div class="px-1 py-1 rounded-b-md">
-							<MenuItem v-slot="{ active }">
-								<button
-								:class="[
-									active ? 'bg-violet-500 text-white' : 'text-gray-900',
-									'group flex w-full items-center rounded-md px-2 py-2 text-sm',
-								]"
-								>
-								<DeleteIcon
-									:active="active"
-									class="mr-2 h-5 w-5 text-violet-400"
-									aria-hidden="true"
-								/>
-								Delete
-								</button>
+							<div class="px-1 py-1 rounded-b-md">
+							<MenuItem>
+								<div class="flex gap-2 max-h-8">
+									<BaseButton theme="tertiary" @click="navigate('login')" class="border grow border-primary"><b>Log in</b></BaseButton>
+									<BaseButton theme="magic" @click="navigate('register')" class="grow"><b>Sign up</b></BaseButton>
+								</div>
+							
 							</MenuItem>
 							</div>
 						</MenuItems>
@@ -164,6 +114,8 @@ export default defineComponent({
 		currentUser: null as User | null,
 		store: useSessionStore(),
 		breakpoints: breakpoints,
+		searchBoxInFocused: false,
+		searchedIconClicked: false,
 	}),
 	computed: {
 		

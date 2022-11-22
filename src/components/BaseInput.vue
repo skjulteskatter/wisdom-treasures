@@ -11,7 +11,7 @@
             @mouseleave="hover = false"
             >
             <div v-if="styleType == 'search'">
-                <div class="w-5 absolute left-2 -top-[10px] cursor-pointer z-40 opacity-40" @click="(_event: any) => $emit('searchAction', modelValue)">
+                <div class="w-5 absolute left-2 -top-[10px] cursor-pointer z-40 opacity-40" @click="(_event: any) => {($emit('searchAction', modelValue))}">
                     <SearchIcon/>
                 </div>
             </div>
@@ -22,7 +22,7 @@
                 :type="getType"
                 class="px-2 py-1 rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
                 :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', 
-                    styleType === 'search' ? 'pl-8 pr-8 bg-black/10 border-0' : '', 
+                    styleType === 'search' ? ['pl-8 bg-black/10 border-0', showCross ? 'pr-8' : ''] : '', 
                     styleType === 'password' ? 'pr-8' : '',
                     size === 'lg' ? 'text-2xl' : '',]"
                 :value="modelValue"
@@ -36,7 +36,7 @@
                     <EyeOffIcon v-else></EyeOffIcon>
                 </div>
             </div>
-            <div v-else-if="modelValue && (focus || hover) && styleType === 'search'">
+            <div v-else-if="modelValue && showCross && (focus || hover) && styleType === 'search'">
                 <div 
                 class="w-5 absolute -left-7 -top-[10px] cursor-pointer opacity-40" 
                 @click="(_event: any) => $emit('update:modelValue', '')"
@@ -96,6 +96,10 @@ export default defineComponent({
         size: {
             type: String,
             default: SizeEnum.md,
+        },
+        showCross:{
+            type: Boolean, //This is only available for search styleType
+            default: true
         },
     },
     emits: ["update:modelValue", "searchAction"],

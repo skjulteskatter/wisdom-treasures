@@ -17,8 +17,6 @@ import router from '@/router';
 
 export default defineComponent({
     name: "back-button",
-    props: {
-    },
     components: {
         BaseButton,
         ArrowLeftIcon,
