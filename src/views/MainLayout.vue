@@ -20,6 +20,7 @@
 		</main>
 		<TheNavbar class="sm:order-first w-full fixed bottom-0 sm:top-0"/>
 	</div>
+	<SearchModal :show="false"/>
 </template>
 
 <script lang="ts">
@@ -29,6 +30,7 @@ import TheNavbar from "@/components/TheNavbar.vue";
 import { XIcon } from "@heroicons/vue/solid";
 import Loader from "@/components/Loader.vue";
 import { getCurrentUserPromise } from "@/services/auth";
+import SearchModal from "@/components/SearchModal.vue";
 
 export default defineComponent({
 	name: "main-layout",
@@ -36,6 +38,7 @@ export default defineComponent({
     TheNavbar,
     XIcon,
 	Loader,
+	SearchModal
 },
 	data: () => ({
 		currentUser : undefined as unknown,

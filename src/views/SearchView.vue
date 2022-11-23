@@ -12,8 +12,7 @@
                 </div>
             </div>
         </template>
-            <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)">
-            </BaseInput>
+            <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)"/>
         <template>
             
         </template>
