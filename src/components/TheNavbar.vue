@@ -44,33 +44,32 @@
 						leave-to-class="transform scale-95 opacity-0"
 						>
 						<MenuItems :static="searchBoxInFocused && !searchedIconClicked"
-							class="absolute right-0 origin-bottom-right bottom-12 sm:top-12 sm:origin-top-right w-56 rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+							class="absolute right-0 origin-bottom-right bottom-12 sm:bottom-auto sm:top-12 sm:origin-top-right w-56 rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 							<div class="px-1 py-1 rounded-t-md flex flex-col sm:hidden">
-							<MenuItem>
-								<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'dashboard'" @click="navigate('dashboard')">Home</BaseButton>
-							</MenuItem>
-							<MenuItem>
-								<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
-							</MenuItem>
-							<MenuItem>
-								<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'categories'" @click="navigate('categories')">Themes</BaseButton>
-							</MenuItem>
-							<MenuItem>
-								<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
-							</MenuItem>
+								<MenuItem>
+									<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'dashboard'" @click="navigate('dashboard')">Home</BaseButton>
+								</MenuItem>
+								<MenuItem>
+									<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
+								</MenuItem>
+								<MenuItem>
+									<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'categories'" @click="navigate('categories')">Themes</BaseButton>
+								</MenuItem>
+								<MenuItem>
+									<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
+								</MenuItem>
 							</div>
 							<div class="px-1 py-1 rounded-t-none sm:rounded-t-md flex">
-							<BaseInput :inside-h-u-menu="true" v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
+								<BaseInput :inside-h-u-menu="true" v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
 							</div>
 
 							<div class="px-1 py-1 rounded-b-md">
-							<MenuItem>
-								<div class="flex gap-2 max-h-8">
-									<BaseButton theme="tertiary" @click="navigate('login')" class="border grow border-primary"><b>Log in</b></BaseButton>
-									<BaseButton theme="magic" @click="navigate('register')" class="grow"><b>Sign up</b></BaseButton>
-								</div>
-							
-							</MenuItem>
+								<MenuItem>
+									<div class="flex gap-2 max-h-8">
+										<BaseButton theme="tertiary" @click="navigate('login')" class="border grow border-primary"><b>Log in</b></BaseButton>
+										<BaseButton theme="magic" @click="navigate('register')" class="grow"><b>Sign up</b></BaseButton>
+									</div>
+								</MenuItem>
 							</div>
 						</MenuItems>
 						
