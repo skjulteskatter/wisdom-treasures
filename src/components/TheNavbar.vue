@@ -60,7 +60,7 @@
 							</MenuItem>
 							</div>
 							<div class="px-1 py-1 rounded-t-none sm:rounded-t-md flex">
-							<BaseInput v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
+							<BaseInput :inside-h-u-menu="true" v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
 							</div>
 
 							<div class="px-1 py-1 rounded-b-md">
@@ -125,6 +125,7 @@ export default defineComponent({
 	},
 	methods: {
 		search(searchWord : string){
+			console.log("s");
 			useSessionStore().searchWordBridge = searchWord;
 			router.push({name: "search"});
 		},
