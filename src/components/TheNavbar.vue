@@ -43,7 +43,7 @@
 						leave-from-class="transform scale-100 opacity-100"
 						leave-to-class="transform scale-95 opacity-0"
 						>
-						<MenuItems :static="searchBoxInFocused && !searchedIconClicked"
+						<MenuItems
 							class="absolute right-0 origin-bottom-right bottom-12 sm:bottom-auto sm:top-12 sm:origin-top-right w-56 rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 							<div class="px-1 py-1 rounded-t-md flex flex-col sm:hidden">
 								<MenuItem>
@@ -60,7 +60,7 @@
 								</MenuItem>
 							</div>
 							<div class="px-1 py-1 rounded-t-none sm:rounded-t-md flex">
-								<BaseInput :inside-h-u-menu="true" v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
+								<BaseInput :inside-h-u-menu="true" v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)" @keydown.enter="search(undefined)"/>
 							</div>
 
 							<div class="px-1 py-1 rounded-b-md">
@@ -113,8 +113,6 @@ export default defineComponent({
 		currentUser: null as User | null,
 		store: useSessionStore(),
 		breakpoints: breakpoints,
-		searchBoxInFocused: false,
-		searchedIconClicked: false,
 	}),
 	computed: {
 		
@@ -123,8 +121,8 @@ export default defineComponent({
 		this.currentUser = await getCurrentUserPromise();
 	},
 	methods: {
-		search(searchWord : string){
-			console.log("s");
+		search(searchWord : string | undefined){
+			if (searchWord === undefined) searchWord = this.searchWord;
 			useSessionStore().searchWordBridge = searchWord;
 			router.push({name: "search"});
 		},
