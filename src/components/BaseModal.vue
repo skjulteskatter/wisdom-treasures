@@ -3,7 +3,7 @@
         as="template"
         :show="show"
     >
-        <HUDialog as="div" @close="closeModal">
+        <HUDialog as="div" class="glass" @close="closeModal">
             <TransitionChild
                 as="template"
                 enter="duration-200 ease-out"
@@ -58,6 +58,7 @@ import {
     DialogDescription,
     Dialog as HUDialog,
 } from "@headlessui/vue";
+import BaseCard from "./BaseCard.vue";
 
 import { defineComponent } from "vue";
 
@@ -70,6 +71,7 @@ export default defineComponent({
         DialogOverlay,
         DialogTitle,
         DialogDescription,
+        BaseCard
     },
     props: {
         show: {
@@ -84,3 +86,11 @@ export default defineComponent({
     },
 });
 </script>
+
+<style>
+.glass {
+	background: (255, 255, 255, 0.1);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+}
+</style>
