@@ -1,8 +1,16 @@
 <template>
-  <main class="col-span-2 w-full h-full main">
-    <BaseCard class="mx-auto">
+  <main class="col-span-2 w-full h-full lg:flex place-items-center flex-col">
+    <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-l border-dashed border-black/20 flex">
+      <div class="cursor-pointer flex place-items-center max-h-20" @mouseover="()=>{hoverOverWTLogo = true}" @mouseleave="()=>{hoverOverWTLogo = false}" @click="() => {$router.push({name: 'dashboard'})}">
+        <img class="w-14 h-14 cursor-pointer" src="/img/logo.svg"/>
+        <span class="text-2xl pb-2 font-bold">Wisdom<div class="text-primary inline-block font-bold">Treasures</div></span>
+        <ArrowRightIcon class="w-6 ml-1 opacity-0" :class="[{'arrowAppear': hoverOverWTLogo, 'arrowDisAppear' : hoverOverWTLogo === false}]"/>
+      </div>
+      <div id="thisIsJustForSpacing" class="grow"/>
+    </span>
+    <BaseCard class="mx-auto rounded-none lg:rounded-md">
       <template #header>
-        <div ref="widening" class="w-96"/>
+        <div ref="widening" class="w-auto lg:w-96"/>
         <div class="flex justify-center my-2">
           <div>
             <p v-if="include([forms.login])">Login to your account</p>
@@ -123,6 +131,7 @@
         </div>
       </template>
     </BaseCard>
+    <div id="jusrForSpacingPurposes" class="grow border-r basis-0 border-black/20 border-dashed w-[26rem]"></div>
   </main>
 </template>
 
@@ -136,6 +145,7 @@ import ClickableLink from '../components/ClickableLink.vue'
 import api from '../services/api'
 import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import { useSessionStore } from '@/stores/session';
+import { ArrowRightIcon } from '@heroicons/vue/outline';
 
   export default defineComponent({
     name: "LoginView",
@@ -147,6 +157,7 @@ import { useSessionStore } from '@/stores/session';
       BaseInput,
       ClickableLink,
       BaseCheckbox,
+      ArrowRightIcon,
     },
     data: () => ({
       email: "",
@@ -158,6 +169,7 @@ import { useSessionStore } from '@/stores/session';
       recievePromotionalEmails: false,
       errors: {email: "", password: "", fullName: ""} as {email: string, password: string, fullName: string},
       keepErrorMessageWhileValidating: false,
+      hoverOverWTLogo: undefined as boolean | undefined,
 
       registerFormLoaded: false,
       forgotPasswordFormLoaded: false,
@@ -421,11 +433,37 @@ import { useSessionStore } from '@/stores/session';
   }
 }
 
-@media (min-width: 1024px) {
-  .main {
-    display: flex;
-    place-items: center;
+.arrowAppear{
+    animation: smoothArrowAppear 0.2s both linear;
+}
+
+@keyframes smoothArrowAppear {
+  0% {
+    opacity: 0;
+    transform: translateX(-50%);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0%);
   }
 }
+
+.arrowDisAppear{
+    animation: smoothArrowDisAppear 0.2s both linear;
+}
+
+@keyframes smoothArrowDisAppear {
+  0% {
+    opacity: 1;
+    transform: translateX(0%);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(50%);
+  }
+}
+
 
 </style>
