@@ -6,7 +6,8 @@
 				<div id="leftNav" class="self-center flex gap-x-3">
 					<img class="h-10 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('dashboard')"/>
 					<div class="flex sm:hidden self-center place-content-center cursor-pointer">
-						<SearchIcon class="w-7"/>
+						<SearchIcon class="w-7" @click="showSearchModal = true"/>
+						<SearchModal :show="showSearchModal" v-model="searchWord" @search-action="{showSearchModal = false; search($event)}" @close="showSearchModal = false"/>
 					</div>
 				</div>
 				<div id="middleNav" class="sm:flex self-center hidden grow place-content-center gap-x-3 max-h-8">
@@ -49,7 +50,7 @@
 						leave-to-class="transform scale-95 opacity-0"
 						>
 							<MenuItems
-								class="fixed left-1/2 w-11/12 -translate-x-1/2 ml-auto mr-auto origin-bottom-right bottom-16 sm:bottom-auto sm:top-12 sm:origin-top-right max-w-sm sm:w-56 rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+								class="fixed left-1/2 sm:left-auto w-11/12 sm:w-56 -translate-x-1/2 sm:right-0 sm:translate-x-0 ml-auto mr-auto origin-bottom-right bottom-16 sm:bottom-auto sm:top-12 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 								<div class="px-1 py-1 rounded-t-md flex flex-col sm:hidden">
 									<MenuItem>
 										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
@@ -95,6 +96,7 @@ import { getCurrentUserPromise } from "@/services/auth";
 import type { User } from "firebase/auth";
 import breakpoints from "@/style/breakpoints";
 import { Menu as HUMenu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
+import SearchModal from "./SearchModal.vue";
 
 export default defineComponent({
 	name: "the-navbar",
@@ -110,6 +112,7 @@ export default defineComponent({
 	MenuIcon,
 	HomeIcon,
 	SearchIcon,
+	SearchModal,
 },
 	data: () => ({
 		open: false,
@@ -117,6 +120,7 @@ export default defineComponent({
 		currentUser: null as User | null,
 		store: useSessionStore(),
 		breakpoints: breakpoints,
+		showSearchModal: false,
 	}),
 	computed: {
 		

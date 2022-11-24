@@ -20,7 +20,6 @@
 		</main>
 		<TheNavbar class="sm:order-first w-full fixed bottom-0 sm:top-0"/>
 	</div>
-	<SearchModal :show="false"/>
 </template>
 
 <script lang="ts">
