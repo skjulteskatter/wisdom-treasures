@@ -15,7 +15,7 @@
     <div v-for="(index) in Array<number>(50)" :key="index">
       <div>Hello! This is just some random content to try to fill up the page. This is a lot of word in a row, just to see how to site scales. Don't worry'bout'it</div>
     </div>
-  </main>
+  </main> 
 </template>
 
 <script lang="ts">
