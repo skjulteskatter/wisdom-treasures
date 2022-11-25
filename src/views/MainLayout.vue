@@ -1,9 +1,9 @@
 <template>
 	<div class="flex flex-col h-full">
 		<main class="flex-grow pb-16 sm:pb-0 sm:pt-16">
-			<div class="h-full max-w-7xl mx-auto border border-black/25 border-dashed">
+			<div class="h-full max-w-7xl mx-auto border border-black/25 border-dashed flex flex-col">
 				<!-- Route transitions -->
-				<router-view v-slot="{ Component }">
+				<router-view v-slot="{ Component }" class="grow">
 					<transition
 						mode="out-in"
 						enter-active-class="transition duration-100 ease-out"
@@ -16,10 +16,10 @@
 						<component :is="Component"/>
 					</transition>
 				</router-view>
+				<FooterComponent />
 			</div>
 		</main>
 		<TheNavbar class="sm:order-first w-full fixed bottom-0 sm:top-0"/>
-		<FooterComponent />
 	</div>
 </template>
 
