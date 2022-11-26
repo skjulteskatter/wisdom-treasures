@@ -47,6 +47,7 @@
             Stay signed in
           </label>
 
+          <!--TODO fix the error message box getting to big for the card-->
           <span v-if="include([forms.register])" class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap lg:w-96">
             <BaseCheckbox v-model="agreeTerms" :error="!!errors.terms"/>
             <span :class="[{'text-[color:var(--wt-color-error)]' : !!errors.terms}]">

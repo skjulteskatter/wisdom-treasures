@@ -12,8 +12,13 @@
       </span>
     </h1>
     <h2>Here's a big list</h2>
-    <div v-for="(index) in Array<number>(50)" :key="index">
+    <div v-for="(index) in Array<number>(2)" :key="index">
       <div>Hello! This is just some random content to try to fill up the page. This is a lot of word in a row, just to see how to site scales. Don't worry'bout'it</div>
+    </div>
+    <div id="WWCards" >
+      <div v-for="(article, index) in articles" :key="index">
+        <WWCard :article="article"/>
+      </div>
     </div>
   </main> 
 </template>
@@ -24,19 +29,21 @@ import { articleService, publicationService } from '@/services/publications';
 import type { User } from '@firebase/auth';
 import type { Article, Publication } from 'hiddentreasures-js';
 import { defineComponent } from 'vue';
+import WWCard from '@/components/WWCard.vue';
 
   export default defineComponent({
     name: "HomeView",
     data() {
       return {
         publications : [] as Publication[],
-        articles : [],
+        articles : [] as Article[],
         currentUser : null as User | null,
       }
     },
     props: {
     },
     components: {
+      WWCard
     },
     computed: {
     },
@@ -44,7 +51,7 @@ import { defineComponent } from 'vue';
 
       this.currentUser = await getCurrentUserPromise() as User;
 
-      if ("".toString() == "") return; //TODO remove this. This is just for testing and understanding the HT-JS package.
+      //if ("".toString() == "") return; //TODO remove this. This is just for testing and understanding the HT-JS package.
 
       this.publications = await publicationService.retrieve({
         parentIds: ["aa7d92e3-c92f-41f8-87a1-333375125a1c"], //Visdomsord
@@ -58,6 +65,8 @@ import { defineComponent } from 'vue';
             parentIds: [firstPublication?.id ?? ""],
             withContent: true,
       }))
+
+      this.articles = articles;
 
       console.log(articles);
     },
