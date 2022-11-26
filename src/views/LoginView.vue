@@ -48,10 +48,18 @@
           </label>
 
           <span v-if="include([forms.register])" class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap lg:w-96">
+            <BaseCheckbox v-model="agreeTerms" :error="!!errors.terms"/>
+            <span :class="[{'text-[color:var(--wt-color-error)]' : !!errors.terms}]">
+              I agree to the
+              <ClickableLink class="inline-block" @link-clicked="viewPrivacyPolicy" :disabled="actionLoading">Terms and Conditions</ClickableLink>
+            </span>
+          </span>
+
+          <span v-if="include([forms.register])" class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap lg:w-96">
             <BaseCheckbox v-model="recievePromotionalEmails"/>
             <span>
               Get emails from WisdomTreasures about product updates, news, or events. If you change your mind, you can unsubscribe at any time.
-              <ClickableLink @link-clicked="viewPrivacyPolicy" :disabled="actionLoading">Privacy Policy</ClickableLink>
+              <ClickableLink class="inline-block" @link-clicked="viewPrivacyPolicy" :disabled="actionLoading">View Privacy Policy</ClickableLink>
             </span>
           </span>
 
@@ -131,7 +139,10 @@
         </div>
       </template>
     </BaseCard>
-    <div id="jusrForSpacingPurposes" class="grow border-r basis-0 border-black/20 border-dashed w-[26rem]"></div>
+    <div class="grow border-r basis-0 border-black/20 border-dashed w-auto lg:w-[26rem] flex flex-col">
+      <div id="justForSpacingPurposes" class="grow"/>
+      <FooterComponent/>
+    </div>
   </main>
 </template>
 
@@ -146,6 +157,7 @@ import api from '../services/api'
 import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import { useSessionStore } from '@/stores/session';
 import { ArrowRightIcon } from '@heroicons/vue/outline';
+import FooterComponent from '@/components/FooterComponent.vue';
 
   export default defineComponent({
     name: "LoginView",
@@ -158,6 +170,7 @@ import { ArrowRightIcon } from '@heroicons/vue/outline';
       ClickableLink,
       BaseCheckbox,
       ArrowRightIcon,
+      FooterComponent,
     },
     data: () => ({
       email: "",
@@ -167,7 +180,8 @@ import { ArrowRightIcon } from '@heroicons/vue/outline';
       rememberMe: false,
       currentForm: "login" as "login" | "register" | "forgotPassword",
       recievePromotionalEmails: false,
-      errors: {email: "", password: "", fullName: ""} as {email: string, password: string, fullName: string},
+      agreeTerms: false,
+      errors: {email: "", password: "", fullName: "", terms: ""} as {email: string, password: string, fullName: string, terms: string},
       keepErrorMessageWhileValidating: false,
       hoverOverWTLogo: undefined as boolean | undefined,
 
@@ -185,6 +199,7 @@ import { ArrowRightIcon } from '@heroicons/vue/outline';
     computed: {
       errorMessage() : string{
 
+        //TODO find a better way to do this
         if (this.errors.email !== "")
           return this.errors.email;
         
@@ -193,6 +208,9 @@ import { ArrowRightIcon } from '@heroicons/vue/outline';
 
         if (this.errors.password!== "")
           return this.errors.password;
+
+        if (this.errors.terms!== "")
+          return this.errors.terms;
 
         return "";
       },
@@ -228,7 +246,7 @@ import { ArrowRightIcon } from '@heroicons/vue/outline';
 
         try {
 
-          this.errors = {email: "", password: "", fullName: ""}
+          this.errors = {email: "", password: "", fullName: "", terms: "",}
 
           if (provider)
             return await loginWithProvider(provider, this.rememberMe);
@@ -257,7 +275,7 @@ import { ArrowRightIcon } from '@heroicons/vue/outline';
 
         } catch (e: any) {
           //Use email field as general purpose error message because it gets checked and displayed first.
-          this.errors = {email: e.toString(), password: " ", fullName: " "};
+          this.errors = {email: e.toString(), password: " ", fullName: " ", terms: " ",};
         }
 
         this.actionLoading = false;
@@ -294,6 +312,18 @@ import { ArrowRightIcon } from '@heroicons/vue/outline';
 
         return true;
       },
+      validateTerms(): boolean {
+
+        if (this.include([this.forms.login, this.forms.forgotPassword]))
+          return true;
+
+        if (!this.agreeTerms){
+          this.errors.terms = "You must agree to the terms and conditions to create a user";
+          return false;
+        }
+
+        return true;
+      },
       validatePassword(): boolean {
 
         if (this.include([this.forms.forgotPassword]))
@@ -311,15 +341,16 @@ import { ArrowRightIcon } from '@heroicons/vue/outline';
       },
       async isValidForm(): Promise<boolean> {
         // Make every error empty before recheck. This makes the animation happen again
-        if ((this.errors.password + this.errors.email + this.errors.fullName).length > 0){
+        if ((this.errors.password + this.errors.email + this.errors.fullName + this.errors.terms).length > 0){
           this.keepErrorMessageWhileValidating = true;
-          this.errors = {email: "", password: "", fullName: ""};
+          this.errors = {email: "", password: "", fullName: "", terms: ""};
         }
         
         await new Promise(r => setTimeout(r, 0));
         if (!this.validateEmail()) return false;
         if (!this.validateFullName()) return false;
         if (!this.validatePassword()) return false;
+        if (!this.validateTerms()) return false;
         this.keepErrorMessageWhileValidating = false;
         return true;
       },
@@ -327,7 +358,7 @@ import { ArrowRightIcon } from '@heroicons/vue/outline';
         this.keepErrorMessageWhileValidating = false;
         this.registerFormLoaded = this.registerFormLoaded || form == this.forms.register;
         this.forgotPasswordFormLoaded = this.forgotPasswordFormLoaded || form == this.forms.forgotPassword;
-        this.errors = {email: "", password: "", fullName: ""};
+        this.errors = {email: "", password: "", fullName: "", terms: ""};
         this.currentForm = form;
       },
       include(forms : ("login" | "register" | "forgotPassword")[]) {
