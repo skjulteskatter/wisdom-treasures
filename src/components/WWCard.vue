@@ -1,6 +1,6 @@
 <template>
     <main class="">
-        <BaseCard class="hover:border-2 border-black/30">
+        <BaseCard class="border-2 hover:border-black/30 border-black/0">
           <template #default>
             <PencilAltIcon class="w-5"/>
             <p class="serif">
@@ -21,7 +21,7 @@
   import { PencilAltIcon } from '@heroicons/vue/solid';
   
     export default defineComponent({
-      name: "SearchArticleCard",
+      name: "WWCard",
       data() {
         return {
         }

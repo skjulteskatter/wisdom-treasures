@@ -30,6 +30,7 @@ import type { User } from '@firebase/auth';
 import type { Article, Publication } from 'hiddentreasures-js';
 import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
+import TestArticles from '@/services/TestArticles';
 
   export default defineComponent({
     name: "HomeView",
@@ -51,7 +52,9 @@ import WWCard from '@/components/WWCard.vue';
 
       this.currentUser = await getCurrentUserPromise() as User;
 
-      //if ("".toString() == "") return; //TODO remove this. This is just for testing and understanding the HT-JS package.
+      this.articles = TestArticles;
+
+      if ("".toString() == "") return; //TODO remove this. This is just for testing and understanding the HT-JS package.
 
       this.publications = await publicationService.retrieve({
         parentIds: ["aa7d92e3-c92f-41f8-87a1-333375125a1c"], //Visdomsord
