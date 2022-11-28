@@ -13,6 +13,8 @@ export const useSessionStore = defineStore('session', {
             searchWordBridge: "",
             // The login form to start from when pushing from another view.
             loginFormBridge: "login" as "login" | "register" | "forgotPassword",
+            // Global variable to close any active modal. For example when clicking the navbar: close every modal
+            globalCloseModal: false,
         }
     },
     actions: {

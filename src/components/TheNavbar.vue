@@ -1,5 +1,5 @@
 <template>
-	<nav class="shadow-md z-10 max-h-16">
+	<nav class="shadow-md z-50 max-h-16" @mouseup="store.globalCloseModal = !store.globalCloseModal">
 		<div id = "glassEffect" class="absolute glass w-full h-full"/>
 		<div class="w-full bg-white/50">
 			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex min-h-[4rem] justify-around sm:justify-start">
@@ -122,9 +122,6 @@ export default defineComponent({
 		breakpoints: breakpoints,
 		showSearchModal: false,
 	}),
-	computed: {
-		
-	},
 	async mounted() {
 		this.currentUser = await getCurrentUserPromise();
 	},

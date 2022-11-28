@@ -13,7 +13,7 @@
                     leave-from="opacity-100"
                     leave-to="opacity-0"
                 >
-                    <DialogOverlay class="fixed inset-0 bg-black/50 glass z-40" @click="()=> $emit('close')"/>
+                    <DialogOverlay class="fixed inset-0 bg-black/50 glass"/>
                 </TransitionChild>
                 <TransitionChild
                     as="template"
@@ -24,7 +24,14 @@
                     leave-from="opacity-100"
                     leave-to="opacity-0"
                 >
-                    <BaseCard class="w-11/12 md:w-auto fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40">
+                <div class="fixed w-full flex flex-col h-full">
+                    <div id="clickOutsideDetector" class="fixed w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20" @click="() => $emit('close')"/>
+                    <div class="grow basis-0">
+                        <BaseButton theme="menuButton" size="small" class="m-4 w-10 max-h-10 block sm:hidden z-30" @click="() => $emit('close')">
+                            <ArrowLeftIcon class="h-10 grayscale brightness-[3.5]"/>
+                        </BaseButton>
+                    </div>
+                    <BaseCard class="w-11/12 md:w-auto self-center z-30">
                         <template #header v-if="$slots.title || $slots.description || $slots.icon">
                             <div class="flex flex-col sm:flex-row gap-4">
                                 <slot name="icon"/>
@@ -43,6 +50,8 @@
                             <slot name="footer" />
                         </template>
                     </BaseCard>
+                    <div id="JustForSpacing" class="grow basis-0"/>
+                </div>
                 </TransitionChild>
             </HUDialog>
         </TransitionRoot>
@@ -61,6 +70,9 @@ import {
 import BaseCard from "./BaseCard.vue";
 
 import { defineComponent } from "vue";
+import { useSessionStore } from "@/stores/session";
+import BaseButton from "./BaseButton.vue";
+import { ArrowLeftIcon } from "@heroicons/vue/outline";
 
 export default defineComponent({
     name: "base-modal",
@@ -71,7 +83,16 @@ export default defineComponent({
         DialogOverlay,
         DialogTitle,
         DialogDescription,
-        BaseCard
+        BaseCard,
+        BaseButton,
+        ArrowLeftIcon
+    },
+    data() {
+       return {
+         store: useSessionStore(),
+       }
+    },
+    mounted() {
     },
     props: {
         show: {
@@ -79,6 +100,16 @@ export default defineComponent({
         },
     },
     emits: ["close"],
+    computed: {
+        globalCloseModalEvent() {
+          return this.store.globalCloseModal;
+        }
+    },
+    watch: {
+        globalCloseModalEvent(){
+            this.$emit('close');
+        }
+    },
 });
 </script>
 

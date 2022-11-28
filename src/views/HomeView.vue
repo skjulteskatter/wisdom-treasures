@@ -1,8 +1,11 @@
 <template>
   <main>
     <h1 class="my-6 text-3xl font-bold">
-      <span v-if="currentUser" class="font-bold gradient">
-        Welcome, {{currentUser.displayName}}
+      <span v-if="currentUser" class="font-bold">
+        Welcome, 
+        <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
+          {{currentUser.displayName}}
+        </span> 
       </span>
       <span v-else class="font-bold"> 
         Welcome to 

@@ -58,7 +58,7 @@ export default defineComponent({
     }
 
     &__text {
-        margin-top: var(--wt-spacing);
+        margin-top: 1rem;
     }
 }
 
