@@ -50,5 +50,13 @@ export default defineComponent({
     },
 	methods: {
 	},
+	watch: {
+		//Scroll to the top while chaning view.
+		async $route(){
+			setTimeout(() => {
+				window.scrollTo(0,0);
+			}, 150);
+		}
+	}
 });
 </script>
