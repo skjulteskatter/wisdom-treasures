@@ -1,12 +1,23 @@
 <template>
-    <main class="">
-        <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="openWWModal = true">
+    <main>
+        <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="openWWModal = true"
+          :class="[{'h-full': strechY}]">
           <template #default>
-            <PencilAltIcon class="w-5"/>
-            <p class="" v-html="article.content?.content"/>
+            <div class="flex h-full">
+              <p class="self-center" v-html="article.content?.content"/>
+            </div>
           </template>
           <template #footer>
-            {{article.id}}
+
+            <div class="flex">
+              <div class="self-center mr-2">
+                  <BookOpenIcon class="h-8"/>
+              </div>
+              <div class="self-center">
+                {{article.id}}
+              </div>
+            </div>
+            
           </template>
         </BaseCard>
         <WWCardModal :show="openWWModal" @close="openWWModal = false" :article="article"/>
@@ -17,7 +28,7 @@
   import { Article } from 'hiddentreasures-js';
   import { defineComponent } from 'vue';
   import BaseCard from './BaseCard.vue';
-  import { PencilAltIcon } from '@heroicons/vue/solid';
+  import { BookOpenIcon } from '@heroicons/vue/outline';
   import WWCardModal from './WWCardModal.vue';
   
     export default defineComponent({
@@ -32,10 +43,14 @@
             type: Article,
             required: true
         },
+        strechY: {
+            type: Boolean,
+            required: false
+        },
       },
       components: {
         BaseCard,
-        PencilAltIcon,
+        BookOpenIcon,
         WWCardModal
       },
       computed: {
