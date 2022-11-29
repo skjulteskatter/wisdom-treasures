@@ -1,6 +1,6 @@
 <template>
     <input @click="onChange()" type="checkbox" :checked="modelValue" class="rounded border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2" 
-    :class="[modelValue && hasBeenClicked ? 'checkBoxChecked' : '', error ? 'shake' : 'border-black/20 text-primary ring-primary focus-visible:ring-primary']"/>
+    :class="[modelValue && hasBeenClicked ? 'pop' : '', error ? 'shake' : 'border-black/20 text-primary ring-primary focus-visible:ring-primary']"/>
 </template>
 
 <script lang="ts">
@@ -36,24 +36,6 @@ export default defineComponent({
 </script>
 
 <style>
-.checkBoxChecked{
-  animation: checkBoxChecked 0.25s both linear;
-}
-
-@keyframes checkBoxChecked {
-  0% {
-    transform: scale(1);
-  }
-
-  25% {
-    transform: scale(1.2);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-}
-
 .shake{
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform: translate3d(0, 0, 0);

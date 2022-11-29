@@ -106,3 +106,21 @@ body {
 		background-position: 0% 50%;
 	}
 }
+
+.pop{
+  animation: popAnimation 0.25s both linear;
+}
+
+@keyframes popAnimation {
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(1.2);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
