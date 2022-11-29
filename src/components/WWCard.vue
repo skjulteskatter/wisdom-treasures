@@ -9,9 +9,7 @@
             {{article.id}}
           </template>
         </BaseCard>
-        <WWCardModal v-if="openWWModal" @close="openWWModal = false" :article="article">
-
-        </WWCardModal>
+        <WWCardModal :show="openWWModal" @close="openWWModal = false" :article="article"/>
     </main>
   </template>
     
