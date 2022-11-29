@@ -133,6 +133,7 @@ export default defineComponent({
 		},
 		navigate(name: string){
 			if (name === "register"){
+				//Just to mmake sure the login forms appears as 'register' and not as 'login'
 				this.store.loginFormBridge = "register";
 				name = "login";
 			}

@@ -3,9 +3,7 @@
         <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="openWWModal = true">
           <template #default>
             <PencilAltIcon class="w-5"/>
-            <p class="serif">
-                {{article.content?.content}}
-            </p>
+            <p class="" v-html="article.content?.content"/>
           </template>
           <template #footer>
             {{article.id}}

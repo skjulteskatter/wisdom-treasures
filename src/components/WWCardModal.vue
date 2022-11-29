@@ -2,13 +2,16 @@
     <BaseModal :show="true" class="fixed w-full h-full left-0 top-0 z-40" @close="() => $emit('close')">
         <template #footer>
             <div class="w-full flex">
-                <div id="justForSpacing" class="grow self-center">See more from this category</div>
+                <div class="grow self-center">See more from
+                    <ClickableLink class="inline-block" v-on:link-clicked="$router.push({name: 'category'})">{{article.number}}</ClickableLink>
+                    category
+                </div> 
                 <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {}">
 					<ShareIcon class="h-8 opacity-50"/>
 				</BaseButton>
-                <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {}">
-                    <HeartIconSolid class="h-8 heartColor"/>
-					<HeartIcon class="h-8 opacity-50 hidden"/>
+                <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
+                    <HeartIconSolid v-if="favorite" class="h-8 heartColor pop"/>
+					<HeartIcon v-else class="h-8 opacity-50 pop"/>
 				</BaseButton>
             </div>
         </template>
@@ -30,6 +33,7 @@ import { Article } from "hiddentreasures-js";
 import { HeartIcon, ShareIcon } from "@heroicons/vue/outline";
 import BaseButton from "./BaseButton.vue";
 import { HeartIcon as HeartIconSolid } from "@heroicons/vue/solid";
+import ClickableLink from "./ClickableLink.vue";
 
 export default defineComponent({
     name: "base-modal",
@@ -38,9 +42,11 @@ export default defineComponent({
         ShareIcon,
         BaseButton,
         HeartIcon,
-        HeartIconSolid
+        HeartIconSolid,
+        ClickableLink
     },
     data: () => ({
+        favorite: false,
     }),
     emits: ["close"],
     props: {
@@ -52,7 +58,10 @@ export default defineComponent({
     methods: {
         share(){
             console.log("Sharing is not implemented yet");
-        }
+        },
+        favoriteButton(){
+            this.favorite = !this.favorite;
+        },
     },
 });
 </script>
@@ -61,4 +70,5 @@ export default defineComponent({
 .heartColor {
     filter: invert(22%) sepia(83%) saturate(2467%) hue-rotate(345deg) brightness(100%) contrast(94%);
 }
+
 </style>
