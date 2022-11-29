@@ -24,7 +24,7 @@ import { XIcon } from "@heroicons/vue/solid";
 import BaseButton from "./BaseButton.vue";
 
 export default defineComponent({
-    name: "base-modal",
+    name: "search-modal",
     components: {
         BaseModal,
         BaseInput,

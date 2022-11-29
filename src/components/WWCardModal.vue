@@ -17,7 +17,7 @@
         </template>
         <template #default> 
             <div class="flex max-w-2xl flex-col font-serif">
-                <img src="/img/quote.svg" alt="“" class="self-center max-h-10"/>
+                <img src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
                 <div class="grow m-5" v-html="article.content?.content"/>
             </div>
         </template>
@@ -36,7 +36,7 @@ import { HeartIcon as HeartIconSolid } from "@heroicons/vue/solid";
 import ClickableLink from "./ClickableLink.vue";
 
 export default defineComponent({
-    name: "base-modal",
+    name: "wwcard-modal",
     components: {
         BaseModal,
         ShareIcon,
