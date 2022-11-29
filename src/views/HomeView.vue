@@ -14,9 +14,9 @@
         </span> 
       </span>
     </h1>
-    <div id="WWCards" >
-      <div v-for="(article, index) in articles" :key="index">
-        <WWCard :article="article" class="my-2"/>
+    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+      <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
+        <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
     </div>
   </main> 
