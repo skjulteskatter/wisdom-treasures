@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col h-full">
 		<main class="flex-grow pb-16 sm:pb-0 sm:pt-16">
-			<div class="h-full max-w-7xl mx-auto border border-black/25 border-dashed flex flex-col">
+			<div class="h-full max-w-7xl mx-auto border-8 border-black/25 border-dashed flex flex-col border-red-700">
 				<!-- Route transitions -->
 				<router-view v-slot="{ Component }" class="grow">
 					<transition
@@ -20,6 +20,7 @@
 			</div>
 		</main>
 		<TheNavbar class="sm:order-first w-full fixed bottom-0 sm:top-0"/>
+		<NotificationContainer class="h-full"/>
 	</div>
 </template>
 
@@ -32,15 +33,21 @@ import Loader from "@/components/Loader.vue";
 import { getCurrentUserPromise } from "@/services/auth";
 import SearchModal from "@/components/SearchModal.vue";
 import FooterComponent from '@/components/FooterComponent.vue';
+import BaseCard from "@/components/BaseCard.vue";
+import NotificationCard from "@/components/NotificationCard.vue";
+import NotificationContainer from "@/components/NotificationContainer.vue";
 
 export default defineComponent({
 	name: "main-layout",
 	components: {
     TheNavbar,
     XIcon,
-	Loader,
-	SearchModal,
-	FooterComponent
+    Loader,
+    SearchModal,
+    FooterComponent,
+    BaseCard,
+    NotificationCard,
+	NotificationContainer
 },
 	data: () => ({
 		currentUser : undefined as unknown,

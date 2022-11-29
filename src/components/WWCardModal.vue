@@ -66,7 +66,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .heartColor {
     filter: invert(22%) sepia(83%) saturate(2467%) hue-rotate(345deg) brightness(100%) contrast(94%);
 }

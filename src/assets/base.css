@@ -124,3 +124,8 @@ body {
     transform: scale(1);
   }
 }
+
+.glass {
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+}

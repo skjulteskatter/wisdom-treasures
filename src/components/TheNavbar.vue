@@ -26,7 +26,7 @@
 							<QuestionMarkCircleIcon class="h-7 opacity-50"/>
 						</BaseButton>
 						<BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8">
-							<BellIcon class="h-7 opacity-50"/>
+							<BellIcon class="h-7 opacity-50" @click="addNotification()"/>
 						</BaseButton>
 						<img :src="currentUser?.photoURL || '/public/img/user.svg'" class="w-8 h-8 rounded-full border-primary border cursor-pointer"/>
 					</div>
@@ -97,6 +97,7 @@ import type { User } from "firebase/auth";
 import breakpoints from "@/style/breakpoints";
 import { Menu as HUMenu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import SearchModal from "./SearchModal.vue";
+import { Notification } from '@/classes/notification';
 
 export default defineComponent({
 	name: "the-navbar",
@@ -121,6 +122,8 @@ export default defineComponent({
 		store: useSessionStore(),
 		breakpoints: breakpoints,
 		showSearchModal: false,
+
+		removeThis: 0
 	}),
 	async mounted() {
 		this.currentUser = await getCurrentUserPromise();
@@ -141,17 +144,16 @@ export default defineComponent({
 		},
 		test(){
 			console.log(this.$route.name);
+		},
+		addNotification(){
+			this.store.notifications.push(new Notification("Hello, this is just a notification. Don't mind me! " + this.removeThis.toString()));
+			this.removeThis++;
 		}
 	},
 });
 </script>
 
 <style scoped>
-.glass {
-	background: (255, 255, 255, 0.1);
-	backdrop-filter: blur(5px);
-	-webkit-backdrop-filter: blur(5px);
-}
 
 .glassDropDown {
 	background: (255, 255, 255, 0.1);

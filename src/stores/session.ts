@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
+import type { Notification } from '@/classes/notification'
 
 export const useSessionStore = defineStore('session', {
     state: ()=> {
@@ -15,6 +16,8 @@ export const useSessionStore = defineStore('session', {
             loginFormBridge: "login" as "login" | "register" | "forgotPassword",
             // Global variable to close any active modal. For example when clicking the navbar: close every modal
             globalCloseModal: false,
+            // The users notifications
+            notifications: [] as Notification[],
         }
     },
     actions: {

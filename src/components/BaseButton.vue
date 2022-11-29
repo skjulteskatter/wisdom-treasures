@@ -106,7 +106,7 @@ export default defineComponent({
     }
 
     &--tertiary {
-        @apply text-primary hover:bg-primary/20 dark:hover:bg-transparent;
+        @apply text-primary hover:bg-primary/20;
 
         &:hover:after {
             content: "";
@@ -155,7 +155,7 @@ export default defineComponent({
     }
 
     &--neutral {
-        @apply bg-black/10 dark:bg-white/10 text-gray-800 dark:text-white;
+        @apply bg-black/10 text-gray-800;
     }
 
     &--loading {
@@ -176,7 +176,7 @@ export default defineComponent({
     }
 
     &--disabled {
-        @apply cursor-not-allowed bg-black/10 text-gray-400 dark:bg-white/20 dark:text-gray-400;
+        @apply cursor-not-allowed bg-black/10 text-gray-400;
 
         &:hover:after {
             content: "";
