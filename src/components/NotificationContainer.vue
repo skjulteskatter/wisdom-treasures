@@ -1,7 +1,7 @@
 <template>
-    <div class="min-w-[14rem] w-[calc((100vw-80rem)*0.5)] fixed right-0 flex flex-col pr-4">
+    <div class="min-w-[14rem] w-[calc((100vw-80rem)*0.5)] fixed right-0 flex flex-col pr-4 pointer-events-none">
         <div id="forSpacing" class="grow"/>
-        <NotificationCard v-for="(notification) in notificationsOnDisplay" :key="notification.id" class="mr-auto mb-4 smoothOpen fadeOut" 
+        <NotificationCard v-for="(notification) in notificationsOnDisplay" :key="notification.id" class="mr-auto mb-4 smoothOpen fadeOut pointer-events-auto" 
             v-on:close="closeNotification(notification.id)" :notification="notification"/>
     </div>
 </template>
@@ -10,7 +10,7 @@
 import { useSessionStore } from '@/stores/session';
 import { defineComponent } from 'vue';
 import NotificationCard from './NotificationCard.vue';
-import { Notification } from '@/classes/notification'
+import type { Notification } from '@/classes/notification'
 
 export default defineComponent({
     name: "NotificationContainer",
@@ -36,17 +36,10 @@ export default defineComponent({
             }, 7000);
         }
     },
-    mounted(){
-        this.store.notifications.push(new Notification("This is a brand new notification!"));
-    },
     methods: {
         closeNotification(id: string){
-            console.log(id);
-            for (let i = 0; i < this.store.notifications.length; i++) {
-                if (this.store.notifications[i].id == id){
-                    this.store.notifications[i].onDisplay = false;
-                }
-            }
+            const index = this.store.notifications.findIndex(x => x.id == id);
+            this.store.notifications[index].onDisplay = false;
             this.notificationsOnDisplay = this.notificationsOnDisplay.filter(x => x.id !== id);
             this.garbageCollect();
         },

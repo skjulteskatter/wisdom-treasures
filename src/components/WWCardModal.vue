@@ -10,7 +10,7 @@
 					<ShareIcon class="h-8 opacity-50"/>
 				</BaseButton>
                 <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
-                    <HeartIconSolid v-if="favorite" class="h-8 heartColor pop"/>
+                    <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
 					<HeartIcon v-else class="h-8 opacity-50 pop"/>
 				</BaseButton>
             </div>
@@ -65,10 +65,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style scoped>
-.heartColor {
-    filter: invert(22%) sepia(83%) saturate(2467%) hue-rotate(345deg) brightness(100%) contrast(94%);
-}
-
-</style>
