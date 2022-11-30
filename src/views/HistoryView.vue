@@ -2,17 +2,28 @@
     <main class="mt-4">
       <BackButton/>
       <h1 class="my-6 text-3xl font-bold">History</h1>
-      <div class="flex flex-col">
-        
-        <div v-for="(value, key) in periods" :key="key">
-          <div class="text-2xl font-bold">{{key}}</div>
-          <div class="border-l-2 pl-4 ml-4 my-3 border-black/50" >
-            <div class="" v-for="article in getArticlesFromDays(value)" :key="article.id">
-              <WWCard :article="article" class="my-2"/>
+      <div class="flex">
+        <div class="grow"/>
+        <div class="flex flex-col">
+          <div v-for="(value, key) in periods" :key="key">
+            <div class="text-2xl font-bold">{{key}}</div>
+            <div class="border-l-2 pl-4 my-3 border-black/50" >
+              <div class="" v-for="article in getArticlesFromDays(value)" :key="article.id">
+                <WWCard :article="article" class="my-2 sm:max-w-lg">
+                  <template #footer>
+                    <div class="flex">
+                      <div class="self-center mr-2">
+                        <ClockIcon class="h-8 opacity-50"/>
+                      </div>
+                      <div class="self-center opacity-50">Yesterday 13:45</div>
+                    </div>
+                  </template>
+                </WWCard>
+              </div>
             </div>
           </div>
         </div>
-
+        <div class="grow"/>
       </div>
     </main>
   </template>
@@ -24,6 +35,7 @@
   import WWCard from '@/components/WWCard.vue';
 import type { Article } from 'hiddentreasures-js';
 import TestArticles from '@/services/TestArticles';
+import { ClockIcon } from '@heroicons/vue/outline';
   
     export default defineComponent({
       name: "SearchView",
@@ -44,7 +56,8 @@ import TestArticles from '@/services/TestArticles';
       },
       components: {
           BackButton,
-          WWCard
+          WWCard,
+          ClockIcon,
       },
       computed: {
 
@@ -56,12 +69,8 @@ import TestArticles from '@/services/TestArticles';
       },
       methods: {
         getArticlesFromDays(days: number) : Article[]{
-          console.log("Articles from days: ", days);
-          return this.articles.slice(0,3);
+          return this.articles.slice(days,days+2);
         }
       }
     });
   </script>
-  
-  <style>
-  </style>

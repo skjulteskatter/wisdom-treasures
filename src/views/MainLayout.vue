@@ -1,7 +1,7 @@
 <template>
 	<div class="flex flex-col h-full">
 		<main class="flex-grow pb-16 sm:pb-0 sm:pt-16">
-			<div class="h-full max-w-7xl mx-auto border-8 border-black/25 border-dashed flex flex-col border-red-700">
+			<div class="h-full max-w-7xl mx-auto border border-dashed flex flex-col border-black/10">
 				<!-- Route transitions -->
 				<router-view v-slot="{ Component }" class="grow">
 					<transition
