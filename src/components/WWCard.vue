@@ -1,15 +1,16 @@
 <template>
     <main>
-        <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="openWWModal = true"
+        <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${currentPath}${article.number}`})}"
           :class="[{'h-full': strechY}]">
           <template #default>
-            <div class="flex h-full">
+            <slot name="default" v-if="$slots.default" />
+            <div v-else class="flex h-full">
               <p class="self-center" v-html="article.content?.content"/>
             </div>
           </template>
           <template #footer>
-
-            <div class="flex">
+            <slot name="footer" v-if="$slots.footer"></slot>
+            <div v-else class="flex">
               <div class="self-center mr-2">
                   <BookOpenIcon class="h-8"/>
               </div>
@@ -20,7 +21,7 @@
             
           </template>
         </BaseCard>
-        <WWCardModal :show="openWWModal" @close="openWWModal = false" :article="article"/>
+        <WWCardModal :show="openWWModal" @close="navigateBack" :article="article"/>
     </main>
   </template>
     
@@ -56,9 +57,37 @@
       computed: {
         shortContent() {
           return ""
+        },
+        currentPath(){
+          return this.$route.path.endsWith("/") ? this.$route.path : this.$route.path + "/";
         }
       },
       async mounted() {
+        this.checkRouteToModal();
       },
+      watch: {
+        $route(){
+          this.checkRouteToModal()
+        }
+      },
+      methods:{
+        checkRouteToModal(){
+          let wwNumber = this.$route.params.wwNumber;
+          if (wwNumber !== undefined && +wwNumber === this.article.number){
+            this.openWWModal = true;
+            this.registerViewedWW();
+          } else this.openWWModal = false;
+        },
+        registerViewedWW(){
+          //TODO register somewhere that the user have clicked this specific WW
+        },
+        navigateBack(){
+            if (this.$router.options.history.state.back == null){
+              this.$router.push({name: "dashboard"});
+            } else {
+              this.$router.back();
+            }
+        }
+      }
     });
   </script>

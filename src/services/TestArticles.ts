@@ -1,8 +1,10 @@
 import type { Article } from "hiddentreasures-js";
 
-export default
+export default 
     [
         {
+            "icon": "",
+            "image" : "",
             "id": "7a361587-a88a-4b03-a250-b7d8ac3f4f75",
             "updatedAt": "2022-09-28T09:30:32Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -20,6 +22,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "f8cc4393-2665-46ac-9c2f-b56b0e5c98b8",
             "updatedAt": "2022-09-28T09:30:31Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -37,6 +41,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "3c91716b-545e-42b5-aea7-fac64ca7fe83",
             "updatedAt": "2022-09-28T09:30:29Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -54,6 +60,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "3ae0af8e-7fe0-4f0d-8fa5-7cf4d42de236",
             "updatedAt": "2022-09-28T09:30:28Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -71,6 +79,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "2a1ff703-2af7-43d0-b8a0-0bb2e76c94c1",
             "updatedAt": "2022-09-28T09:30:27Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -88,6 +98,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "f0760b8e-7834-4b78-a40f-0d127478c240",
             "updatedAt": "2022-09-28T09:30:26Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -105,6 +117,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "2575ccc9-6402-4296-b8b2-bc30de9162a4",
             "updatedAt": "2022-09-28T09:30:25Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -122,6 +136,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "522065e8-cff8-4cd1-b592-4c6956f51cce",
             "updatedAt": "2022-09-28T09:30:24Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -139,6 +155,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "01a227b0-f286-4d31-a8d4-3303e4b7fac3",
             "updatedAt": "2022-09-28T09:30:23Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -156,6 +174,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "a6c5a939-86c7-4517-9360-1c15201776fa",
             "updatedAt": "2022-09-28T09:30:22Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -173,6 +193,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "6654358d-96b8-4391-a7fb-07f36d50e445",
             "updatedAt": "2022-09-28T09:30:21Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -190,6 +212,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "7e96049a-65da-41b5-9de0-28ae52704a7d",
             "updatedAt": "2022-09-28T09:30:20Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",
@@ -207,6 +231,8 @@ export default
             }
         },
         {
+        "icon":"",
+        "image":"",
             "id": "d6a6225b-baee-4fb1-b14e-e9d3294fd0c0",
             "updatedAt": "2022-09-28T09:29:39Z",
             "publicationId": "371ef251-9a6e-4803-9d4b-ec869cd4a319",

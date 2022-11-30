@@ -1,6 +1,12 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
 import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
+
+const WWCard = {
+  //TODO: Find a better regex for 1-5 numbers. This is awful
+  path:':wwNumber(\\d|\\d\\d|\\d\\d\\d|\\d\\d\\d\\d|\\d\\d\\d\\d\\d$)',
+  children: [],
+} as RouteRecordRaw;
 
 export const routes = [
   {
@@ -12,11 +18,17 @@ export const routes = [
         path: '/',
         name: 'dashboard',
         component: () => import('../views/HomeView.vue'),
+        children: [
+          WWCard,
+        ]
       },
       {
         path: '/search',
         name: 'search',
         component: () => import('../views/SearchView.vue'),
+        children: [
+          WWCard
+        ]
       },
       {
         path: '/profile',
@@ -32,7 +44,10 @@ export const routes = [
         component: () => import('../views/HistoryView.vue'),
         meta: {
           requiresAuth: true,
-        }
+        },
+        children: [
+          WWCard
+        ]
       },
     ]
   },

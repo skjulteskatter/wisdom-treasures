@@ -107,11 +107,8 @@ export default defineComponent({
     },
     watch: {
         globalCloseModalEvent(){
-            this.$emit('close');
+            if (this.show) this.$emit('close');
         }
     },
 });
 </script>
-
-<style>
-</style>
