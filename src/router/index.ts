@@ -6,6 +6,9 @@ const WWCard = {
   //TODO: Find a better regex for 1-5 numbers. This is awful
   path:':wwNumber(\\d|\\d\\d|\\d\\d\\d|\\d\\d\\d\\d|\\d\\d\\d\\d\\d$)',
   children: [],
+  meta: {
+    scrollUp: false,
+  }
 } as RouteRecordRaw;
 
 export const routes = [
@@ -20,7 +23,10 @@ export const routes = [
         component: () => import('../views/HomeView.vue'),
         children: [
           WWCard,
-        ]
+        ],
+        meta:{
+          scrollUp: true,
+        }
       },
       {
         path: '/search',
@@ -28,7 +34,10 @@ export const routes = [
         component: () => import('../views/SearchView.vue'),
         children: [
           WWCard
-        ]
+        ],
+        meta:{
+          scrollUp: true,
+        }
       },
       {
         path: '/profile',
@@ -36,7 +45,8 @@ export const routes = [
         component: () => import('../views/ProfileView.vue'),
         meta: {
           requiresAuth: true,
-        }
+          scrollUp: true,
+        },
       },
       {
         path: '/history',
@@ -44,6 +54,7 @@ export const routes = [
         component: () => import('../views/HistoryView.vue'),
         meta: {
           requiresAuth: true,
+          scrollUp: true,
         },
         children: [
           WWCard
@@ -71,7 +82,13 @@ const router = createRouter({
   routes: routes,
 })
 
-router.beforeEach(async (to, _from, next) => {
+router.beforeEach(async (to, from, next) => {
+
+  if (to.meta.scrollUp === true && from.meta.scrollUp === true){
+    setTimeout(() => {
+      window.scrollTo(0,0);
+    }, 150);
+  }
 
   const requiresAuth : true | false | undefined = to.matched.every(x => x.meta.requiresAuth === undefined) ? undefined : to.matched.some(x => x.meta.requiresAuth);
   let loggedIn = undefined;
