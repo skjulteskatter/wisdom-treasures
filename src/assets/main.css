@@ -6,3 +6,7 @@
   height: 100vh;
 }
 
+html {
+  overflow: auto !important;
+  padding-right: 0 !important;
+}
