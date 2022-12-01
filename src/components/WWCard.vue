@@ -68,6 +68,12 @@
       watch: {
         $route(){
           this.checkRouteToModal()
+        },
+        openWWModal(value){
+          if (value == false) return;
+
+          //This is just a test
+          localStorage.setItem('history:' + this.article.id, Date.now().toString());
         }
       },
       methods:{
