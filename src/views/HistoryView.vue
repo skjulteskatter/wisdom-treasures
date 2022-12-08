@@ -6,19 +6,21 @@
         <div class="grow"/>
         <div class="flex flex-col">
           <div v-for="(value, key) in periods" :key="key">
-            <div class="text-2xl font-bold">{{key}}</div>
-            <div class="border-l-2 pl-4 my-3 border-black/50" >
-              <div class="" v-for="article in getArticlesFromDays(value)" :key="article.id">
-                <WWCard :article="article" class="my-2 sm:max-w-lg">
-                  <template #footer>
-                    <div class="flex">
-                      <div class="self-center mr-2">
-                        <ClockIcon class="h-8 opacity-50"/>
+            <div id="wrapperDiv" :class="{'hidden' : loadPeriodName[key] !== true}">
+              <div class="text-2xl font-bold">{{key}}</div>
+              <div class="border-l-2 pl-4 my-3 border-black/50">
+                <div class="" v-for="article in getArticlesFromDays(value, key.toString())" :key="article.id">
+                  <WWCard :article="article" class="my-2 sm:max-w-lg">
+                    <template #footer>
+                      <div class="flex">
+                        <div class="self-center mr-2">
+                          <ClockIcon class="h-8 opacity-50"/>
+                        </div>
+                        <div class="self-center opacity-50">{{getStringFromDate(historyIds.find(x => x.id == article.id)?.lastViewed ?? new Date)}}</div>
                       </div>
-                      <div class="self-center opacity-50">{{getStringFromDate(historyIds.find(x => x.id == article.id)?.lastViewed ?? new Date)}}</div>
-                    </div>
-                  </template>
-                </WWCard>
+                    </template>
+                  </WWCard>
+                </div>
               </div>
             </div>
           </div>
@@ -50,7 +52,8 @@ import { ClockIcon } from '@heroicons/vue/outline';
                 "This Year": [30,365],
                 "Earlier": [365,1000],
               } as {[key:string]: [number, number]},
-              historyIds: [] as {id: string, lastViewed: Date}[]
+              historyIds: [] as {id: string, lastViewed: Date}[],
+              loadPeriodName : {} as {[key:string]:boolean},
           }
       },
       props: {
@@ -61,7 +64,6 @@ import { ClockIcon } from '@heroicons/vue/outline';
           ClockIcon,
       },
       computed: {
-
       },
       watch : {
       },
@@ -70,23 +72,30 @@ import { ClockIcon } from '@heroicons/vue/outline';
         this.setHistoryIds();
       },
       methods: {
-        getArticlesFromDays(days: [number, number]) : Article[]{
+        getArticlesFromDays(days: [number, number], key:string) : Article[]{
           let IDs : string[] = this.historyIds.filter(x => {
 
-            //Create date without hours, minutes...
-            let y = new Date(x.lastViewed.getTime());
-            y.setHours(0,0,0,0);
+              //Create date without hours, minutes...
+              let y = new Date(x.lastViewed.getTime());
+              y.setHours(0,0,0,0);
 
-            //Create date without hours, minutes...
-            let dateNow = new Date();
-            dateNow.setHours(0,0,0,0);
+              //Create date without hours, minutes...
+              let dateNow = new Date();
+              dateNow.setHours(0,0,0,0);
 
-            return y.getTime() <= (dateNow.getTime() - (days[0] * 24 * 60 * 60 * 1000)) && y.getTime() > (dateNow.getTime() - (days[1] * 24 * 60 * 60 * 1000))
-          }).map(x => x.id);
-          return this.articles.filter(x => IDs.includes(x.id)).sort((a,b) => {
-            if ((this.historyIds.find(x => x.id == a.id)?.lastViewed ?? new Date()) < (this.historyIds.find(x => x.id == b.id)?.lastViewed ?? new Date())) return 1;
-            return -1;
-          })
+              return y.getTime() <= (dateNow.getTime() - (days[0] * 24 * 60 * 60 * 1000)) && y.getTime() > (dateNow.getTime() - (days[1] * 24 * 60 * 60 * 1000))
+            }).map(x => x.id);
+
+            let articles = this.articles.filter(x => IDs.includes(x.id)).sort((a,b) => {
+              if ((this.historyIds.find(x => x.id == a.id)?.lastViewed ?? new Date()) < (this.historyIds.find(x => x.id == b.id)?.lastViewed ?? new Date())) return 1;
+              return -1;
+            });
+
+            if (articles.length > 0) {
+              this.loadPeriodName[key] = true;
+            }
+
+            return articles;
         },
         setHistoryIds(){
           for (const key in localStorage) {
