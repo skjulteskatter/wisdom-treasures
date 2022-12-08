@@ -1,5 +1,6 @@
 <template>
-    <main class="mt-4">
+  <main>
+    <div class="mt-4">
       <BackButton/>
       <h1 class="my-6 text-3xl font-bold">History</h1>
       <div class="flex">
@@ -27,6 +28,13 @@
         </div>
         <div class="grow"/>
       </div>
+    </div>
+    <div class="grow flex flex-col" :class="{'hidden' : !historyIsEmpty}">
+      <div class="grow"/>
+      <QuestionMarkCircleIcon class="w-20 grayscale opacity-80 place-self-center"/>
+      <div class="place-self-center">Looks like you haven't clicked on any wisdomwords yet...</div>
+      <div class="grow"/>
+    </div>
     </main>
   </template>
   
@@ -37,7 +45,7 @@
   import WWCard from '@/components/WWCard.vue';
 import type { Article } from 'hiddentreasures-js';
 import TestArticles from '@/services/TestArticles';
-import { ClockIcon } from '@heroicons/vue/outline';
+import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
   
     export default defineComponent({
       name: "SearchView",
@@ -56,16 +64,16 @@ import { ClockIcon } from '@heroicons/vue/outline';
               loadPeriodName : {} as {[key:string]:boolean},
           }
       },
-      props: {
-      },
       components: {
           BackButton,
           WWCard,
           ClockIcon,
+          QuestionMarkCircleIcon
       },
       computed: {
-      },
-      watch : {
+        historyIsEmpty() {
+          for (let _ in this.loadPeriodName) {return false} return true;
+        }
       },
       mounted() {
         this.articles = TestArticles;
