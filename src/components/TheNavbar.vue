@@ -50,7 +50,7 @@
 						leave-to-class="transform scale-95 opacity-0"
 						>
 							<MenuItems
-								class="fixed left-1/2 sm:left-auto w-11/12 sm:w-56 -translate-x-1/2 sm:right-0 sm:translate-x-0 ml-auto mr-auto origin-bottom-right bottom-16 sm:bottom-auto sm:top-12 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+								class="fixed left-1/2 sm:left-auto w-11/12 sm:w-56 -translate-x-1/2 sm:right-0 sm:translate-x-0 ml-auto mr-auto origin-bottom-right bottom-16 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
 								<div class="px-1 py-1 rounded-t-md flex flex-col sm:hidden">
 									<MenuItem>
 										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
@@ -66,7 +66,7 @@
 									<BaseInput :inside-h-u-menu="true" v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)" @keydown.enter="search(undefined)"/>
 								</div>
 
-								<div class="px-1 py-1 rounded-b-md">
+								<div v-if="currentUser == null" class="px-1 py-1 rounded-b-md">
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
 											<BaseButton theme="tertiary" @click="navigate('login')" class="border grow border-primary"><b>Log in</b></BaseButton>
@@ -126,6 +126,8 @@ export default defineComponent({
 		removeThis: 0
 	}),
 	async mounted() {
+	},
+	async beforeMount() {
 		this.currentUser = await getCurrentUserPromise();
 	},
 	methods: {
