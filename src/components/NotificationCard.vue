@@ -1,7 +1,7 @@
 <template>
-    <div class="rounded-lg shadow-md bg-white border-2"
-        :class="[error ? 'border-[color:var(--wt-color-error)]' : 'border-black/30']">
-        <div class="p-2">
+    <div class="rounded-lg shadow-lg bg-white border-2"
+        :class="[error ? 'border-[color:var(--wt-color-error)]' : 'border-primary']">
+        <div class="p-2 text-center sm:text-left">
             <BaseButton theme="menuButton" size="small" class="w-6 self-center max-h-6 float-right z-10" @click="() => $emit('close')">
 				<XIcon class="h-5" :class="[error ? 'error-color-filter' : 'opacity-50']"/>
 			</BaseButton>
