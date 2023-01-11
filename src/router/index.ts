@@ -63,6 +63,18 @@ export const routes = [
     ]
   },
   {
+    path: '/landing',
+    name: 'landing',
+    component: () => import('../views/LandingView.vue'),
+    meta: {
+      requiresAuth: true,
+      scrollUp: true,
+    },
+    children: [
+      WWCard
+    ]
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('../views/LoginView.vue'),
