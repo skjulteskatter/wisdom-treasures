@@ -1,6 +1,6 @@
 <template>
     <div class="nav-bar">
-        <p>WT</p>
+        <p><strong>WT</strong></p>
         <div class="links">
             <a href="#">contact us</a>
             <a href="#">sign up</a>

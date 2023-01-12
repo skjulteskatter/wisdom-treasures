@@ -49,10 +49,10 @@
                 </div>
                 
                 <div class="wisdomWordsExamplesContainer">
-                    <WisdomWordExample />
-                    <WisdomWordExample />
-                    <WisdomWordExample />
-                    <WisdomWordExample />
+                    <WisdomWordExample :author="authorFirst" :content="contentFirst"/>
+                    <WisdomWordExample :author="authorSecond" :content="contentSecond"/>
+                    <WisdomWordExample :author="authorFirst" :content="contentFirst"/>
+                    <WisdomWordExample :author="authorFirst" :content="contentFirst"/>
                 </div>
                 
             </section>
@@ -63,12 +63,26 @@
                     <h3>Write to us!</h3>
                 </div>
                 <form>
-                    <input type="text">
-                    <input type="email">
-                    <textarea></textarea>
+                    <input type="text" placeholder="name">
+                    <input type="email" placeholder="e-mail">
+                    <textarea placeholder="type your message here"></textarea>
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                        width="40" 
+                        height="40" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="#000000" 
+                        stroke-width="2" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round">
+                        <path d="M5 12h13M12 5l7 7-7 7"/>
+                    </svg>
                 </form>
             </section>
 
+            <section class="scroll-to-top">
+                <button @click="scrollToTop">Scroll to the top</button>
+            </section>
             <FooterComponent/>
         </main>
     </body>
@@ -86,7 +100,28 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
                     LandingNavBar, 
                     WisdomWordExample },
       methods: {
+            scrollToTop(){
+                let currentScroll = document.documentElement.scrollTop,
+                int = setInterval(frame, 6)
 
+                function frame(){
+                    if(0> currentScroll)
+                        clearInterval(int)
+                    else{
+                        currentScroll = currentScroll - 12
+                        document.documentElement.scrollTop = currentScroll
+                    }
+                }
+            }
+        },
+      
+      data() {
+        return {
+            authorFirst: 'JOS',
+            authorSecond: 'Aslaksen',
+            contentFirst: 'my content is here',
+            contentSecond: 'my second content'
+        }
       }
 });
 </script>
@@ -105,10 +140,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         font-size: 3rem;
         font-weight: bold;
         margin: 0;
+        letter-spacing: 2px;
+        line-height: 1em;
     }
     .second-line-h1{
         margin-left: 2em;
-        margin-top: -0.5em;
     }
     h3{
         font-size: 1.75rem
@@ -125,22 +161,31 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         justify-content: space-between;
         align-items: center;
     }
-    
     .header-description{
         max-width: 40%
+    }
+    .header-description p {
+        margin: 1em 0
     }
     /* links in the header */
     .header-description a{
         color: white;
         background-color: #3C3C4D;
-        padding: 0.75em 3em;
+        padding: 0.75em 4em;
         border-radius: 2em;
+        text-transform: uppercase;
+        font-size: 0.75rem;
+        font-weight: bold;
+        letter-spacing: 1.75px;
+
     }
+
+    /*  */
     .image-holder{
         background-color: grey;
         width: 25%;
         height: 20em;
-        margin-right: 10em
+
     }
 
 /* functions display */
@@ -160,7 +205,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
 /* wisdomWords Examples */
     .wisdomWordsSection{
         height: 30em;
-        padding: 5em
+        padding: 7em 5em
     }
     .arrows{
         display: flex;
@@ -173,8 +218,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
 
 /* questionsSection */
     .questionsSection{
-        padding: 5em;
-        height: 20em;
+        padding: 14em 5em;
         display: flex;
         justify-content: space-between;
     }
@@ -191,5 +235,13 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         width: 30em;
         height: 3em
     }
-    
+    .questionsSection svg {
+        margin-top: 1em;
+        opacity: 75%
+    }
+    /* scroll to the top */
+    .scroll-to-top{
+        padding: 5em;
+        text-align: center;
+    }
 </style>

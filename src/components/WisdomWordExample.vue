@@ -1,7 +1,7 @@
 <template>
     <div class="wisdomWordExample">
-        <p class="wisdom-content">wisdom word content</p>
-        <p class="wisdom-author">the author</p>
+        <p class="wisdom-content">{{ content }}</p>
+        <p class="wisdom-author">{{ author }}</p>
      </div>
 </template>
 
@@ -9,7 +9,8 @@
  import { defineComponent } from "vue"
 
  export default defineComponent({
-    name: "wisdom-word-example"
+    name: "wisdom-word-example",
+    props: ['content', 'author']
 
  })
 </script>
