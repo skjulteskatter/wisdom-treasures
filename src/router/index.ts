@@ -70,9 +70,16 @@ export const routes = [
       requiresAuth: true,
       scrollUp: true,
     },
-    children: [
-      WWCard
-    ]
+    children: [ ]
+  },
+  {
+    path: '/contact',
+    name: 'contact',
+    component: () => import('../views/ContactView.vue'),
+    meta: {
+      requiresAuth: false,
+      scrollUp: true,
+    },
   },
   {
     path: '/login',

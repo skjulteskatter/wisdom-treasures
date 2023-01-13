@@ -2,22 +2,19 @@
     <body>
         <LandingNavBar/>
         <header>
-            <div class="header-description">
-                <h1>Wisdom Treasures</h1>
+                <h1 id="title">Wisdom Treasures</h1>
                 <p>A short description of what WT is. 
                  En verktøykasse med verktøy (visdomsord)
                  som bygger på Ordet og som er egner seg til å 
                  skru på eget og andres liv.</p>
-                <a href="#">sign up</a>
-            </div>
-            <div class="image-holder"></div>
+                <router-link to="/login" class="transition scale">sign up</router-link>
         </header>
 
         <main>
-            <section class="functionExampleSection"><h1>Get daily<br>wisdom words</h1></section>
-            <section class="functionExampleSection white-v"><h1>Get manna</h1></section>
-            <section class="functionExampleSection"><h1>Send to your friend</h1></section>
-            <section class="functionExampleSection white-v"><h1>Add to a collection</h1></section>
+            <section class="functionExampleSection"><h2 class="transition scale">Get daily<br>wisdom words</h2></section>
+            <section class="functionExampleSection white-v"><h2 class="transition scale">Get manna</h2></section>
+            <section class="functionExampleSection"><h2 class="transition scale">Send to your friend</h2></section>
+            <section class="functionExampleSection white-v"><h2 class="transition scale">Add to a collection</h2></section>
             
             <section class="wisdomWordsSection">
                 <h1>Wisdom</h1>
@@ -32,7 +29,8 @@
                     stroke="#000000" 
                     stroke-width="2" 
                     stroke-linecap="round" 
-                    stroke-linejoin="round">
+                    stroke-linejoin="round"
+                    class="transition scale">
                     <path d="M19 12H6M12 5l-7 7 7 7"/>
                 </svg>
                 <svg xmlns="http://www.w3.org/2000/svg" 
@@ -43,7 +41,8 @@
                     stroke="#000000" 
                     stroke-width="2" 
                     stroke-linecap="round" 
-                    stroke-linejoin="round">
+                    stroke-linejoin="round"
+                    class="transition scale">
                     <path d="M5 12h13M12 5l7 7-7 7"/>
                 </svg>
                 </div>
@@ -63,9 +62,9 @@
                     <h3>Write to us!</h3>
                 </div>
                 <form>
-                    <input type="text" placeholder="name">
-                    <input type="email" placeholder="e-mail">
-                    <textarea placeholder="type your message here"></textarea>
+                    <input type="text" placeholder="name" class="transition scale">
+                    <input type="email" placeholder="e-mail" class="transition scale">
+                    <textarea placeholder="type your message here" class="transition scale"></textarea>
                     <svg xmlns="http://www.w3.org/2000/svg" 
                         width="40" 
                         height="40" 
@@ -74,14 +73,26 @@
                         stroke="#000000" 
                         stroke-width="2" 
                         stroke-linecap="round" 
-                        stroke-linejoin="round">
+                        stroke-linejoin="round"
+                        class="transition scale">
                         <path d="M5 12h13M12 5l7 7-7 7"/>
                     </svg>
                 </form>
             </section>
 
-            <section class="scroll-to-top">
-                <button @click="scrollToTop">Scroll to the top</button>
+            <section class="scroll-to-top transition scale" @click="scrollToTop">
+                <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="40" 
+                    height="40" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="#000000" 
+                    stroke-width="2" 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round">
+                    <path d="M12 19V6M5 12l7-7 7 7"/>
+                </svg>
+                <p>Scroll to the top</p>
             </section>
             <FooterComponent/>
         </main>
@@ -108,7 +119,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
                     if(0> currentScroll)
                         clearInterval(int)
                     else{
-                        currentScroll = currentScroll - 12
+                        currentScroll = currentScroll - 18
                         document.documentElement.scrollTop = currentScroll
                     }
                 }
@@ -136,56 +147,63 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
 
     /* typography */
-    h1{
+    h1, h2 {
         font-size: 3rem;
         font-weight: bold;
         margin: 0;
         letter-spacing: 2px;
         line-height: 1em;
     }
+    h1{
+        font-size: 4rem
+    }
     .second-line-h1{
         margin-left: 2em;
     }
     h3{
-        font-size: 1.75rem
+        font-size: 2rem
     }
     p{
         font-size: 1.25rem
+    }
+    /* transform + scale */
+    .transition{
+        transition: all 0.25s
+    }
+    .scale:hover,
+    .scale:active,
+    .scale:focus{
+        transform: scale(1.1)
     }
 
     /* header */
     header{
         height: 40em;
         display: flex;
-        padding: 7em 5em;
-        justify-content: space-between;
+        flex-direction: column;
+        padding: 0 20em;
+        justify-content: center;
         align-items: center;
+        text-align: center
     }
-    .header-description{
-        max-width: 40%
+    header p {
+        margin: 2em 0
     }
-    .header-description p {
-        margin: 1em 0
-    }
-    /* links in the header */
-    .header-description a{
+    /* link in the header */
+    header a{
         color: white;
-        background-color: #3C3C4D;
-        padding: 0.75em 4em;
+        background-color: #8a8a8a;
+        padding: 1em 4em;
         border-radius: 2em;
         text-transform: uppercase;
         font-size: 0.75rem;
         font-weight: bold;
         letter-spacing: 1.75px;
-
     }
-
-    /*  */
-    .image-holder{
-        background-color: grey;
-        width: 25%;
-        height: 20em;
-
+    header a:hover, 
+    header a:active,
+    header a:focus{
+        background-color: #6f6f6f;
     }
 
 /* functions display */
@@ -209,7 +227,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
     .arrows{
         display: flex;
-        justify-content: end;
+        justify-content: flex-end;   
     }
     .wisdomWordsExamplesContainer{
         display: flex;
@@ -230,18 +248,30 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
 
     .questionsSection input, textarea{
+        margin-bottom: 1em;
         border: none;
         border-bottom: 2px solid #3C3C4D;
         width: 30em;
         height: 3em
     }
+
     .questionsSection svg {
         margin-top: 1em;
-        opacity: 75%
+        opacity: 75%;
+        align-self: flex-end;
     }
+
     /* scroll to the top */
     .scroll-to-top{
-        padding: 5em;
-        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin-bottom: 5em 
+    }
+    .scroll-to-top:hover,
+    .scroll-to-top:active,
+    .scroll-to-top:focus {
+        cursor: pointer;
+        opacity: 60%
     }
 </style>
