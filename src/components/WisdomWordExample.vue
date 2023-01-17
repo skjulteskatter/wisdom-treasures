@@ -20,19 +20,17 @@
 
 /* wisdom Words display */
     .wisdomWordExample{
-        border-top: black solid 1.75px;
-        border-right: black solid 1.75px;
+        border-top: #c3c3c3 solid 1.75px;
+        border-right: #c3c3c3 solid 1.75px;
         border-top-right-radius: 2em;
-        width: 20em;
-        height: 10em;
-        margin-right: 1em;
-        padding: 2em 2em 0 0;
-    }
-    .wisdom-content{
+        padding: 2em 2em 2em 0;
         font-family: 'EB Garamond', serif;
+        display: grid;
+        grid-template-rows: min-content;
+        gap: 1em;
     }
     .wisdom-author{
-        font-family: 'EB Garamond', serif;
+        font-size: 1rem;
     }
 
 </style>

@@ -11,10 +11,10 @@
         </header>
 
         <main>
-            <section class="functionExampleSection"><h2 class="transition scale">Get daily<br>wisdom words</h2></section>
-            <section class="functionExampleSection white-v"><h2 class="transition scale">Get manna</h2></section>
-            <section class="functionExampleSection"><h2 class="transition scale">Send to your friend</h2></section>
-            <section class="functionExampleSection white-v"><h2 class="transition scale">Add to a collection</h2></section>
+            <section class="functionExampleSection transition scale"><h2 class="transition scale">Get daily<br>wisdom words</h2></section>
+            <section class="functionExampleSection white-v transition scale"><h2 class="transition scale">Get manna</h2></section>
+            <section class="functionExampleSection transition scale"><h2 class="transition scale">Send to your friend</h2></section>
+            <section class="functionExampleSection white-v transition scale"><h2 class="transition scale">Add to a collection</h2></section>
             
             <section class="wisdomWordsSection">
                 <h1>Wisdom</h1>
@@ -47,11 +47,14 @@
                 </svg>
                 </div>
                 
-                <div class="wisdomWordsExamplesContainer">
-                    <WisdomWordExample :author="authorFirst" :content="contentFirst"/>
-                    <WisdomWordExample :author="authorSecond" :content="contentSecond"/>
-                    <WisdomWordExample :author="authorFirst" :content="contentFirst"/>
-                    <WisdomWordExample :author="authorFirst" :content="contentFirst"/>
+                <div ref="wrapper">
+                    <div ref="gallery" class="wisdomWordsExamplesContainer snaps-inline" @mousedown="dragStart" @mouseup="dragStop" @mousemove="dragActive">
+                        <WisdomWordExample :author="author1" :content="content1"/>
+                        <WisdomWordExample :author="author2" :content="content2"/>
+                        <WisdomWordExample :author="author3" :content="content3"/>
+                        <WisdomWordExample :author="author4" :content="content4"/>
+                    </div>
+                    
                 </div>
                 
             </section>
@@ -113,25 +116,59 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
       methods: {
             scrollToTop(){
                 let currentScroll = document.documentElement.scrollTop,
-                int = setInterval(frame, 6)
+                int = setInterval(frame, 4)
 
                 function frame(){
                     if(0> currentScroll)
                         clearInterval(int)
                     else{
-                        currentScroll = currentScroll - 18
+                        currentScroll = currentScroll - 24
                         document.documentElement.scrollTop = currentScroll
                     }
                 }
-            }
+            },
+
+            // drag&drop functions
+            dragStart(e){
+                this.dragging = true;
+                this.mouseLocation = e.pageX
+                this.galleryLocation = this.wrapper.scrollLeft
+                console.log(this.galleryLocation)
+            },
+            dragActive(e){
+                if(!this.dragging) return;
+
+                let offset = e.pageX - this.mouseLocation;
+                this.wrapper.scrollLeft = this.galleryLocation - offset
+            },
+            
+            dragStop(e){
+                this.dragging = false;
+                this.mouseLocation = e.pageX
+                this.galleryLocation = this.wrapper.scrollLeft
+            },
+            
+            
+
         },
       
       data() {
         return {
-            authorFirst: 'JOS',
-            authorSecond: 'Aslaksen',
-            contentFirst: 'my content is here',
-            contentSecond: 'my second content'
+            author1: 'Johan O. Smith',
+            author2: 'Sigurd Bratlie',
+            author3: 'Kåre J. Smith',
+            author4: 'Johan O. Smith',
+            content1: 'Om du griper visdommen, vil du snart være et produkt av dens behandling.',
+            content2: 'Det å bli døpt med den Hellige Ånd tar ikke bort selvfornektelsens lidelse. Nei, men det gir deg kraft til å lide i kjødet. ',
+            content3: 'Som prest kan en ofre i sitt eget selvliv slik at en blir bevart i kjærligheten. Men skal en være konge, og ikke bare prest, da må en kunne si ifra og være et hode. Da blir det onde bundet der hvor en er.',
+            content4: 'Du kan i løpet av fem minutter si så meget ondt, at ikke fem år kan få helbredet det brutte samfund og få oprettet tillitsforholdet.',
+            
+            // drag&drop
+            gallery: this.$refs.gallery as HTMLElement,
+            wrapper: this.$refs.wrapper as HTMLElement,
+            dragging: false as boolean,
+            mouseLocation: 0 as number,
+            galleryLocation: 0 as number,
         }
       }
 });
@@ -144,6 +181,21 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     body{
         margin: 1em 0;
         background-color: white
+    }
+
+    /* scrollbar */
+    ::-webkit-scrollbar{
+        width: 1em;
+        height: 1em
+    }
+    ::-webkit-scrollbar-track{
+        background: #f6f6f6;
+
+    }
+    ::-webkit-scrollbar-thumb{
+        background: #949494;
+        border-radius: 100vw;
+        border: solid 4px #f6f6f6;
     }
 
     /* typography */
@@ -166,6 +218,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     p{
         font-size: 1.25rem
     }
+
     /* transform + scale */
     .transition{
         transition: all 0.25s
@@ -220,9 +273,8 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         color: inherit;
         justify-content: end;
     }
-/* wisdomWords Examples */
+/* wisdomWords Examples section*/
     .wisdomWordsSection{
-        height: 30em;
         padding: 7em 5em
     }
     .arrows{
@@ -230,8 +282,21 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         justify-content: flex-end;   
     }
     .wisdomWordsExamplesContainer{
-        display: flex;
-        margin-top: 4em;
+        padding-block: 4em;
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: 40%;
+        gap: 2.5%;
+        overflow-x: auto;
+        overscroll-behavior-inline: contain;
+        cursor: grab
+    }
+/* snapping */
+    .snaps-inline{
+        scroll-snap-type: inline mandatory;
+    }
+    .snaps-inline > * {
+        scroll-snap-align: start;
     }
 
 /* questionsSection */
@@ -240,13 +305,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         display: flex;
         justify-content: space-between;
     }
-
     .questionsSection form{
         display: flex;
         flex-direction: column;
         justify-content: space-between;
     }
-
     .questionsSection input, textarea{
         margin-bottom: 1em;
         border: none;
@@ -254,7 +317,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         width: 30em;
         height: 3em
     }
-
     .questionsSection svg {
         margin-top: 1em;
         opacity: 75%;
