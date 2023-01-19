@@ -1,9 +1,9 @@
 <template>
     <div class="nav-bar">
-        <p><strong>Wisdom Treasures</strong></p>
+        <p>Wisdom Treasures</p>
         <div class="links">
             <router-link to="/contact">Contact</router-link>
-            <router-link to="/contact">Sign up</router-link>
+            <router-link to="/login">Sign up</router-link>
         </div>
     </div>
   </template>
@@ -23,6 +23,9 @@
         align-items: center;
         margin: 0 3em;
         padding: 0 1em 1em 1em;
+    }
+    .nav-bar p {
+        font-family: 'EB Garamond', serif;
     }
     .links{
         display: flex

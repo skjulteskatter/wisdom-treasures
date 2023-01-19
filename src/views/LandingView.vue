@@ -9,23 +9,27 @@
                     <source src="https://crustac.fr/wp-content/themes/crustac/img/video_waves3.mp4" type="video/mp4">
                 </video>
                 <h2>WT</h2>
-                <p>Gods Word. The easy way.</p>
+                <router-link to="/login" class="transition scale">Gods Word. The easy way.</router-link> <!-- HAHA funny, but no -->
             </section>
 
 
             <!-- INTRO -->
             <section id="intro">
-                    <h1 id="title">Wisdom Treasures</h1>
-                    <p>A short description of what WT is. 
-                    En verktøykasse med verktøy (visdomsord)
-                    som bygger på Ordet og som er egner seg til å 
-                    skru på eget og andres liv.</p>
-                    <router-link to="/login">sign up</router-link>
+                <p id="about">A little bit about</p>
+                <div class="container">
+                    <h1>Wisdom Treasures</h1>
+                    <p>Our app is a toolbox with tools, Wisdom Words, 
+                    that are built on Gods Word and are personalized to your life and needs.</p>
+                </div>
+                <router-link to="/login" class="transition">sign up</router-link>
+                
             </section>
-        </div>
+
+        </div> <!-- of #parent-->
 
             <!-- WW GALLERY  -->
             <div class="wisdomWordsSection">
+                <p class="p-little">Examples of</p>
                 <h1>Wisdom</h1>
                 <h1 class="second-line-h1">words</h1>
 
@@ -64,6 +68,8 @@
                     <WisdomWordExample :author="author2" :content="content2"/>
                     <WisdomWordExample :author="author3" :content="content3"/>
                     <WisdomWordExample :author="author4" :content="content4"/>
+                    <WisdomWordExample :author="author1" :content="content1"/>
+                    <WisdomWordExample :author="author1" :content="content1"/>
                 </div>
                 
                 
@@ -86,7 +92,7 @@
                     <input type="text" placeholder="name" class="transition scale">
                     <input type="email" placeholder="e-mail" class="transition scale">
                     <textarea placeholder="type your message here" class="transition scale"></textarea>
-                    <svg xmlns="http://www.w3.org/2000/svg" 
+                    <button><svg xmlns="http://www.w3.org/2000/svg" 
                         width="40" 
                         height="40" 
                         viewBox="0 0 24 24" 
@@ -97,27 +103,33 @@
                         stroke-linejoin="round"
                         class="transition scale">
                         <path d="M5 12h13M12 5l7 7-7 7"/>
-                    </svg>
+                    </svg></button>
                 </form>
             </section>
 
             <!-- BOTTOM -->
-            <section class="scroll-to-top transition scale" @click="scrollToTop">
-                <svg xmlns="http://www.w3.org/2000/svg" 
-                    width="40" 
-                    height="40" 
-                    viewBox="0 0 24 24" 
-                    fill="none" 
-                    stroke="#000000" 
-                    stroke-width="2" 
-                    stroke-linecap="round" 
-                    stroke-linejoin="round">
-                    <path d="M12 19V6M5 12l7-7 7 7"/>
-                </svg>
-                <p>Scroll to the top</p>
+            <section id="scroll-top">
+                <button class="scroll-to-top-btn transition scale" @click="scrollToTop">
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                        width="40" 
+                        height="40" 
+                        viewBox="0 0 24 24" 
+                        fill="none" 
+                        stroke="#fff" 
+                        stroke-width="2" 
+                        stroke-linecap="round" 
+                        stroke-linejoin="round">
+                        <path d="M12 19V6M5 12l7-7 7 7"/>
+                    </svg>
+                    <p>Scroll to the top</p>
+                </button>
+                <video autoplay muted loop>
+                    <source src="https://crustac.fr/wp-content/themes/crustac/img/video_waves3.mp4" type="video/mp4">
+                </video>
             </section>
-            <FooterComponent/>
+            
         </main>
+        <footer>Copyright 2022 © Stiftelsen Skjulte Skatters Forlag. All Rights Reserved</footer>
     </body>
 </template>
   
@@ -216,34 +228,20 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
 --charcoal: #2B4453ff; */
 
 
-/* scrollbar */
-    ::-webkit-scrollbar{
-        width: 1em;
-        height: 1em
-    }
-    ::-webkit-scrollbar-track{
-        background: #f6f6f6;
-
-    }
-    ::-webkit-scrollbar-thumb{
-        background: #949494;
-        border-radius: 100vw;
-        border: solid 4px #f6f6f6;
-    }
-
 /* TYPOGRAPHY */
     h1, h2 {
         font-size: 3rem;
         font-weight: bold;
         margin: 0;
         letter-spacing: 2px;
-        line-height: 1em;
+        line-height: 5rem;
     }
     h1{
         font-size: 4rem
     }
     .second-line-h1{
         margin-left: 2em;
+        margin-top: -0.25em;
     }
     h3{
         font-size: 2rem
@@ -252,68 +250,58 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         font-size: 1.25rem
     }
 
-/* transform + scale */
-    .transition{
-        transition: all 0.25s
-    }
-    .scale:hover,
-    .scale:active,
-    .scale:focus{
-        transform: scale(1.1)
-    }
 
-
-#parent{
-    display: grid;
-    grid-template-rows: 100vh 30em;
-}
+    #parent{
+        display: grid;
+        grid-template-rows: 100vh 30em;
+    }
 /* BANNER */
-#banner{
-    grid-row: 1;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center; 
-    clear: both
-}
-#banner video {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100vh;
-    object-fit: cover;
-    opacity: 70%
-}
-#banner h2{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: #fff;
-    font-size: 35vw;
-    text-align: center;
-    text-transform: uppercase;
-    line-height: 100vh;
-    mix-blend-mode: screen;
-}
-#banner p{
-    position: absolute;
-    top: 43vh;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: none;
-    font-size: 5rem;
-    text-align: center;
-    font-family: 'EB Garamond', serif;
-}
+    #banner{
+        grid-row: 1;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center; 
+        clear: both
+    }
+    #banner video {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        object-fit: cover;
+        opacity: 70%
+    }
+    #banner h2{
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        font-size: 35vw;
+        text-align: center;
+        text-transform: uppercase;
+        line-height: 100vh;
+        mix-blend-mode: screen;
+    }
+    #banner a{
+        position: absolute;
+        top: 43vh;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: none;
+        font-size: 5rem;
+        text-align: center;
+        font-family: 'EB Garamond', serif;
+    }
 
 
 
@@ -325,28 +313,47 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         left: 0;
         width: 100%;
         height: 20em;
+
         display: flex;
         flex-direction: column;
-        padding: 0 20em;
         justify-content: center;
         align-items: center;
-        text-align: center;
-        clear: both
     }
-    #intro p {
-        margin: 2em 0
+    #about {
+        font-family: 'EB Garamond', serif;
+        padding-right: 15em;
+        margin-bottom: -7em
     }
-/* link in the intro */
+    .container{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 4em
+    }
+    .container h1{
+        width: 40%;
+        text-align: right;
+        padding-right: 1em;
+        font-family: 'EB Garamond', serif;
+        font-size: 5rem
+    }
+    .container p {
+        width: 40%;
+        padding: 4em 0 8em 4em;
+        margin-top: 5em;
+        border-left: 1px solid #2B4453
+    }
     #intro a{
         color: #2B4453;
-        background-color: none;
+        background-color: white;
         border: 3px #2B4453 solid;
-        padding: 1em 4em;
+        padding: 0.75em 4em;
         border-radius: 2em;
         text-transform: uppercase;
         font-size: 0.75rem;
         font-weight: bold;
-        letter-spacing: 2px;
+        letter-spacing: 3px;
+        margin-top: -12em
     }
     #intro a:hover, 
     #intro a:active,
@@ -355,23 +362,17 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         color: white
     }
 
-/* functions display */
-    .functionExampleSection{
-        height: 20em;
-        background-color: #6F6F6F;
-        color: white;
-        display: flex;
-        align-items: center;
-        padding: 7em 5em
-    }
-    .functionExampleSection.white-v{
-        background-color: white;
-        color: inherit;
-        justify-content: end;
-    }
-/* wisdomWords Examples section*/
+
+/* WW Examples section*/
     .wisdomWordsSection{
         padding: 7em 5em
+    }
+    .wisdomWordsSection h1{
+        font-size: 5rem
+    }
+    .p-little {
+        font-family: 'EB Garamond', serif;
+        font-size: 1.75
     }
     .arrows{
         display: flex;
@@ -388,6 +389,23 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         width: 100%;
     }
 
+
+    /* functions display */
+    .functionExampleSection{
+        height: 20em;
+        background-color: #202D31;
+        color: white;
+        display: flex;
+        align-items: center;
+        padding: 7em 5em
+    }
+    .functionExampleSection.white-v{
+        background-color: white;
+        color: inherit;
+        justify-content: end;
+    }
+
+
 /* snapping */
     .snaps-inline{
         scroll-snap-type: inline mandatory;
@@ -398,7 +416,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
 
 /* questionsSection */
     .questionsSection{
-        padding: 14em 5em;
+        padding: 7em 5em;
         display: flex;
         justify-content: space-between;
     }
@@ -410,27 +428,84 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     .questionsSection input, textarea{
         margin-bottom: 1em;
         border: none;
-        border-bottom: 2px solid #3C3C4D;
+        border-bottom: 2px solid #2B4453;
         width: 30em;
         height: 3em
     }
-    .questionsSection svg {
+    .questionsSection textarea{
+        height: 6em
+    }
+    .questionsSection button {
         margin-top: 1em;
         opacity: 75%;
         align-self: flex-end;
     }
 
     /* scroll to the top */
-    .scroll-to-top{
+    #scroll-top {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 15em;
+        position: relative;
+        overflow: hidden;
+        background-color: rgba(0, 0, 0, 0.486);
+    }
+    #scroll-top video {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        z-index: -1;
+        background-color: #2B4453;
+    }
+    .scroll-to-top-btn{
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin-bottom: 5em 
+        color: white;
+        text-transform: uppercase;
+        letter-spacing: 3px
     }
-    .scroll-to-top:hover,
-    .scroll-to-top:active,
-    .scroll-to-top:focus {
+    .scroll-to-top-btn:hover,
+    .scroll-to-top-btn:active,
+    .scroll-to-top-btn:focus {
         cursor: pointer;
         opacity: 60%
     }
+    footer{
+        text-align: center;
+        padding: 2em;
+        background-color: #202D31;
+        color: white;
+        font-size: 0.75rem
+    }
+
+
+    /* transform + scale */
+    .transition{
+        transition: all 0.25s
+    }
+    .scale:hover,
+    .scale:active,
+    .scale:focus{
+        transform: scale(1.1)
+    }
+
+
+    /* scrollbar */
+    ::-webkit-scrollbar{
+        width: 1em;
+        height: 1em
+    }
+    ::-webkit-scrollbar-track{
+        background: #f6f6f6;
+
+    }
+    ::-webkit-scrollbar-thumb{
+        background: #2B4453;
+        border-radius: 100vw;
+        border: solid 4px #f6f6f6;
+    }
+
 </style>
