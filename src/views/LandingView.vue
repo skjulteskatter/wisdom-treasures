@@ -2,12 +2,14 @@
     <body>
         <LandingNavBar/>
         <main>
+        <div id="parent">
             <!-- BANNER -->
             <section id="banner">
                 <video autoplay muted loop>
                     <source src="https://crustac.fr/wp-content/themes/crustac/img/video_waves3.mp4" type="video/mp4">
                 </video>
                 <h2>WT</h2>
+                <p>Gods Word. The easy way.</p>
             </section>
 
 
@@ -18,9 +20,9 @@
                     En verktøykasse med verktøy (visdomsord)
                     som bygger på Ordet og som er egner seg til å 
                     skru på eget og andres liv.</p>
-                    <router-link to="/login" class="transition scale">sign up</router-link>
+                    <router-link to="/login">sign up</router-link>
             </section>
-
+        </div>
 
             <!-- WW GALLERY  -->
             <div class="wisdomWordsSection">
@@ -261,16 +263,23 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
 
 
-
+#parent{
+    display: grid;
+    grid-template-rows: 100vh 30em;
+}
 /* BANNER */
 #banner{
+    grid-row: 1;
     position: absolute;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100vh;
     overflow: hidden;
     display: flex;
     justify-content: center;
     align-items: center; 
+    clear: both
 }
 #banner video {
     position: absolute;
@@ -279,6 +288,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     width: 100%;
     height: 100vh;
     object-fit: cover;
+    opacity: 70%
 }
 #banner h2{
     position: absolute;
@@ -293,38 +303,56 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     line-height: 100vh;
     mix-blend-mode: screen;
 }
-
+#banner p{
+    position: absolute;
+    top: 43vh;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: none;
+    font-size: 5rem;
+    text-align: center;
+    font-family: 'EB Garamond', serif;
+}
 
 
 
 /* INTRO */
     #intro{
-        height: 40em;
+        grid-row: 2;
+        position: absolute;
+        top: 20vh;
+        left: 0;
+        width: 100%;
+        height: 20em;
         display: flex;
         flex-direction: column;
         padding: 0 20em;
         justify-content: center;
         align-items: center;
         text-align: center;
+        clear: both
     }
     #intro p {
         margin: 2em 0
     }
 /* link in the intro */
     #intro a{
-        color: white;
-        background-color: #8a8a8a;
+        color: #2B4453;
+        background-color: none;
+        border: 3px #2B4453 solid;
         padding: 1em 4em;
         border-radius: 2em;
         text-transform: uppercase;
         font-size: 0.75rem;
         font-weight: bold;
-        letter-spacing: 1.75px;
+        letter-spacing: 2px;
     }
     #intro a:hover, 
     #intro a:active,
     #intro a:focus{
-        background-color: #6f6f6f;
+        background-color: #2B4453;
+        color: white
     }
 
 /* functions display */
