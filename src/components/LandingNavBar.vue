@@ -1,6 +1,6 @@
 <template>
     <div class="nav-bar">
-        <p><strong>WT</strong></p>
+        <p><strong>Wisdom Treasures</strong></p>
         <div class="links">
             <router-link to="/contact">Contact</router-link>
             <router-link to="/contact">Sign up</router-link>
@@ -23,7 +23,6 @@
         align-items: center;
         margin: 0 3em;
         padding: 0 1em 1em 1em;
-        border-bottom: solid gray 1px;
     }
     .links{
         display: flex

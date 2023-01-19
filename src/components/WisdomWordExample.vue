@@ -28,6 +28,8 @@
         display: grid;
         grid-template-rows: min-content;
         gap: 1em;
+        width: 100%;
+        /* width: 170%; */
     }
     .wisdom-author{
         font-size: 1rem;
