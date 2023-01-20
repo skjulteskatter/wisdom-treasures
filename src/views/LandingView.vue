@@ -140,7 +140,6 @@ import { defineComponent } from 'vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import LandingNavBar from '@/components/LandingNavBar.vue';
 import WisdomWordExample from '@/components/WisdomWordExample.vue';
-import { dragscroll } from 'vue-dragscroll'
 
 
     export default defineComponent({
@@ -175,35 +174,24 @@ import { dragscroll } from 'vue-dragscroll'
                 behavior: 'smooth'
                 })
             },
-            // scrolling with mouseup and down
+            // scrolling with mouseup, -move and -down
             startDrag(event: MouseEvent) {
+                this.isDown = true
                 // Store the initial position of the mouse
-                this.startX = event.clientX
-                this.startY = event.clientY;
-                // Add the 'dragging' class to the element
-                (this.$refs.scrollContainer as HTMLElement).classList.add('dragging')
+                this.startX = event.pageX - (this.$refs.scrollContainer as HTMLElement).offsetLeft;
+                this.divScrollLeft = (this.$refs.scrollContainer as HTMLElement).scrollLeft as number;
+                (this.$refs.scrollContainer as HTMLElement).classList.remove('snaps-inline')
             },
             drag(event: MouseEvent) {
-                // Check if the left mouse button is pressed
-                if (event.buttons === 1) {
-                    // Calculate the distance the mouse has moved since the start of the drag
-                    const deltaX = event.clientX - this.startX;
-                    console.log(deltaX)
-                    const deltaY = event.clientY - this.startY;
-                    // Update the scroll position of the element
-                    (this.$refs.scrollContainer as HTMLElement).scrollLeft -= (deltaX*0.02);
-                    (this.$refs.scrollContainer as HTMLElement).scrollTop -= deltaY;
-                    //remove snapping when pressed
-                    (this.$refs.scrollContainer as HTMLElement).classList.remove('snaps-inline')
-                } else {
-                    // If the left mouse button is not pressed, prevent the default browser behavior and add snapping
-                    event.preventDefault();
-                    (this.$refs.scrollContainer as HTMLElement).classList.add('snaps-inline')
-                }
+                if(!this.isDown) return;
+                event.preventDefault();
+                    const x = event.pageX - (this.$refs.scrollContainer as HTMLElement).offsetLeft;
+                    const walk = x - this.startX;
+                    (this.$refs.scrollContainer as HTMLElement).scrollLeft = this.divScrollLeft - walk
             },
             endDrag() {
-                // Remove the 'dragging' class from the element
-                // (this.$refs.scrollContainer as HTMLElement).classList.remove('dragging')
+                this.isDown = false;
+                (this.$refs.scrollContainer as HTMLElement).classList.add('snaps-inline')
             }
         }, data() {
             return {
@@ -217,6 +205,8 @@ import { dragscroll } from 'vue-dragscroll'
                 content4: 'Du kan i løpet av fem minutter si så meget ondt, at ikke fem år kan få helbredet det brutte samfund og få oprettet tillitsforholdet.',
                 startX: 0,
                 startY: 0,
+                isDown: false as boolean,
+                divScrollLeft: 0,
             }
         },
 });
@@ -413,7 +403,7 @@ import { dragscroll } from 'vue-dragscroll'
 /* snapping */
     .snaps-inline{
         scroll-snap-type: inline mandatory;
-        transition: all 0.5s;
+        transition: smooth all 0.5s;
     }
     .snaps-inline > * {
         scroll-snap-align: start;
