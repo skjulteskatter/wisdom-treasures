@@ -37,8 +37,8 @@
                 <div class="arrows">
                     <button @click="scrollLeft">
                         <svg xmlns="http://www.w3.org/2000/svg" 
-                        width="40" 
-                        height="40" 
+                        width="50" 
+                        height="50" 
                         viewBox="0 0 24 24" 
                         fill="none" 
                         stroke="#000000" 
@@ -50,8 +50,8 @@
                     </button>
                     <button @click="scrollRight">
                         <svg xmlns="http://www.w3.org/2000/svg" 
-                        width="40" 
-                        height="40" 
+                        width="50" 
+                        height="50" 
                         viewBox="0 0 24 24" 
                         fill="none" 
                         stroke="#000000" 
@@ -63,7 +63,9 @@
                     </button>
                 </div>
           
-                <div ref="scrollContainer" class="wisdomWordsExamplesContainer snaps-inline scroll-container" >
+                <div ref="scrollContainer" class="wisdomWordsExamplesContainer snaps-inline scroll-container grab-bing" 
+                    @mousedown="startDrag" @mousemove="drag" @mouseup="endDrag">
+
                     <WisdomWordExample :author="author1" :content="content1"/>
                     <WisdomWordExample :author="author2" :content="content2"/>
                     <WisdomWordExample :author="author3" :content="content3"/>
@@ -138,6 +140,8 @@ import { defineComponent } from 'vue';
 import FooterComponent from '@/components/FooterComponent.vue';
 import LandingNavBar from '@/components/LandingNavBar.vue';
 import WisdomWordExample from '@/components/WisdomWordExample.vue';
+import { dragscroll } from 'vue-dragscroll'
+
 
     export default defineComponent({
       name: "LandingView",
@@ -158,6 +162,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
                     }
                 }
             },
+            // scrolling with buttons (arrows)
             scrollLeft() {
                 (this.$refs.scrollContainer as HTMLElement).scrollTo({
                 left: (this.$refs.scrollContainer as HTMLElement).scrollLeft - 500,
@@ -169,29 +174,37 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
                 left: (this.$refs.scrollContainer as HTMLElement).scrollLeft + 500,
                 behavior: 'smooth'
                 })
+            },
+            // scrolling with mouseup and down
+            startDrag(event: MouseEvent) {
+                // Store the initial position of the mouse
+                this.startX = event.clientX
+                this.startY = event.clientY;
+                // Add the 'dragging' class to the element
+                (this.$refs.scrollContainer as HTMLElement).classList.add('dragging')
+            },
+            drag(event: MouseEvent) {
+                // Check if the left mouse button is pressed
+                if (event.buttons === 1) {
+                    // Calculate the distance the mouse has moved since the start of the drag
+                    const deltaX = event.clientX - this.startX;
+                    console.log(deltaX)
+                    const deltaY = event.clientY - this.startY;
+                    // Update the scroll position of the element
+                    (this.$refs.scrollContainer as HTMLElement).scrollLeft -= (deltaX*0.02);
+                    (this.$refs.scrollContainer as HTMLElement).scrollTop -= deltaY;
+                    //remove snapping when pressed
+                    (this.$refs.scrollContainer as HTMLElement).classList.remove('snaps-inline')
+                } else {
+                    // If the left mouse button is not pressed, prevent the default browser behavior and add snapping
+                    event.preventDefault();
+                    (this.$refs.scrollContainer as HTMLElement).classList.add('snaps-inline')
+                }
+            },
+            endDrag() {
+                // Remove the 'dragging' class from the element
+                // (this.$refs.scrollContainer as HTMLElement).classList.remove('dragging')
             }
-
-            // drag&drop functions
-            // dragStart(e){
-            //     this.dragging = true;
-            //     this.mouseLocation = e.pageX
-            //     this.galleryLocation = this.wrapper.scrollLeft
-            //     console.log(this.galleryLocation)
-            // },
-            // dragActive(e){
-            //     if(!this.dragging) return;
-
-            //     let offset = e.pageX - this.mouseLocation;
-            //     this.wrapper.scrollLeft = this.galleryLocation - offset
-            // },
-            
-            // dragStop(e){
-            //     this.dragging = false;
-            //     this.mouseLocation = e.pageX
-            //     this.galleryLocation = this.wrapper.scrollLeft
-            // },
-            // @mousedown="dragStart" @mouseup="dragStop" @mousemove="dragActive" - add to html
-
         }, data() {
             return {
                 author1: 'Johan O. Smith',
@@ -202,12 +215,8 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
                 content2: 'Det å bli døpt med den Hellige Ånd tar ikke bort selvfornektelsens lidelse. Nei, men det gir deg kraft til å lide i kjødet. ',
                 content3: 'Som prest kan en ofre i sitt eget selvliv slik at en blir bevart i kjærligheten. Men skal en være konge, og ikke bare prest, da må en kunne si ifra og være et hode. Da blir det onde bundet der hvor en er.',
                 content4: 'Du kan i løpet av fem minutter si så meget ondt, at ikke fem år kan få helbredet det brutte samfund og få oprettet tillitsforholdet.',
-
-                // // drag&drop
-                // wrapper: this.$refs.wrapper as HTMLElement,
-                // dragging: false as boolean,
-                // mouseLocation: 0 as number,
-                // galleryLocation: 0 as number,
+                startX: 0,
+                startY: 0,
             }
         },
 });
@@ -234,10 +243,10 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         font-weight: bold;
         margin: 0;
         letter-spacing: 2px;
-        line-height: 5rem;
     }
     h1{
-        font-size: 4rem
+        font-size: 4rem;
+        line-height: 5rem;
     }
     .second-line-h1{
         margin-left: 2em;
@@ -388,6 +397,27 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         overscroll-behavior-inline: contain;
         width: 100%;
     }
+/* cursor */
+    .grab-bing {
+        cursor : -webkit-grab;
+        cursor : -moz-grab;
+        cursor : -o-grab;
+        cursor : grab;
+    }
+    .grab-bing:active {
+        cursor : -webkit-grabbing;
+        cursor : -moz-grabbing;
+        cursor : -o-grabbing;
+        cursor : grabbing;
+    }
+/* snapping */
+    .snaps-inline{
+        scroll-snap-type: inline mandatory;
+        transition: all 0.5s;
+    }
+    .snaps-inline > * {
+        scroll-snap-align: start;
+    }
 
 
     /* functions display */
@@ -405,14 +435,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         justify-content: end;
     }
 
-
-/* snapping */
-    .snaps-inline{
-        scroll-snap-type: inline mandatory;
-    }
-    .snaps-inline > * {
-        scroll-snap-align: start;
-    }
 
 /* questionsSection */
     .questionsSection{
