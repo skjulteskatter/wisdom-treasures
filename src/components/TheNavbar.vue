@@ -50,8 +50,8 @@
 						leave-to-class="transform scale-95 opacity-0"
 						>
 							<MenuItems
-								class="fixed left-1/2 sm:left-auto w-11/12 sm:w-56 -translate-x-1/2 sm:right-0 sm:translate-x-0 ml-auto mr-auto origin-bottom-right bottom-16 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-								<div class="px-1 py-1 rounded-t-md flex flex-col sm:hidden">
+								class="fixed left-1/2 sm:left-auto w-11/12 sm:w-56 -translate-x-1/2 sm:right-0 sm:translate-x-0 ml-auto mr-auto origin-bottom-right bottom-16 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
+								<div class="flex flex-col sm:hidden p-1">
 									<MenuItem>
 										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
 									</MenuItem>
@@ -62,15 +62,31 @@
 										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
 									</MenuItem>
 								</div>
-								<div class="px-1 py-1 rounded-t-none sm:rounded-t-md hidden sm:flex">
+								<div class="hidden sm:flex p-1">
 									<BaseInput :inside-h-u-menu="true" v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)" @keydown.enter="search(undefined)"/>
 								</div>
-
-								<div v-if="currentUser == null" class="px-1 py-1 rounded-b-md">
+								<div v-if="currentUser === null" class="p-1">
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
 											<BaseButton theme="tertiary" @click="navigate('login')" class="border grow border-primary"><b>Log in</b></BaseButton>
 											<BaseButton theme="magic" @click="navigate('register')" class="grow"><b>Sign up</b></BaseButton>
+										</div>
+									</MenuItem>
+								</div>
+								<div v-else class="p-1 border-t border-black/30">
+									<MenuItem>
+										<div class="flex gap-2 max-h-8">
+											<BaseButton class="w-full" theme="menuButton" :center-text="false" :clicked="$route.name === 'profile'" @click="navigate('profile')">Profile</BaseButton>
+										</div>
+									</MenuItem>
+									<MenuItem>
+										<div class="flex gap-2 max-h-8">
+											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="console.log('Notification tab is not implemented yet 😥')">Notifications</BaseButton>
+										</div>
+									</MenuItem>
+									<MenuItem>
+										<div class="flex gap-2 max-h-8">
+											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="console.log('Help button is not implemented yet')">Help</BaseButton>
 										</div>
 									</MenuItem>
 								</div>
@@ -125,7 +141,8 @@ export default defineComponent({
 
 		removeThis: 0
 	}),
-	async mounted() {
+	computed:{
+		console: () => console,
 	},
 	async beforeMount() {
 		this.currentUser = await getCurrentUserPromise();

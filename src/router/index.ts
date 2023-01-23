@@ -73,15 +73,6 @@ export const routes = [
     children: [ ]
   },
   {
-    path: '/contact',
-    name: 'contact',
-    component: () => import('../views/ContactView.vue'),
-    meta: {
-      requiresAuth: false,
-      scrollUp: true,
-    },
-  },
-  {
     path: '/login',
     name: 'login',
     component: () => import('../views/LoginView.vue'),
