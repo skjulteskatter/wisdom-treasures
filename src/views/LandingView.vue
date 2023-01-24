@@ -66,12 +66,12 @@
                 <div ref="scrollContainer" class="wisdomWordsExamplesContainer snaps-inline scroll-container grab-bing" 
                     @mousedown="startDrag" @mousemove="drag" @mouseup="endDrag">
 
-                    <WisdomWordExample :author="author1" :content="content1"/>
-                    <WisdomWordExample :author="author2" :content="content2"/>
-                    <WisdomWordExample :author="author3" :content="content3"/>
-                    <WisdomWordExample :author="author4" :content="content4"/>
-                    <WisdomWordExample :author="author1" :content="content1"/>
-                    <WisdomWordExample :author="author1" :content="content1"/>
+                    <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
+                    <WisdomWordExample :author="author2" :content="content2" :imgSrc="imgSrc2"/>
+                    <WisdomWordExample :author="author3" :content="content3" :imgSrc="imgSrc3"/>
+                    <WisdomWordExample :author="author4" :content="content4" :imgSrc="imgSrc1"/>
+                    <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
+                    <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
                 </div>
                 
                 
@@ -203,6 +203,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
                 content2: 'Det å bli døpt med den Hellige Ånd tar ikke bort selvfornektelsens lidelse. Nei, men det gir deg kraft til å lide i kjødet. ',
                 content3: 'Som prest kan en ofre i sitt eget selvliv slik at en blir bevart i kjærligheten. Men skal en være konge, og ikke bare prest, da må en kunne si ifra og være et hode. Da blir det onde bundet der hvor en er.',
                 content4: 'Du kan i løpet av fem minutter si så meget ondt, at ikke fem år kan få helbredet det brutte samfund og få oprettet tillitsforholdet.',
+                imgSrc1: "images/JOS.webp",
+                imgSrc2: "images/SB.webp",
+                imgSrc3: "images/KJS.jpg",
                 startX: 0,
                 startY: 0,
                 isDown: false as boolean,

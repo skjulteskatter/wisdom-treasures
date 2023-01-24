@@ -1,7 +1,11 @@
 <template>
     <div class="wisdomWordExample">
         <p class="wisdom-content">{{ content }}</p>
-        <p class="wisdom-author">{{ author }}</p>
+        <div class="wisdom-author">
+            <img class="author-img" :src="imgSrc" />
+            <p class="author-title">{{ author }}</p>
+        </div>
+        
      </div>
 </template>
 
@@ -10,7 +14,7 @@
 
  export default defineComponent({
     name: "wisdom-word-example",
-    props: ['content', 'author']
+    props: ['content', 'author', 'imgSrc'],
 
  })
 </script>
@@ -29,10 +33,20 @@
         grid-template-rows: min-content;
         gap: 1em;
         width: 100%;
-        /* width: 170%; */
     }
     .wisdom-author{
+        display: flex;
+        align-items: center;
+    }
+    .author-title{
         font-size: 1rem;
+    }
+    .author-img {
+        height: 5em;
+        width: 5em;
+        border-radius: 50%;
+        object-fit: cover;
+        margin-right: 1.5em
     }
 
 </style>
