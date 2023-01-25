@@ -34,6 +34,9 @@
         gap: 1em;
         width: 100%;
     }
+    .wisdom-content{
+        font-size: 1.5rem
+    }
     .wisdom-author{
         display: flex;
         align-items: center;
@@ -47,6 +50,21 @@
         border-radius: 50%;
         object-fit: cover;
         margin-right: 1.5em
+    }
+    @media only screen and (max-width: 1024px){
+        .wisdom-content{
+            font-size: 1.25rem
+        }
+    } 
+    @media only screen and (max-width: 810px){
+        .wisdom-content{
+            font-size: 1.1rem
+        }
+        .author-img {
+            height: 4em;
+            width: 4em;
+            margin-right: 1.25em
+        }
     }
 
 </style>

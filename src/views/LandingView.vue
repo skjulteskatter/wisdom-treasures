@@ -9,13 +9,13 @@
                     <source src="https://crustac.fr/wp-content/themes/crustac/img/video_waves3.mp4" type="video/mp4">
                 </video>
                 <h2>WT</h2>
-                <router-link to="/login" class="transition scale">Gods Word. The easy way.</router-link> <!-- HAHA funny, but no -->
+                <router-link to="/login" class="transition scale-s">Gods Word. The easy way.</router-link> <!-- HAHA funny, but no -->
             </section>
 
 
             <!-- INTRO -->
             <section id="intro">
-                <p id="about">A little bit about</p>
+                <p id="about" class="p-little">A little bit about</p>
                 <div class="container">
                     <h1>Wisdom Treasures</h1>
                     <p>Our app is a toolbox with tools, Wisdom Words, 
@@ -45,7 +45,7 @@
                         stroke-width="2" 
                         stroke-linecap="round" 
                         stroke-linejoin="round"
-                        class="transition scale">
+                        class="transition scale-b">
                         <path d="M19 12H6M12 5l-7 7 7 7"/></svg>
                     </button>
                     <button @click="scrollRight">
@@ -58,30 +58,27 @@
                         stroke-width="2" 
                         stroke-linecap="round" 
                         stroke-linejoin="round"
-                        class="transition scale">
+                        class="transition scale-b">
                         <path d="M5 12h13M12 5l7 7-7 7"/></svg>
                     </button>
                 </div>
           
                 <div ref="scrollContainer" class="wisdomWordsExamplesContainer snaps-inline scroll-container grab-bing" 
                     @mousedown="startDrag" @mousemove="drag" @mouseup="endDrag">
-
-                    <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
                     <WisdomWordExample :author="author2" :content="content2" :imgSrc="imgSrc2"/>
                     <WisdomWordExample :author="author3" :content="content3" :imgSrc="imgSrc3"/>
+                    <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
                     <WisdomWordExample :author="author4" :content="content4" :imgSrc="imgSrc1"/>
                     <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
                     <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
                 </div>
-                
-                
             </div>
 
             <!-- FUNCTION DISPLAY SECTION -->
-            <section class="functionExampleSection"><h2 class="transition scale">Get daily<br>wisdom words</h2></section>
-            <section class="functionExampleSection white-v"><h2 class="transition scale">Get manna</h2></section>
-            <section class="functionExampleSection"><h2 class="transition scale">Send to your friend</h2></section>
-            <section class="functionExampleSection white-v"><h2 class="transition scale">Add to a collection</h2></section>
+            <section class="functionExampleSection"><h2 class="transition scale-s">Get daily<br>wisdom words</h2></section>
+            <section class="functionExampleSection white-v"><h2 class="transition scale-s">Get manna</h2></section>
+            <section class="functionExampleSection"><h2 class="transition scale-s">Send to your friend</h2></section>
+            <section class="functionExampleSection white-v"><h2 class="transition scale-s">Add to a collection</h2></section>
 
 
             <!-- QUESTIONS SECTION -->
@@ -91,9 +88,9 @@
                     <h3>Write to us!</h3>
                 </div>
                 <form>
-                    <input type="text" placeholder="name" class="transition scale">
-                    <input type="email" placeholder="e-mail" class="transition scale">
-                    <textarea placeholder="type your message here" class="transition scale"></textarea>
+                    <input type="text" placeholder="name" class="transition scale-s">
+                    <input type="email" placeholder="e-mail" class="transition scale-s">
+                    <textarea placeholder="type your message here" class="transition scale-s"></textarea>
                     <button><svg xmlns="http://www.w3.org/2000/svg" 
                         width="40" 
                         height="40" 
@@ -103,7 +100,7 @@
                         stroke-width="2" 
                         stroke-linecap="round" 
                         stroke-linejoin="round"
-                        class="transition scale">
+                        class="transition scale-b">
                         <path d="M5 12h13M12 5l7 7-7 7"/>
                     </svg></button>
                 </form>
@@ -141,7 +138,6 @@ import FooterComponent from '@/components/FooterComponent.vue';
 import LandingNavBar from '@/components/LandingNavBar.vue';
 import WisdomWordExample from '@/components/WisdomWordExample.vue';
 
-
     export default defineComponent({
       name: "LandingView",
       components: { FooterComponent, 
@@ -164,13 +160,13 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             // scrolling with buttons (arrows)
             scrollLeft() {
                 (this.$refs.scrollContainer as HTMLElement).scrollTo({
-                left: (this.$refs.scrollContainer as HTMLElement).scrollLeft - 500,
+                left: (this.$refs.scrollContainer as HTMLElement).scrollLeft - 400,
                 behavior: 'smooth'
                 })
             },
             scrollRight() {
                 (this.$refs.scrollContainer as HTMLElement).scrollTo({
-                left: (this.$refs.scrollContainer as HTMLElement).scrollLeft + 500,
+                left: (this.$refs.scrollContainer as HTMLElement).scrollLeft + 400,
                 behavior: 'smooth'
                 })
             },
@@ -232,7 +228,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
 
 /* TYPOGRAPHY */
     h1, h2 {
-        font-size: 3rem;
         font-weight: bold;
         margin: 0;
         letter-spacing: 2px;
@@ -245,13 +240,18 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         margin-left: 2em;
         margin-top: -0.25em;
     }
+    h2{
+        font-size: 3rem
+    }
     h3{
         font-size: 2rem
     }
     p{
         font-size: 1.25rem
     }
-
+    .p-little {
+        font-family: 'EB Garamond', serif;
+    }
 
     #parent{
         display: grid;
@@ -300,7 +300,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         width: 100%;
         height: 100%;
         background: none;
-        font-size: 5rem;
+        font-size: 7vw;
         text-align: center;
         font-family: 'EB Garamond', serif;
     }
@@ -314,15 +314,13 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         top: 20vh;
         left: 0;
         width: 100%;
-        height: 20em;
-
+        height: 50vh;
         display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
     }
     #about {
-        font-family: 'EB Garamond', serif;
         padding-right: 15em;
         margin-bottom: -7em
     }
@@ -343,7 +341,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         width: 40%;
         padding: 4em 0 8em 4em;
         margin-top: 5em;
-        border-left: 1px solid #2B4453
+        border-left: 2px solid #2B4453
     }
     #intro a{
         color: #2B4453;
@@ -363,18 +361,14 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         background-color: #2B4453;
         color: white
     }
+    
 
-
-/* WW Examples section*/
+/* WW Examples section */
     .wisdomWordsSection{
         padding: 7em 5em
     }
     .wisdomWordsSection h1{
         font-size: 5rem
-    }
-    .p-little {
-        font-family: 'EB Garamond', serif;
-        font-size: 1.75
     }
     .arrows{
         display: flex;
@@ -413,14 +407,14 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
 
 
-    /* functions display */
+/* functions display */
     .functionExampleSection{
-        height: 20em;
         background-color: #202D31;
         color: white;
         display: flex;
         align-items: center;
-        padding: 7em 5em
+        padding: 0 5em;
+        height: 60vh
     }
     .functionExampleSection.white-v{
         background-color: white;
@@ -435,6 +429,10 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         display: flex;
         justify-content: space-between;
     }
+    .questionsSection h1{
+        margin: 0 1em 0.25em 0;
+        line-height: 1em;
+    }
     .questionsSection form{
         display: flex;
         flex-direction: column;
@@ -444,7 +442,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         margin-bottom: 1em;
         border: none;
         border-bottom: 2px solid #2B4453;
-        width: 30em;
+        width: 40vw;
         height: 3em
     }
     .questionsSection textarea{
@@ -501,10 +499,15 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     .transition{
         transition: all 0.25s
     }
-    .scale:hover,
-    .scale:active,
-    .scale:focus{
-        transform: scale(1.1)
+    .scale-b:hover,
+    .scale-b:active,
+    .scale-b:focus{
+        transform: scale(1.2)
+    }
+    .scale-s:hover,
+    .scale-s:active,
+    .scale-s:focus{
+        transform: scale(1.05)
     }
 
 
@@ -523,4 +526,160 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         border: solid 4px #f6f6f6;
     }
 
+
+
+
+
+/* MEDIA QUERIES */
+    @media only screen and (max-width: 1024px){
+        .container h1 {
+            width: 50%;
+            font-size: 4.5rem
+        }
+        .container p {
+            width: 50%
+        }
+        #about{
+            padding-right: 14.5em; 
+            margin-bottom: -8em
+        }
+        h1{
+            line-height: 4rem;
+        }
+        .second-line-h1{
+            margin-left: 2em;
+            margin-top: 0em;
+        }
+        .wisdomWordsSection{
+            padding: 7em 3em
+        }
+        .functionExampleSection{
+            padding: 0 3em
+        }
+        .questionsSection{
+            padding: 7em 3em
+        }
+        
+    }
+    @media only screen and (max-width: 810px){
+        .container h1{
+            padding-right: 0.5em;
+            font-size: 4rem
+        }
+        .container p {
+            padding: 4em 1.5em 8em 2em;
+            /* margin-top: 5em; */
+        }
+        #about{
+            padding-right: 10em;
+            margin-bottom: -9em
+        }
+        .wisdomWordsSection h1{
+            font-size: 4rem;
+            line-height: 3rem;
+        }
+        .wisdomWordsExamplesContainer {
+            grid-auto-columns: 55%;
+        }
+        h2{
+            font-size: 2.6rem;
+        }
+        .functionExampleSection{
+            height: 50vh
+        }
+        .questionsSection{
+            flex-direction: column;
+        }
+        .questionsSection h1{
+            margin-bottom: 0.1em
+        }
+        .questionsSection form{
+            align-self: flex-end;
+        }
+        .questionsSection input, textarea{
+            width: 50vw
+        }
+        #scroll-top{
+            height: 12em;
+        }
+        footer{
+            padding: 1.75em
+        }
+    }
+    @media only screen and (max-width: 670px){
+        #banner h2{
+            font-size: 40vw
+        }
+        #banner a{
+            top: 47vh;
+        }
+
+        /* INTRO */
+        #intro{
+            text-align: center;
+            height: 60vh;
+        }
+        #about {
+            padding-right: 0;
+            margin-bottom: 0;
+        }
+        .container{
+            flex-direction: column;
+            margin: 0;
+        }
+        .container h1{
+            padding-right: 0em;;
+            margin-inline: 1em;
+            text-align: center;
+            width: auto
+        }
+        .container p {
+            width: 80%;
+            padding-block: 2em;
+            margin-top: 2em;
+            border-left: none;
+            border-top: 2px solid #2B4453;
+        }
+        #intro a{
+            margin-top: 0;
+        }
+
+
+
+
+        .second-line-h1{
+            margin-bottom: 0.5em
+        }
+        .wisdomWordsExamplesContainer {
+            grid-auto-columns: 70%;
+            gap: 4%
+        }
+        .wisdomWordsSection{
+            padding: 9em 2em
+        }
+        .functionExampleSection{
+            padding: 0em 2em;
+        }
+        .questionsSection{
+            padding: 5em 2em
+        }
+
+        .questionsSection h1{
+            font-size: 3.6rem;
+            margin: 0
+        }
+        h3{
+            font-size: 1.8rem;
+            margin: 0.5em 0 1em 0
+        }
+        .questionsSection input, textarea{
+            width: 88vw;
+        }
+        .questionsSection form{
+            align-self: center;
+        }
+        .scroll-to-top-btn p{
+            font-size: 1rem
+        }
+    }
 </style>
