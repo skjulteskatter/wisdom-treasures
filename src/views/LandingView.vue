@@ -62,20 +62,24 @@
                         <path d="M5 12h13M12 5l7 7-7 7"/></svg>
                     </button>
                 </div>
-          
-                <div ref="scrollContainer" class="wisdomWordsExamplesContainer snaps-inline scroll-container grab-bing" 
-                    @mousedown="startDrag" @mousemove="drag" @mouseup="endDrag">
-                    <WisdomWordExample :author="author2" :content="content2" :imgSrc="imgSrc2"/>
-                    <WisdomWordExample :author="author3" :content="content3" :imgSrc="imgSrc3"/>
-                    <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
-                    <WisdomWordExample :author="author4" :content="content4" :imgSrc="imgSrc1"/>
-                    <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
-                    <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
-                </div>
+
+                    <div ref="scrollContainer" class="wisdomWordsExamplesContainer snaps-inline scroll-container grab-bing" 
+                        @mousedown="startDrag" @mousemove="drag" @mouseup="endDrag">
+                        <WisdomWordExample :author="author2" :content="content2" :imgSrc="imgSrc2"/>
+                        <WisdomWordExample :author="author3" :content="content3" :imgSrc="imgSrc3"/>
+                        <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
+                        <WisdomWordExample :author="author4" :content="content4" :imgSrc="imgSrc1"/>
+                        <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
+                        <WisdomWordExample :author="author1" :content="content1" :imgSrc="imgSrc1"/>
+                    </div>
+
             </div>
 
             <!-- FUNCTION DISPLAY SECTION -->
-            <section class="functionExampleSection"><h2 class="transition scale-s">Get daily<br>wisdom words</h2></section>
+            <section class="functionExampleSection">
+                <h2 class="transition scale-s">Get daily<br>wisdom words</h2>
+                <img src="images/test2.png"/>
+            </section>
             <section class="functionExampleSection white-v"><h2 class="transition scale-s">Get manna</h2></section>
             <section class="functionExampleSection"><h2 class="transition scale-s">Send to your friend</h2></section>
             <section class="functionExampleSection white-v"><h2 class="transition scale-s">Add to a collection</h2></section>
@@ -162,13 +166,15 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
                 (this.$refs.scrollContainer as HTMLElement).scrollTo({
                 left: (this.$refs.scrollContainer as HTMLElement).scrollLeft - 400,
                 behavior: 'smooth'
-                })
+                });
+                (this.$refs.scrollContainer as HTMLElement).classList.add('snaps-inline')
             },
             scrollRight() {
                 (this.$refs.scrollContainer as HTMLElement).scrollTo({
                 left: (this.$refs.scrollContainer as HTMLElement).scrollLeft + 400,
                 behavior: 'smooth'
-                })
+                });
+                (this.$refs.scrollContainer as HTMLElement).classList.add('snaps-inline')
             },
             // scrolling with mouseup, -move and -down
             startDrag(event: MouseEvent) {
@@ -187,7 +193,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             },
             endDrag() {
                 this.isDown = false;
-                (this.$refs.scrollContainer as HTMLElement).classList.add('snaps-inline')
             }
         }, data() {
             return {
@@ -311,7 +316,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     #intro{
         grid-row: 2;
         position: absolute;
-        top: 20vh;
+        top: 30vh;
         left: 0;
         width: 100%;
         height: 50vh;
@@ -339,7 +344,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
     .container p {
         width: 40%;
-        padding: 4em 0 8em 4em;
+        padding: 4em 4em 8em 4em;
         margin-top: 5em;
         border-left: 2px solid #2B4453
     }
@@ -406,6 +411,15 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         scroll-snap-align: start;
     }
 
+    .my-transition-enter-active {
+        transition: all 300ms;
+    }
+    .my-transition-enter {
+        scroll-snap-type: none;
+    }
+    .my-transition-enter-to {
+        scroll-snap-type: inline mandatory;
+    }
 
 /* functions display */
     .functionExampleSection{
@@ -413,6 +427,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         color: white;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         padding: 0 5em;
         height: 60vh
     }
@@ -420,6 +435,12 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         background-color: white;
         color: inherit;
         justify-content: end;
+    }
+    .functionExampleSection img{
+        width: 20em;
+        height: 20em;
+        object-fit: cover;
+        margin-right: 5em;
     }
 
 
