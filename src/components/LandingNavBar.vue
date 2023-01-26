@@ -2,8 +2,8 @@
     <div class="nav-bar">
         <router-link to="/landing" class="WT-a">Wisdom Treasures</router-link>
         <div class="links">
-            <router-link to="/contact">Contact</router-link>
-            <router-link to="/login">Sign up</router-link>
+            <router-link to="/contact" class="contact-a">Contact</router-link>
+            <router-link to="/login" class="login-a">Sign up</router-link>
         </div>
     </div>
   </template>
@@ -42,15 +42,26 @@
         font-weight: bold;
         transition: all 0.25s;
         color: #2B4453;
-        border: 3px #2B4453 solid;
+        text-align: center;
         font-size: 0.75rem;
         text-transform: uppercase;
         letter-spacing: 3px;
-        margin-left: 2em
     }
-    .links a:hover,
-    .links a:active,
-    .links a:focus{
+    .links .contact-a{
+        border: none
+    }
+    .contact-a:hover,
+    .contact-a:active,
+    .contact-a:focus{
+        border-bottom:3px #2B4453 solid
+    }
+    .links .login-a{
+        margin-left: 1.5em;
+        border: 3px #2B4453 solid;
+    }
+    .login-a:hover,
+    .login-a:active,
+    .login-a:focus{
         background-color: #2B4453;
         color: white
     }

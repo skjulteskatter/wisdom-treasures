@@ -29,13 +29,15 @@
         border-top-right-radius: 2em;
         padding: 2em 2em 2em 0;
         font-family: 'EB Garamond', serif;
-        display: grid;
-        grid-template-rows: min-content;
-        gap: 1em;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
         width: 100%;
+        color: #fff
     }
     .wisdom-content{
-        font-size: 1.5rem
+        font-size: 1.5rem;
+        margin-bottom: 0.5em
     }
     .wisdom-author{
         display: flex;

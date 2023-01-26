@@ -5,9 +5,7 @@
         <div id="parent">
             <!-- BANNER -->
             <section id="banner">
-                <video autoplay muted loop>
-                    <source src="https://crustac.fr/wp-content/themes/crustac/img/video_waves3.mp4" type="video/mp4">
-                </video>
+                <div style="width:100%;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/LrG5hpEkf2XqjyK4AY" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>              
                 <h2>WT</h2>
                 <router-link to="/login" class="transition scale-s">Gods Word. The easy way.</router-link> <!-- HAHA funny, but no -->
             </section>
@@ -29,7 +27,7 @@
 
             <!-- WW GALLERY  -->
             <div class="wisdomWordsSection">
-                <p class="p-little">Examples of</p>
+                <p class="p-little color-white">Examples of</p>
                 <h1>Wisdom</h1>
                 <h1 class="second-line-h1">words</h1>
 
@@ -41,7 +39,7 @@
                         height="50" 
                         viewBox="0 0 24 24" 
                         fill="none" 
-                        stroke="#000000" 
+                        stroke="#fff" 
                         stroke-width="2" 
                         stroke-linecap="round" 
                         stroke-linejoin="round"
@@ -54,7 +52,7 @@
                         height="50" 
                         viewBox="0 0 24 24" 
                         fill="none" 
-                        stroke="#000000" 
+                        stroke="#fff" 
                         stroke-width="2" 
                         stroke-linecap="round" 
                         stroke-linejoin="round"
@@ -77,12 +75,14 @@
 
             <!-- FUNCTION DISPLAY SECTION -->
             <section class="functionExampleSection">
-                <h2 class="transition scale-s">Get daily<br>wisdom words</h2>
-                <img src="images/test2.png"/>
-            </section>
-            <section class="functionExampleSection white-v"><h2 class="transition scale-s">Get manna</h2></section>
-            <section class="functionExampleSection"><h2 class="transition scale-s">Send to your friend</h2></section>
-            <section class="functionExampleSection white-v"><h2 class="transition scale-s">Add to a collection</h2></section>
+                <h2 >Get daily<br>wisdom words</h2>
+                <div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
+            <section class="functionExampleSection">
+                <h2>Get manna</h2><div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
+            <section class="functionExampleSection">
+                <h2>Send to your friend</h2><div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
+            <section class="functionExampleSection">
+                <h2>Add to a collection</h2><div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
 
 
             <!-- QUESTIONS SECTION -->
@@ -220,7 +220,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     html{
         margin: 0}
     body{
-        margin: 1em 0;
+        margin: 0;
         background-color: white;
         height: 100vh}
 /* HEX COLOR PALETE?? */
@@ -257,46 +257,45 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     .p-little {
         font-family: 'EB Garamond', serif;
     }
+    .color-white{
+        color: #fff
+    }
 
     #parent{
         display: grid;
-        grid-template-rows: 100vh 30em;
+        grid-template-rows: 100vh 40em;
     }
 /* BANNER */
     #banner{
         grid-row: 1;
-        position: absolute;
+        position: relative;
         top: 0;
         left: 0;
         width: 100%;
         height: 100vh;
-        overflow: hidden;
-        display: flex;
-        justify-content: center;
-        align-items: center; 
-        clear: both
+        overflow: hidden
     }
-    #banner video {
-        position: absolute;
+    #banner iframe {
+        position: relative;
         top: 0;
         left: 0;
         width: 100%;
-        height: 100vh;
-        object-fit: cover;
-        opacity: 70%
+        height: 100%;
     }
     #banner h2{
+        color:rgba(255, 255, 255, 0.284);
+        background-color: #202d31aa;
         position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: #fff;
         font-size: 35vw;
         text-align: center;
         text-transform: uppercase;
         line-height: 100vh;
-        mix-blend-mode: screen;
+        backdrop-filter: blur(10px);
+        /* mix-blend-mode: screen; */
     }
     #banner a{
         position: absolute;
@@ -308,6 +307,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         font-size: 7vw;
         text-align: center;
         font-family: 'EB Garamond', serif;
+        color: #fff;
     }
 
 
@@ -316,7 +316,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     #intro{
         grid-row: 2;
         position: absolute;
-        top: 20vh;
+        top: 27vh;
         left: 0;
         width: 100%;
         height: 50vh;
@@ -370,10 +370,13 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
 
 /* WW Examples section */
     .wisdomWordsSection{
-        padding: 7em 5em
+        padding: 7em 5em;
+        background-color:#202D31
     }
     .wisdomWordsSection h1{
-        font-size: 5rem
+        font-size: 5rem;
+        color: #fff;
+        text-shadow: black 4px 4px 3px;
     }
     .arrows{
         display: flex;
@@ -388,6 +391,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         overflow-x: scroll;
         overscroll-behavior-inline: contain;
         width: 100%;
+    }
+    .wisdomWordsExamplesContainer::-webkit-scrollbar{
+        display: none;
     }
 /* cursor */
     .grab-bing {
@@ -423,24 +429,64 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
 
 /* functions display */
     .functionExampleSection{
-        background-color: #202D31;
-        color: white;
+        background-color: #fff;
+        color: inherit;
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 0 5em;
-        height: 60vh
+        margin: 0 5em;
+        height: 60vh;
+        border-bottom: 1px solid #2b44532c;
+        transition: all 0.35s
     }
-    .functionExampleSection.white-v{
-        background-color: white;
-        color: inherit;
-        justify-content: end;
+    .functionExampleSection:hover{
+        height: 70vh
+    }
+    .img-container{
+        width:50%;
+        height:80%;
+        border-radius: 10em;
+        display: flex;
+        justify-content: center;
+        align-items: baseline;
+        overflow: hidden;
+        transition: all 0.35s;
+    }
+    .img-container .back-div{
+        position: absolute;
+        bottom:-12em;
+        left:10;
+        border-radius: 50%;
+        width: 90%;
+        height: 150%;
+        background-color:#2B4453;
+
     }
     .functionExampleSection img{
         width: 20em;
-        height: 20em;
         object-fit: cover;
-        margin-right: 5em;
+        transition: all 0.5s;
+        transform: skewX(-25deg);
+        border-radius: 1em;
+        z-index: 1
+    }
+    .functionExampleSection img:hover{
+        transform: skewX(-15deg) translateY(-2em)
+    }
+    .img-container::before{
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100px;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.356);
+        transform: skewX(45deg) translateX(42em);
+        transition: 0.5s;
+        z-index: 1
+    }
+    .img-container:hover::before{
+        transform: skewX(45deg) translateX(-15em)
     }
 
 
@@ -475,7 +521,56 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         align-self: flex-end;
     }
 
-    /* scroll to the top */
+/* TYPING ANIMATION */
+    :root {
+        --bg-color: white;
+        --typewriterSpeed: 8s;
+        --typewriterCharacters: 12;
+    }
+    .questions-text h3 {
+        font-size: clamp(0.6rem, 1.8vw + 0.6rem, 2.4rem);
+        position: relative;
+        font-family: "Source Code Pro", monospace;
+        width: max-content;
+    }
+    .questions-text h3::before,
+    .questions-text h3::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    }
+    .questions-text h3::before {
+        background: white;
+        animation: typewriter var(--typewriterSpeed)
+            steps(var(--typewriterCharacters)) infinite;
+    }
+    .questions-text h3::after {
+        width: 0.1em;
+        height: 90%;
+        background: black;
+        animation: typewriter var(--typewriterSpeed)
+            steps(var(--typewriterCharacters)) infinite,
+            blink 750ms steps(var(--typewriterCharacters)) infinite;
+    }
+    @keyframes typewriter {
+        0% {
+            left: 0%;
+        }
+        40%, 100%{
+            left: 100%;
+        }
+    }
+
+    @keyframes blink {
+        to {
+            background: transparent;
+        }
+    }
+
+/* SCROLL TO TOP */
     #scroll-top {
         display: flex;
         align-items: center;
@@ -516,7 +611,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
 
 
-    /* transform + scale */
+/* TRANSITION, SCALE */
     .transition{
         transition: all 0.25s
     }
@@ -532,7 +627,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
 
 
-    /* scrollbar */
+/* SCROLLBAR */
     ::-webkit-scrollbar{
         width: 1em;
         height: 1em
