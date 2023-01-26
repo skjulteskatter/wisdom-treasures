@@ -316,7 +316,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     #intro{
         grid-row: 2;
         position: absolute;
-        top: 30vh;
+        top: 20vh;
         left: 0;
         width: 100%;
         height: 50vh;
