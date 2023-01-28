@@ -8,11 +8,24 @@
                 <div style="width:100%;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/LrG5hpEkf2XqjyK4AY" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>              
                 <h2>WT</h2>
                 <router-link to="/login" class="transition scale-s">Gods Word. The easy way.</router-link> <!-- HAHA funny, but no -->
+                <button class="scroll down" @click="scrollDown">
+                    <p>scroll</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="24" 
+                    height="24" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="#fff" 
+                    stroke-width="2" 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round">
+                    <path d="M6 9l6 6 6-6"/></svg>
+                </button>
             </section>
 
 
             <!-- INTRO -->
-            <section id="intro">
+            <section ref="intro" id="intro" >
                 <p id="about" class="p-little">A little bit about</p>
                 <div class="container">
                     <h1>Wisdom Treasures</h1>
@@ -112,7 +125,7 @@
 
             <!-- BOTTOM -->
             <section id="scroll-top">
-                <button class="scroll-to-top-btn transition scale" @click="scrollToTop">
+                <button class="scroll scroll-to-top-btn transition scale" @click="scrollToTop">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                         width="40" 
                         height="40" 
@@ -160,6 +173,14 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
                         document.documentElement.scrollTop = currentScroll
                     }
                 }
+            },
+            scrollDown(){
+                let element = this.$refs.intro as HTMLElement,
+                    offset = 150; // 50 pixels above the element
+                window.scrollBy({
+                    top: element.offsetTop - offset,
+                    behavior: 'smooth'
+                });
             },
             // scrolling with buttons (arrows)
             scrollLeft() {
@@ -292,12 +313,13 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         left: 0;
         width: 100%;
         height: 100%;
-        font-size: 35vw;
+
+        font-size: max(12rem, 35vw);
         text-align: center;
         text-transform: uppercase;
         line-height: 100vh;
+
         backdrop-filter: blur(10px);
-        /* mix-blend-mode: screen; */
     }
     #banner a{
         position: absolute;
@@ -311,7 +333,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         font-family: 'EB Garamond', serif;
         color: #fff;
     }
-
+    .scroll.down{
+        position: absolute;
+        bottom:1em;
+        width:100%;
+    }
 
 
 /* INTRO */
@@ -593,7 +619,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         z-index: -1;
         background-color: #2B4453;
     }
-    .scroll-to-top-btn{
+    .scroll{
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -601,9 +627,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         text-transform: uppercase;
         letter-spacing: 3px
     }
-    .scroll-to-top-btn:hover,
-    .scroll-to-top-btn:active,
-    .scroll-to-top-btn:focus {
+    .scroll:hover,
+    .scroll:active,
+    .scroll:focus {
         cursor: pointer;
         opacity: 60%
     }
@@ -749,9 +775,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         }
     }
     @media only screen and (max-width: 670px){
-        #banner h2{
-            font-size: 40vw
-        }
         #banner a{
             top: 47vh;
         }
