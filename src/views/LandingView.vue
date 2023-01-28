@@ -75,7 +75,7 @@
 
             <!-- FUNCTION DISPLAY SECTION -->
             <section class="functionExampleSection">
-                <h2 >Get daily<br>wisdom words</h2>
+                <h2>Get daily <span>wisdom words</span></h2>
                 <div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
             <section class="functionExampleSection">
                 <h2>Get manna</h2><div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
@@ -222,7 +222,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     body{
         margin: 0;
         background-color: white;
-        height: 100vh}
+        height: 100vh;
+    }
+
 /* HEX COLOR PALETE?? */
 /* --charleston-green: #202D31ff;
 --cadet-blue-crayola: #A5B3BEff;
@@ -276,11 +278,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         overflow: hidden
     }
     #banner iframe {
-        position: relative;
+        position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        min-width: 100%;
+        height: 100vh;
     }
     #banner h2{
         color:rgba(255, 255, 255, 0.284);
@@ -442,6 +444,10 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     .functionExampleSection:hover{
         height: 70vh
     }
+    .functionExampleSection span{
+        font: inherit;
+        display: inline-block
+    }
     .img-container{
         width:50%;
         height:80%;
@@ -460,10 +466,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         width: 90%;
         height: 150%;
         background-color:#2B4453;
-
     }
     .functionExampleSection img{
-        width: 20em;
+        width:45%;
         object-fit: cover;
         transition: all 0.5s;
         transform: skewX(-25deg);
@@ -528,7 +533,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         --typewriterCharacters: 12;
     }
     .questions-text h3 {
-        font-size: clamp(0.6rem, 1.8vw + 0.6rem, 2.4rem);
+        font-size: clamp(1.2rem, 1.8vw + 0.6rem, 2.4rem);
         position: relative;
         font-family: "Source Code Pro", monospace;
         width: max-content;
@@ -548,7 +553,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             steps(var(--typewriterCharacters)) infinite;
     }
     .questions-text h3::after {
-        width: 0.1em;
+        width: 0.08em;
         height: 90%;
         background: black;
         animation: typewriter var(--typewriterSpeed)
@@ -670,7 +675,12 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             padding: 7em 3em
         }
         .functionExampleSection{
-            padding: 0 3em
+            margin: 0 3em;
+            padding: 0
+        }
+        .functionExampleSection .back-div {
+            height:130%;
+            width: 110%
         }
         .questionsSection{
             padding: 7em 3em
@@ -697,11 +707,27 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         .wisdomWordsExamplesContainer {
             grid-auto-columns: 55%;
         }
-        h2{
+
+        .functionExampleSection h2{
             font-size: 2.6rem;
+            align-self: flex-start;
+            margin-top: 0.5em
         }
         .functionExampleSection{
-            height: 50vh
+            height: 50vh;
+            flex-direction: column-reverse;
+            margin: 0;
+            margin: 2em 3em
+        }
+        .img-container{
+            width:100%;
+        }
+        .img-container img{
+            position: absolute;
+            top: -4em
+        }
+        .img-container .back-div{
+            height:160%
         }
         .questionsSection{
             flex-direction: column;
@@ -761,8 +787,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         }
 
 
-
-
         .second-line-h1{
             margin-bottom: 0.5em
         }
@@ -774,7 +798,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             padding: 9em 2em
         }
         .functionExampleSection{
-            padding: 0em 2em;
+            margin: 2em 2em;
+        }
+        .img-container img{
+            width: 30%;
+            top: -1.5em
         }
         .questionsSection{
             padding: 5em 2em
@@ -797,5 +825,8 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         .scroll-to-top-btn p{
             font-size: 1rem
         }
+    }
+    @media only screen and (max-width: 500px){
+
     }
 </style>
