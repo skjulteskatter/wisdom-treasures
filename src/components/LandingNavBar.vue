@@ -1,11 +1,43 @@
 <template>
-    <div class="nav-bar">
-        <router-link to="/landing" class="WT-a">Wisdom Treasures</router-link>
-        <div class="links">
+    <header>
+        <router-link to="/landing" class="logo">Wisdom Treasures</router-link>
+        <button class="mobile-nav-toggle" 
+                aria-controls="primary-nav" @click="isActive = !isActive">
+            <span class="sr-only">Menu</span>
+
+            <!-- X -->
+            <svg v-if="isActive" xmlns="http://www.w3.org/2000/svg" 
+            width="26" 
+            height="26" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="#fff" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
+            <!-- ||| -->
+            <svg v-else class="menu" xmlns="http://www.w3.org/2000/svg" 
+            width="24" 
+            height="24" 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="#fff" 
+            stroke-width="2" 
+            stroke-linecap="round" 
+            stroke-linejoin="round">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+            <div v-if="!isActive" class="btn-bg"></div>
+        <nav id="primary-nav" class="primary-nav" v-bind:class="{ 'is-active': isActive }">
+            <router-link to="/landing" class="home-a">Home</router-link>
             <router-link to="/contact" class="contact-a">Contact</router-link>
             <router-link to="/login" class="login-a">Sign up</router-link>
-        </div>
-    </div>
+        </nav>
+    </header>
   </template>
   
   <script lang="ts">
@@ -13,56 +45,94 @@
 
   export default defineComponent({
       name: "LandingNavBar",
+      data(){
+        return {
+            isActive: false,
+        }},
   });
   </script>
 
 <style>
-    .nav-bar{
+.mobile-nav-toggle{
+    display: none
+}
+header{
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: 1em;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    background-color: rgba(0, 0, 0, 0.585);
+    backdrop-filter: blur(0.25rem);
+    color: white;  
+}
+.logo{
+    font-family: 'EB Garamond', serif;
+    letter-spacing: 1px;
+}
+.primary-nav a{
+    padding-bottom: 1em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    margin-inline-end: 1.5rem;
+}
+.primary-nav a:hover,
+.primary-nav a:active{
+    border-bottom: solid rgba(255, 255, 255, 0.604) 2px;
+    opacity: 70%
+}
+.primary-nav a:last-child{
+    margin-inline-end: 0;
+}
+
+@media (max-width:500px){
+    header{
+        background-color: rgba(255, 255, 255, 0);
+        backdrop-filter: none;
+    }
+    .logo{
+        display: none
+    }
+    .primary-nav{
         position: fixed;
-        top: 0;
-        z-index: 1;
-        width: 100%;
+        inset: 0 0 0 35%;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1em 4em;
-        background-color: rgba(255, 255, 255, 0.549);
-        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: min(30vh, 8rem) 3em;
+
+        background: rgba(0, 0, 0, 0.585);
+        backdrop-filter: blur(0.25rem);
+
+        transition: all 0.5s ease;
+        transform: translateX(100%)
     }
-    .WT-a {
-        font-family: 'EB Garamond', serif;
-        font-size: 1.5rem
+    .primary-nav.is-active{
+        transform: translateX(0)
     }
-    .links{
-        display: flex
+    .primary-nav a{
+        margin-block: 0.75em
     }
-    .links a{
-        padding: 0.75em 3em;
-        border-radius: 2em;
-        font-weight: bold;
-        transition: all 0.25s;
-        color: #2B4453;
-        text-align: center;
-        font-size: 0.75rem;
-        text-transform: uppercase;
-        letter-spacing: 3px;
+    .mobile-nav-toggle{
+        display: block;
+        position: absolute;
+        z-index: 9999;
+        top: 1rem;
+        right: 1rem
     }
-    .links .contact-a{
-        border: none
+    .btn-bg{
+        position: absolute;
+        z-index: 999;
+        top:0;
+        right: 0;
+        width:4.5rem;
+        height:4.5rem;
+        border-bottom-left-radius: 6rem;
+        background-color: rgba(0, 0, 0, 0.585);
+        backdrop-filter: blur(0.25rem);
     }
-    .contact-a:hover,
-    .contact-a:active,
-    .contact-a:focus{
-        border-bottom:3px #2B4453 solid
-    }
-    .links .login-a{
-        margin-left: 1.5em;
-        border: 3px #2B4453 solid;
-    }
-    .login-a:hover,
-    .login-a:active,
-    .login-a:focus{
-        background-color: #2B4453;
-        color: white
-    }
+}
 </style>

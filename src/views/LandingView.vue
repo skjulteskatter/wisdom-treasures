@@ -8,11 +8,24 @@
                 <div style="width:100%;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/LrG5hpEkf2XqjyK4AY" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>              
                 <h2>WT</h2>
                 <router-link to="/login" class="transition scale-s">Gods Word. The easy way.</router-link> <!-- HAHA funny, but no -->
+                <button class="scroll down" @click="scrollDown">
+                    <p>scroll</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" 
+                    width="24" 
+                    height="24" 
+                    viewBox="0 0 24 24" 
+                    fill="none" 
+                    stroke="#fff" 
+                    stroke-width="2" 
+                    stroke-linecap="round" 
+                    stroke-linejoin="round">
+                    <path d="M6 9l6 6 6-6"/></svg>
+                </button>
             </section>
 
 
             <!-- INTRO -->
-            <section id="intro">
+            <section ref="intro" id="intro" >
                 <p id="about" class="p-little">A little bit about</p>
                 <div class="container">
                     <h1>Wisdom Treasures</h1>
@@ -75,7 +88,7 @@
 
             <!-- FUNCTION DISPLAY SECTION -->
             <section class="functionExampleSection">
-                <h2 >Get daily<br>wisdom words</h2>
+                <h2>Get daily <span>wisdom words</span></h2>
                 <div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
             <section class="functionExampleSection">
                 <h2>Get manna</h2><div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
@@ -112,7 +125,7 @@
 
             <!-- BOTTOM -->
             <section id="scroll-top">
-                <button class="scroll-to-top-btn transition scale" @click="scrollToTop">
+                <button class="scroll scroll-to-top-btn transition scale" @click="scrollToTop">
                     <svg xmlns="http://www.w3.org/2000/svg" 
                         width="40" 
                         height="40" 
@@ -160,6 +173,14 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
                         document.documentElement.scrollTop = currentScroll
                     }
                 }
+            },
+            scrollDown(){
+                let element = this.$refs.intro as HTMLElement,
+                    offset = 150; // 50 pixels above the element
+                window.scrollBy({
+                    top: element.offsetTop - offset,
+                    behavior: 'smooth'
+                });
             },
             // scrolling with buttons (arrows)
             scrollLeft() {
@@ -222,7 +243,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     body{
         margin: 0;
         background-color: white;
-        height: 100vh}
+        height: 100vh;
+    }
+
 /* HEX COLOR PALETE?? */
 /* --charleston-green: #202D31ff;
 --cadet-blue-crayola: #A5B3BEff;
@@ -276,11 +299,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         overflow: hidden
     }
     #banner iframe {
-        position: relative;
+        position: absolute;
         top: 0;
         left: 0;
-        width: 100%;
-        height: 100%;
+        min-width: 100%;
+        height: 100vh;
     }
     #banner h2{
         color:rgba(255, 255, 255, 0.284);
@@ -290,12 +313,13 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         left: 0;
         width: 100%;
         height: 100%;
-        font-size: 35vw;
+
+        font-size: max(12rem, 35vw);
         text-align: center;
         text-transform: uppercase;
         line-height: 100vh;
+
         backdrop-filter: blur(10px);
-        /* mix-blend-mode: screen; */
     }
     #banner a{
         position: absolute;
@@ -309,7 +333,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         font-family: 'EB Garamond', serif;
         color: #fff;
     }
-
+    .scroll.down{
+        position: absolute;
+        bottom:1em;
+        width:100%;
+    }
 
 
 /* INTRO */
@@ -442,6 +470,10 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     .functionExampleSection:hover{
         height: 70vh
     }
+    .functionExampleSection span{
+        font: inherit;
+        display: inline-block
+    }
     .img-container{
         width:50%;
         height:80%;
@@ -460,10 +492,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         width: 90%;
         height: 150%;
         background-color:#2B4453;
-
     }
     .functionExampleSection img{
-        width: 20em;
+        width:45%;
         object-fit: cover;
         transition: all 0.5s;
         transform: skewX(-25deg);
@@ -528,7 +559,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         --typewriterCharacters: 12;
     }
     .questions-text h3 {
-        font-size: clamp(0.6rem, 1.8vw + 0.6rem, 2.4rem);
+        font-size: clamp(1.2rem, 1.8vw + 0.6rem, 2.4rem);
         position: relative;
         font-family: "Source Code Pro", monospace;
         width: max-content;
@@ -548,7 +579,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             steps(var(--typewriterCharacters)) infinite;
     }
     .questions-text h3::after {
-        width: 0.1em;
+        width: 0.08em;
         height: 90%;
         background: black;
         animation: typewriter var(--typewriterSpeed)
@@ -588,7 +619,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         z-index: -1;
         background-color: #2B4453;
     }
-    .scroll-to-top-btn{
+    .scroll{
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -596,9 +627,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         text-transform: uppercase;
         letter-spacing: 3px
     }
-    .scroll-to-top-btn:hover,
-    .scroll-to-top-btn:active,
-    .scroll-to-top-btn:focus {
+    .scroll:hover,
+    .scroll:active,
+    .scroll:focus {
         cursor: pointer;
         opacity: 60%
     }
@@ -670,7 +701,12 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             padding: 7em 3em
         }
         .functionExampleSection{
-            padding: 0 3em
+            margin: 0 3em;
+            padding: 0
+        }
+        .functionExampleSection .back-div {
+            height:130%;
+            width: 110%
         }
         .questionsSection{
             padding: 7em 3em
@@ -697,11 +733,27 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         .wisdomWordsExamplesContainer {
             grid-auto-columns: 55%;
         }
-        h2{
+
+        .functionExampleSection h2{
             font-size: 2.6rem;
+            align-self: flex-start;
+            margin-top: 0.5em
         }
         .functionExampleSection{
-            height: 50vh
+            height: 50vh;
+            flex-direction: column-reverse;
+            margin: 0;
+            margin: 2em 3em
+        }
+        .img-container{
+            width:100%;
+        }
+        .img-container img{
+            position: absolute;
+            top: -4em
+        }
+        .img-container .back-div{
+            height:160%
         }
         .questionsSection{
             flex-direction: column;
@@ -723,9 +775,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         }
     }
     @media only screen and (max-width: 670px){
-        #banner h2{
-            font-size: 40vw
-        }
         #banner a{
             top: 47vh;
         }
@@ -761,8 +810,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         }
 
 
-
-
         .second-line-h1{
             margin-bottom: 0.5em
         }
@@ -774,7 +821,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             padding: 9em 2em
         }
         .functionExampleSection{
-            padding: 0em 2em;
+            margin: 2em 2em;
+        }
+        .img-container img{
+            width: 30%;
+            top: -1.5em
         }
         .questionsSection{
             padding: 5em 2em
@@ -797,5 +848,8 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         .scroll-to-top-btn p{
             font-size: 1rem
         }
+    }
+    @media only screen and (max-width: 500px){
+
     }
 </style>
