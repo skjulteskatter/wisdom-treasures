@@ -4,6 +4,7 @@
         <button class="mobile-nav-toggle" 
                 aria-controls="primary-nav" @click="isActive = !isActive">
             <span class="sr-only">Menu</span>
+
             <!-- X -->
             <svg v-if="isActive" xmlns="http://www.w3.org/2000/svg" 
             width="26" 
@@ -16,6 +17,7 @@
             stroke-linejoin="round">
             <line x1="18" y1="6" x2="6" y2="18"></line>
             <line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
             <!-- ||| -->
             <svg v-else class="menu" xmlns="http://www.w3.org/2000/svg" 
             width="24" 
@@ -73,9 +75,15 @@ header{
     letter-spacing: 1px;
 }
 .primary-nav a{
+    padding-bottom: 1em;
     text-transform: uppercase;
     letter-spacing: 2px;
     margin-inline-end: 1.5rem;
+}
+.primary-nav a:hover,
+.primary-nav a:active{
+    border-bottom: solid rgba(255, 255, 255, 0.604) 2px;
+    opacity: 70%
 }
 .primary-nav a:last-child{
     margin-inline-end: 0;
