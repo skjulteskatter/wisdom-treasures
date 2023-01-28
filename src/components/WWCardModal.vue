@@ -34,6 +34,7 @@ import { HeartIcon, ShareIcon } from "@heroicons/vue/outline";
 import BaseButton from "./BaseButton.vue";
 import { HeartIcon as HeartIconSolid } from "@heroicons/vue/solid";
 import ClickableLink from "./ClickableLink.vue";
+import { favorites } from "../services/api";
 
 export default defineComponent({
     name: "wwcard-modal",
@@ -61,6 +62,12 @@ export default defineComponent({
         },
         favoriteButton(){
             this.favorite = !this.favorite;
+
+            if (this.favorite == true){
+                favorites.add([this.article.id]);
+            } else {
+                favorites.delete([this.article.id]);
+            }
         },
     },
 });

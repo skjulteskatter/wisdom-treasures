@@ -11,14 +11,14 @@
             @mouseleave="hover = false"
             >
             <component :is="insideHUMenu ? 'MenuItem' : 'div'" as="div">
-                <div v-if="styleType == 'search'" class="w-5 absolute left-2 -top-[10px] cursor-pointer z-40 opacity-40" @click="(_event: any) => {($emit('searchAction', modelValue))}">
+                <div v-if="styleType == 'search'" class="w-5 absolute left-2 -top-[10px] cursor-pointer z-40 opacity-40" @click="(_event: any) => search()">
                     <SearchIcon/>
                 </div>
             </component>
             <input
                 @focusin="focus = true"
                 @focusout="focus = false"
-                @keyup.enter ="(_event: any) => $emit('searchAction', modelValue)"
+                @keyup.enter ="(_event: any) => search()"
                 :type="getType"
                 class="px-2 py-1 rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
                 :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', 
@@ -52,6 +52,7 @@
 import { defineComponent } from 'vue';
 import { EyeIcon, EyeOffIcon, SearchIcon, XIcon } from "@heroicons/vue/solid";
 import { MenuItem } from '@headlessui/vue';
+import { search } from '@/services/localStorage';
 
 export enum SizeEnum {
     lg = "lg", md = "md"
@@ -75,6 +76,7 @@ export default defineComponent({
             showPassword: false,
             hover: false as Boolean,
             focus: false as Boolean,
+            searchHistory: [] as string[],
         }
     },
     props: {
@@ -109,6 +111,22 @@ export default defineComponent({
         getType(): string{
             return this.styleType === StyleTypeEnum.password && !this.showPassword ? "password" : "text";
         },
+        getSearchHistory() : string[]{
+            const history : string[] = [];
+            for (const [key, value] of search.getAll()) {
+                history.push(key);
+            }
+            return history;
+        }
+    },
+    methods: {
+        search() {
+            if (this.modelValue !== undefined && this.modelValue !== null && this.modelValue.replace(/(\s)/g, "") !== "") {
+                search.addOrReplace(this.modelValue, Date.now());
+            }
+            
+            this.$emit('searchAction', this.modelValue);
+        }
     },
 });
 </script>

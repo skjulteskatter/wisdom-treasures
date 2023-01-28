@@ -41,6 +41,18 @@ export const session = {
     },
 };
 
+export const favorites = {
+    get() {
+        return http.get<string[]>("api/Favorites");
+    },
+    add(ids: string[]) {
+        return http.post<void, unknown>("api/Favorites", ids);
+    },
+    delete(ids: string[]) {
+        return http.delete<void>("api/Favorites", ids);
+    },
+};
+
 export default {
     session
 };
