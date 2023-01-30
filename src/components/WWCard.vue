@@ -31,6 +31,7 @@
   import BaseCard from './BaseCard.vue';
   import { BookOpenIcon } from '@heroicons/vue/outline';
   import WWCardModal from './WWCardModal.vue';
+  import { history } from '@/services/localStorage';
   
     export default defineComponent({
       name: "WWCard",
@@ -73,7 +74,7 @@
           if (value == false) return;
 
           //This is just a test
-          localStorage.setItem('history:' + this.article.id, Date.now().toString());
+          history.addOrReplace(this.article.id, Date.now());
         }
       },
       methods:{

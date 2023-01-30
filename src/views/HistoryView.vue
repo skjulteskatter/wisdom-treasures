@@ -43,6 +43,7 @@
   import BackButton from '@/components/BackButton.vue';
   import { useSessionStore } from '@/stores/session';
   import WWCard from '@/components/WWCard.vue';
+  import { history } from '@/services/localStorage';
 import type { Article } from 'hiddentreasures-js';
 import TestArticles from '@/services/TestArticles';
 import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
@@ -106,10 +107,9 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
             return articles;
         },
         setHistoryIds(){
-          for (const key in localStorage) {
-            if (key.startsWith('history:')) {
-              this.historyIds.push({id: key.replace('history:', ''), lastViewed: new Date(+(localStorage.getItem(key) ?? Date.now()))});
-            }
+          for (let [key, value] of history.getAll())
+          {
+            this.historyIds.push({id: key, lastViewed: new Date(+(value ?? Date.now()))});
           }
         },
         getStringFromDate(date: Date): string {
