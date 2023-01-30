@@ -5,9 +5,8 @@
         <div id="parent">
             <!-- BANNER -->
             <section id="banner">
-                <div style="width:100%;padding-bottom:56%;position:relative;"><iframe src="https://giphy.com/embed/LrG5hpEkf2XqjyK4AY" width="100%" height="100%" style="position:absolute" frameBorder="0" class="giphy-embed" allowFullScreen></iframe></div>              
                 <h2>WT</h2>
-                <router-link to="/login" class="transition scale-s">Gods Word. The easy way.</router-link> <!-- HAHA funny, but no -->
+                <router-link to="/login" class="transition scale-s">Gods Word. The easy way.</router-link> HAHA funny, but no
                 <button class="scroll down" @click="scrollDown">
                     <p>scroll</p>
                     <svg xmlns="http://www.w3.org/2000/svg" 
@@ -21,6 +20,9 @@
                     stroke-linejoin="round">
                     <path d="M6 9l6 6 6-6"/></svg>
                 </button>
+                <video autoplay muted loop>
+                    <source src="images/phone-walking.mp4" type="video/mp4">
+                </video>
             </section>
 
 
@@ -150,7 +152,7 @@
                     <p>Scroll to the top</p>
                 </button>
                 <video autoplay muted loop>
-                    <source src="https://crustac.fr/wp-content/themes/crustac/img/video_waves3.mp4" type="video/mp4">
+                    <source src="images/phone-walking.mp4" type="video/mp4">
                 </video>
             </section>
             
@@ -257,11 +259,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
 
 /* HEX COLOR PALETE?? */
-/* --charleston-green: #202D31ff;
---cadet-blue-crayola: #A5B3BEff;
---deep-space-sparkle: #385B63ff;
---cafe-noir: #533924ff;
---charcoal: #2B4453ff; */
+    /* --charleston-green: #202D31ff;
+    --cadet-blue-crayola: #A5B3BEff;
+    --deep-space-sparkle: #385B63ff;
+    --cafe-noir: #533924ff;
+    --charcoal: #2B4453ff; */
 
 
 /* TYPOGRAPHY */
@@ -308,12 +310,11 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         height: 100vh;
         overflow: hidden
     }
-    #banner iframe {
-        position: absolute;
-        top: 0;
-        left: 0;
-        min-width: 100%;
-        height: 100vh;
+    #banner video{
+        height: 100%;
+        width:100%;
+        object-fit: cover;
+        background-color: #2B4453;
     }
     #banner h2{
         color:rgba(255, 255, 255, 0.284);
@@ -323,6 +324,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         left: 0;
         width: 100%;
         height: 100%;
+        z-index:1;
 
         font-size: max(12rem, 35vw);
         text-align: center;
@@ -337,6 +339,8 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         left: 0;
         width: 100%;
         height: 100%;
+        z-index: 2;
+
         background: none;
         font-size: 7vw;
         text-align: center;
@@ -347,6 +351,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         position: absolute;
         bottom:1em;
         width:100%;
+        z-index:3
     }
     .scroll.down p{
         font-size: 1rem
@@ -687,7 +692,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         height: 15em;
         position: relative;
         overflow: hidden;
-        background-color: rgba(0, 0, 0, 0.486);
+        background-color: #202d318a;
     }
     #scroll-top video {
         position: absolute;

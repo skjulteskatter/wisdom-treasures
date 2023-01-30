@@ -66,7 +66,7 @@ header{
     justify-content: space-between;
     align-items: center;
 
-    background-color: rgba(0, 0, 0, 0.585);
+    background-color: #101719cc;
     backdrop-filter: blur(0.25rem);
     color: white;  
 }
@@ -104,7 +104,7 @@ header{
         flex-direction: column;
         padding: min(30vh, 8rem) 3em;
 
-        background: rgba(0, 0, 0, 0.585);
+        background: #101719cc;
         backdrop-filter: blur(0.25rem);
 
         transition: all 0.5s ease;
@@ -131,7 +131,7 @@ header{
         width:4.5rem;
         height:4.5rem;
         border-bottom-left-radius: 6rem;
-        background-color: rgba(0, 0, 0, 0.585);
+        background-color: #101719cc;
         backdrop-filter: blur(0.25rem);
     }
 }
