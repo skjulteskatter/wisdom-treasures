@@ -40,6 +40,12 @@
 
             <!-- WW GALLERY  -->
             <div class="wisdomWordsSection">
+                <!-- background -->
+                <div class="ww-color-div-0"></div>
+                <div class="ww-color-div-1"></div>
+                <div class="ww-color-div-2"></div>
+                <div class="ww-color-div-3"></div>
+
                 <p class="p-little color-white">Examples of</p>
                 <h1>Wisdom</h1>
                 <h1 class="second-line-h1">words</h1>
@@ -89,13 +95,17 @@
             <!-- FUNCTION DISPLAY SECTION -->
             <section class="functionExampleSection">
                 <h2>Get daily <span>wisdom words</span></h2>
-                <div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
+                <div class="img-container"><img src="images/home-page.png"/>
+                    <div class="color-div-1"></div><div class="color-div-2"></div></div></section>
+            <section class="functionExampleSection img-left">
+                <h2>Get manna</h2><div class="img-container"><img src="images/home-page.png"/>
+                    <div class="color-div-1"></div><div class="color-div-2"></div></div></section>
             <section class="functionExampleSection">
-                <h2>Get manna</h2><div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
-            <section class="functionExampleSection">
-                <h2>Send to your friend</h2><div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
-            <section class="functionExampleSection">
-                <h2>Add to a collection</h2><div class="img-container"><img src="images/home-page.png"/><div class="back-div"></div></div></section>
+                <h2>Send to your friend</h2><div class="img-container"><img src="images/home-page.png"/>
+                    <div class="color-div-1"></div><div class="color-div-2"></div></div></section>
+            <section class="functionExampleSection img-left">
+                <h2>Add to a collection</h2><div class="img-container"><img src="images/home-page.png"/>
+                    <div class="color-div-1"></div><div class="color-div-2"></div></div></section>
 
 
             <!-- QUESTIONS SECTION -->
@@ -145,7 +155,7 @@
             </section>
             
         </main>
-        <footer>Copyright 2022 © Stiftelsen Skjulte Skatters Forlag. All Rights Reserved</footer>
+        <footer>Copyright 2022 © Stiftelsen Skjulte Skatters Forlag. <span>All Rights Reserved</span></footer>
     </body>
 </template>
   
@@ -266,7 +276,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     }
     .second-line-h1{
         margin-left: 2em;
-        margin-top: -0.25em;
     }
     h2{
         font-size: 3rem
@@ -287,6 +296,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     #parent{
         display: grid;
         grid-template-rows: 100vh 40em;
+        margin-bottom: 10vh;
     }
 /* BANNER */
     #banner{
@@ -337,6 +347,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         position: absolute;
         bottom:1em;
         width:100%;
+    }
+    .scroll.down p{
+        font-size: 1rem
     }
 
 
@@ -399,19 +412,60 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
 /* WW Examples section */
     .wisdomWordsSection{
         padding: 7em 5em;
-        background-color:#202D31
+        background:linear-gradient(to top, #101719, #202D31);
+        overflow: hidden
     }
+    .ww-color-div-0{
+        position: absolute;
+        top:-10em;
+        right:-5em;
+        border-radius: 50%;
+        width: 40%;
+        height: 50%;
+        background-color:#49666F;
+        filter:blur(150px)
+    }
+    .ww-color-div-1{
+        position: absolute;
+        bottom:-12em;
+        right:0;
+        border-radius: 30em;
+        width: 80%;
+        height: 100%;
+        background-color:#101719;
+        filter:blur(150px)
+    }
+    .ww-color-div-2{
+        position: absolute;
+        top:-15em;
+        right:10em;
+        border-radius: 30em;
+        width: 50%;
+        height: 60%;
+        background-color:#405B63;
+        filter:blur(150px)
+    }
+    .ww-color-div-3{
+        position: absolute;
+        bottom:0;
+        left:0;
+        border-radius: 50%;
+        width: 40%;
+        height: 50%;
+        background-color:#2B4453;
+        filter:blur(150px)
+    }
+
     .wisdomWordsSection h1{
-        font-size: 5rem;
+        font-size: clamp(4rem, 8.5vw, 6.5rem);
         color: #fff;
-        text-shadow: black 4px 4px 3px;
     }
     .arrows{
         display: flex;
         justify-content: flex-end;   
     }
     .wisdomWordsExamplesContainer{
-        padding-block: 3em;
+        padding-top: 3em;
         display: grid;
         grid-auto-flow: column;
         grid-auto-columns: 40%;
@@ -467,6 +521,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         border-bottom: 1px solid #2b44532c;
         transition: all 0.35s
     }
+    .functionExampleSection.img-left{
+        flex-direction: row-reverse;
+    }
     .functionExampleSection:hover{
         height: 70vh
     }
@@ -474,24 +531,45 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         font: inherit;
         display: inline-block
     }
+    .functionExampleSection h2{
+        padding-right: 1em
+    }
+    .functionExampleSection.img-left h2{
+        padding-right: 0;
+        padding-left: 1em;
+        text-align: right
+    }
     .img-container{
         width:50%;
         height:80%;
-        border-radius: 10em;
+        border-radius: 100em;
         display: flex;
         justify-content: center;
         align-items: baseline;
         overflow: hidden;
+
+        background: linear-gradient(to bottom, #202D31, #779ba6);
         transition: all 0.35s;
     }
-    .img-container .back-div{
+    .img-container .color-div-1{
         position: absolute;
         bottom:-12em;
         left:10;
         border-radius: 50%;
         width: 90%;
         height: 150%;
-        background-color:#2B4453;
+        background-color:#b5c9cf;
+        filter:blur(50px)
+    }
+    .img-container .color-div-2{
+        position: absolute;
+        top:-5em;
+        left:-3em;
+        border-radius: 50%;
+        width: 20em;
+        height: 20em;
+        background-color:#101719;
+        filter:blur(100px)
     }
     .functionExampleSection img{
         width:45%;
@@ -512,12 +590,12 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         width: 100px;
         height: 100%;
         background: rgba(255, 255, 255, 0.356);
-        transform: skewX(45deg) translateX(42em);
+        transform: skewX(45deg) translateX(50em);
         transition: 0.5s;
         z-index: 1
     }
     .img-container:hover::before{
-        transform: skewX(45deg) translateX(-15em)
+        transform: skewX(45deg) translateX(-20em)
     }
 
 
@@ -695,7 +773,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         }
         .second-line-h1{
             margin-left: 2em;
-            margin-top: 0em;
         }
         .wisdomWordsSection{
             padding: 7em 3em
@@ -704,7 +781,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             margin: 0 3em;
             padding: 0
         }
-        .functionExampleSection .back-div {
+        .functionExampleSection .color-div-1 {
             height:130%;
             width: 110%
         }
@@ -727,26 +804,35 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             margin-bottom: -9em
         }
         .wisdomWordsSection h1{
-            font-size: 4rem;
             line-height: 3rem;
         }
         .wisdomWordsExamplesContainer {
             grid-auto-columns: 55%;
         }
 
+        .functionExampleSection{
+            height: auto;
+            flex-direction: column-reverse !important;
+            margin: 0;
+            margin: 2em 3em
+        }
+        .functionExampleSection h2{
+            padding:0 !important
+        }
+        .functionExampleSection:hover{
+            height: auto;
+        }
         .functionExampleSection h2{
             font-size: 2.6rem;
             align-self: flex-start;
             margin-top: 0.5em
         }
-        .functionExampleSection{
-            height: 50vh;
-            flex-direction: column-reverse;
-            margin: 0;
-            margin: 2em 3em
-        }
         .img-container{
             width:100%;
+            height: 35vh
+        }
+        .img-container:hover{
+            height: 45vh
         }
         .img-container img{
             position: absolute;
@@ -815,10 +901,10 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         }
         .wisdomWordsExamplesContainer {
             grid-auto-columns: 70%;
-            gap: 4%
+            gap: 4%;
         }
         .wisdomWordsSection{
-            padding: 9em 2em
+            padding: 7em 2em
         }
         .functionExampleSection{
             margin: 2em 2em;
@@ -850,6 +936,29 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         }
     }
     @media only screen and (max-width: 500px){
-
+        #parent{
+            margin-bottom: 18vh
+        }
+        .wisdomWordsSection{
+            padding: 7em 1em
+        }
+        .wisdomWordsSection h1{
+            font-size: 3.5rem
+        }
+        .functionExampleSection{
+            margin-inline: 1em
+        }
+        .functionExampleSection:hover{
+            height: 50vh;
+        }
+        .questionsSection h3{
+            margin-top: 1.25em;
+        }
+        #scroll-top{
+            height: 10em
+        }
+        footer span{
+            display: block
+        }
     }
 </style>
