@@ -126,7 +126,7 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
           } else if (Date.now() - date.getTime() < 24 * 6){
             return days[date.getDay()];
           } else 
-          return `${date.getDate()}.${date.getMonth()}.${date.getFullYear()}`;
+          return `${date.getDate()}.${date.getMonth()+1}.${date.getFullYear()}`;
         }
       }
     });

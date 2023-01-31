@@ -20,6 +20,7 @@ import "firebase/compat/performance";
 import config from "@/config";
 import router from "@/router";
 import { useSessionStore } from "@/stores/session";
+import { favorites } from "./api";
 
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
@@ -69,6 +70,7 @@ export async function loginWithProvider(providerName : string, rememberMe: boole
 
 function pushToDashboardOrRedirectLink(){
     const store = useSessionStore();
+
     let name = store.$state.redirectAfterLoginName;
     store.$state.redirectAfterLoginName = "";
 
@@ -88,13 +90,27 @@ export function getCurrentUserPromise(): Promise<User | null> {
   return new Promise((resolve, reject) => {
      if (userLoaded) {
           resolve(auth.currentUser);
+          return;
      }
-     const unsubscribe = auth.onAuthStateChanged((user : User | null) => {
+     const unsubscribe = auth.onAuthStateChanged(async (user : User | null) => {
         userLoaded = true;
         unsubscribe();
         resolve(user);
+
+        if (user != null) { // Fires only when user logs in
+            await userLoggedInCallback();
+        }
      }, reject);
   });
+}
+
+/**
+ * Things you do when the user logs in, no matter which method
+ */
+async function userLoggedInCallback(){
+    //Should be done without await maybe for asynchronous running
+    const store = useSessionStore();
+    store.favorites = await favorites.get() ?? [];
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? "" ): Promise<boolean> {

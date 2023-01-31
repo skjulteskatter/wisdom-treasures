@@ -42,14 +42,15 @@ export const session = {
 };
 
 export const favorites = {
+
     get() {
-        return http.get<string[]>("api/Favorites");
+        return http.get<string[]>("api/favorites/items");
     },
     add(ids: string[]) {
-        return http.post<void, unknown>("api/Favorites", ids);
+        return http.post<void, unknown>("api/favorites/items", ids);
     },
     delete(ids: string[]) {
-        return http.delete<void>("api/Favorites", ids);
+        return http.delete<void>("api/favorites/items", ids);
     },
 };
 
