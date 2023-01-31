@@ -3,6 +3,10 @@ import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { Notification } from '@/classes/notification'
 import { favorites as favoritesApi} from '@/services/api'
+import type { Article, Publication } from 'hiddentreasures-js'
+import { articleService, publicationService } from '@/services/publications';
+
+const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
 export const useSessionStore = defineStore('session', {
     state: ()=> {
@@ -21,7 +25,10 @@ export const useSessionStore = defineStore('session', {
             notifications: [] as Notification[],
             //Favorites. GUID's of favorites stored as strings
             favorites: [] as string[],
-            //If the favorites is initialiized
+
+            publications: [] as Publication[],
+
+            articles: [] as Article[],
         }
     },
     actions: {
@@ -44,5 +51,22 @@ export const useSessionStore = defineStore('session', {
                 this.favorites.splice(i, 1);
             }
         },
+        async getPublications() : Promise<Publication[]>{
+            if (this.publications.length <= 0) {
+                this.publications = await publicationService.retrieve({
+                    parentIds: [WISDOM_WORDS_ID],
+                });
+            }
+            return this.publications;
+        },
+        async getArticles(id : string = "") : Promise<Article[]>{
+            if (this.articles.length <= 0) {
+                this.articles = (await articleService.retrieve({
+                    parentIds: [id],
+                    withContent: true,
+                }));
+            }
+            return this.articles;
+        }
     },
 })

@@ -60,6 +60,18 @@ export const routes = [
           WWCard
         ]
       },
+      {
+        path: '/favorites',
+        name: 'favorites',
+        component: () => import('../views/FavoritesView.vue'),
+        meta: {
+          requiresAuth: true,
+          scrollUp: true,
+        },
+        children: [
+          WWCard
+        ]
+      },
     ]
   },
   {

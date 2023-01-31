@@ -47,7 +47,6 @@ export default defineComponent({
         ClickableLink
     },
     data: () => ({
-        favorite: false,
         store: useSessionStore(),
     }),
     emits: ["close"],
@@ -60,6 +59,9 @@ export default defineComponent({
     computed: {
         favorites(): string[] {
             return this.store.favorites;
+        },
+        favorite(): boolean{
+            return this.store.favorites.includes(this.article.id);
         }
     },
     watch: {
@@ -72,11 +74,11 @@ export default defineComponent({
             console.log("Sharing is not implemented yet");
         },
         favoriteButton(){
-            this.favorite = !this.favorite;
-
-            if (this.favorite == true){
+            if (!this.favorite){
+                console.log("Adding to favorites");
                 this.store.addFavorite([this.article.id]);
             } else {
+                console.log("Removing from favorites");
                 this.store.removeFavorite([this.article.id]);
             }
         },
