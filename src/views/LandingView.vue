@@ -157,19 +157,19 @@
             </section>
             
         </main>
-        <footer>Copyright 2022 © Stiftelsen Skjulte Skatters Forlag. <span>All Rights Reserved</span></footer>
+        <LandingFooter />
     </body>
 </template>
   
 <script lang="ts">
 import { defineComponent } from 'vue';
-import FooterComponent from '@/components/FooterComponent.vue';
+import LandingFooter from '@/components/LandingFooter.vue';
 import LandingNavBar from '@/components/LandingNavBar.vue';
 import WisdomWordExample from '@/components/WisdomWordExample.vue';
 
     export default defineComponent({
       name: "LandingView",
-      components: { FooterComponent, 
+      components: { LandingFooter, 
                     LandingNavBar, 
                     WisdomWordExample },
       methods: {
@@ -255,7 +255,6 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
     body{
         margin: 0;
         background-color: white;
-        height: 100vh;
     }
 
 /* HEX COLOR PALETE?? */
@@ -716,13 +715,7 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         cursor: pointer;
         opacity: 60%
     }
-    footer{
-        text-align: center;
-        padding: 2em;
-        background-color: #202D31;
-        color: white;
-        font-size: 0.75rem
-    }
+
 
 
 /* TRANSITION, SCALE */
@@ -821,16 +814,14 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
             margin: 0;
             margin: 2em 3em
         }
-        .functionExampleSection h2{
-            padding:0 !important
-        }
         .functionExampleSection:hover{
             height: auto;
         }
         .functionExampleSection h2{
             font-size: 2.6rem;
             align-self: flex-start;
-            margin-top: 0.5em
+            margin-top: 0.5em;
+            padding:0 !important
         }
         .img-container{
             width:100%;
@@ -913,6 +904,9 @@ import WisdomWordExample from '@/components/WisdomWordExample.vue';
         }
         .functionExampleSection{
             margin: 2em 2em;
+        }
+        .functionExampleSection h2{
+            text-align: left !important
         }
         .img-container img{
             width: 30%;

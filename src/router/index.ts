@@ -82,6 +82,24 @@ export const routes = [
     },
   },
   {
+    path: '/privacy-policy',
+    name: 'privacy-policy',
+    component: () => import('../views/PrivacyPolicyView.vue'),
+    meta: {
+      requiresAuth: true,
+      scrollUp: true,
+    },
+  },
+  {
+    path: '/terms-of-purchase',
+    name: 'terms-of-purchase',
+    component: () => import('../views/TermsOfPurchaseView.vue'),
+    meta: {
+      requiresAuth: true,
+      scrollUp: true,
+    },
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('../views/LoginView.vue'),
