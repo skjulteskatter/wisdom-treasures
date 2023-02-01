@@ -3,7 +3,7 @@
         <template #footer>
             <div class="w-full flex">
                 <div class="grow self-center">See more from
-                    <ClickableLink class="inline-block" v-on:link-clicked="$router.push({name: 'category'})">{{article.number}}</ClickableLink>
+                    <ClickableLink class="inline-block" v-on:link-clicked="$router.push({name: 'category'})">{{categoryName}}</ClickableLink>
                     category
                 </div> 
                 <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {}">
@@ -29,7 +29,7 @@
 import BaseModal from "./BaseModal.vue"
 
 import { defineComponent } from "vue";
-import { Article } from "hiddentreasures-js";
+import { Article, Publication } from "hiddentreasures-js";
 import { HeartIcon, ShareIcon } from "@heroicons/vue/outline";
 import BaseButton from "./BaseButton.vue";
 import { HeartIcon as HeartIconSolid } from "@heroicons/vue/solid";
@@ -62,6 +62,9 @@ export default defineComponent({
         },
         favorite(): boolean{
             return this.store.favorites.includes(this.article.id);
+        },
+        categoryName(): string{
+            return this.store.publications.get(this.article.publicationId)?.title ?? "";
         }
     },
     watch: {

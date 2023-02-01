@@ -15,7 +15,7 @@
                   <BookOpenIcon class="h-8"/>
               </div>
               <div class="self-center">
-                {{article.id}}
+                {{categoryName}}
               </div>
             </div>
             
@@ -26,18 +26,20 @@
   </template>
     
   <script lang="ts">
-  import { Article } from 'hiddentreasures-js';
+  import { Article, Publication } from 'hiddentreasures-js';
   import { defineComponent } from 'vue';
   import BaseCard from './BaseCard.vue';
   import { BookOpenIcon } from '@heroicons/vue/outline';
   import WWCardModal from './WWCardModal.vue';
   import { history } from '@/services/localStorage';
+import { useSessionStore } from '@/stores/session';
   
     export default defineComponent({
       name: "WWCard",
       data() {
         return {
           openWWModal: false,
+          store: useSessionStore(),
         }
       },
       props: {
@@ -61,6 +63,9 @@
         },
         currentPath(){
           return this.$route.path.endsWith("/") ? this.$route.path : this.$route.path + "/";
+        },
+        categoryName(): string {
+          return this.store.publications.get(this.article.publicationId)?.title ?? "";
         }
       },
       async mounted() {

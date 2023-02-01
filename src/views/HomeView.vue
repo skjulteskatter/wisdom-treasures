@@ -44,7 +44,7 @@ import { useSessionStore } from '@/stores/session';
     },
     computed: {
       articles() : Article[] {
-        return this.store.articles;
+        return Array.from(this.store.articles.values());
       }
     },
     async mounted() {

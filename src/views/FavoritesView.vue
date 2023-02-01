@@ -32,11 +32,29 @@ import { useSessionStore } from '@/stores/session';
       WWCard
     },
     computed: {
-      articles() : Article[] {
-        return this.store.articles.filter((x : Article) => this.favorites.includes(x.id));
-      },
       favorites() : string[]{
         return this.store.favorites;
+      },
+      articles(){
+        const articles = [];
+        for (const favorite of this.favorites) {
+          const article = this.store.articles.get(favorite);
+          if (article === null || article === undefined) continue;
+          articles.push(article);
+        }
+        return articles;
+      }
+    },
+    watch: {
+      articlesMap(){
+        //Maybe find a better way than to erase it and fill it again 🤷‍♂️
+        console.log("watcher triggered");
+        this.articles = [];
+        for (const favorite of this.favorites) {
+          const article = this.store.articles.get(favorite);
+          if (article === null || article === undefined) continue;
+          this.articles.push(article);
+        }
       }
     },
     async mounted() {

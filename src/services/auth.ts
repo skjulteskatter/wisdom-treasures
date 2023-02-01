@@ -112,9 +112,15 @@ async function userLoggedInCallback(){
     const store = useSessionStore();
     store.favorites = await favorites.get() ?? [];
     await store.getPublications();
-    const pubId = store.publications[0].id;
+    const pubId = store.publications.keys().next().value;
     console.log(pubId);
     await store.getArticles(pubId);
+
+    return;
+
+    for (const entry of store.publications.keys()) {
+        await store.getArticles(entry);
+    }
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? "" ): Promise<boolean> {
