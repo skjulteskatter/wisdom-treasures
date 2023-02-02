@@ -80,7 +80,7 @@ import { useSessionStore } from '@/stores/session';
 
           //This is just a test
           history.addOrReplace(this.article.id, Date.now());
-        }
+        },
       },
       methods:{
         checkRouteToModal(){

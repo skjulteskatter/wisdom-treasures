@@ -19,6 +19,7 @@
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
     </div>
+    <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
   </main> 
 </template>
 
@@ -45,10 +46,25 @@ import { useSessionStore } from '@/stores/session';
     computed: {
       articles() : Article[] {
         return Array.from(this.store.articles.values());
+      },
+      linkedArticle(): null | Article {
+        const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
+        if (articleId == undefined) return null;
+        if (this.articles.some(x => x.id == articleId)) return null;
+        const article = this.store.articles.get(articleId || "");
+        if (article === undefined) return null;
+        return article;
+      },
+      currentPath() : string {
+          return !this.$route.path.endsWith("/") ? this.$route.path : this.$route.path.slice(0 , this.$route.path.length - 1);
+        },
+      currentPathNumber() : number | null {
+        let match = (this.currentPath.match(/[0-9]+$/) ?? [null])[0];
+        if (match == null) return null;
+        return parseInt(match);
       }
     },
     async mounted() {
-
       this.currentUser = await getCurrentUserPromise() as User;
 
     },
