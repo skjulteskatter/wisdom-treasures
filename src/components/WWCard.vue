@@ -21,7 +21,7 @@
             
           </template>
         </BaseCard>
-        <WWCardModal :show="openWWModal" @close="navigateBack" :article="article"/>
+        <WWCardModal :show="openWWModal" @close="()=> {navigateBack(); $emit('closeModal')}" :article="article"/>
     </main>
   </template>
     
@@ -52,6 +52,7 @@ import { useSessionStore } from '@/stores/session';
             required: false
         },
       },
+      emits: ["closeModal"],
       components: {
         BaseCard,
         BookOpenIcon,

@@ -5,7 +5,7 @@
     </h1>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
-        <WWCard :article="article" class="grow" :strech-y="true"/>
+        <WWCard :article="article" class="grow" :strech-y="true" @close-modal="refreshFavorites"/>
       </div>
     </div>
   </main> 
@@ -14,7 +14,7 @@
 <script lang="ts">
 import { getCurrentUserPromise } from '@/services/auth';
 import type { User } from '@firebase/auth';
-import type { Publication } from 'hiddentreasures-js';
+import type { Article, Publication } from 'hiddentreasures-js';
 import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
@@ -26,6 +26,7 @@ import { useSessionStore } from '@/stores/session';
         publications : [] as Publication[],
         currentUser : null as User | null,
         store: useSessionStore(),
+        favoriteArticles : [] as Article[],
       }
     },
     components: {
@@ -35,20 +36,13 @@ import { useSessionStore } from '@/stores/session';
       favorites() : string[]{
         return this.store.favorites;
       },
-      favoriteArticles(){
-        const articles = [];
-        for (const favorite of this.favorites) {
-          const article = this.store.articles.get(favorite);
-          if (article === null || article === undefined) continue;
-          articles.push(article);
-        }
-        return articles;
-      }
     },
-    watch: {
-      articlesMap(){
-        //Maybe find a better way than to erase it and fill it again 🤷‍♂️
-        console.log("watcher triggered");
+    async mounted() {
+      this.currentUser = await getCurrentUserPromise() as User;
+      this.refreshFavorites();
+    },
+    methods: {
+      refreshFavorites() : void {
         this.favoriteArticles = [];
         for (const favorite of this.favorites) {
           const article = this.store.articles.get(favorite);
@@ -56,11 +50,6 @@ import { useSessionStore } from '@/stores/session';
           this.favoriteArticles.push(article);
         }
       }
-    },
-    async mounted() {
-
-      this.currentUser = await getCurrentUserPromise() as User;
-
     },
   });
 </script>
