@@ -36,7 +36,7 @@ export const search = {
             if (key.startsWith(this.searchPrefix)) {
                 const item = localStorage.getItem(key);
                 if (item == null) continue;
-                items.set(key, item);
+                items.set(key.replace(this.searchPrefix, ""), item);
             }
         }
 
