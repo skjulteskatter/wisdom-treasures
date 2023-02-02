@@ -30,6 +30,8 @@ export const useSessionStore = defineStore('session', {
             publications: reactive(new Map) as Map<string, Publication>,
 
             articles: reactive(new Map) as Map<string, Article>,
+            //Used to look up the id to the article number
+            articleNumberLookup: reactive(new Map) as Map<number, string>,
         }
     },
     actions: {
@@ -74,6 +76,11 @@ export const useSessionStore = defineStore('session', {
                 }
             }
             return this.articles;
+        },
+        async intitializeArticleNumberLookup(){
+            for (const [key,value] of this.articles){
+                this.articleNumberLookup.set(value.number, key);
+            }
         }
     },
 })

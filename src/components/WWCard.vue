@@ -5,7 +5,7 @@
           <template #default>
             <slot name="default" v-if="$slots.default" />
             <div v-else class="flex h-full">
-              <p class="self-center" v-html="article.content?.content"/>
+              <p class="self-center line-clamp-3" v-html="article.content?.content"/>
             </div>
           </template>
           <template #footer>

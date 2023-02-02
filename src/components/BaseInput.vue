@@ -138,7 +138,7 @@ export default defineComponent({
         }
     },
     methods: {
-        search(searchTerm: string | undefined) {
+        search(searchTerm?: string) {
             if (searchTerm === undefined) searchTerm = this.modelValue;
             if (searchTerm !== undefined && searchTerm !== null && searchTerm.replace(/(\s)/g, "") !== "") {
                 search.addOrReplace(searchTerm, Date.now());

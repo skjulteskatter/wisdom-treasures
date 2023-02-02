@@ -1,5 +1,5 @@
 <template>
-  <main class="col-span-2">
+  <main>
     <div class="flex items-center flex-col text-[1.5rem]">
       <div class="text-[6rem] gradient font font-bold">404</div>
       <div class="h-[1px] bg-black/30 w-full max-w-xs" />
@@ -13,21 +13,24 @@
 <script lang="ts">
 import ClickableLink from '@/components/ClickableLink.vue';
 import router from '@/router';
-import { auth } from '@/services/auth';
+import { getCurrentUserPromise } from '@/services/auth';
 import { defineComponent } from 'vue';
 
   export default defineComponent({
     name: "NotFoundView",
-    computed: {
-        isLoggedIn() {
-            return !!auth.currentUser;
-        }
+    data() {
+      return {
+        isLoggedIn: false,
+      }
     },
     components: { ClickableLink },
     methods: {
       navigate(name: string) {
         router.push({name: name});
       }
+    },
+    async mounted(){
+      this.isLoggedIn = (await getCurrentUserPromise()) != null;
     }
 });
 </script>
