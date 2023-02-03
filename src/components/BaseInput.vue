@@ -45,9 +45,9 @@
                 </div>
             </div>
         </div>
-        <HUMenu v-if="getSearchHistory.length > 0 && (focus || searchHistoryHoverOver)" as="div" class="self-center flex" @mouseover="searchHistoryHoverOver = true" @mouseleave="searchHistoryHoverOver = false">
+        <HUMenu v-if="getSearchHistory.length > 0 && (focus || searchHistoryHoverOver) && !insideHUMenu" as="div" class="self-center flex z-10" @mouseover="searchHistoryHoverOver = true" @mouseleave="searchHistoryHoverOver = false">
 			<MenuItems static
-				class="absolute w-11/12 top-1 sm:w-56 sm:origin-top-right rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
+				class="absolute w-11/12 top-1 sm:w-56 sm:origin-top-right rounded-md glassDropDown shadow-xl ring-1 ring-black ring-opacity-20 focus:outline-none overflow-hidden">
 				<div class="flex flex-col p-1">
 					<MenuItem v-for="searchTerm in getSearchHistory" v-bind:key="searchTerm">
 						<BaseButton theme="menuButton" :center-text="false" @click="searchTermClicked(searchTerm)">{{searchTerm}}</BaseButton>
@@ -64,7 +64,6 @@ import { EyeIcon, EyeOffIcon, SearchIcon, XIcon } from "@heroicons/vue/solid";
 import { Menu as HUMenu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { search } from '@/services/localStorage';
 import BaseButton from './BaseButton.vue';
-import { useSessionStore } from '@/stores/session';
 
 export enum SizeEnum {
     lg = "lg", md = "md"
@@ -121,7 +120,7 @@ export default defineComponent({
         insideHUMenu: {
             type: Boolean,
             default: false,
-        }
+        },
     },
     emits: ["update:modelValue", "searchAction"],
     computed: {
