@@ -1,7 +1,7 @@
 <template>
   <main class="mt-4">
     <BackButton/>
-    <BaseCard class="bg-primary text-white mt-4">
+    <BaseCard class="mt-4">
         <template #header> 
             <div class="">
                 <div v-if="searchedWord">

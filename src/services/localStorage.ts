@@ -27,7 +27,7 @@ export const history = {
 
 export const search = {
 
-    maxSearchesRemebered: 3,
+    maxSearchesRemebered: 5,
     searchPrefix: 'searchTerm:',
 
     getAll(): Map<string, string> {
@@ -48,7 +48,6 @@ export const search = {
     addOrReplace(id: string, date: number) {
         localStorage.setItem(this.searchPrefix + id, date.toString());
         const all = this.getAll();
-        console.log("All size: " + all.size);
         if (all.size > this.maxSearchesRemebered){
             let lowest: [string, number] = ["", Date.now()];
             for (const [key, value] of all) {
@@ -57,8 +56,7 @@ export const search = {
                     lowest = [key, numberValue];
                 }
             }
-            console.log("Deleting item: " + lowest);
-            localStorage.removeItem(lowest[0]);
+            localStorage.removeItem(this.searchPrefix + lowest[0]);
         }
     },
     delete(id: string) {
