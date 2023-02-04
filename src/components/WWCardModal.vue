@@ -1,5 +1,5 @@
 <template>
-    <BaseModal :show="true" class="fixed w-full h-full left-0 top-0 z-40" @close="() => $emit('close')">
+    <BaseModal class="fixed w-full h-full left-0 top-0 z-40" @close="e => {$emit('close', e)}">
         <template #footer>
             <div class="w-full flex">
                 <div class="grow self-center">See more from
@@ -32,8 +32,8 @@
 import BaseModal from "./BaseModal.vue"
 
 import { defineComponent } from "vue";
-import { Article, Publication } from "hiddentreasures-js";
-import { HeartIcon, ShareIcon, ClipboardCopyIcon } from "@heroicons/vue/outline";
+import { Article } from "hiddentreasures-js";
+import { HeartIcon, ClipboardCopyIcon } from "@heroicons/vue/outline";
 import BaseButton from "./BaseButton.vue";
 import { HeartIcon as HeartIconSolid } from "@heroicons/vue/solid";
 import ClickableLink from "./ClickableLink.vue";
@@ -73,6 +73,9 @@ export default defineComponent({
         },
         categoryName(): string{
             return this.store.publications.get(this.article.publicationId)?.title ?? "";
+        },
+        console(){
+            return console;
         }
     },
     watch: {

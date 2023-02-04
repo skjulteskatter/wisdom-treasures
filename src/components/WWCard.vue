@@ -21,12 +21,12 @@
             
           </template>
         </BaseCard>
-        <WWCardModal :show="openWWModal" @close="()=> {navigateBack(); $emit('closeModal')}" :article="article"/>
+        <WWCardModal :show="openWWModal" @close="e => {navigateBack(e); $emit('closeModal', e)}" :article="article"/>
     </main>
   </template>
     
   <script lang="ts">
-  import { Article, Publication } from 'hiddentreasures-js';
+  import { Article } from 'hiddentreasures-js';
   import { defineComponent } from 'vue';
   import BaseCard from './BaseCard.vue';
   import { BookOpenIcon } from '@heroicons/vue/outline';
@@ -59,9 +59,6 @@ import { useSessionStore } from '@/stores/session';
         WWCardModal
       },
       computed: {
-        shortContent() {
-          return ""
-        },
         currentPath(){
           return this.$route.path.endsWith("/") ? this.$route.path : this.$route.path + "/";
         },
@@ -94,12 +91,15 @@ import { useSessionStore } from '@/stores/session';
         registerViewedWW(){
           //TODO register somewhere that the user have clicked this specific WW
         },
-        navigateBack(){
-            if (this.$router.options.history.state.back == null){
-              this.$router.push({name: "dashboard"});
-            } else {
-              this.$router.back();
-            }
+        navigateBack(e?: Event){
+
+          if (e === undefined || e.defaultPrevented === true) return;
+
+          if (this.$router.options.history.state.back == null){
+            this.$router.push({name: "dashboard"});
+          } else {
+            this.$router.back();
+          }
         }
       }
     });
