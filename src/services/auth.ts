@@ -114,7 +114,7 @@ async function userLoggedInCallback(){
     await store.getPublications();
     const pubId = store.publications.keys().next().value;
     console.log(pubId);
-    await store.getArticles(pubId);
+    await store.initializeArticles([pubId]);
     await store.intitializeArticleNumberLookup();
     return;
 
