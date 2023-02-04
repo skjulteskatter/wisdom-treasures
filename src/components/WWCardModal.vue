@@ -7,7 +7,7 @@
                     category
                 </div> 
                 <div>
-                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUp" :text="'Copied to clipboard!'"></PopUpMessage>
+                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
                     <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
                         <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
                     </BaseButton>
@@ -55,7 +55,7 @@ export default defineComponent({
     data: () => ({
         store: useSessionStore(),
         copyToClipBoardKey: uuid.v4() as string,
-        openCopyToClipBoardPopUp: false as boolean,
+        openCopyToClipBoardPopUpSemaphore: 0 as number,
     }),
     emits: ["close"],
     props: {
@@ -97,9 +97,10 @@ export default defineComponent({
             this.copyToClipBoardKey = uuid.v4();
             if (!this.article.content?.content) return;
             navigator.clipboard.writeText(this.article.content?.content.replace(/<.+?>/g, "").trim());
-            this.openCopyToClipBoardPopUp = true
+
+            this.openCopyToClipBoardPopUpSemaphore++;
             setTimeout(() => {
-                this.openCopyToClipBoardPopUp = false
+                this.openCopyToClipBoardPopUpSemaphore--;
             }, 2000);
         }
     },
