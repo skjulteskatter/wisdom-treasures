@@ -1,6 +1,6 @@
 <template>
   <main class="col-span-2 w-full h-full lg:flex place-items-center flex-col">
-    <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-l border-dashed border-black/20 flex">
+    <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-black/20 flex">
       <div class="cursor-pointer flex place-items-center max-h-20" @mouseover="()=>{hoverOverWTLogo = true}" @mouseleave="()=>{hoverOverWTLogo = false}" @click="() => {$router.push({name: 'dashboard'})}">
         <img class="w-14 h-14 cursor-pointer" src="/img/logo.svg"/>
         <span class="text-2xl pb-2 font-bold">Wisdom<div class="text-primary inline-block font-bold">Treasures</div></span>
@@ -8,12 +8,15 @@
       </div>
       <div id="thisIsJustForSpacing" class="grow"/>
     </span>
-    <BaseCard class="mx-auto rounded-none lg:rounded-md">
+    <BaseCard class="mx-auto rounded-none lg:rounded-md lg:max-w-sm lg:w-96">
       <template #header>
-        <div ref="widening" class="w-auto lg:w-96"/>
         <div class="flex justify-center my-2">
           <div>
-            <p v-if="include([forms.login])">Login to your account</p>
+            <div v-if="include([forms.login])">
+              <p v-if="store.redirectAfterLoginName == 'profile'">Login to access your profile</p>
+              <p v-else-if="store.redirectAfterLoginName == 'store'">Login to access the store</p>
+              <p v-else>Login to your account</p>
+            </div>
             <p v-else-if="include([forms.register])">Create your account</p>
             <p v-else>Reset your password</p>
           </div>
@@ -140,7 +143,7 @@
         </div>
       </template>
     </BaseCard>
-    <div class="grow border-r basis-0 border-black/20 border-dashed w-auto lg:w-[26rem] flex flex-col">
+    <div class="grow basis-0 border-black/20 w-auto lg:w-[26rem] flex flex-col">
       <div id="justForSpacingPurposes" class="grow"/>
       <FooterComponent/>
     </div>

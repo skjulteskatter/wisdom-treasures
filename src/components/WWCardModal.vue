@@ -6,9 +6,12 @@
                     <ClickableLink class="inline-block" v-on:link-clicked="$router.push({name: 'category'})">{{categoryName}}</ClickableLink>
                     category
                 </div> 
-                <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {}">
-					<ShareIcon class="h-8 opacity-50"/>
-				</BaseButton>
+                <div>
+                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUp" :text="'Copied to clipboard!'"></PopUpMessage>
+                    <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
+                        <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
+                    </BaseButton>
+                </div>
                 <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
                     <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
 					<HeartIcon v-else class="h-8 opacity-50 pop"/>
@@ -30,24 +33,29 @@ import BaseModal from "./BaseModal.vue"
 
 import { defineComponent } from "vue";
 import { Article, Publication } from "hiddentreasures-js";
-import { HeartIcon, ShareIcon } from "@heroicons/vue/outline";
+import { HeartIcon, ShareIcon, ClipboardCopyIcon } from "@heroicons/vue/outline";
 import BaseButton from "./BaseButton.vue";
 import { HeartIcon as HeartIconSolid } from "@heroicons/vue/solid";
 import ClickableLink from "./ClickableLink.vue";
 import { useSessionStore } from "@/stores/session";
+import PopUpMessage from "./PopUpMessage.vue";
+import { uuid } from 'vue-uuid';
 
 export default defineComponent({
     name: "wwcard-modal",
     components: {
         BaseModal,
-        ShareIcon,
         BaseButton,
         HeartIcon,
         HeartIconSolid,
-        ClickableLink
+        ClickableLink,
+        ClipboardCopyIcon,
+        PopUpMessage
     },
     data: () => ({
         store: useSessionStore(),
+        copyToClipBoardKey: uuid.v4() as string,
+        openCopyToClipBoardPopUp: false as boolean,
     }),
     emits: ["close"],
     props: {
@@ -85,6 +93,15 @@ export default defineComponent({
                 this.store.removeFavorite([this.article.id]);
             }
         },
+        copyToClipBoard() {
+            this.copyToClipBoardKey = uuid.v4();
+            if (!this.article.content?.content) return;
+            navigator.clipboard.writeText(this.article.content?.content.replace(/<.+?>/g, "").trim());
+            this.openCopyToClipBoardPopUp = true
+            setTimeout(() => {
+                this.openCopyToClipBoardPopUp = false
+            }, 2000);
+        }
     },
 });
 </script>
