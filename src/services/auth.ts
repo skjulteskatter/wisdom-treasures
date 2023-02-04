@@ -116,10 +116,11 @@ async function userLoggedInCallback(){
     console.log(pubId);
     await store.initializeArticles([pubId]);
     await store.intitializeArticleNumberLookup();
+    store.sessionInitialized = true;
     return;
 
     for (const entry of store.publications.keys()) {
-        await store.getArticles(entry);
+        await store.initializeArticles([entry]);
     }
 }
 

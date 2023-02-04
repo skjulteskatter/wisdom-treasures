@@ -44,7 +44,7 @@ import { useSessionStore } from '@/stores/session';
           favoriteArticles.push(article);
         }
         return favoriteArticles;
-      }
+      },
     },
     methods: {
       refreshDataFavorites(){

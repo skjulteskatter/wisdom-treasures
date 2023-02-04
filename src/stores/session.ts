@@ -33,6 +33,8 @@ export const useSessionStore = defineStore('session', {
             articles: reactive(new Map) as Map<string, Article>,
             //Used to look up the id to the article number
             articleNumberLookup: reactive(new Map) as Map<number, string>,
+
+            sessionInitialized: false as boolean,
         }
     },
     actions: {

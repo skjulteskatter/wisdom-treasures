@@ -30,6 +30,8 @@ import type { Article, Publication } from 'hiddentreasures-js';
 import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
+import { Notification } from '@/classes/notification';
+import router from '@/router';
 
   export default defineComponent({
     name: "HomeView",
@@ -45,28 +47,68 @@ import { useSessionStore } from '@/stores/session';
     },
     computed: {
       articles() : Article[] {
-        return Array.from(this.store.articles.values());
+        const articles = Array.from(this.store.articles.values());
+        return articles;
       },
       linkedArticle(): null | Article {
+
+        if (this.homePath === this.currentPath) return null;
+
         const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
-        if (articleId == undefined) return null;
-        if (this.articles.some(x => x.id == articleId)) return null;
+        if (articleId === undefined) return null;
+
+        if ((this.articles.some(x => x.id == articleId))) return null;
+
         const article = this.store.articles.get(articleId || "");
         if (article === undefined) return null;
+
         return article;
       },
       currentPath() : string {
           return !this.$route.path.endsWith("/") ? this.$route.path : this.$route.path.slice(0 , this.$route.path.length - 1);
-        },
+      },
+      homePath(): string {
+        let route = (router.getRoutes().find(x => x.name == 'dashboard')?.path || "⛄");
+        return !route.endsWith("/") ? route : route.slice(0 , route.length - 1);
+      },
       currentPathNumber() : number | null {
         let match = (this.currentPath.match(/[0-9]+$/) ?? [null])[0];
         if (match == null) return null;
         return parseInt(match);
+      },
+      sessionInitialized() : boolean {
+        return this.store.sessionInitialized;
+      }
+    },
+    watch: {
+      sessionInitialized(initialized){
+        if (initialized) {
+          this.checkArticleNumber(); 
+        }
       }
     },
     async mounted() {
       this.currentUser = await getCurrentUserPromise() as User;
+    },
+    methods:{
+      articleNotFound(num: number) : void{
+        //Should probably navigate back 🤷‍♂️
+        this.store.notifications.push(new Notification("Couldn't find article number: " + num.toString(), "error"));
+        router.push({name: "dashboard"});
+      },
+      checkArticleNumber(){
+        if (this.homePath === this.currentPath) return;
 
+        const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
+        if (articleId === undefined) {
+          this.articleNotFound(this.currentPathNumber || NaN);
+          return;
+        }
+
+        if ((this.articles.some(x => x.id == articleId))) return null;
+
+        if (this.linkedArticle === null) this.articleNotFound(2);
+      }
     },
   });
 </script>
