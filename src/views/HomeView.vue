@@ -14,6 +14,15 @@
         </span> 
       </span>
     </h1>
+    <div id="wordOfTheDayCotainer" class="mt-20 mb-20 grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
+      <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2"/>
+      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mt-2 sm:mt-0 mx-2 sm:mx-0">
+        <p class="text-xl">Generate new word</p>
+        <template #icon>
+          <RefreshIcon class="w-8"/>
+        </template>
+      </ThreeDButton>
+    </div>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
@@ -32,6 +41,9 @@ import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
 import { Notification } from '@/classes/notification';
 import router from '@/router';
+import WWShowCard from '@/components/WWShowCard.vue';
+import ThreeDButton from '@/components/ThreeDButton.vue';
+import { RefreshIcon } from '@heroicons/vue/outline';
 
   export default defineComponent({
     name: "HomeView",
@@ -40,10 +52,14 @@ import router from '@/router';
         publications : [] as Publication[],
         currentUser : null as User | null,
         store: useSessionStore(),
+        randomArticle : null as Article | null,
       }
     },
     components: {
-      WWCard
+      WWCard,
+      WWShowCard,
+      ThreeDButton,
+      RefreshIcon
     },
     computed: {
       articles() : Article[] {
@@ -83,12 +99,14 @@ import router from '@/router';
     watch: {
       sessionInitialized(initialized){
         if (initialized) {
-          this.checkArticleNumber(); 
+          this.checkArticleNumberPath(); 
+          this.getAndSetRandomArticle();
         }
       }
     },
     async mounted() {
       this.currentUser = await getCurrentUserPromise() as User;
+      if (this.sessionInitialized) this.getAndSetRandomArticle();
     },
     methods:{
       articleNotFound(num: number) : void{
@@ -96,7 +114,7 @@ import router from '@/router';
         this.store.notifications.push(new Notification("Couldn't find article number: " + num.toString(), "error"));
         router.push({name: "dashboard"});
       },
-      checkArticleNumber(){
+      checkArticleNumberPath(){
         if (this.homePath === this.currentPath) return;
 
         const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
@@ -108,6 +126,9 @@ import router from '@/router';
         if ((this.articles.some(x => x.id == articleId))) return null;
 
         if (this.linkedArticle === null) this.articleNotFound(2);
+      },
+      getAndSetRandomArticle(): void {
+        this.randomArticle = this.articles[Math.floor(Math.random()*this.articles.length)] || null;
       }
     },
   });
