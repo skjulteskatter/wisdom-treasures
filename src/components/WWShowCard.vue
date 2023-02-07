@@ -89,8 +89,7 @@
           return this.store.publications.get(this.article?.publicationId)?.title ?? "";
         },
         articleContent() : string {
-          if (!this.article) return "";
-          return this.article.content?.content || "";
+          return this.smartTrim(this.article.content?.content ?? "");
         },
         favorites(): string[] {
             return this.store.favorites;
@@ -123,6 +122,9 @@
             setTimeout(() => {
                 this.openCopyToClipBoardPopUpSemaphore--;
             }, 2000);
+        },
+        smartTrim(s: string): string{
+          return s.replace(/(\s*(?=<))|((?<=>)\s*)/g, "");
         }
       },
     });

@@ -31,7 +31,6 @@ import TheNavbar from "@/components/TheNavbar.vue";
 import { XIcon } from "@heroicons/vue/solid";
 import Loader from "@/components/Loader.vue";
 import { getCurrentUserPromise } from "@/services/auth";
-import SearchModal from "@/components/SearchModal.vue";
 import FooterComponent from '@/components/FooterComponent.vue';
 import BaseCard from "@/components/BaseCard.vue";
 import NotificationCard from "@/components/NotificationCard.vue";
@@ -43,7 +42,6 @@ export default defineComponent({
     TheNavbar,
     XIcon,
     Loader,
-    SearchModal,
     FooterComponent,
     BaseCard,
     NotificationCard,

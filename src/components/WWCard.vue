@@ -5,7 +5,7 @@
           <template #default>
             <slot name="default" v-if="$slots.default" />
             <div v-else class="flex h-full">
-              <p class="self-center line-clamp-3" v-html="article.content?.content"/>
+              <p class="self-center line-clamp-3" v-html="smartTrim(article.content?.content ?? '')"/>
             </div>
           </template>
           <template #footer>
@@ -100,6 +100,10 @@ import { useSessionStore } from '@/stores/session';
           } else {
             this.$router.back();
           }
+        },
+        //Trims space without touching html tags
+        smartTrim(s: string): string{
+          return s.replace(/(\s*(?=<))|((?<=>)\s*)/g, "");
         }
       }
     });

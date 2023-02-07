@@ -149,6 +149,7 @@ export default defineComponent({
 	},
 	methods: {
 		search(searchWord : string | undefined){
+			console.log(searchWord);
 			if (searchWord === undefined) searchWord = this.searchWord;
 			useSessionStore().searchWordBridge = searchWord;
 			router.push({name: "search"});
