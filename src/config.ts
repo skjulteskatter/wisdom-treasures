@@ -25,11 +25,25 @@ const basePath =
     "https://api.songtreasures.app/"; //Use this for online server
     //"https://localhost:44301/"; //Use this for local server
 
+const bibles = {
+    "du": "NLD1939",
+    "de": "L1912",
+    "no": "NO7885BM",
+    "en": "NKJV"
+};
+
+const mannaPath = `https://mannakorn.today/get_verse`;
+
+const mannaApiKey = "663f5b5e-0959-4eed-896d-f7561cb26872";
+
 const config = {
     api: {
         basePath,
     },
     firebaseConfig,
+    bibles,
+    mannaPath,
+    mannaApiKey,
 };
 
 export default config;

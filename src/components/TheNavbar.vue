@@ -15,6 +15,7 @@
 					<BaseButton theme="menuButton" :clicked="$route.name === 'favorites'" @click="e => navigate('favorites', e)">Favorites</BaseButton>
 					<BaseButton theme="menuButton" :clicked="$route.name === 'categories'" @click="navigate('categories')">Themes</BaseButton>
 					<BaseButton theme="menuButton" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
+					<BaseButton theme="menuButton" :clicked="$route.name === 'manna'" @click="navigate('manna')">Manna</BaseButton>
 				</div>
 				<div class="flex sm:hidden self-center place-content-center cursor-pointer" @click="navigate('dashboard')">
 					<HomeIcon class="w-7"/>
@@ -60,6 +61,9 @@
 									</MenuItem>
 									<MenuItem>
 										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
+									</MenuItem>
+									<MenuItem>
+										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'manna'" @click="navigate('manna')">Manna</BaseButton>
 									</MenuItem>
 								</div>
 								<div class="hidden sm:flex p-1">
