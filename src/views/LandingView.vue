@@ -163,13 +163,12 @@
   
 <script lang="ts">
 import { defineComponent } from 'vue';
-import FooterComponent from '@/components/FooterComponent.vue';
 import LandingNavBar from '@/components/LandingNavBar.vue';
 import WisdomWordExample from '@/components/WisdomWordExample.vue';
 
     export default defineComponent({
       name: "LandingView",
-      components: { FooterComponent, 
+      components: { 
                     LandingNavBar, 
                     WisdomWordExample },
       methods: {
