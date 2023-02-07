@@ -15,7 +15,7 @@
       </span>
     </h1>
     <div id="wordOfTheDayCotainer" class="mt-20 mb-20 grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
-      <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2"/>
+      <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mt-2 sm:mt-0 mx-2 sm:mx-0">
         <p class="text-xl">Generate new word</p>
         <template #icon>
@@ -53,6 +53,7 @@ import { RefreshIcon } from '@heroicons/vue/outline';
         currentUser : null as User | null,
         store: useSessionStore(),
         randomArticle : null as Article | null,
+        showWordOfTheDay : false as boolean,
       }
     },
     components: {
@@ -100,13 +101,13 @@ import { RefreshIcon } from '@heroicons/vue/outline';
       sessionInitialized(initialized){
         if (initialized) {
           this.checkArticleNumberPath(); 
-          this.getAndSetRandomArticle();
+          this.getAndSetWordOfTheDayArticle();
         }
       }
     },
     async mounted() {
       this.currentUser = await getCurrentUserPromise() as User;
-      if (this.sessionInitialized) this.getAndSetRandomArticle();
+      if (this.sessionInitialized) this.getAndSetWordOfTheDayArticle();
     },
     methods:{
       articleNotFound(num: number) : void{
@@ -129,6 +130,22 @@ import { RefreshIcon } from '@heroicons/vue/outline';
       },
       getAndSetRandomArticle(): void {
         this.randomArticle = this.articles[Math.floor(Math.random()*this.articles.length)] || null;
+        this.showWordOfTheDay = false;
+      },
+      getAndSetWordOfTheDayArticle(): void {
+        let date : Date = new Date();
+        let dateNumber : number = +`${date.getDay()}${date.getMonth()}${date.getFullYear()}999`;
+        let randomNumber : number = this.mulberry32(dateNumber);
+        let adjustedRandomNumber = Math.round(randomNumber * (this.articles.length - 1));
+        if (adjustedRandomNumber < 0 || (adjustedRandomNumber > this.articles.length - 1)) adjustedRandomNumber = 0;
+        this.randomArticle = this.articles[adjustedRandomNumber] || null;
+        this.showWordOfTheDay = true;
+      },
+      mulberry32(a : number) : number {
+        let t = a += 0x6D2B79F5;
+        t = Math.imul(t ^ t >>> 15, t | 1);
+        t ^= t + Math.imul(t ^ t >>> 7, t | 61);
+        return ((t ^ t >>> 14) >>> 0) / 4294967296;
       }
     },
   });

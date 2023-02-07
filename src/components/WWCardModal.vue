@@ -1,29 +1,6 @@
 <template>
-    <BaseModal class="fixed w-full h-full left-0 top-0 z-40" @close="e => {$emit('close', e)}">
-        <template #footer>
-            <div class="w-full flex">
-                <div class="grow self-center">See more from
-                    <ClickableLink class="inline-block" v-on:link-clicked="$router.push({name: 'category'})">{{categoryName}}</ClickableLink>
-                    category
-                </div> 
-                <div>
-                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
-                    <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
-                        <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
-                    </BaseButton>
-                </div>
-                <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
-                    <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
-					<HeartIcon v-else class="h-8 opacity-50 pop"/>
-				</BaseButton>
-            </div>
-        </template>
-        <template #default> 
-            <div class="flex max-w-2xl flex-col font-serif">
-                <img src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
-                <div class="grow m-5" v-html="article.content?.content"/>
-            </div>
-        </template>
+    <BaseModal class="fixed w-full h-full left-0 top-0 z-40" @close="e => {$emit('close', e)}" :useBaseCard="false">
+        <WWShowCard :article="article"></WWShowCard>
     </BaseModal>
 </template>
 
@@ -33,24 +10,15 @@ import BaseModal from "./BaseModal.vue"
 
 import { defineComponent } from "vue";
 import { Article } from "hiddentreasures-js";
-import { HeartIcon, ClipboardCopyIcon } from "@heroicons/vue/outline";
-import BaseButton from "./BaseButton.vue";
-import { HeartIcon as HeartIconSolid } from "@heroicons/vue/solid";
-import ClickableLink from "./ClickableLink.vue";
 import { useSessionStore } from "@/stores/session";
-import PopUpMessage from "./PopUpMessage.vue";
 import { uuid } from 'vue-uuid';
+import WWShowCard from "./WWShowCard.vue";
 
 export default defineComponent({
     name: "wwcard-modal",
     components: {
         BaseModal,
-        BaseButton,
-        HeartIcon,
-        HeartIconSolid,
-        ClickableLink,
-        ClipboardCopyIcon,
-        PopUpMessage
+        WWShowCard,
     },
     data: () => ({
         store: useSessionStore(),
@@ -74,9 +42,6 @@ export default defineComponent({
         categoryName(): string{
             return this.store.publications.get(this.article.publicationId)?.title ?? "";
         },
-        console(){
-            return console;
-        }
     },
     watch: {
         favorites(newFavs : string[]) {
@@ -84,9 +49,6 @@ export default defineComponent({
         }
     },
     methods: {
-        share(){
-            console.log("Sharing is not implemented yet");
-        },
         favoriteButton(){
             if (!this.favorite){
                 console.log("Adding to favorites");

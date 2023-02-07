@@ -31,7 +31,7 @@
                             <ArrowLeftIcon class="h-10 grayscale brightness-[3.5]"/>
                         </BaseButton>
                     </div>
-                    <BaseCard class="w-11/12 md:w-auto self-center z-30">
+                    <BaseCard v-if="useBaseCard" class="w-11/12 md:w-auto self-center z-30">
                         <template #header v-if="$slots.title || $slots.description || $slots.icon">
                             <div class="flex flex-col sm:flex-row gap-4">
                                 <slot name="icon"/>
@@ -50,6 +50,9 @@
                             <slot name="footer" />
                         </template>
                     </BaseCard>
+                    <div v-else class="w-11/12 md:w-auto self-center z-30">
+                        <slot/>
+                    </div>
                     <div id="JustForSpacing" class="grow basis-0"/>
                 </div>
                 </TransitionChild>
@@ -97,6 +100,10 @@ export default defineComponent({
     props: {
         show: {
             type: Boolean,
+        },
+        useBaseCard: {
+            type: Boolean,
+            default: true,
         },
     },
     emits: ["close"],
