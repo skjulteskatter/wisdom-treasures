@@ -45,14 +45,25 @@
                 </div>
             </div>
         </div>
+        <HUMenu v-if="getSearchHistory.length > 0 && (focus || searchHistoryHoverOver) && !insideHUMenu" as="div" class="self-center flex z-10" @mouseover="searchHistoryHoverOver = true" @mouseleave="searchHistoryHoverOver = false">
+			<MenuItems static
+				class="absolute w-11/12 top-1 sm:w-56 sm:origin-top-right rounded-md glassDropDown shadow-xl ring-1 ring-black ring-opacity-20 focus:outline-none overflow-hidden">
+				<div class="flex flex-col p-1">
+					<MenuItem v-for="searchTerm in getSearchHistory" v-bind:key="searchTerm">
+						<BaseButton theme="menuButton" :center-text="false" @click="searchTermClicked(searchTerm)">{{searchTerm}}</BaseButton>
+					</MenuItem>
+				</div>
+			</MenuItems>
+		</HUMenu>
     </label>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { EyeIcon, EyeOffIcon, SearchIcon, XIcon } from "@heroicons/vue/solid";
-import { MenuItem } from '@headlessui/vue';
+import { Menu as HUMenu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import { search } from '@/services/localStorage';
+import BaseButton from './BaseButton.vue';
 
 export enum SizeEnum {
     lg = "lg", md = "md"
@@ -69,7 +80,11 @@ export default defineComponent({
         EyeOffIcon,
         SearchIcon,
         XIcon,
-        MenuItem
+        MenuItem,
+        HUMenu,
+        MenuButton,
+        MenuItems,
+        BaseButton,
     },
     data() {
         return {
@@ -77,6 +92,7 @@ export default defineComponent({
             hover: false as Boolean,
             focus: false as Boolean,
             searchHistory: [] as string[],
+            searchHistoryHoverOver: false as Boolean,
         }
     },
     props: {
@@ -104,7 +120,7 @@ export default defineComponent({
         insideHUMenu: {
             type: Boolean,
             default: false,
-        }
+        },
     },
     emits: ["update:modelValue", "searchAction"],
     computed: {
@@ -114,24 +130,31 @@ export default defineComponent({
         getSearchHistory() : string[]{
             const history : string[] = [];
             for (const [key, value] of search.getAll()) {
+                if (this.modelValue == "" || ((key !== undefined && key.startsWith(this.modelValue ?? "⛄") && key != this.modelValue)))
                 history.push(key);
             }
             return history;
         }
     },
     methods: {
-        search() {
-            if (this.modelValue !== undefined && this.modelValue !== null && this.modelValue.replace(/(\s)/g, "") !== "") {
-                search.addOrReplace(this.modelValue, Date.now());
+        search(searchTerm?: string) {
+            if (searchTerm === undefined) searchTerm = this.modelValue;
+            if (searchTerm !== undefined && searchTerm !== null && searchTerm.replace(/(\s)/g, "") !== "") {
+                search.addOrReplace(searchTerm, Date.now());
             }
             
-            this.$emit('searchAction', this.modelValue);
+            this.$emit('searchAction', searchTerm);
+        },
+        searchTermClicked(searchTerm: string) {
+            this.$emit('update:modelValue', searchTerm);
+            this.search(searchTerm);
+            this.searchHistoryHoverOver = false;
         }
     },
 });
 </script>
 
-<style>
+<style scoped>
 
 .shake{
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
@@ -157,6 +180,15 @@ export default defineComponent({
     60% {
         transform: translate3d(4px, 0, 0);
     }
+}
+
+.glassDropDown {
+	background: (255, 255, 255, 0.1);
+	backdrop-filter: blur(5px);
+	-webkit-backdrop-filter: blur(5px);
+}
+.glassDropDown > div {
+	background: rgba(255, 255, 255, 0.8);
 }
 
 </style>

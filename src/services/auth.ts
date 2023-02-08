@@ -111,6 +111,17 @@ async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
     const store = useSessionStore();
     store.favorites = await favorites.get() ?? [];
+    await store.getPublications();
+    const pubId = store.publications.keys().next().value;
+    console.log(pubId);
+    await store.initializeArticles([pubId]);
+    await store.intitializeArticleNumberLookup();
+    store.sessionInitialized = true;
+    return;
+
+    for (const entry of store.publications.keys()) {
+        await store.initializeArticles([entry]);
+    }
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? "" ): Promise<boolean> {

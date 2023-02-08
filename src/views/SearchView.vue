@@ -1,13 +1,13 @@
 <template>
   <main class="mt-4">
     <BackButton/>
-    <BaseCard class="bg-primary text-white mt-4">
+    <BaseCard class="mt-4">
         <template #header> 
-            <div class="">
-                <div v-if="searchedWord">
+            <div class="font-sans">
+                <div v-if="searchedWord" class="font-bold">
                     Showing {{numberOfResults}} Results for "{{searchedWord}}"
                 </div>
-                <div v-else>
+                <div v-else class="font-bold">
                     Search
                 </div>
             </div>
@@ -17,6 +17,11 @@
             
         </template>
     </BaseCard>
+    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+      <div v-for="(article, index) in hits" :key="index" class="flex flex-col">
+        <WWCard :article="article" class="grow" :strech-y="true"/>
+      </div>
+    </div>
   </main>
 </template>
 
@@ -26,15 +31,17 @@ import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BackButton from '@/components/BackButton.vue';
 import { useSessionStore } from '@/stores/session';
+import type { Article } from 'hiddentreasures-js';
+import WWCard from '@/components/WWCard.vue';
 
   export default defineComponent({
     name: "SearchView",
     data() {
         return {
             searchWord: "" as string,
-            numberOfResults: 0 as number,
             searchedWord: "" as string,
             store: useSessionStore(),
+            hits: [] as Article[],
         }
     },
     props: {
@@ -42,11 +49,18 @@ import { useSessionStore } from '@/stores/session';
     components: {
         BaseCard,
         BaseInput,
-        BackButton
+        BackButton,
+        WWCard,
     },
     computed: {
         searchWordBridge(){
             return this.store.searchWordBridge;
+        },
+        allArticles() : Article[] {
+            return Array.from(this.store.articles.values());
+        },
+        numberOfResults() : number {
+            return this.hits.length;
         }
     },
     watch : {
@@ -68,8 +82,8 @@ import { useSessionStore } from '@/stores/session';
     methods: {
         async search(searchWord: string) {
             this.searchedWord = searchWord;
-            // TODO do the actual searching
-            console.log("Searched for word: " + searchWord);
+            
+            this.hits = this.allArticles.filter(x => x.content?.content.includes(searchWord));
         },
     }
   });

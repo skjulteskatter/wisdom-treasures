@@ -60,6 +60,30 @@ export const routes = [
           WWCard
         ]
       },
+      {
+        path: '/manna',
+        name: 'manna',
+        component: () => import('../views/MannaView.vue'),
+        meta: {
+          requiresAuth: true,
+          scrollUp: true,
+        },
+        children: [
+          WWCard
+        ]
+      },
+      {
+        path: '/favorites',
+        name: 'favorites',
+        component: () => import('../views/FavoritesView.vue'),
+        meta: {
+          requiresAuth: true,
+          scrollUp: true,
+        },
+        children: [
+          WWCard
+        ]
+      },
     ]
   },
   {

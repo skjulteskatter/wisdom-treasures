@@ -45,7 +45,6 @@
   import WWCard from '@/components/WWCard.vue';
   import { history } from '@/services/localStorage';
 import type { Article } from 'hiddentreasures-js';
-import TestArticles from '@/services/TestArticles';
 import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
   
     export default defineComponent({
@@ -53,7 +52,6 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
       data() {
           return {
               store: useSessionStore(),
-              articles: [] as Article[],
               periods: {
                 "Today": [-1,1],
                 "This Week": [1,7],
@@ -74,10 +72,12 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
       computed: {
         historyIsEmpty() {
           for (let _ in this.loadPeriodName) {return false} return true;
+        },
+        articles(): Article[]{
+          return Array.from(this.store.articles.values());
         }
       },
       mounted() {
-        this.articles = TestArticles;
         this.setHistoryIds();
       },
       methods: {

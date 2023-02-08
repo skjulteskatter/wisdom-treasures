@@ -11,10 +11,11 @@
 					</div>
 				</div>
 				<div id="middleNav" class="sm:flex self-center hidden grow place-content-center gap-x-3 max-h-8">
-					<BaseButton theme="menuButton" :clicked="$route.name === 'dashboard'" @click="navigate('dashboard')">Home</BaseButton>
-					<BaseButton theme="menuButton" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
+					<BaseButton theme="menuButton" :clicked="$route.name === 'dashboard'" @click="e => navigate('dashboard', e)">Home</BaseButton>
+					<BaseButton theme="menuButton" :clicked="$route.name === 'favorites'" @click="e => navigate('favorites', e)">Favorites</BaseButton>
 					<BaseButton theme="menuButton" :clicked="$route.name === 'categories'" @click="navigate('categories')">Themes</BaseButton>
 					<BaseButton theme="menuButton" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
+					<BaseButton theme="menuButton" :clicked="$route.name === 'manna'" @click="navigate('manna')">Manna</BaseButton>
 				</div>
 				<div class="flex sm:hidden self-center place-content-center cursor-pointer" @click="navigate('dashboard')">
 					<HomeIcon class="w-7"/>
@@ -60,6 +61,9 @@
 									</MenuItem>
 									<MenuItem>
 										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
+									</MenuItem>
+									<MenuItem>
+										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'manna'" @click="navigate('manna')">Manna</BaseButton>
 									</MenuItem>
 								</div>
 								<div class="hidden sm:flex p-1">
@@ -149,11 +153,13 @@ export default defineComponent({
 	},
 	methods: {
 		search(searchWord : string | undefined){
+			console.log(searchWord);
 			if (searchWord === undefined) searchWord = this.searchWord;
 			useSessionStore().searchWordBridge = searchWord;
 			router.push({name: "search"});
 		},
-		navigate(name: string){
+		navigate(name: string, e? : Event){
+
 			if (name === "register"){
 				//Just to mmake sure the login forms appears as 'register' and not as 'login'
 				this.store.loginFormBridge = "register";

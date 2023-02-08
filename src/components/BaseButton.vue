@@ -1,7 +1,9 @@
 <template>
     <button
-        class="overflow-hidden text-white select-none cursor-pointer flex items-center gap-2 rounded-md relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ring-offset-2 active:text-opacity-50"
-        :class="[`button--${theme} button`, { 'opacity-75 cursor-wait button--loading': loading, 'button--disabled': disabled, 'button--clicked': clicked, 'py-1 px-2': size == 'small', 'py-2 px-4': size == 'medium', 'py-3 px-6': size == 'large', 'justify-center' : centerText }]"
+        class="overflow-hidden z-10 text-white select-none cursor-pointer flex items-center gap-2 rounded-md relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ring-offset-2 active:text-opacity-50"
+        :class="[`button--${theme} button`, { 'opacity-75 cursor-wait button--loading': loading, 'button--disabled': disabled, 'button--clicked': clicked, 'py-1 px-2': size == 'small', 
+            'py-2 px-4': size == 'medium', 'py-3 px-6': size == 'large', 'justify-center' : centerText, 
+            'threeDButton': threeD }]"
         :disabled="loading || disabled"
         v-bind="$attrs"
     >
@@ -69,6 +71,10 @@ export default defineComponent({
         centerText: { //This is just for styling purposes
             type: Boolean,
             default: true,
+        },
+        threeD: { //This is just for styling purposes
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
@@ -212,4 +218,26 @@ export default defineComponent({
 		background-position: 0% 50%;
 	}
 }
+
+.threeDButton {
+    transform: translate3d(-2px, -4px, 1px);
+    transition:
+      transform
+      600ms
+      cubic-bezier(.3, .7, .4, 1);
+  }
+
+  .threeDButton:hover {
+    transform: translate3d(-4px, -8px, 1px);
+    transition:
+      transform
+      250ms
+      cubic-bezier(.3, .7, .4, 1.5);
+  }
+
+  .threeDButton:active {
+    transform: translate3d(-1px, -2px, 1px);
+    transition: transform 34ms;
+  }
+
 </style>

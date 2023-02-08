@@ -25,13 +25,13 @@
                     leave-to="opacity-0"
                 >
                 <div class="fixed w-full flex flex-col h-full">
-                    <div id="clickOutsideDetector" class="fixed w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20" @click="() => $emit('close')"/>
+                    <div id="clickOutsideDetector" class="fixed w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20" @click="e => $emit('close', e)"/>
                     <div class="grow basis-0">
-                        <BaseButton theme="menuButton" size="small" class="m-4 w-10 max-h-10 block sm:hidden z-30" @click="() => $emit('close')">
+                        <BaseButton theme="menuButton" size="small" class="m-4 w-10 max-h-10 block sm:hidden z-30" @click="e => $emit('close', e)">
                             <ArrowLeftIcon class="h-10 grayscale brightness-[3.5]"/>
                         </BaseButton>
                     </div>
-                    <BaseCard class="w-11/12 md:w-auto self-center z-30">
+                    <BaseCard v-if="useBaseCard" class="w-11/12 md:w-auto self-center z-30">
                         <template #header v-if="$slots.title || $slots.description || $slots.icon">
                             <div class="flex flex-col sm:flex-row gap-4">
                                 <slot name="icon"/>
@@ -50,6 +50,9 @@
                             <slot name="footer" />
                         </template>
                     </BaseCard>
+                    <div v-else class="w-11/12 md:w-auto self-center z-30">
+                        <slot/>
+                    </div>
                     <div id="JustForSpacing" class="grow basis-0"/>
                 </div>
                 </TransitionChild>
@@ -97,6 +100,10 @@ export default defineComponent({
     props: {
         show: {
             type: Boolean,
+        },
+        useBaseCard: {
+            type: Boolean,
+            default: true,
         },
     },
     emits: ["close"],

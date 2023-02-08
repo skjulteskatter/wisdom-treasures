@@ -5,7 +5,7 @@
           <template #default>
             <slot name="default" v-if="$slots.default" />
             <div v-else class="flex h-full">
-              <p class="self-center" v-html="article.content?.content"/>
+              <p class="self-center line-clamp-3" v-html="smartTrim(article.content?.content ?? '')"/>
             </div>
           </template>
           <template #footer>
@@ -15,13 +15,13 @@
                   <BookOpenIcon class="h-8"/>
               </div>
               <div class="self-center">
-                {{article.id}}
+                {{categoryName}}
               </div>
             </div>
             
           </template>
         </BaseCard>
-        <WWCardModal :show="openWWModal" @close="navigateBack" :article="article"/>
+        <WWCardModal :show="openWWModal" @close="e => {navigateBack(e); $emit('closeModal', e)}" :article="article"/>
     </main>
   </template>
     
@@ -32,12 +32,14 @@
   import { BookOpenIcon } from '@heroicons/vue/outline';
   import WWCardModal from './WWCardModal.vue';
   import { history } from '@/services/localStorage';
+import { useSessionStore } from '@/stores/session';
   
     export default defineComponent({
       name: "WWCard",
       data() {
         return {
           openWWModal: false,
+          store: useSessionStore(),
         }
       },
       props: {
@@ -50,17 +52,18 @@
             required: false
         },
       },
+      emits: ["closeModal"],
       components: {
         BaseCard,
         BookOpenIcon,
         WWCardModal
       },
       computed: {
-        shortContent() {
-          return ""
-        },
         currentPath(){
           return this.$route.path.endsWith("/") ? this.$route.path : this.$route.path + "/";
+        },
+        categoryName(): string {
+          return this.store.publications.get(this.article.publicationId)?.title ?? "";
         }
       },
       async mounted() {
@@ -75,7 +78,7 @@
 
           //This is just a test
           history.addOrReplace(this.article.id, Date.now());
-        }
+        },
       },
       methods:{
         checkRouteToModal(){
@@ -88,12 +91,19 @@
         registerViewedWW(){
           //TODO register somewhere that the user have clicked this specific WW
         },
-        navigateBack(){
-            if (this.$router.options.history.state.back == null){
-              this.$router.push({name: "dashboard"});
-            } else {
-              this.$router.back();
-            }
+        navigateBack(e?: Event){
+
+          if (e === undefined || e.defaultPrevented === true) return;
+
+          if (this.$router.options.history.state.back == null){
+            this.$router.push({name: "dashboard"});
+          } else {
+            this.$router.back();
+          }
+        },
+        //Trims space without touching html tags
+        smartTrim(s: string): string{
+          return s.replace(/(\s*(?=<))|((?<=>)\s*)/g, "");
         }
       }
     });
