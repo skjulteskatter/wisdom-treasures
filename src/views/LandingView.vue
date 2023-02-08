@@ -6,7 +6,7 @@
             <!-- BANNER -->
             <section id="banner">
                 <h2>WT</h2>
-                <router-link to="/login" class="transition scale-s">Gods Word. The easy way.</router-link> HAHA funny, but no
+                <router-link to="/login" class="transition scale-s">Gods Word. The easy way.</router-link>
                 <button class="scroll down" @click="scrollDown">
                     <p>scroll</p>
                     <svg xmlns="http://www.w3.org/2000/svg" 
@@ -165,9 +165,11 @@
 import { defineComponent } from 'vue';
 import LandingNavBar from '@/components/LandingNavBar.vue';
 import WisdomWordExample from '@/components/WisdomWordExample.vue';
+import LandingFooter from '@/components/LandingFooter.vue';
 
     export default defineComponent({
       name: "LandingView",
+      components:{  LandingFooter,
                     LandingNavBar, 
                     WisdomWordExample },
       methods: {
