@@ -5,9 +5,7 @@
         <div id="parent">
             <!-- BANNER -->
             <section id="banner">
-                <h2>WT</h2>
-                <router-link to="/login" class="transition scale-s">Gods Word. The easy way.</router-link>
-                <button class="scroll down" @click="scrollDown">
+                <!-- <button class="scroll down" @click="scrollDown">
                     <p>scroll</p>
                     <svg xmlns="http://www.w3.org/2000/svg" 
                     width="24" 
@@ -19,7 +17,7 @@
                     stroke-linecap="round" 
                     stroke-linejoin="round">
                     <path d="M6 9l6 6 6-6"/></svg>
-                </button>
+                </button> -->
                 <video autoplay muted loop>
                     <source src="images/phone-walking.mp4" type="video/mp4">
                 </video>
@@ -27,13 +25,10 @@
 
 
             <!-- INTRO -->
-            <section ref="intro" id="intro" >
-                <p id="about" class="p-little">A little bit about</p>
-                <div class="container">
-                    <h1>Wisdom Treasures</h1>
-                    <p>Our app is a toolbox with tools, Wisdom Words, 
-                    that are built on Gods Word and are personalized to your life and needs.</p>
-                </div>
+            <section ref="intro" id="intro">
+                <h1>Wisdom Treasures</h1>
+                <p>Our app is a toolbox with tools, Wisdom Words, 
+                that are built on Gods Word and are personalized to your life and needs.</p>
                 <router-link to="/login" class="transition">sign up</router-link>
                 
             </section>
@@ -48,7 +43,7 @@
                 <div class="ww-color-div-2"></div>
                 <div class="ww-color-div-3"></div>
 
-                <p class="p-little color-white">Examples of</p>
+                <p class="color-white">Examples of</p>
                 <h1>Wisdom</h1>
                 <h1 class="second-line-h1">words</h1>
 
@@ -257,14 +252,6 @@ import LandingFooter from '@/components/LandingFooter.vue';
         background-color: white;
     }
 
-/* HEX COLOR PALETE?? */
-    /* --charleston-green: #202D31ff;
-    --cadet-blue-crayola: #A5B3BEff;
-    --deep-space-sparkle: #385B63ff;
-    --cafe-noir: #533924ff;
-    --charcoal: #2B4453ff; */
-
-
 /* TYPOGRAPHY */
     h1, h2 {
         font-weight: bold;
@@ -287,64 +274,23 @@ import LandingFooter from '@/components/LandingFooter.vue';
     p{
         font-size: 1.25rem
     }
-    .p-little {
-        font-family: 'EB Garamond', serif;
-    }
     .color-white{
         color: #fff
     }
 
     #parent{
-        display: grid;
-        grid-template-rows: 100vh 40em;
-        margin-bottom: 10vh;
+        display: flex;
     }
 /* BANNER */
     #banner{
-        grid-row: 1;
-        position: relative;
-        top: 0;
-        left: 0;
-        width: 100%;
+        width: 35%;
         height: 100vh;
-        overflow: hidden
     }
     #banner video{
         height: 100%;
         width:100%;
         object-fit: cover;
         background-color: #2B4453;
-    }
-    #banner h2{
-        color:rgba(255, 255, 255, 0.284);
-        background-color: #202d31aa;
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index:1;
-
-        font-size: max(12rem, 35vw);
-        text-align: center;
-        text-transform: uppercase;
-        line-height: 100vh;
-
-        backdrop-filter: blur(10px);
-    }
-    #banner a{
-        position: absolute;
-        top: 43vh;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        z-index: 2;
-
-        background: none;
-        font-size: 7vw;
-        text-align: center;
-        font-family: 'EB Garamond', serif;
-        color: #fff;
     }
     .scroll.down{
         position: absolute;
@@ -359,51 +305,31 @@ import LandingFooter from '@/components/LandingFooter.vue';
 
 /* INTRO */
     #intro{
-        grid-row: 2;
-        position: absolute;
-        top: 27vh;
-        left: 0;
-        width: 100%;
-        height: 50vh;
+        width: 65%;
         display: flex;
         flex-direction: column;
         justify-content: center;
-        align-items: center;
+        padding: 4em
     }
-    #about {
-        padding-right: 15em;
-        margin-bottom: -7em
+    #intro h1{
+        margin-top: 0.75em;
+        font-size: 4.5rem;
     }
-    .container{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 4em
-    }
-    .container h1{
-        width: 40%;
-        text-align: right;
-        padding-right: 1em;
-        font-family: 'EB Garamond', serif;
-        font-size: 5rem
-    }
-    .container p {
-        width: 40%;
-        padding: 4em 4em 8em 4em;
-        margin-top: 5em;
-        border-left: 2px solid #2B4453
+    #intro p{
+        margin-block: 1.5em
     }
     #intro a{
+        width: 15em;
         color: #2B4453;
+        text-align: center;
         background-color: white;
         border: 3px #2B4453 solid;
-        padding: 0.75em 4em;
+        padding-block: 0.75em;
         border-radius: 2em;
         text-transform: uppercase;
         font-size: 0.75rem;
         font-weight: bold;
         letter-spacing: 3px;
-        margin-top: -12em
     }
     #intro a:hover, 
     #intro a:active,
