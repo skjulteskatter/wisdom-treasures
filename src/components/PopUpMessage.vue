@@ -1,5 +1,5 @@
 <template>
-	<div class="absolute left-1/2">
+	<div class="absolute left-1/2 z-20">
 		<TransitionRoot
 			:show="open"
 			as="div"

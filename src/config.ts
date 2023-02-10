@@ -32,7 +32,7 @@ const bibles = {
     "en": "NKJV"
 };
 
-const mannaPath = `https://mannakorn.today/get_verse`;
+const mannaPath = `api/Manna`;
 
 const mannaApiKey = "663f5b5e-0959-4eed-896d-f7561cb26872";
 

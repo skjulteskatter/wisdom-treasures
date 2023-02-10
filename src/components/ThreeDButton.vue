@@ -1,6 +1,6 @@
 <template>
     <main>
-        <BaseButton @click="clicked" :threeD="true" class="w-[calc(100%-2px)] h-[calc(100%-4px)] absolute top-1 left-[2px]">
+        <BaseButton @click="clicked" :threeD="true" :loading="loading" :loadingLabel="loadingLabel" class="w-[calc(100%-2px)] h-[calc(100%-4px)] absolute top-1 left-[2px]">
             <template #default>
                 <slot/>
             </template>
@@ -29,6 +29,16 @@ export default defineComponent({
         clicked(){
             this.$emit('clicked');
         }
-    }
+    },
+    props: {
+        loading: {
+            type: Boolean,
+            default: false,
+        },
+        loadingLabel: {
+            type: String,
+            default: "Loading...",
+        }
+    },
 });
 </script>

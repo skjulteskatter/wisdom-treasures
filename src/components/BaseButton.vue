@@ -3,7 +3,7 @@
         class="overflow-hidden z-10 text-white select-none cursor-pointer flex items-center gap-2 rounded-md relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ring-offset-2 active:text-opacity-50"
         :class="[`button--${theme} button`, { 'opacity-75 cursor-wait button--loading': loading, 'button--disabled': disabled, 'button--clicked': clicked, 'py-1 px-2': size == 'small', 
             'py-2 px-4': size == 'medium', 'py-3 px-6': size == 'large', 'justify-center' : centerText, 
-            'threeDButton': threeD }]"
+            'threeDButton opacity-100': threeD }]"
         :disabled="loading || disabled"
         v-bind="$attrs"
     >
