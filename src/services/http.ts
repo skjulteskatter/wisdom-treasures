@@ -45,7 +45,6 @@ class Http {
     public async parseJson(response: Response, json = true) {
         if (json) {
             const result = await response.text();
-            console.log("R text: ", result);
             try {
                 return JSON.parse(result);
             }

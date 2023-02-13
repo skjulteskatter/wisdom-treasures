@@ -16,7 +16,6 @@
   </template>
   
   <script lang="ts">
-  import { getCurrentUserPromise } from '@/services/auth';
   import type { User } from '@firebase/auth';
   import { defineComponent } from 'vue';
   import { useSessionStore } from '@/stores/session';
@@ -29,7 +28,6 @@
       name: "HomeView",
       data() {
         return {
-          currentUser : null as User | null,
           store: useSessionStore(),
           manna: null as Manna | null,
           loadingManna: false as Boolean
@@ -52,7 +50,9 @@
         }
       },
       async mounted() {
-        this.currentUser = await getCurrentUserPromise() as User;
+        if (this.sessionInitialized && this.manna == null) {
+          await this.getAndSetManna();
+        }
       },
       methods:{
         async getAndSetManna() {

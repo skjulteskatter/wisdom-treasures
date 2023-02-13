@@ -20,7 +20,7 @@
                   <!--Using v-show insetad of v-if to make smoother transition between the two-->
                   <p class="self-center font-bold text-3xl mt-3">{{ manna.reference }}</p>
                 </div>
-                <div class="grow m-5">{{ mannaContent }}</div>
+                <div class="grow m-5">{{ mannaContent }} </div>
             </div>
             <div id="spacerdiv2" class="flex grow"/>
           </div>
@@ -70,7 +70,7 @@
           return this.$route.path.endsWith("/") ? this.$route.path : this.$route.path + "/";
         },
         mannaContent() : string {
-          return getContent(this.manna);
+          return getContent(this.manna).replace("«", "“").replace("»","”");
         },
         mannaCopyRightHTML() : string {
           return getCopyRightWithShortLinkHTML(this.manna);

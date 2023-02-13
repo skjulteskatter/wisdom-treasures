@@ -44,6 +44,9 @@ export function getCopyRightWithShortLinkHTML(manna: Manna): string {
     let copyRight = getCopyRight(manna);
     const copyRightLink = getCopyRightLink(manna);
     const copyRightShortLink = getCopyRightShortLink(manna);
-    copyRight = copyRight.replace(copyRightLink, `<a class="text-primary hover:text-[color:var(--color-text)] cursor-pointer" href="${copyRightLink}">${copyRightShortLink}</a>`);
-    return copyRight;
+    
+    if (copyRightLink.length > 0 && copyRightShortLink.length > 0)
+        copyRight = copyRight.replace(copyRightLink, `<a class="text-primary hover:text-[color:var(--color-text)] cursor-pointer" href="${copyRightLink}">${copyRightShortLink}</a>`);
+    
+        return copyRight;
 }
