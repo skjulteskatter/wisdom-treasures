@@ -70,7 +70,12 @@
           return this.$route.path.endsWith("/") ? this.$route.path : this.$route.path + "/";
         },
         mannaContent() : string {
-          return getContent(this.manna).replace("«", "“").replace("»","”");
+          let content = getContent(this.manna);
+          let lefties : number = content.match(/«/g)?.length ?? 0;
+          let righties : number = content.match(/»/g)?.length ?? 0;
+          if (content.endsWith("»") && righties == (lefties + 1))
+            content = "«" + content;
+          return content.replace("«", "“").replace("»","”");
         },
         mannaCopyRightHTML() : string {
           return getCopyRightWithShortLinkHTML(this.manna);
