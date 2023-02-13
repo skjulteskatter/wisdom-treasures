@@ -1,10 +1,10 @@
 import http from "./http"
 import config from "../config";
 import type { Manna } from "@/classes/manna";
-import TestManna from "./TestManna";
 
 export async function getManna(language: string) : Promise<Manna> {
-    let response : string = await http.apifetch(
+    language = "no";
+    const manna : Manna = await http.apifetch(
         `${config.mannaPath}?language=${language}`,
         Object.assign(
             {
@@ -14,27 +14,12 @@ export async function getManna(language: string) : Promise<Manna> {
                 },
             },
         ),
-        true,
+        false,
         true,
         "4.0"
-    );
+    ) as Manna;
 
-    response = response.trim();
-    const result : Manna = JSON.parse(response);
-    return result;
-}
-
-export async function getTestManna(language: string) : Promise<Manna> {
-    await delay(1500);
-    const arr : Manna[] = TestManna;
-    let rand = Math.random();
-    rand = Math.round(rand * (arr.length-1));
-    return arr[rand];
-}
-
-//Remove this
-function delay(ms: number) {
-    return new Promise( resolve => setTimeout(resolve, ms) );
+    return manna;
 }
 
 export function getContent(manna: Manna): string {
@@ -43,18 +28,22 @@ export function getContent(manna: Manna): string {
 
 export function  getCopyRight(manna: Manna): string {
     const wholeCopyright = manna.html.match(/(?<=<div\s*class=('|")copyright('|")>)(.*?)(?=<\/div>)/g)?.[0] ?? "";
-    const copyRightWithoutLink = wholeCopyright.replace(getCopyRightLink(manna), "").trim();
-    return copyRightWithoutLink;
+    //const copyRightWithoutLink = wholeCopyright.replace(getCopyRightLink(manna), "").trim();
+    return wholeCopyright;
 }
 
-export function getCopyRightLink(manna: Manna): string {
+function getCopyRightLink(manna: Manna): string {
     return manna.html.match(/[-a-zA-Z0-9@:%_+.~#?&//=]{2,256}\.[a-z]{2,4}\b(\/[-a-zA-Z0-9@:%_+.~#?&//=]*)?/gi)?.[0] ?? "";
 }
 
-export function getCopyRightShortLink(manna: Manna): string {
+function getCopyRightShortLink(manna: Manna): string {
     return manna.html.match(/[-a-zA-Z0-9@:%_+.~#?&//=]{2,256}\.[a-z]{2,4}\b/gi)?.[0] ?? "";
 }
 
-export function getCopyRightWithShortLink(manna: Manna): string {
-    return getCopyRight(manna).replace(getCopyRightLink(manna), getCopyRightShortLink(manna));
+export function getCopyRightWithShortLinkHTML(manna: Manna): string {
+    let copyRight = getCopyRight(manna);
+    const copyRightLink = getCopyRightLink(manna);
+    const copyRightShortLink = getCopyRightShortLink(manna);
+    copyRight = copyRight.replace(copyRightLink, `<a class="text-primary hover:text-[color:var(--color-text)] cursor-pointer" href="${copyRightLink}">${copyRightShortLink}</a>`);
+    return copyRight;
 }

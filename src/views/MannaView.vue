@@ -21,7 +21,7 @@
   import { defineComponent } from 'vue';
   import { useSessionStore } from '@/stores/session';
   import ThreeDButton from '@/components/ThreeDButton.vue';
-  import { getTestManna } from '@/services/mannaService.js';
+  import { getManna } from '@/services/mannaService.js';
   import type { Manna } from '@/classes/manna';
   import MannaShowCard from '@/components/MannaShowCard.vue';
   
@@ -45,20 +45,19 @@
         }
       },
       watch: {
-        sessionInitialized(initialized){
+        async sessionInitialized(initialized){
           if (initialized) {
-            //DO something
+            await this.getAndSetManna();
           }
         }
       },
       async mounted() {
         this.currentUser = await getCurrentUserPromise() as User;
-        await this.getAndSetManna();
       },
       methods:{
         async getAndSetManna() {
           this.loadingManna = true;
-          this.manna = await getTestManna(this.store.locale);
+          this.manna = await getManna(this.store.locale);
           this.loadingManna = false;
         }
       },

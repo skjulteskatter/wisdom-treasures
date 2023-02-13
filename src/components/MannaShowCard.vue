@@ -3,7 +3,7 @@
       <BaseCard>
         <template #footer>
             <div class="w-full flex">
-                <div class="grow self-center">{{ mannaCopyRight }}</div> 
+                <div class="grow self-center" v-html="mannaCopyRightHTML"/> 
                 <div>
                     <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
                     <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
@@ -38,6 +38,7 @@
   import BaseButton from './BaseButton.vue';
   import { ClipboardCopyIcon } from '@heroicons/vue/outline';
   import { Manna } from '@/classes/manna';
+  import { getCopyRightWithShortLinkHTML, getContent } from '@/services/mannaService'
 
     export default defineComponent({
       name: "WWShowCard",
@@ -71,8 +72,8 @@
         mannaContent() : string {
           return getContent(this.manna);
         },
-        mannaCopyRight() : string {
-          return getCopyRight(this.manna);
+        mannaCopyRightHTML() : string {
+          return getCopyRightWithShortLinkHTML(this.manna);
         }
       },
       methods: {
