@@ -13,7 +13,7 @@
 				<div id="middleNav" class="sm:flex self-center hidden grow place-content-center gap-x-3 max-h-8">
 					<BaseButton theme="menuButton" :clicked="$route.name === 'dashboard'" @click="e => navigate('dashboard', e)">Home</BaseButton>
 					<BaseButton theme="menuButton" :clicked="$route.name === 'favorites'" @click="e => navigate('favorites', e)">Favorites</BaseButton>
-					<BaseButton theme="menuButton" :clicked="$route.name === 'categories'" @click="navigate('categories')">Themes</BaseButton>
+					<BaseButton theme="menuButton" :clicked="$route.name === 'themes'" @click="navigate('themes')">Themes</BaseButton>
 					<BaseButton theme="menuButton" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
 					<BaseButton theme="menuButton" :clicked="$route.name === 'manna'" @click="navigate('manna')">Manna</BaseButton>
 				</div>
@@ -57,7 +57,7 @@
 										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'categories'" @click="navigate('categories')">Themes</BaseButton>
+										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'themes'" @click="navigate('themes')">Themes</BaseButton>
 									</MenuItem>
 									<MenuItem>
 										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>

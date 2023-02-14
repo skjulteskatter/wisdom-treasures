@@ -49,6 +49,18 @@ export const routes = [
         },
       },
       {
+        path: '/themes',
+        name: 'themes',
+        component: () => import('../views/ThemesView.vue'),
+        meta: {
+          requiresAuth: true,
+          scrollUp: true,
+        },
+        children: [
+          WWCard
+        ]
+      },
+      {
         path: '/history',
         name: 'history',
         component: () => import('../views/HistoryView.vue'),

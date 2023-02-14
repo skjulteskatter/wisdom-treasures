@@ -12,7 +12,7 @@
           </div>
         </ThreeDButton>
       </div>
-      <div id="wrapperDiv" class="my-6 mx-4">
+      <div v-if="mannaHistory.length > 0" id="wrapperDiv" class="my-6 mx-4">
         <p class="text-2xl font-bold">History</p>
         <div class="border-l-2 pl-4 my-3 border-black/50">
         <div class="" v-for="manna in mannaHistory" :key="manna.reference">
