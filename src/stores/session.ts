@@ -6,7 +6,7 @@ import { favorites as favoritesApi} from '@/services/api'
 import type { Article, Publication } from 'hiddentreasures-js'
 import { articleService, publicationService } from '@/services/publications';
 import { reactive } from 'vue'
-import { getCurrentUserPromise } from '@/services/auth'
+import type { Manna } from '@/classes/manna'
 
 const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
@@ -35,6 +35,8 @@ export const useSessionStore = defineStore('session', {
             articleNumberLookup: reactive(new Map) as Map<number, string>,
 
             sessionInitialized: false as boolean,
+
+            mannaHistory: [] as Manna[],
         }
     },
     actions: {

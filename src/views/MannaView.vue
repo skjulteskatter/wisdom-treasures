@@ -3,8 +3,8 @@
       <h1 class="my-6 text-3xl font-bold">
         Manna
       </h1>
-      <div id="wordOfTheDayCotainer" class="mt-20 mb-20 grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
-        <MannaShowCard v-if="manna != null" :manna="manna" class="col-span-2"></MannaShowCard>
+      <div id="wordOfTheDayCotainer" class="mt-20 grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
+        <MannaShowCard v-if="newestManna != null" :manna="newestManna" class="col-span-2"></MannaShowCard>
         <ThreeDButton size="large" :three-d="true" @clicked="getAndSetManna" :loading="loadingManna !== undefined && loadingManna === true" class="mt-2 sm:mt-0 mx-2 sm:mx-0">
           <div class="text-xl">
             <p v-if="loadingManna">Retrieving Manna...</p>
@@ -12,24 +12,30 @@
           </div>
         </ThreeDButton>
       </div>
+      <div id="wrapperDiv" class="my-6 mx-4">
+        <p class="text-2xl font-bold">History</p>
+        <div class="border-l-2 pl-4 my-3 border-black/50">
+        <div class="" v-for="manna in mannaHistory" :key="manna.reference">
+          <MannaShowCard v-if="manna != null" :manna="manna" class="my-2"></MannaShowCard>
+        </div>
+      </div>
+      </div>
     </main> 
   </template>
   
   <script lang="ts">
-  import type { User } from '@firebase/auth';
   import { defineComponent } from 'vue';
   import { useSessionStore } from '@/stores/session';
   import ThreeDButton from '@/components/ThreeDButton.vue';
   import { getManna } from '@/services/mannaService.js';
-  import type { Manna } from '@/classes/manna';
   import MannaShowCard from '@/components/MannaShowCard.vue';
+import type { Manna } from '@/classes/manna';
   
     export default defineComponent({
       name: "HomeView",
       data() {
         return {
           store: useSessionStore(),
-          manna: null as Manna | null,
           loadingManna: false as Boolean
         }
       },
@@ -40,24 +46,35 @@
       computed: {
         sessionInitialized() : boolean {
           return this.store.sessionInitialized;
+        },
+        newestManna() : Manna | null {
+          const mannaHistory = this.store.mannaHistory as Manna[];
+          if (mannaHistory.length <= 0) return null;
+          return mannaHistory[mannaHistory.length - 1];
+        },
+        mannaHistory() : Manna[] {
+          const mannaHistory = this.store.mannaHistory as Manna[];
+          return mannaHistory.slice(0, mannaHistory.length - 1);
         }
       },
       watch: {
         async sessionInitialized(initialized){
           if (initialized) {
+            console.log("Manna watch");
             await this.getAndSetManna();
           }
         }
       },
       async mounted() {
-        if (this.sessionInitialized && this.manna == null) {
+        if (this.sessionInitialized && this.store.mannaHistory.length == 0) {
+          console.log("Manna mounted");
           await this.getAndSetManna();
         }
       },
       methods:{
         async getAndSetManna() {
           this.loadingManna = true;
-          this.manna = await getManna(this.store.locale);
+          this.store.mannaHistory.push(await getManna(this.store.locale));
           this.loadingManna = false;
         }
       },

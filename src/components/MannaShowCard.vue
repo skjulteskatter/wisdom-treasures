@@ -73,8 +73,10 @@
           let content = getContent(this.manna);
           let lefties : number = content.match(/«/g)?.length ?? 0;
           let righties : number = content.match(/»/g)?.length ?? 0;
-          if (content.endsWith("»") && righties == (lefties + 1))
+          if (content.endsWith("»") && righties == lefties + 1)
             content = "«" + content;
+          else if (righties + 1 == lefties)
+            content = content + "»";
           return content.replace("«", "“").replace("»","”");
         },
         mannaCopyRightHTML() : string {
