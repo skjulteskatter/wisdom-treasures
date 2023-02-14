@@ -4,7 +4,7 @@
         Manna
       </h1>
       <div id="wordOfTheDayCotainer" class="mt-20 grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
-        <MannaShowCard v-if="newestManna != null" :manna="newestManna" class="col-span-2"></MannaShowCard>
+        <MannaShowCard v-if="newestManna != null" :manna="newestManna" :loading="loadingManna === true" class="col-span-2"></MannaShowCard>
         <ThreeDButton size="large" :three-d="true" @clicked="getAndSetManna" :loading="loadingManna !== undefined && loadingManna === true" class="mt-2 sm:mt-0 mx-2 sm:mx-0">
           <div class="text-xl">
             <p v-if="loadingManna">Retrieving Manna...</p>
