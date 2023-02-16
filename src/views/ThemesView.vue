@@ -7,14 +7,22 @@
       <div>
         <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           <div v-for="(publication, index) in publications" :key="index" class="flex flex-col">
-            <ThemeCard :publication="publication" class="grow" :strech-y="true"/>
+            <ThemeCard :publication="publication" class="grow" 
+              :strech-y="true"/>
+              <div :id="`${idLookUp.get(getFirstLetter(publication)) === index ? getFirstLetter(publication) : index.toString()}${idSalt}`"
+                class="absolute -top-[4.5rem] thisIsJustForScrollingpurposes"
+              />
           </div>
         </div>
       </div>
       <div id="alphabetslider">
-        <div class="bg-red-200 w-10 flex flex-col sticky top-16 items-center font-bold">
-          <div v-for="letter in alphabet" :key="letter">
-            <p class="bg-blue-200">{{ letter }}</p>
+        <div class="w-10 flex flex-col sticky top-16 items-center font-bold"
+          @mousedown="mouseDownOverAlphabet = true" 
+          @mouseup="()=> {mouseDownOverAlphabet = false; mouseOverAlphabet = '';}" 
+          @mouseleave="()=> {mouseDownOverAlphabet = false; mouseOverAlphabet = '';}">
+          <div v-for="letter in alphabet" :key="letter" class="w-full flex justify-center cursor-pointer select-none" 
+            @mouseover="mouseOverAlphabet = letter">
+            {{ letter }}
           </div>
         </div>
       </div>
@@ -35,20 +43,64 @@ import type { Publication } from 'hiddentreasures-js';
       return {
         store: useSessionStore(),
         dataFavorites : undefined as string[] | undefined,
-        alphabet: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
+        alphabet: [] as string[],
+        mouseDownOverAlphabet: false as boolean,
+        mouseOverAlphabet: "" as string,
+        idLookUp: new Map as Map<string, number>,
+        idSalt: "a709b27a-55a5-44b4-b34d-1ef114b56f73" as string,
       }
     },
     components: {
       ThemeCard
     },
     computed: {
-      publications() : Publication[] | null {
-        console.log(this.store.publications.values());
-        return Array.from(this.store.publications.values());
+      publications() : Publication[] {
+        let pubs : Publication[] = Array.from(this.store.publications.values());
+        pubs.sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b)));
+        this.sortAlphabet();
+
+        //If the publications refs is not indexed
+        if (this.idLookUp.size <= 0){
+          for (let i = 0; i < pubs.length; i++) {
+            const pub = pubs[i];
+            if (this.idLookUp.get(this.getFirstLetter(pub)) === undefined) 
+              this.idLookUp.set(this.getFirstLetter(pub), i)
+          }
+        }
+
+        return pubs;
+      },
+      mouseDownAndOverAlphabetEvent() : string {
+        if (this.mouseDownOverAlphabet == false || this.mouseOverAlphabet == "" ) return "";
+        this.scrollToLetter(this.mouseOverAlphabet);
+        // eslint-disable-next-line vue/no-side-effects-in-computed-properties
+        this.mouseOverAlphabet = "";
+        return this.mouseOverAlphabet + this.mouseDownOverAlphabet ? "1" : "0";
+      },
+    },
+    watch: {
+      // Kepp watcher just to have a refrence point
+      mouseDownAndOverAlphabetEvent(){
       }
     },
     methods: {
-
+      getFirstLetter(publication: Publication) {
+        const letter : string = publication.title.match(/[\p{Letter}\p{Mark}]/u)?.[0] ?? " ";
+        if (!this.alphabet.includes(letter)) this.alphabet.push(letter);
+        return letter;
+      },
+      sortAlphabet(){
+        this.alphabet.sort();
+      },
+      scrollToLetter(letter: string){
+        try {
+          let element = document.getElementById(letter + this.idSalt);
+          if (element == null) return;
+          element.scrollIntoView({behavior: "smooth"});
+        } catch (e: any) {
+          console.log("Couldn't find letter: " + letter + ". Warning: " + e);
+        }
+      }  
     }
   });
 </script>
