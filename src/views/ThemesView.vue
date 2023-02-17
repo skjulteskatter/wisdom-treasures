@@ -48,6 +48,7 @@ import type { Publication } from 'hiddentreasures-js';
         mouseOverAlphabet: "" as string,
         idLookUp: new Map as Map<string, number>,
         idSalt: "a709b27a-55a5-44b4-b34d-1ef114b56f73" as string,
+        scrollLock: false as boolean,
       }
     },
     components: {
@@ -93,6 +94,12 @@ import type { Publication } from 'hiddentreasures-js';
         this.alphabet.sort();
       },
       scrollToLetter(letter: string){
+        //Scrolllock and setTimout is a suboptimal soulution while we're waiting for scrollend callback
+        if (this.scrollLock) return;
+        this.scrollLock = true;
+        setTimeout(() => {
+          this.scrollLock = false;
+        }, 200);
         try {
           let element = document.getElementById(letter + this.idSalt);
           if (element == null) return;
