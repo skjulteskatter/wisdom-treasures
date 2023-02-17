@@ -3,10 +3,26 @@
     <h1 class="my-6 text-3xl font-bold">
       Themes
     </h1>
+    <BaseCard class="my-4">
+        <template #header> 
+            <div class="font-sans">
+                <div v-if="searchedWord" class="font-bold">
+                    Showing {{numberOfResults}} Results for "{{searchedWord}}"
+                </div>
+                <div v-else class="font-bold">
+                    Search
+                </div>
+            </div>
+        </template>
+            <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)"/>
+        <template>
+            
+        </template>
+    </BaseCard>
     <div id="wrapper" class="flex">
-      <div>
+      <div class="w-full">
         <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-          <div v-for="(publication, index) in publications" :key="index" class="flex flex-col">
+          <div v-for="(publication, index) in searchedPublications" :key="index" class="flex flex-col">
             <ThemeCard :publication="publication" class="grow" 
               :strech-y="true"/>
               <div :id="`${idLookUp.get(getFirstLetter(publication)) === index ? getFirstLetter(publication) : index.toString()}${idSalt}`"
@@ -36,23 +52,30 @@ import { defineComponent } from 'vue';
 import { useSessionStore } from '@/stores/session';
 import ThemeCard from '@/components/ThemeCard.vue';
 import type { Publication } from 'hiddentreasures-js';
+import BaseInput from '@/components/BaseInput.vue';
+import BaseCard from '@/components/BaseCard.vue';
 
   export default defineComponent({
     name: "ThemesView",
     data() {
       return {
         store: useSessionStore(),
-        dataFavorites : undefined as string[] | undefined,
+
         alphabet: [] as string[],
         mouseDownOverAlphabet: false as boolean,
         mouseOverAlphabet: "" as string,
         idLookUp: new Map as Map<string, number>,
         idSalt: "a709b27a-55a5-44b4-b34d-1ef114b56f73" as string,
         scrollLock: false as boolean,
+
+        searchWord: "" as string,
+        searchedWord : "" as string,
       }
     },
     components: {
-      ThemeCard
+      ThemeCard,
+      BaseInput,
+      BaseCard
     },
     computed: {
       publications() : Publication[] {
@@ -71,6 +94,11 @@ import type { Publication } from 'hiddentreasures-js';
 
         return pubs;
       },
+      searchedPublications() : Publication[]{
+        let pubs = this.publications;
+        if (this.searchedWord.length <= 0) return pubs;
+        return pubs.filter(x => x.title.includes(this.searchedWord))
+      },
       mouseDownAndOverAlphabetEvent() : string {
         if (this.mouseDownOverAlphabet == false || this.mouseOverAlphabet == "" ) return "";
         this.scrollToLetter(this.mouseOverAlphabet);
@@ -78,6 +106,9 @@ import type { Publication } from 'hiddentreasures-js';
         this.mouseOverAlphabet = "";
         return this.mouseOverAlphabet + this.mouseDownOverAlphabet ? "1" : "0";
       },
+      numberOfResults() : number {
+        return this.searchedPublications.length;
+      }
     },
     watch: {
       // Kepp watcher just to have a refrence point
@@ -107,7 +138,10 @@ import type { Publication } from 'hiddentreasures-js';
         } catch (e: any) {
           console.log("Couldn't find letter: " + letter + ". Warning: " + e);
         }
-      }  
+      },
+      search(event: Event){
+        this.searchedWord = this.searchWord;
+      }
     }
   });
 </script>
