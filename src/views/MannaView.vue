@@ -3,23 +3,27 @@
       <h1 class="my-6 text-3xl font-bold">
         Manna
       </h1>
-      <div id="wordOfTheDayCotainer" class="mt-20 grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
-        <MannaShowCard v-if="newestManna != null" :manna="newestManna" :loading="loadingManna === true" class="col-span-2"></MannaShowCard>
-        <ThreeDButton size="large" :three-d="true" @clicked="getAndSetManna" :loading="loadingManna !== undefined && loadingManna === true" class="mt-2 sm:mt-0 mx-2 sm:mx-0">
-          <div class="text-xl">
-            <p v-if="loadingManna">Retrieving Manna...</p>
-            <p v-else>Get Manna</p>
+      <Loader :loading="store.mannaHistory.length <= 0">
+        <div class="w-full">
+          <div id="wordOfTheDayCotainer" class="mt-20 grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
+            <MannaShowCard v-if="newestManna != null" :manna="newestManna" :loading="loadingManna === true" class="col-span-2"></MannaShowCard>
+            <ThreeDButton size="large" :three-d="true" @clicked="getAndSetManna" :loading="loadingManna !== undefined && loadingManna === true" class="mt-2 sm:mt-0 mx-2 sm:mx-0">
+              <div class="text-xl">
+                <p v-if="loadingManna">Retrieving Manna...</p>
+                <p v-else>Get Manna</p>
+              </div>
+            </ThreeDButton>
           </div>
-        </ThreeDButton>
-      </div>
-      <div v-if="mannaHistory.length > 0" id="wrapperDiv" class="my-6 mx-4">
-        <p class="text-2xl font-bold">History</p>
-        <div class="border-l-2 pl-4 my-3 border-black/50">
-        <div class="" v-for="manna in mannaHistory" :key="manna.reference">
-          <MannaShowCard v-if="manna != null" :manna="manna" class="my-2"></MannaShowCard>
+          <div v-if="mannaHistory.length > 0" id="wrapperDiv" class="my-6 mx-4">
+            <p class="text-2xl font-bold">History</p>
+            <div class="border-l-2 pl-4 my-3 border-black/50">
+              <div class="" v-for="manna in mannaHistory" :key="manna.reference">
+                <MannaShowCard v-if="manna != null" :manna="manna" class="my-2"></MannaShowCard>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      </div>
+      </Loader>
     </main> 
   </template>
   
@@ -29,7 +33,8 @@
   import ThreeDButton from '@/components/ThreeDButton.vue';
   import { getManna } from '@/services/mannaService.js';
   import MannaShowCard from '@/components/MannaShowCard.vue';
-import type { Manna } from '@/classes/manna';
+  import type { Manna } from '@/classes/manna';
+  import Loader from '@/components/Loader.vue';
   
     export default defineComponent({
       name: "HomeView",
@@ -42,6 +47,7 @@ import type { Manna } from '@/classes/manna';
       components: {
         ThreeDButton,
         MannaShowCard,
+        Loader,
       },
       computed: {
         sessionInitialized() : boolean {
