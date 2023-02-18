@@ -88,8 +88,6 @@ import { Notification } from '@/classes/notification';
       assureCorrectArticleNumber(){
         if (this.$route.params.wwNumber === undefined) return;
         let articleNumber : number = (+this.$route.params.wwNumber?.toString());
-
-        console.log(articleNumber);
         
         let articleExist : boolean = false;
         if (!Number.isNaN(articleNumber)){
@@ -119,7 +117,7 @@ import { Notification } from '@/classes/notification';
         //Should probably navigate back 🤷‍♂️
         let message = Number.isNaN(num) ? "Couldn't find article" : "Couldn't find article number: " + num.toString();
         this.store.notifications.push(new Notification(message, "error"));
-        router.push({name: "themes"});
+        router.replace({path: this.$route.fullPath.replace(this.$route.params.wwNumber?.toString() ?? "", "") });
       },
     },
     mounted(){
