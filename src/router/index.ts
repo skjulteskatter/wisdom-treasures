@@ -1,4 +1,4 @@
-import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
 
@@ -9,6 +9,24 @@ const WWCard = {
   meta: {
     scrollUp: false,
   }
+} as RouteRecordRaw;
+
+const ThemeAutoSlug = {
+  path:':themeAutoSlug([^/]+)',
+  children: [WWCard],
+  meta: {
+    scrollUp: false,
+  }
+} as RouteRecordRaw;
+
+const Theme = {
+  name: 'themeUUID',
+  path:':themeId([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})',
+  children: [ThemeAutoSlug],
+  meta: {
+    scrollUp: true,
+  },
+  component: () => import('../views/ThemeView.vue'),
 } as RouteRecordRaw;
 
 export const routes = [
@@ -50,14 +68,19 @@ export const routes = [
       },
       {
         path: '/themes',
-        name: 'themes',
-        component: () => import('../views/ThemesView.vue'),
+        name: 'themesIndex',
+        component: () => import('../views/EmptyView.vue'),
         meta: {
           requiresAuth: true,
           scrollUp: true,
         },
         children: [
-          WWCard
+          {
+            name: 'themes',
+            path: '',
+            component: () => import('../views/ThemesView.vue'),
+          },
+          Theme
         ]
       },
       {

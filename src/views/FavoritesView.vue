@@ -18,7 +18,7 @@ import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
 
   export default defineComponent({
-    name: "HomeView",
+    name: "FavoriteView",
     data() {
       return {
         publications : [] as Publication[],

@@ -11,11 +11,11 @@
 					</div>
 				</div>
 				<div id="middleNav" class="sm:flex self-center hidden grow place-content-center gap-x-3 max-h-8">
-					<BaseButton theme="menuButton" :clicked="$route.name === 'dashboard'" @click="e => navigate('dashboard', e)">Home</BaseButton>
-					<BaseButton theme="menuButton" :clicked="$route.name === 'favorites'" @click="e => navigate('favorites', e)">Favorites</BaseButton>
-					<BaseButton theme="menuButton" :clicked="$route.name === 'themes'" @click="navigate('themes')">Themes</BaseButton>
-					<BaseButton theme="menuButton" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
-					<BaseButton theme="menuButton" :clicked="$route.name === 'manna'" @click="navigate('manna')">Manna</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" @click="e => navigate('dashboard', e)">Home</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" @click="e => navigate('favorites', e)">Favorites</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" @click="navigate('themes')">Themes</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
 				</div>
 				<div class="flex sm:hidden self-center place-content-center cursor-pointer" @click="navigate('dashboard')">
 					<HomeIcon class="w-7"/>
@@ -54,16 +54,16 @@
 								class="fixed left-1/2 sm:left-auto w-11/12 sm:w-56 -translate-x-1/2 sm:right-0 sm:translate-x-0 ml-auto mr-auto origin-bottom-right bottom-16 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
 								<div class="flex flex-col sm:hidden p-1">
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'favorites'" @click="navigate('favorites')">Favorites</BaseButton>
+										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">Favorites</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'themes'" @click="navigate('themes')">Themes</BaseButton>
+										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">Themes</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'history'" @click="navigate('history')">History</BaseButton>
+										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="$route.name === 'manna'" @click="navigate('manna')">Manna</BaseButton>
+										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
 									</MenuItem>
 								</div>
 								<div class="hidden sm:flex p-1">
@@ -80,17 +80,17 @@
 								<div v-else class="p-1 border-t border-black/30">
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButton" :center-text="false" :clicked="$route.name === 'profile'" @click="navigate('profile')">Profile</BaseButton>
+											<BaseButton class="w-full" theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">Profile</BaseButton>
 										</div>
 									</MenuItem>
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="console.log('Notification tab is not implemented yet 😥')">Notifications</BaseButton>
+											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="{}">Notifications</BaseButton>
 										</div>
 									</MenuItem>
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="console.log('Help button is not implemented yet')">Help</BaseButton>
+											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="{}">Help</BaseButton>
 										</div>
 									</MenuItem>
 								</div>
@@ -145,9 +145,6 @@ export default defineComponent({
 
 		removeThis: 0
 	}),
-	computed:{
-		console: () => console,
-	},
 	async beforeMount() {
 		this.currentUser = await getCurrentUserPromise();
 	},
@@ -167,12 +164,12 @@ export default defineComponent({
 			}
 			router.push({name: name});
 		},
-		test(){
-			console.log(this.$route.name);
-		},
 		addNotification(){
 			this.store.notifications.push(new Notification("Hello, this is just a notification. Don't mind me! " + this.removeThis.toString()));
 			this.removeThis++;
+		},
+		shouldBeHighlighted(requiredName: string) : boolean {
+			return this.$route.matched.some(x => x.name === requiredName);
 		}
 	},
 });
