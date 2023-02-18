@@ -61,7 +61,6 @@ import BaseCard from '@/components/BaseCard.vue';
       return {
         store: useSessionStore(),
 
-        alphabet: [] as string[],
         mouseDownOverAlphabet: false as boolean,
         mouseOverAlphabet: "" as string,
         idLookUp: new Map as Map<string, number>,
@@ -81,7 +80,6 @@ import BaseCard from '@/components/BaseCard.vue';
       publications() : Publication[] {
         let pubs : Publication[] = Array.from(this.store.publications.values());
         pubs.sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b)));
-        this.sortAlphabet();
 
         //If the publications refs is not indexed
         if (this.idLookUp.size <= 0){
@@ -108,6 +106,15 @@ import BaseCard from '@/components/BaseCard.vue';
       },
       numberOfResults() : number {
         return this.searchedPublications.length;
+      },
+      alphabet(): string[] {
+        const alphabet: string[] = [];
+        for (const publication of this.searchedPublications) {
+          const firstLetter = this.getFirstLetter(publication);
+          if (alphabet.includes(firstLetter)) continue;
+          alphabet.push(this.getFirstLetter(publication));
+        }
+        return alphabet.sort();
       }
     },
     watch: {
@@ -117,12 +124,7 @@ import BaseCard from '@/components/BaseCard.vue';
     },
     methods: {
       getFirstLetter(publication: Publication) {
-        const letter : string = publication.title.match(/[\p{Letter}\p{Mark}]/u)?.[0] ?? " ";
-        if (!this.alphabet.includes(letter)) this.alphabet.push(letter);
-        return letter;
-      },
-      sortAlphabet(){
-        this.alphabet.sort();
+        return publication.title.match(/[\p{Letter}\p{Mark}]/u)?.[0] ?? " ";
       },
       scrollToLetter(letter: string){
         //Scrolllock and setTimout is a suboptimal soulution while we're waiting for scrollend callback
