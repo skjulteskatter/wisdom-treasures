@@ -1,90 +1,93 @@
 <template>
   <main class="mt-4">
     <BackButton/>
-    <BaseCard class="mt-4">
-        <template #header> 
-            <div class="font-sans">
-                <div v-if="searchedWord" class="font-bold">
-                    Showing {{numberOfResults}} Results for "{{searchedWord}}"
-                </div>
-                <div v-else class="font-bold">
-                    Search
-                </div>
+    <MultiSearch 
+        @articles:article-hits="setArticles" 
+        :initial-search-word="searchedWordInput" 
+        @searched-word:searched-word="setSearchedWord"
+        @authors:author-hits="setAuthors"
+        @themes:theme-hits="setThemes"></MultiSearch>
+    <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection">
+        <h1 class="text-2xl font-bold">Themes</h1>
+        <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+            <div v-for="(theme, index) in themeHits" :key="index" class="flex flex-col">
+                <ThemeCard :publication="theme" class="grow" :strech-y="true"/>
             </div>
-        </template>
-            <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)"/>
-        <template>
-            
-        </template>
-    </BaseCard>
-    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-      <div v-for="(article, index) in hits" :key="index" class="flex flex-col">
-        <WWCard :article="article" class="grow" :strech-y="true"/>
-      </div>
+        </div>
+    </div>
+    <div id="WordSection">
+        <h1 class="text-2xl font-bold">Words</h1>
+        <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+            <div v-for="(article, index) in articleHits" :key="index" class="flex flex-col">
+                <WWCard :article="article" class="grow" :strech-y="true"/>
+            </div>
+        </div>
     </div>
   </main>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import BaseCard from '@/components/BaseCard.vue';
-import BaseInput from '@/components/BaseInput.vue';
 import BackButton from '@/components/BackButton.vue';
 import { useSessionStore } from '@/stores/session';
-import type { Article } from 'hiddentreasures-js';
+import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import WWCard from '@/components/WWCard.vue';
+import MultiSearch from '@/components/MultiSearch.vue';
+import ThemeCard from '@/components/ThemeCard.vue';
 
   export default defineComponent({
     name: "SearchView",
     data() {
         return {
-            searchWord: "" as string,
+            searchedWordInput: "" as string,
             searchedWord: "" as string,
             store: useSessionStore(),
-            hits: [] as Article[],
+            articleHits: [] as Article[],
+            authorHits: [] as Contributor[],
+            themeHits: [] as Publication[],
         }
     },
     props: {
     },
     components: {
-        BaseCard,
-        BaseInput,
         BackButton,
         WWCard,
+        MultiSearch,
+        ThemeCard,
     },
     computed: {
         searchWordBridge(){
             return this.store.searchWordBridge;
         },
-        allArticles() : Article[] {
-            return Array.from(this.store.articles.values());
-        },
-        numberOfResults() : number {
-            return this.hits.length;
-        }
     },
     watch : {
         searchWordBridge(newValue: string){
             if (newValue.length > 0){
-                this.search(newValue);
+                this.searchedWordInput = newValue;
                 this.store.searchWordBridge = "";
             }
         },
     },
     mounted() {
-        this.searchedWord = this.searchWordBridge;
-        if (this.searchedWord.length > 0){
+        this.searchedWordInput = this.searchWordBridge;
+        if (this.searchedWordInput.length > 0){
+            this.searchedWordInput = this.store.searchWordBridge;
             this.store.searchWordBridge = "";
-            this.search(this.searchedWord);
         }
-
     },
     methods: {
-        async search(searchWord: string) {
-            this.searchedWord = searchWord;
-            
-            this.hits = this.allArticles.filter(x => x.content?.content.includes(searchWord));
+        setArticles(value : Article[]){
+            this.articleHits = value;
         },
+        setThemes(value : Publication[]){
+            this.themeHits = value;
+        },
+        setAuthors(value : Contributor[]){
+            this.authorHits = value;
+        },
+        setSearchedWord(value : string){
+            this.searchedWord = value;
+        }
     }
   });
 </script>

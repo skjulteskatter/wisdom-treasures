@@ -26,7 +26,7 @@
             <ThemeCard :publication="publication" class="grow" 
               :strech-y="true"/>
               <div :id="`${idLookUp.get(getFirstLetter(publication)) === index ? getFirstLetter(publication) : index.toString()}${idSalt}`"
-                class="absolute -top-[4.5rem] thisIsJustForScrollingpurposes"
+                class="absolute -top-[4.5rem] thisIsJustForScrollingpurposes hidden"
               />
           </div>
         </div>
