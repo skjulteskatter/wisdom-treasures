@@ -21,7 +21,7 @@
     </BaseCard>
     <div id="wrapper" class="flex">
       <div class="w-full">
-        <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           <div v-for="(publication, index) in searchedPublications" :key="index" class="flex flex-col">
             <ThemeCard :publication="publication" class="grow" 
               :strech-y="true"/>

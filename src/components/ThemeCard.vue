@@ -1,6 +1,6 @@
 <template>
     <main>
-        <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${currentPath}${publication.id}`})}"
+        <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${themesOrCurrentPath}${publication.id}`})}"
           :class="[{'h-full': strechY}]">
           <template #default>
             <div class="h-full flex">
@@ -38,8 +38,10 @@ import { useSessionStore } from '@/stores/session';
         BaseCard
       },
       computed: {
-        currentPath(){
-          return this.$route.path.endsWith("/") ? this.$route.path : this.$route.path + "/";
+        themesOrCurrentPath(){
+          let path : string = this.$router.getRoutes().find(x => x.name == "themes")?.path ?? this.$route.path;
+          path = path.endsWith("/") ? path : path + "/";
+          return path;
         },
       },
     });

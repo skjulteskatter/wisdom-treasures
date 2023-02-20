@@ -72,7 +72,7 @@ export default defineComponent({
         async search(searchWord: string) {
             this.searchedWord = searchWord;
 
-            if (this.publicationIdFilter.length < 0) {
+            if (this.publicationIdFilter.length <= 0) {
                 this.themeHits = this.allThemes.filter(x => 
                     (x.title.includes(searchWord) || x.description.includes(searchWord))
                 );
@@ -80,7 +80,7 @@ export default defineComponent({
 
             this.$emit('themes:themeHits', this.themeHits);
 
-            if (this.authorIdFilter.length < 0) {
+            if (this.authorIdFilter.length <= 0) {
                 this.authorHits = this.allAuthors.filter(x => 
                     (x.name.includes(searchWord) || (x.subtitle ?? "").includes(searchWord) || (x.biography ?? "").includes(searchWord))
                 );
