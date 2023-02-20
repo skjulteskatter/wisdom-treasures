@@ -11,8 +11,22 @@
             </div>
         </template>
             <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)"/>
-        <template>
-
+        <template #footer>
+            <div class="flex gap-2">
+                <BaseButton theme="menuButton" class="border border-black/20 flex" @click="showFilterModal = true">
+                    Filter
+                    <template #icon>
+                        <AdjustmentsIcon class="w-5"/>
+                    </template>
+                    <FilterModal :show="showFilterModal" @close="showFilterModal = false"/>
+                </BaseButton>
+                <BaseButton theme="menuButton" class="border border-black/20 flex">
+                    Sort
+                    <template #icon>
+                        <SwitchVerticalIcon class="w-5"/>
+                    </template>
+                </BaseButton>
+            </div>
         </template>
     </BaseCard>
 </template>
@@ -23,13 +37,20 @@ import BaseCard from './BaseCard.vue';
 import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import { useSessionStore } from '@/stores/session';
 import BaseInput from './BaseInput.vue';
+import BaseButton from './BaseButton.vue';
+import { AdjustmentsIcon, SwitchVerticalIcon  } from '@heroicons/vue/outline';
+import FilterModal from './FilterModal.vue';
 
 export default defineComponent({
     name: "multi-search",
     components: {
-        BaseCard,
-        BaseInput
-    },
+    BaseCard,
+    BaseInput,
+    BaseButton,
+    AdjustmentsIcon,
+    SwitchVerticalIcon,
+    FilterModal
+},
     data() {
         return {
             searchWord: "" as string,
@@ -44,6 +65,9 @@ export default defineComponent({
             publicationIdFilter: [] as string[],
             favoriteFilter: undefined as boolean | undefined,
             authorIdFilter: [] as string[],
+
+            showFilterModal: false as boolean,
+            showSortModal: false as boolean,
         }
     },
     props: {

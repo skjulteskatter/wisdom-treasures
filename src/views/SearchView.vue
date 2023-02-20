@@ -7,7 +7,7 @@
         @searched-word:searched-word="setSearchedWord"
         @authors:author-hits="setAuthors"
         @themes:theme-hits="setThemes"></MultiSearch>
-    <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection">
+    <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection" class="mt-4">
         <h1 class="text-2xl font-bold">Themes</h1>
         <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
             <div v-for="(theme, index) in themeHits" :key="index" class="flex flex-col">
@@ -15,7 +15,7 @@
             </div>
         </div>
     </div>
-    <div id="WordSection">
+    <div v-if="articleHits.length > 0" id="WordSection" class="mt-4">
         <h1 class="text-2xl font-bold">Words</h1>
         <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
             <div v-for="(article, index) in articleHits" :key="index" class="flex flex-col">
