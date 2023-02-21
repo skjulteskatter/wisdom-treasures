@@ -6,23 +6,34 @@
         :initial-search-word="searchedWordInput" 
         @searched-word:searched-word="setSearchedWord"
         @authors:author-hits="setAuthors"
-        @themes:theme-hits="setThemes"></MultiSearch>
-    <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection" class="mt-4">
-        <h1 class="text-2xl font-bold">Themes</h1>
-        <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-            <div v-for="(theme, index) in themeHits" :key="index" class="flex flex-col">
-                <ThemeCard :publication="theme" class="grow" :strech-y="true"/>
+        @themes:theme-hits="setThemes"
+        @search-loading:search-loading="setSearchLoading">
+    </MultiSearch>
+    
+    <div class="" >
+        <div :class="{ 'glass' : searchLoading}" class="absolute h-full w-full z-40">
+            <div class="h-40">
+                <Loader :loading="searchLoading" class="overflow-hidden"/>
+            </div>
+        </div>
+        <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection" class="mt-4">
+            <h1 class="text-2xl font-bold">Themes</h1>
+            <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+                <div v-for="(theme, index) in themeHits" :key="index" class="flex flex-col">
+                    <ThemeCard :publication="theme" class="grow" :strech-y="true"/>
+                </div>
+            </div>
+        </div>
+        <div v-if="articleHits.length > 0" id="WordSection" class="mt-4">
+            <h1 class="text-2xl font-bold">Words</h1>
+            <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+                <div v-for="(article, index) in articleHits" :key="index" class="flex flex-col">
+                    <WWCard :article="article" class="grow" :strech-y="true"/>
+                </div>
             </div>
         </div>
     </div>
-    <div v-if="articleHits.length > 0" id="WordSection" class="mt-4">
-        <h1 class="text-2xl font-bold">Words</h1>
-        <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-            <div v-for="(article, index) in articleHits" :key="index" class="flex flex-col">
-                <WWCard :article="article" class="grow" :strech-y="true"/>
-            </div>
-        </div>
-    </div>
+    
   </main>
 </template>
 
@@ -34,6 +45,7 @@ import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import WWCard from '@/components/WWCard.vue';
 import MultiSearch from '@/components/MultiSearch.vue';
 import ThemeCard from '@/components/ThemeCard.vue';
+import Loader from '@/components/Loader.vue';
 
   export default defineComponent({
     name: "SearchView",
@@ -45,16 +57,18 @@ import ThemeCard from '@/components/ThemeCard.vue';
             articleHits: [] as Article[],
             authorHits: [] as Contributor[],
             themeHits: [] as Publication[],
+            searchLoading: false as boolean,
         }
     },
     props: {
     },
     components: {
-        BackButton,
-        WWCard,
-        MultiSearch,
-        ThemeCard,
-    },
+    BackButton,
+    WWCard,
+    MultiSearch,
+    ThemeCard,
+    Loader
+},
     computed: {
         searchWordBridge(){
             return this.store.searchWordBridge;
@@ -87,10 +101,21 @@ import ThemeCard from '@/components/ThemeCard.vue';
         },
         setSearchedWord(value : string){
             this.searchedWord = value;
+        },
+        setSearchLoading(value : boolean){
+            this.searchLoading = value;
         }
     }
   });
 </script>
 
-<style>
+<style scoped>
+.glassDropDown {
+	background: (255, 255, 255, 0.1);
+	backdrop-filter: blur(3px);
+	-webkit-backdrop-filter: blur(3px);
+}
+.glassDropDown > div {
+	background: rgba(255, 255, 255, 0.5);
+}
 </style>

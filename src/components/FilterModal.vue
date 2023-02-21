@@ -69,7 +69,7 @@ export default defineComponent({
             //TODO do the same thing as above but with authors
 
             this.$emit('close');
-        }
+        },
     }
 });
 </script>

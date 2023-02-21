@@ -97,8 +97,6 @@ export default defineComponent({
 
             showFilterModal: false as boolean,
             showSortModal: false as boolean,
-
-            processingSearch: false as boolean,
         }
     },
     props: {
@@ -107,7 +105,7 @@ export default defineComponent({
             default: "",
         },
     },
-    emits: ["authors:authorHits", "themes:themeHits", "articles:articleHits", "searchedWord:searchedWord", "processingSearch:processingSearch"],
+    emits: ["authors:authorHits", "themes:themeHits", "articles:articleHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],
     computed: {
         allArticles() : Article[] {
             return Array.from(this.store.articles.values());
@@ -134,33 +132,43 @@ export default defineComponent({
     },
     methods: {
         async search(searchWord: string | undefined) {
+
+            this.$emit('searchLoading:searchLoading', true);
             
-            if (searchWord === undefined)
-                searchWord = this.searchWord ?? "";
+            setTimeout(() => {
+                this.testWait(2000) //TODO remove this
+                
+                if (searchWord === undefined)
+                    searchWord = this.searchWord ?? "";
 
-            this.searchedWord = searchWord;
+                this.searchedWord = searchWord;
 
-            this.themeHits = this.allThemes.filter(x => 
-                (x.title.includes(this.searchedWord) || x.description.includes(this.searchedWord))
-            );
+                this.themeHits = this.allThemes.filter(x => 
+                    (x.title.includes(this.searchedWord) || x.description.includes(this.searchedWord))
+                );
 
-            this.$emit('themes:themeHits', this.onlySearchForArticles ? [] : this.themeHits);
+                this.$emit('themes:themeHits', this.onlySearchForArticles ? [] : this.themeHits);
 
-            this.authorHits = this.allAuthors.filter(x => 
-                (x.name.includes(this.searchedWord) || (x.subtitle ?? "").includes(this.searchedWord) || (x.biography ?? "").includes(this.searchedWord))
-            );
+                this.authorHits = this.allAuthors.filter(x => 
+                    (x.name.includes(this.searchedWord) || (x.subtitle ?? "").includes(this.searchedWord) || (x.biography ?? "").includes(this.searchedWord))
+                );
 
-            this.$emit('authors:authorHits', this.onlySearchForArticles ? [] : this.authorHits);
-            
-            this.articleHits = this.allArticles.filter(x => 
-                (x.content?.content.includes(this.searchedWord) || this.themeHits.some(y => y.id == x.publicationId) || this.authorHits.some(y => y.id == x.authorId)) &&
-                (this.publicationIdFilter.length === 0 || this.publicationIdFilter.includes(x.publicationId)) &&
-                (this.authorIdFilter.length === 0 || this.authorIdFilter.includes(x.authorId)) &&
-                (this.favoriteFilter === undefined || this.store.favorites.includes(x.id) === this.favoriteFilter)
-            );
-            this.$emit('articles:articleHits', this.articleHits);
+                this.$emit('authors:authorHits', this.onlySearchForArticles ? [] : this.authorHits);
+                
+                this.articleHits = this.allArticles.filter(x => 
+                    (x.content?.content.includes(this.searchedWord) || this.themeHits.some(y => y.id == x.publicationId) || this.authorHits.some(y => y.id == x.authorId)) &&
+                    (this.publicationIdFilter.length === 0 || this.publicationIdFilter.includes(x.publicationId)) &&
+                    (this.authorIdFilter.length === 0 || this.authorIdFilter.includes(x.authorId)) &&
+                    (this.favoriteFilter === undefined || this.store.favorites.includes(x.id) === this.favoriteFilter)
+                );
+                this.$emit('articles:articleHits', this.articleHits);
 
-            this.$emit('searchedWord:searchedWord', this.searchedWord);
+                this.$emit('searchedWord:searchedWord', this.searchedWord);
+                
+                this.$emit('searchLoading:searchLoading', false);
+
+                console.log('End')
+            }, 10);
         },
         setPublicationIdFilter(value: string[]) {
             this.publicationIdFilter = value;
@@ -171,6 +179,13 @@ export default defineComponent({
         setFavoriteFilter(value: boolean | undefined) {
             this.favoriteFilter = value;
         },
+        testWait(ms: number) {
+            var start = Date.now(),
+                now = start;
+            while (now - start < ms) {
+              now = Date.now();
+            }
+        }
     },
     mounted() {
         if (this.initialSearchWord != "") {
