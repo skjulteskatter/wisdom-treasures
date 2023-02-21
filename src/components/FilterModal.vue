@@ -29,7 +29,7 @@ export default defineComponent({
         store: useSessionStore(),
         publicationCheckBoxArray: [] as boolean[],
     }),
-    emits: ["close", "publicationIdArray:publicationIdArray", "contributorIdArray:contributorIdArray"],
+    emits: ["close:withSearch", "publicationIdArray:publicationIdArray", "contributorIdArray:contributorIdArray"],
     props: {
         initialPublicationIds: {
             type: Array<String>,
@@ -59,16 +59,21 @@ export default defineComponent({
     methods: {
         closeWithReturnArrays() {
 
-            const returnArray : string[] = [];
+            let withSearchOnClose : boolean = false;
+
+            const publicationsArray : string[] = [];
             for (let i = 0; i < this.allPublications.length; i++) {
                 if (this.publicationCheckBoxArray[i])
-                    returnArray.push(this.allPublications[i].id);
+                    publicationsArray.push(this.allPublications[i].id);
             }
-            this.$emit('publicationIdArray:publicationIdArray', returnArray);
+
+            withSearchOnClose = withSearchOnClose || publicationsArray.toString() !== this.initialPublicationIds.toString();
+
+            this.$emit('publicationIdArray:publicationIdArray', publicationsArray);
 
             //TODO do the same thing as above but with authors
 
-            this.$emit('close');
+            this.$emit('close:withSearch', withSearchOnClose);
         },
     }
 });
