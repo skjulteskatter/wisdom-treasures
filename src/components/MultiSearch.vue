@@ -29,16 +29,15 @@
 
                         <div v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md w-min bg-black/10">
                             <p class="w-max pl-2 pr-1">Publication: {{ publication.title }}</p> 
-                            <BaseButton theme="menuButton" size="small" class="w-7 self-center max-h-7" @click="()=>{publicationIdFilter = publicationIdFilter.filter(x => x != publication.id); search(undefined)}">
+                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{publicationIdFilter = publicationIdFilter.filter(x => x != publication.id); search(undefined)}">
                                 <XIcon class="h-6"/>
                             </BaseButton>
                         </div>
 
 
                         <div v-if="publicationIdFilter.length > 0" class="flex items-center rounded-md w-min bg-black/10">
-                            <p class="w-max pl-2 pr-1">Reset all</p> 
-                            <BaseButton theme="menuButton" size="small" class="w-7 self-center max-h-7" @click="()=>{publicationIdFilter = publicationIdFilter.filter(x => x != publication.id); search(undefined)}">
-                                <XIcon class="h-6"/>
+                            <BaseButton theme="menuButton" class="self-center max-h-7" @click="()=>{publicationIdFilter = []; search(undefined)}">
+                                <p class="w-max pl-2 pr-1 defaultFontSize">Reset all</p>
                             </BaseButton>
                         </div>
 
@@ -190,3 +189,9 @@ export default defineComponent({
     }
 });
 </script>
+
+<style scoped>
+.defaultFontSize {
+    font-size: var(--wt-default-font-size);
+}
+</style>
