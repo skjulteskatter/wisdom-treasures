@@ -4,7 +4,7 @@
         <template #footer>
             <div class="w-full flex">
                 <div class="grow self-center">See more from
-                    <ClickableLink class="inline-block" v-on:link-clicked="$router.push({name: 'category'})">{{categoryName}}</ClickableLink>
+                    <ClickableLink class="inline-block" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
                     category
                 </div> 
                 <div>
@@ -128,7 +128,13 @@
         },
         smartTrim(s: string): string{
           return s.replace(/(\s*(?=<))|((?<=>)\s*)/g, "");
-        }
+        },
+        navigateToThemePage(){
+          let path : string = this.$router.getRoutes().find(x => x.name == "themes")?.path ?? this.$route.path;
+          path = path.endsWith("/") ? path : path + "/";
+          path += this.article.publicationId;
+          this.$router.push({path: path});
+        },
       },
     });
   </script>
