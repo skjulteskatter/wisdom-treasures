@@ -88,6 +88,9 @@
         categoryName(): string {
           return this.store.publications.get(this.article?.publicationId)?.title ?? "";
         },
+        authorName(): string {
+          return "TODO Implement authors"; //TODO Implement authors
+        },
         articleContent() : string {
           return this.smartTrim(this.article.content?.content ?? "");
         },
@@ -116,12 +119,12 @@
         copyToClipBoard() {
             this.copyToClipBoardKey = uuid.v4();
             if (!this.article.content?.content) return;
-            navigator.clipboard.writeText(this.article.content?.content.replace(/<.+?>/g, "").trim());
+            navigator.clipboard.writeText(`${this.article.content?.content.replace(/<.+?>/g, "").trim()}${(this.authorName != '' ? ' - ' + this.authorName : '')}`);
 
             this.openCopyToClipBoardPopUpSemaphore++;
             setTimeout(() => {
                 this.openCopyToClipBoardPopUpSemaphore--;
-            }, 2000);
+            }, 2000); // Wait time for popupmessage to dissapear
         },
         smartTrim(s: string): string{
           return s.replace(/(\s*(?=<))|((?<=>)\s*)/g, "");
