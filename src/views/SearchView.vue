@@ -11,9 +11,9 @@
     </MultiSearch>
     
     <div class="" >
-        <div :class="{ 'glass' : searchLoading}" class="absolute h-full w-full z-40">
+        <div v-if="searchLoading" class="absolute h-full w-full z-40 glass">
             <div class="h-40">
-                <Loader :loading="searchLoading" class="overflow-hidden"/>
+                <Loader :loading="true" class="overflow-hidden"/>
             </div>
         </div>
         <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection" class="mt-4">

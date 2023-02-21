@@ -118,7 +118,7 @@ export default defineComponent({
             //TODO implement authors
         },
         numberOfResults() : number {
-            return this.articleHits.length + this.authorHits.length + this.themeHits.length;
+            return this.articleHits.length + (!this.onlySearchForArticles ? this.authorHits.length + this.themeHits.length : 0);
         },
         onlySearchForArticles(): boolean {
             return this.publicationIdFilter.length > 0 || this.authorIdFilter.length > 0;
@@ -137,7 +137,7 @@ export default defineComponent({
             
             setTimeout(() => {
                 this.testWait(2000) //TODO remove this
-                
+
                 if (searchWord === undefined)
                     searchWord = this.searchWord ?? "";
 
@@ -166,9 +166,7 @@ export default defineComponent({
                 this.$emit('searchedWord:searchedWord', this.searchedWord);
                 
                 this.$emit('searchLoading:searchLoading', false);
-
-                console.log('End')
-            }, 10);
+            }, 1);
         },
         setPublicationIdFilter(value: string[]) {
             this.publicationIdFilter = value;
