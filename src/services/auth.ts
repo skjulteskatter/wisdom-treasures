@@ -13,6 +13,7 @@ import {
     browserLocalPersistence, 
     browserSessionPersistence,
     signOut,
+    updatePassword, 
     type User, 
 } from "firebase/auth";
 import type { UserCredential } from 'firebase/auth';
@@ -119,10 +120,7 @@ async function userLoggedInCallback(){
     await store.intitializeArticleNumberLookup();
     store.sessionInitialized = true;
     return;
-
-    for (const entry of store.publications.keys()) {
-        await store.initializeArticles([entry]);
-    }
+    await store.initializeArticles(Array.from(store.publications.keys()));
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? ""): Promise<boolean> {
@@ -148,4 +146,22 @@ async function setPersistence(rememberMe : boolean = false){
         return await auth.setPersistence(browserLocalPersistence);
 
     await auth.setPersistence(browserSessionPersistence);
+}
+
+async function resetPassword(oldPassword: string, password: string) {
+    const user = await getCurrentUserPromise();
+
+    if (user) {
+        try {
+            await updatePassword(user, password);
+        }
+        catch (e) {
+            console.log(e);
+            if (!user.email) throw new Error("No email found on account ???");
+
+            await signInWithEmailAndPassword(auth, user.email, oldPassword);
+
+            await updatePassword(user, password);
+        }
+    }
 }

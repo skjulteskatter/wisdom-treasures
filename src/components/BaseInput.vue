@@ -45,7 +45,7 @@
                 </div>
             </div>
         </div>
-        <HUMenu v-if="getSearchHistory.length > 0 && (focus || searchHistoryHoverOver) && !insideHUMenu" as="div" class="self-center flex z-20" @mouseover="searchHistoryHoverOver = true" @mouseleave="searchHistoryHoverOver = false">
+        <HUMenu v-if="getSearchHistory.length > 0 && (focus || searchHistoryHoverOver) && !insideHUMenu && styleType === 'search'" as="div" class="self-center flex z-20" @mouseover="searchHistoryHoverOver = true" @mouseleave="searchHistoryHoverOver = false">
 			<MenuItems static
 				class="absolute w-11/12 top-1 sm:w-56 sm:origin-top-right rounded-md glassDropDown shadow-xl ring-1 ring-black ring-opacity-20 focus:outline-none overflow-hidden">
 				<div class="flex flex-col p-1">
