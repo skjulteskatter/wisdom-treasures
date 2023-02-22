@@ -3,10 +3,11 @@ import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { Notification } from '@/classes/notification'
 import { favorites as favoritesApi} from '@/services/api'
-import type { Article, Publication } from 'hiddentreasures-js'
-import { articleService, publicationService } from '@/services/publications';
+import type { Article, Contributor, Publication } from 'hiddentreasures-js'
+import { articleService, publicationService, authorService } from '@/services/publications';
 import { reactive } from 'vue'
 import type { Manna } from '@/classes/manna'
+import { dbPromise, putArticles, putAuthors, putPublications } from '@/services/cache'
 
 const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
@@ -31,6 +32,8 @@ export const useSessionStore = defineStore('session', {
             publications: reactive(new Map) as Map<string, Publication>,
 
             articles: reactive(new Map) as Map<string, Article>,
+
+            authors: reactive(new Map) as Map<string, Contributor>,
             //Used to look up the id to the article number
             articleNumberLookup: reactive(new Map) as Map<number, string>,
 
@@ -59,28 +62,47 @@ export const useSessionStore = defineStore('session', {
                 this.favorites.splice(i, 1);
             }
         },
-        async getPublications() : Promise<Map<string, Publication>>{
-            if (this.publications.size <= 0) {
-                const publicationArray: Publication[] = await publicationService.retrieve({
-                    parentIds: [WISDOM_WORDS_ID],
-                });
-                for (const publication of publicationArray) {
-                    this.publications.set(publication.id, publication);
-                }
+        async initializePublications(){
+            let publicationArray: Publication[] = await (await dbPromise).getAll('publications');
+
+            if (publicationArray.length <= 0) 
+                publicationArray = await publicationService.retrieve({parentIds: [WISDOM_WORDS_ID]});
+
+            for (const publication of publicationArray) {
+                this.publications.set(publication.id, publication);
             }
-            return this.publications;
+
+            await putPublications(publicationArray);
+        },
+        async initializeAuthors(ids : string[]) {
+            let authorArray: Contributor[] = await (await dbPromise).getAll('authors');
+
+            if (authorArray.length <= 0)
+            authorArray = (await authorService.retrieve({itemIds: ids}));
+
+            for (const author of authorArray) {
+                this.authors.set(author.id, author);
+            }
+
+            await putAuthors(authorArray);
         },
         async initializeArticles(ids : string[]) {
+
+            let articlesArray: Article[] = await (await dbPromise).getAll('articles');
 
             const options = {
                 withContent: true,
                 parentIds: ids,
             };
 
-            const articlesArray: Article[] = (await articleService.retrieve(options));
+            if (articlesArray.length <= 0)
+                articlesArray = (await articleService.retrieve(options));
+            
             for (const article of articlesArray) {
                 this.articles.set(article.id, article);
             }
+
+            await putArticles(articlesArray);
         },
         async intitializeArticleNumberLookup(){
             for (const [key,value] of this.articles){
