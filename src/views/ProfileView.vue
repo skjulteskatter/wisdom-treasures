@@ -15,7 +15,14 @@
           
         </template>
         <template #default>
-          <div class="flex flex-row place-items-center">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            <BaseInput :placeholder="getFullName"></BaseInput>
+            <BaseButton :style="'menuButton'">
+              Change password
+              <template #icon>
+                <KeyIcon class="h-5"></KeyIcon>
+              </template>
+            </BaseButton>
             <BaseInput :placeholder="getFullName"></BaseInput>
           </div>
         </template>
@@ -37,6 +44,8 @@ import { defineComponent } from 'vue';
 import type { User } from "firebase/auth";
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
+import BaseButton from '@/components/BaseButton.vue';
+import { KeyIcon } from '@heroicons/vue/outline';
 
   export default defineComponent({
     name: "ProfileView",
@@ -49,9 +58,11 @@ import BaseInput from '@/components/BaseInput.vue';
     props: {
     },
     components: {
-      BaseCard,
-      BaseInput
-    },
+    BaseCard,
+    BaseInput,
+    BaseButton,
+    KeyIcon
+},
     computed: {
       initialized(){
         return this.store.sessionInitialized;
