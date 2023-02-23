@@ -3,7 +3,7 @@
         class="overflow-hidden z-10 text-white select-none cursor-pointer flex items-center gap-2 rounded-md relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ring-offset-2 active:text-opacity-50"
         :class="[`button--${theme} button`, { 'opacity-75 cursor-wait button--loading': loading, 'button--disabled': disabled, 'button--clicked': clicked, 'py-1 px-2': size == 'small', 
             'py-2 px-4': size == 'medium', 'py-3 px-6': size == 'large', 'justify-center' : centerText, 
-            'threeDButton opacity-100': threeD }]"
+            'threeDButton opacity-100': threeD, 'threeDButtonAnimation' : threeD && !loading }]"
         :disabled="loading || disabled"
         v-bind="$attrs"
     >
@@ -227,7 +227,7 @@ export default defineComponent({
       cubic-bezier(.3, .7, .4, 1);
   }
 
-  .threeDButton:hover {
+  .threeDButtonAnimation:hover {
     transform: translate3d(-4px, -8px, 1px);
     transition:
       transform
@@ -235,7 +235,7 @@ export default defineComponent({
       cubic-bezier(.3, .7, .4, 1.5);
   }
 
-  .threeDButton:active {
+  .threeDButtonAnimation:active {
     transform: translate3d(-1px, -2px, 1px);
     transition: transform 34ms;
   }
