@@ -75,6 +75,9 @@ export const useSessionStore = defineStore('session', {
             await putPublications(publicationArray);
         },
         async initializeAuthors(ids : string[]) {
+
+            if (ids.length <= 0) return;
+
             let authorArray: Contributor[] = await (await dbPromise).getAll('authors');
 
             if (authorArray.length <= 0)
@@ -88,6 +91,8 @@ export const useSessionStore = defineStore('session', {
         },
         async initializeArticles(ids : string[]) {
 
+            if (ids.length <= 0) return;
+            
             let articlesArray: Article[] = await (await dbPromise).getAll('articles');
 
             const options = {
