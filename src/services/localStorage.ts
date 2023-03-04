@@ -63,3 +63,15 @@ export const search = {
         localStorage.removeItem(this.searchPrefix + id);
     },
 };
+
+export const language = {
+
+    languagePrefix: "language:",
+
+    setOrReplace(language: string) {
+        localStorage.setItem(this.languagePrefix, language);
+    },
+    get(){
+        return localStorage.getItem(this.languagePrefix);
+    }
+};

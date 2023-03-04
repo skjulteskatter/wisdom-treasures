@@ -1,12 +1,13 @@
 import type { IUser, ISettings } from "hiddentreasures-js";
 import http from "./http";
+import type { HTUser } from "@/classes/HTUser";
 
 export const session = {
     async getCurrentUser() {
-        return await http.get<IUser>("api/Session");
+        return await http.get<HTUser>("api/Session");
     },
     saveUser(settings: ISettings) {
-        return http.patch<IUser>("api/Session", settings);
+        return http.patch<HTUser>("api/Session", settings);
     },
     createUser(displayName: string) {
         return http.put("api/Session", { displayName });

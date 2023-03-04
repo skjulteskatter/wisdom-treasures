@@ -2,12 +2,14 @@ import { defineStore } from 'pinia'
 import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { Notification } from '@/classes/notification'
-import { favorites as favoritesApi} from '@/services/api'
-import type { Article, Contributor, Publication } from 'hiddentreasures-js'
+import { favorites as favoritesApi, session} from '@/services/api'
+import type {User, Article, Contributor, Publication, Settings, IUser } from 'hiddentreasures-js'
 import { articleService, publicationService, authorService } from '@/services/publications';
 import { reactive } from 'vue'
 import type { Manna } from '@/classes/manna'
 import { dbPromise, putArticles, putAuthors, putPublications } from '@/services/cache'
+import type { HTUser } from '@/classes/HTUser'
+import { language } from '@/services/localStorage'
 
 const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
@@ -40,11 +42,18 @@ export const useSessionStore = defineStore('session', {
             sessionInitialized: false as boolean,
 
             mannaHistory: [] as Manna[],
+            //Not used
+            HTUser: null as HTUser | null
         }
     },
     actions: {
-        async setLocale(locale = "en"){
-            if (await setLocaleFromSessionStore(locale)) this.locale = locale;
+        async setLocale(locale = "en") : Promise<string> {
+            if (await setLocaleFromSessionStore(locale)) {
+                this.locale = locale;
+                language.setOrReplace(locale);
+                return locale;
+            };
+            return "en";
         },
         addFavorite(ids: string[]): void {
             favoritesApi.add(ids);
@@ -113,6 +122,10 @@ export const useSessionStore = defineStore('session', {
             for (const [key,value] of this.articles){
                 this.articleNumberLookup.set(value.number, key);
             }
+        },
+        async initializeLanguage(): Promise<string>{
+            let lang = language.get();
+            return await this.setLocale(lang ?? undefined);
         }
     },
 })

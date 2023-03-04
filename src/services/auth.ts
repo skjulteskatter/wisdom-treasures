@@ -111,6 +111,7 @@ export function getCurrentUserPromise(): Promise<User | null> {
 async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
     const store = useSessionStore();
+    let lang = await store.initializeLanguage();
     store.favorites = await favorites.get() ?? [];
     await store.initializePublications();
     const pubId = store.publications.keys().next().value;
@@ -148,20 +149,18 @@ async function setPersistence(rememberMe : boolean = false){
     await auth.setPersistence(browserSessionPersistence);
 }
 
-async function resetPassword(oldPassword: string, password: string) {
+export async function resetPassword(oldPassword: string, password: string) : Promise<boolean> {
     const user = await getCurrentUserPromise();
 
-    if (user) {
-        try {
-            await updatePassword(user, password);
-        }
-        catch (e) {
-            console.log(e);
-            if (!user.email) throw new Error("No email found on account ???");
-
-            await signInWithEmailAndPassword(auth, user.email, oldPassword);
-
-            await updatePassword(user, password);
-        }
+    if (user == null) return false
+ 
+    try {
+        await updatePassword(user, password);
+        return true;
     }
+    catch (e) {
+        console.log(e);
+        return false;
+    }
+   
 }

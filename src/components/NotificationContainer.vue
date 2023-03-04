@@ -1,5 +1,5 @@
 <template>
-    <div class="pb-16 sm:pb-0 min-w-[14rem] sm:w-[calc((100vw-80rem)*0.5)] w-full fixed right-0 flex flex-col pl-4 sm:pl-0 pr-4 pointer-events-none z-10">
+    <div class="pb-16 sm:pb-0 min-w-[14rem] sm:w-[calc((100vw-80rem)*0.5)] w-full fixed right-0 flex flex-col pl-4 sm:pl-0 pr-4 pointer-events-none z-50">
         <div id="forSpacing" class="grow"/>
         <NotificationCard v-for="(notification) in notificationsOnDisplay" :key="notification.id" class="sm:mr-auto mb-4 smoothOpen fadeOut pointer-events-auto" 
             v-on:close="closeNotification(notification.id)" :notification="notification"/>
