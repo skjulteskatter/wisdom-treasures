@@ -55,10 +55,12 @@
             <BaseCheckbox v-model="agreeTerms" :error="!!errors.terms"/>
             <span :class="[{'text-[color:var(--wt-color-error)]' : !!errors.terms}]">
               I agree to the
-              <ClickableLink class="inline-block" @link-clicked="viewPrivacyPolicy" :disabled="actionLoading">Terms and Conditions</ClickableLink>
+              <ClickableLink class="inline-block" @link-clicked="showTermsModal = true" :disabled="actionLoading">Terms and Conditions</ClickableLink>
             </span>
           </span>
+          <TermsModal :show="showTermsModal" @close="showTermsModal = false"></TermsModal>
 
+          <!--
           <span v-if="include([forms.register])" class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap lg:w-96">
             <BaseCheckbox v-model="recievePromotionalEmails"/>
             <span>
@@ -66,6 +68,7 @@
               <ClickableLink class="inline-block" @link-clicked="viewPrivacyPolicy" :disabled="actionLoading">View Privacy Policy</ClickableLink>
             </span>
           </span>
+          -->
 
           <p class="text-[color:var(--wt-color-error)] opacity-0 max-h-0 text-wrap w-full rounded-md bg-red-100 px-2" 
             :class="{'text-[color:var(--wt-color-success)] bg-green-100' : successMessage, 'smoothOpenError' : errorMessage || successMessage || keepErrorMessageWhileValidating, 'smoothCloseError' : (!successMessage && !errorMessage && !keepErrorMessageWhileValidating) && errorSuccessMessageLoaded}">
@@ -162,20 +165,22 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import { useSessionStore } from '@/stores/session';
 import { ArrowRightIcon } from '@heroicons/vue/outline';
 import FooterComponent from '@/components/FooterComponent.vue';
+import TermsModal from '@/components/TermsModal.vue';
 
   export default defineComponent({
     name: "LoginView",
     props: {
     },
       components: {
-      BaseCard,
-      BaseButton,
-      BaseInput,
-      ClickableLink,
-      BaseCheckbox,
-      ArrowRightIcon,
-      FooterComponent,
-    },
+    BaseCard,
+    BaseButton,
+    BaseInput,
+    ClickableLink,
+    BaseCheckbox,
+    ArrowRightIcon,
+    FooterComponent,
+    TermsModal
+},
     data: () => ({
       email: "",
       password: "",
@@ -199,6 +204,8 @@ import FooterComponent from '@/components/FooterComponent.vue';
       forms: {login: "login" as "login", register: "register" as "register", forgotPassword: "forgotPassword" as "forgotPassword"} ,
 
       store: useSessionStore(),
+
+      showTermsModal: false,
     }),
     computed: {
       errorMessage() : string{
@@ -289,7 +296,7 @@ import FooterComponent from '@/components/FooterComponent.vue';
         await signupWithEmailAndPassword(this.email, this.password);
       },
       viewPrivacyPolicy(){
-        console.log("Privacy Policy is not implemented");
+        this.$router.push({name: "terms"});
       },
       validateEmail(): boolean {
         if (!this.email){
