@@ -1,6 +1,10 @@
 <template>
     <header>
-        <router-link to="/landing" class="logo">Wisdom Treasures</router-link>
+        <div class="logo-with-text">
+            <img class="h-10 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('<!-- co tu ma być? --> landing')"/>
+            <p @click="navigate('')"><span>Wisdom</span>Treasures</p>
+        </div>
+        
         <button class="mobile-nav-toggle" 
                 aria-controls="primary-nav" @click="isActive = !isActive">
             <span class="sr-only">Menu</span>
@@ -34,8 +38,10 @@
             <div v-if="!isActive" class="btn-bg"></div>
         <nav id="primary-nav" class="primary-nav" v-bind:class="{ 'is-active': isActive }">
             <router-link to="/landing" class="home-a">Home</router-link>
+            <router-link to="/contact" class="insight-a">Insight</router-link>
+            <router-link to="/contact" class="FAQ-a">FAQ</router-link>
             <router-link to="/contact" class="contact-a">Contact</router-link>
-            <router-link to="/login" class="login-a">Sign up</router-link>
+            <router-link to="/login" class="login-a">Log in</router-link>
         </nav>
     </header>
   </template>
@@ -61,33 +67,43 @@ header{
     top: 0;
     width: 100%;
     z-index: 1000;
-    padding: 1em;
+    padding-inline: var(--pad-inline);
+    padding-block: 1em;
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    background-color: #101719cc;
-    backdrop-filter: blur(0.25rem);
-    color: white;  
+    backdrop-filter: blur(0.1rem);
 }
-.logo{
-    font-family: 'EB Garamond', serif;
-    letter-spacing: 1px;
+.logo-with-text{
+    display: flex;
+    align-items: center;
+}
+.logo-with-text p{
+    font-size: .9rem;
+    line-height: 1.2em;
+    margin-left: 1em;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+.logo-with-text span{
+    display: block;
+    font-weight: bold;
+    color: var(--primary-clr);
 }
 .primary-nav a{
-    padding-bottom: 1em;
-    text-transform: uppercase;
-    letter-spacing: 2px;
     margin-inline-end: 1.5rem;
-}
-.primary-nav a:hover,
-.primary-nav a:active{
-    border-bottom: solid rgba(255, 255, 255, 0.604) 2px;
-    opacity: 70%
+    font-weight: bold
 }
 .primary-nav a:last-child{
     margin-inline-end: 0;
+    padding: .45em 2.2em;
+    border-radius: 4em;
+    background: var(--primary-clr);
+    color: white;
+    font-weight:unset;
 }
+
 
 @media (max-width:500px){
     header{

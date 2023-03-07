@@ -1,14 +1,20 @@
 <template>
     <footer>
-        <div class="footer-top-container">
             <div class="links-footer">
-                <router-link to="/terms-of-purchase" class="">Terms of Purchase</router-link>
-                <router-link to="/privacy-policy" class="">Privacy Policy</router-link>
-                <router-link to="/contact" class="">Contact</router-link>
+                <router-link to="/landing">Home</router-link>
+                <router-link to="/contact">Insight</router-link>
+                <router-link to="/contact">FAQ</router-link>
+                <router-link to="/contact">Contact</router-link>
+                <router-link to="/terms-of-purchase">Terms of Purchase</router-link>
+                <router-link to="/privacy-policy">Privacy Policy</router-link>
             </div>
-            <div class="footer-logo">WT</div>
-        </div>
-        <p>Copyright 2022 © Stiftelsen Skjulte Skatters Forlag. <span>All Rights Reserved</span></p>
+            <div class="logo-and-copyright">
+                <div class="footer-logo">
+                    <img src="/img/logo.svg" @click="navigate('<!-- co tu ma być? --> landing')"/>
+                    <p><span>Wisdom</span> Treasures</p>
+                </div>
+                <p>Copyright 2023 © Stiftelsen Skjulte Skatters Forlag.<br>All Rights Reserved</p>
+            </div>
     </footer>
 </template>
     
@@ -27,32 +33,47 @@
       padding:0
     }
     footer{
-        padding: 3em 7em 1em 7em;
-        background-color: #202D31;
-        color: white;
-    }
-    .footer-top-container{
         display: flex;
         justify-content: space-between;
+        padding-block: 3em;
+        padding-inline: var(--pad-inline);
+        background: linear-gradient(90deg, #3D6E7C 39.79%, rgba(61, 110, 124, 0.73) 69.14%, #3D6E7C 100%);
+        color: white;
+        font-size: 1rem
     }
     .links-footer{
         display: flex;
         flex-direction: column
     }
     footer a{
-        text-transform: uppercase;
-        letter-spacing: 1px;
         margin-bottom:0.2em;
-        font-size: 0.6rem;
     }
     footer a:hover{
         text-decoration: underline;
     }
+    .logo-and-copyright{
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
     .footer-logo{
-        font-size: 1.75rem
+        display: flex;
+        align-items: center;
+    }
+    .footer-logo img{
+        height: 4em;
+        margin-right: 1em
+    }
+    .footer-logo p{
+        text-transform: uppercase;
+        font-weight: bold
+    }
+    .footer-logo span{
+        display: block;
+        font-weight: bold;
+        color: var(--primary-clr)
     }
     footer p{
-        text-align: center;
-        font-size: 0.8rem
+        font-size: 1rem
     }
     </style>

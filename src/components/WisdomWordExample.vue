@@ -20,31 +20,30 @@
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Montserrat:wght@400;800&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Montserrat:wght@400;800&display=swap'); */
 
 /* wisdom Words display */
     .wisdomWordExample{
-        border-top: #c3c3c3 solid 1.75px;
-        border-right: #c3c3c3 solid 1.75px;
-        border-top-right-radius: 2em;
-        padding: 2em 2em 2em 0;
-        font-family: 'EB Garamond', serif;
+        height: 18em;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        width: 100%;
-        color: #fff
+        border-top: var(--accent-clr) solid 1.75px;
+        border-right: var(--accent-clr) solid 1.75px;
+        border-top-right-radius: 1.75em;
+        padding: 2em 2em 2em 0;
     }
     .wisdom-content{
-        font-size: 1.5rem;
-        margin-bottom: 0.5em
+        margin-bottom: 0.5em;
+        font-size: 1.2rem;
+        font-family: 'EB Garamond', serif;
     }
     .wisdom-author{
         display: flex;
         align-items: center;
     }
     .author-title{
-        font-size: 1rem;
+        font-size: .8rem;
     }
     .author-img {
         height: 5em;
