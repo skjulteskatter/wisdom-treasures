@@ -39,7 +39,6 @@
         <nav id="primary-nav" class="primary-nav" v-bind:class="{ 'is-active': isActive }">
             <router-link to="/landing" class="home-a">Home</router-link>
             <router-link to="/contact" class="insight-a">Insight</router-link>
-            <router-link to="/contact" class="FAQ-a">FAQ</router-link>
             <router-link to="/contact" class="contact-a">Contact</router-link>
             <router-link to="/login" class="login-a">Log in</router-link>
         </nav>
@@ -95,6 +94,9 @@ header{
     margin-inline-end: 1.5rem;
     font-weight: bold
 }
+.primary-nav a:hover{
+    text-decoration:underline
+}
 .primary-nav a:last-child{
     margin-inline-end: 0;
     padding: .45em 2.2em;
@@ -102,6 +104,9 @@ header{
     background: var(--primary-clr);
     color: white;
     font-weight:unset;
+}
+.primary-nav a:last-child:hover{
+    background-color: var(--darker-primary);
 }
 
 

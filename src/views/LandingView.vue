@@ -11,7 +11,7 @@
                     Sed sodales consequat ligula, vel fringilla mauris.</p>
                 <router-link to="/login" class="login-a">Subscribe Now</router-link>
                 </div>
-                <img src="/images/banner.png" />
+                <img src="/images/banner3.png" />
             </div>
             <div class="insight">
                 <!-- insight -->
@@ -38,6 +38,7 @@
 
                     <router-link to="/login" class="insight-a">> See more</router-link>
                 </div>
+                <img class="back-intro" src="/images/back-intro.png" />
             </div>
             <div class="WW-gallery">
                 <!-- WW GALLERY  -->
@@ -67,20 +68,22 @@
                     <div class="col col-2">
                         <div class="feature glass-effect"><img src="/images/app-feat-3.png" class="app-feat-img app-feat-img-fill" /></div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
-                        <div class="feature"><img src="/images/app-feat-4.png" class="app-feat-img skewY" /></div>
+                        <div class="feature"><img src="/images/app-feat-4.1.png" class="app-feat-img skewY" /></div>
                         <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
                     </div>
                 </div>
             </div>
             <div class="about">
                 <!-- about wisdom treasures -->
-                <h2>About Wisdom Treasures</h2>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget. 
-                    Sed sodales consequat ligula, vel fringilla mauris. 
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget. 
-                    Sed sodales consequat ligula, vel fringilla mauris.</p>
+                <div class="about-inner-cont">
+                    <h2>About Wisdom Treasures</h2>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget. 
+                        Sed sodales consequat ligula, vel fringilla mauris. 
+                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget. 
+                        Sed sodales consequat ligula, vel fringilla mauris.</p>
+                </div>
             </div>
             <div class="anim-section">
                 <!-- animation -->
@@ -89,12 +92,13 @@
                 </div>
             </div>
             <div class="ST-add">
-                <!-- add about ST -->
+                <!-- ST add banner -->
                 <div>
                     <h2>Have you already seen <br><span>Song Treasures</span>?</h2>
                     <p>Go to <a href="https://songtreasures.org/">songtreasures.org</a></p>
                 </div>
-                <img src="/images/song-treasures.png" />
+                <img src="/images/song-treasures2.png" />
+                <img class="back-ST-add" src="/images/back-ST-add.png" />
             </div>
             <div class="questions-cont">
                 <div class="questions">
@@ -215,6 +219,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
 <style>
     :root{
         --primary-clr: #3D6E7C;
+        --darker-primary: #33606C;
         --accent-clr: #BB9758;
         --light-grey: #F2F2F2;
         --light-blue: #EAF3F5;
@@ -231,11 +236,12 @@ import LandingFooter from '@/components/LandingFooter.vue';
     /* TYPOGRAPHY */
     h1{
         font-size: clamp(1rem, 6vw, 3.5rem); /* nie wiem jaka jest najmniejsza wartosć */
-        font-weight: bold
+        font-weight: bold;
     }
     h2{
         font-size: 4vw;
-        font-weight: bold
+        font-weight: bold;
+        line-height: 4rem
     }
     h3{
         font-size: 1.5rem;
@@ -265,20 +271,29 @@ import LandingFooter from '@/components/LandingFooter.vue';
         margin-bottom: 2em;
     }
     .intro a{
+        display: inline-block;
         padding: .8em 2em;
         border-radius: 4em;
         /* font-weight: bold; */
         background: var(--primary-clr);
-        color: white
+        color: white;
+        transition: all .25s
+    }
+    .intro a:hover{
+        background: var(--darker-primary);
+        transform: scale(1.1);
+        transform-origin: center center;
     }
     .intro img{
-        height: 40em;
-        margin-top: 5em
+        height: 35em;
+        margin-top: 4em;
+        z-index: 1;
     }
+
 
     .insight{
         padding-inline: var(--pad-inline);
-        margin-block: var(--pad-block);
+        padding-block: var(--pad-block);
         display: flex;
         justify-content: center;
         align-items: center;
@@ -287,7 +302,9 @@ import LandingFooter from '@/components/LandingFooter.vue';
         width: 100%;
         padding: 3em;
         border-radius: 1em;
-        box-shadow: 0 0 20px #e2e2e2;
+        background-color: white;
+        box-shadow: 0 0 25px #00000031;
+        z-index: 1;
     }
     .insight-title{
         font-weight:bold;
@@ -308,12 +325,24 @@ import LandingFooter from '@/components/LandingFooter.vue';
         margin-bottom: 3em
     }
     .insight .insight-a{
-        padding: .7em 2em;
+        display:inline-block;
+        padding: .6em 2em;
         border-radius: 4em;
         background-color: var(--accent-clr);
-        color: white
-    }
+        color: white;
 
+        transition: all .25s
+    }
+    .insight .insight-a:hover{
+        transform: scale(1.1);
+        transform-origin: center center
+    }
+    .back-intro{
+        height: 170%;
+        position: absolute;
+        bottom: 0;
+        right:0;
+    }
 
     .WW-gallery{
         display: flex;
@@ -402,14 +431,17 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     /*  */
 
+
     .about{ 
         height: 100vh;
         display: flex;
-        justify-content: space-between;
         align-items: center;
         padding-inline:var(--pad-inline);
-
         background-color: var(--light-blue)
+    }
+    .about-inner-cont{
+        display: flex;
+
     }
     .about h2{
         width: 50%
@@ -443,11 +475,11 @@ import LandingFooter from '@/components/LandingFooter.vue';
     .ST-add{
         height: 100vh;
         padding-inline: var(--pad-inline);
-        margin-block: var(--pad-block);
         display:flex;
         align-items: center;
         justify-content: space-between;
 
+        background-color: var(--light-grey);
     }
     .ST-add span{
         font-weight: bold;
@@ -461,7 +493,15 @@ import LandingFooter from '@/components/LandingFooter.vue';
         text-decoration: underline;
     }
     .ST-add img{
-        height: 100%
+        height: 90%;
+        z-index: 1
+    }
+    .ST-add .back-ST-add{
+        height: 100%;
+        position:absolute;
+        bottom:0;
+        right:0;
+        z-index: 0
     }
 
 
@@ -489,7 +529,13 @@ import LandingFooter from '@/components/LandingFooter.vue';
         background: none;
         border: none;
         border-bottom: 2px solid var(--primary-clr);
+
+        transition: all .25s
     }
+    .questions input:hover, .questions textarea:hover{
+        transform: scale(1.05)
+    }
+
     .questions textarea{
         height: 6em
     }
@@ -589,21 +635,24 @@ import LandingFooter from '@/components/LandingFooter.vue';
         }
     } */
 
-/* 
-    SCROLLBAR
+
+    /* SCROLLBAR */
     ::-webkit-scrollbar{
         width: 1em;
         height: 1em
     }
-    ::-webkit-scrollbar-track{
-        background: #f6f6f6;
+    /* ::-webkit-scrollbar-track{
+        background: none;
 
-    }
+    } */
     ::-webkit-scrollbar-thumb{
-        background: #2B4453;
-        border-radius: 100vw;
-        border: solid 4px #f6f6f6;
+        background: linear-gradient(var(--darker-primary), var(--primary-clr));
+        border: solid 3px #ffffff;
+        border-radius: .35em;
     }
- */
+    ::-webkit-scrollbar-thumb:hover{
+        background: var(--darker-primary);
+    }
+
 
 </style>
