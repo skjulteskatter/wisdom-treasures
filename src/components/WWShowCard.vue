@@ -1,24 +1,6 @@
 <template>
     <main>
       <BaseCard>
-        <template #footer>
-            <div class="w-full flex">
-                <div class="grow self-center">See more from
-                    <ClickableLink class="inline-block" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
-                    category
-                </div> 
-                <div>
-                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
-                    <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
-                        <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
-                    </BaseButton>
-                </div>
-                  <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
-                      <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
-                  <HeartIcon v-else class="h-8 opacity-50 pop"/>
-                </BaseButton>
-            </div>
-        </template>
         <template #default>  
           <div class="flex">
             <div id="spacerdiv1" class="flex grow"/>
@@ -32,6 +14,25 @@
             </div>
             <div id="spacerdiv2" class="flex grow"/>
           </div>
+        </template>
+        <template #footer>
+            <div class="w-full flex">
+                <div class="grow self-center flex">See more from&nbsp;
+                    <ClickableLink class="inline-block" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
+                    &nbsp;category
+                    <div v-if="getArticleYearWritten > 1000" class="italic">&nbsp;-&nbsp;{{getArticleYearWritten}}</div>
+                </div> 
+                <div>
+                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
+                    <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
+                        <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
+                    </BaseButton>
+                </div>
+                  <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
+                      <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
+                  <HeartIcon v-else class="h-8 opacity-50 pop"/>
+                </BaseButton>
+            </div>
         </template>
     </BaseCard>
     </main>
@@ -89,7 +90,7 @@
           return this.store.publications.get(this.article?.publicationId)?.title ?? "";
         },
         authorName(): string {
-          return "TODO Implement authors"; //TODO Implement authors
+          return this.store.authors.get(this.article.authorId)?.name ?? "";
         },
         articleContent() : string {
           return this.smartTrim(this.article.content?.content ?? "");
@@ -100,6 +101,10 @@
         favorite(): boolean{
             return this.store.favorites.includes(this.article.id);
         },
+        getArticleYearWritten(): number{
+          let date = new Date(this.article.dateWritten);
+          return date.getFullYear();
+        }
       },
       watch: {
         favorites(newFavs : string[]) {
@@ -119,7 +124,9 @@
         copyToClipBoard() {
             this.copyToClipBoardKey = uuid.v4();
             if (!this.article.content?.content) return;
-            navigator.clipboard.writeText(`${this.article.content?.content.replace(/<.+?>/g, "").trim()}${(this.authorName != '' ? ' - ' + this.authorName : '')}`);
+            navigator.clipboard.writeText(`${this.article.content?.content.replace(/<.+?>/g, "").trim()}
+            ${(this.authorName != '' ? ' - ' + this.authorName : '')}
+            ${(this.getArticleYearWritten) > 1000 ? " " + this.getArticleYearWritten.toString() : ""}`);
 
             this.openCopyToClipBoardPopUpSemaphore++;
             setTimeout(() => {
