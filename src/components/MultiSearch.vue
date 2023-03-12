@@ -156,7 +156,7 @@ export default defineComponent({
                 this.$emit('authors:authorHits', this.onlySearchForArticles ? [] : this.authorHits);
                 
                 this.articleHits = this.allArticles.filter(x => 
-                    (x.content?.content.includes(this.searchedWord) || this.themeHits.some(y => y.id == x.publicationId) || this.authorHits.some(y => y.id == x.authorId)) &&
+                    (x.content?.content.includes(this.searchedWord) || x.dateWritten.includes(this.searchedWord) || this.themeHits.some(y => y.id == x.publicationId) || this.authorHits.some(y => y.id == x.authorId)) &&
                     (this.publicationIdFilter.length === 0 || this.publicationIdFilter.includes(x.publicationId)) &&
                     (this.authorIdFilter.length === 0 || this.authorIdFilter.includes(x.authorId)) &&
                     (this.favoriteFilter === undefined || this.store.favorites.includes(x.id) === this.favoriteFilter)
