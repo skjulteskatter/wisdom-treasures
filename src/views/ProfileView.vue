@@ -41,7 +41,8 @@
         </template>
         <template #footer>
           <div class="flex flex-row place-items-center">
-
+            <div>Contact support:&nbsp;</div>
+            <ClickableLink ><a :href="'mailto:' + supportEmail">{{ supportEmail }}</a></ClickableLink>
           </div>
         </template>
       </BaseCard>
@@ -61,11 +62,9 @@ import BaseButton from '@/components/BaseButton.vue';
 import { KeyIcon, SaveIcon } from '@heroicons/vue/outline';
 import GenerelDropDown from '@/components/GenerelDropDown.vue';
 import { validLanguages, fallbackLocale } from '@/i18n';
-import { session } from '@/services/api';
 import ChangePasswordModal from '@/components/ChangePasswordModal.vue';
 import { Notification } from "@/classes/notification";
-import type { HTUser } from '@/classes/HTUser';
-import { storeToRefs } from 'pinia';
+import ClickableLink from '@/components/ClickableLink.vue';
 
   export default defineComponent({
     name: "ProfileView",
@@ -78,6 +77,8 @@ import { storeToRefs } from 'pinia';
         displayName: "" as string,
         showPasswordModal: false,
         selectedLanguage: "" as string,
+
+        supportEmail: "support@wisdomtreasures.no" as string,
       }
     },
     props: {
@@ -90,6 +91,7 @@ import { storeToRefs } from 'pinia';
       GenerelDropDown,
       SaveIcon,
       ChangePasswordModal,
+      ClickableLink
     },
     computed: {
       initialized(){
