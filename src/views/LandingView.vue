@@ -6,10 +6,10 @@
                 <!-- wisdom treasures banner -->
                 <div>
                 <h1>Wisdom Treasures</h1>
-                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget. 
-                    Sed sodales consequat ligula, vel fringilla mauris.</p>
-                <router-link to="/login" class="login-a">Subscribe Now</router-link>
+                <p>A toolbox with over 10000 wisdom words based on Gods Word that suit your needs. 
+                    All accessible in one multi-device application to help you go victoriously through your daily circumstances.</p>
+                <router-link to="/login" class="about-a">About The App</router-link>
+                <router-link to="/login" class="subscribe-a">Subscribe Now</router-link>
                 </div>
                 <img src="/images/banner3.png" />
             </div>
@@ -61,15 +61,15 @@
                 <div class="col-holder">
                     <div class="col">
                         <div class="feature"><img src="/images/app-feat-1.png" class="app-feat-img skewX" /></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                        <p>Get a wisdom word chosen especially for you</p>
                         <div class="feature glass-effect"><img src="/images/app-feat-2.png" class="app-feat-img app-feat-img-fill" /></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                        <p>Listen to speeches full of wisdom</p>
                     </div>
                     <div class="col col-2">
                         <div class="feature glass-effect"><img src="/images/app-feat-3.png" class="app-feat-img app-feat-img-fill" /></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                        <p>Mark words as favourites and view history</p>
                         <div class="feature"><img src="/images/app-feat-4.1.png" class="app-feat-img skewY" /></div>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit</p>
+                        <p>Choose a topic and find a word that helps you best</p>
                     </div>
                 </div>
             </div>
@@ -77,12 +77,13 @@
                 <!-- about wisdom treasures -->
                 <div class="about-inner-cont">
                     <h2>About Wisdom Treasures</h2>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget. 
-                        Sed sodales consequat ligula, vel fringilla mauris. 
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                        Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget. 
-                        Sed sodales consequat ligula, vel fringilla mauris.</p>
+                    <p>Wisdom Treasures is created by the non-profit foundation 
+                        Stiftelsen Skjulte Skatters Forlag. Our goal is to provide 
+                        everyone who is interested in Christian Literature and intellectual works 
+                        the use and benefits of their edifying content. <br>
+                        We want to make wisdom words accessible for all age groups on a modern and effective platform.
+                        <br><br>
+                        See also <a href="https://activechristianity.org/">activechristianity.org</a></p>
                 </div>
             </div>
             <div class="anim-section">
@@ -221,11 +222,14 @@ import LandingFooter from '@/components/LandingFooter.vue';
         --primary-clr: #3D6E7C;
         --darker-primary: #33606C;
         --accent-clr: #BB9758;
-        --light-grey: #F2F2F2;
+        --darker-accent: #ab884c;
+        --very-light-grey: #f7f7f7;
+        --light-grey: #f4f4f4;
+        --medium-grey: #D9D9D9;
         --light-blue: #EAF3F5;
 
         --pad-block: 4em;
-        --pad-inline: 7em;
+        --pad-inline: 5.5em;
     }
     html{
         margin: 0}
@@ -237,11 +241,12 @@ import LandingFooter from '@/components/LandingFooter.vue';
     h1{
         font-size: clamp(1rem, 6vw, 3.5rem); /* nie wiem jaka jest najmniejsza wartosć */
         font-weight: bold;
+        letter-spacing: 1px;
     }
     h2{
         font-size: 4vw;
         font-weight: bold;
-        line-height: 4rem
+        line-height: 4rem;
     }
     h3{
         font-size: 1.5rem;
@@ -260,34 +265,39 @@ import LandingFooter from '@/components/LandingFooter.vue';
         display: flex;
         align-items: center;
         justify-content: space-between;
+
+        z-index: 1
     }
     .intro h1{
         margin-bottom: .2em;
         margin-right: -2em;
-        z-index: 1
+
     }
     .intro p{
-        width: 90%;
+        width: 85%;
         margin-bottom: 2em;
+
     }
     .intro a{
         display: inline-block;
-        padding: .8em 2em;
+        padding: .5em 2em;
         border-radius: 4em;
-        /* font-weight: bold; */
-        background: var(--primary-clr);
         color: white;
-        transition: all .25s
+        transition: all .25s;
+    }
+    .intro .about-a{
+        background: var(--primary-clr);
+        margin-right: 1em;
+    }
+    .intro .subscribe-a{
+        background: var(--accent-clr)
     }
     .intro a:hover{
-        background: var(--darker-primary);
-        transform: scale(1.1);
-        transform-origin: center center;
+        text-decoration: underline;
     }
     .intro img{
-        height: 35em;
+        height: 33em;
         margin-top: 4em;
-        z-index: 1;
     }
 
 
@@ -297,6 +307,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
         display: flex;
         justify-content: center;
         align-items: center;
+        border-bottom: solid var(--light-grey) 1px;
     }
     .insight-cont{
         width: 100%;
@@ -441,7 +452,9 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     .about-inner-cont{
         display: flex;
-
+    }
+    .about-inner-cont a{
+        text-decoration: underline
     }
     .about h2{
         width: 50%
@@ -478,8 +491,8 @@ import LandingFooter from '@/components/LandingFooter.vue';
         display:flex;
         align-items: center;
         justify-content: space-between;
-
-        background-color: var(--light-grey);
+        border-block: solid 1px var(--medium-grey);
+        background-color: var(--very-light-grey);
     }
     .ST-add span{
         font-weight: bold;
@@ -541,6 +554,11 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     .questions button {
         align-self: flex-end;
+        margin-top: 1em;
+        padding: .5em 2.5em;
+        border-radius: 3em;
+        background-color: var(--accent-clr);
+        color: white
     }
 
 

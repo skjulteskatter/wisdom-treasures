@@ -1,7 +1,7 @@
 <template>
     <header>
         <div class="logo-with-text">
-            <img class="h-10 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('<!-- co tu ma być? --> landing')"/>
+            <img class="h-12 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('<!-- co tu ma być? --> landing')"/>
             <p @click="navigate('')"><span>Wisdom</span>Treasures</p>
         </div>
         
@@ -38,7 +38,7 @@
             <div v-if="!isActive" class="btn-bg"></div>
         <nav id="primary-nav" class="primary-nav" v-bind:class="{ 'is-active': isActive }">
             <router-link to="/landing" class="home-a">Home</router-link>
-            <router-link to="/contact" class="insight-a">Insight</router-link>
+            <router-link to="/insight" class="insight-a">Insight</router-link>
             <router-link to="/contact" class="contact-a">Contact</router-link>
             <router-link to="/login" class="login-a">Log in</router-link>
         </nav>
@@ -71,8 +71,8 @@ header{
     display: flex;
     justify-content: space-between;
     align-items: center;
-
-    backdrop-filter: blur(0.1rem);
+    border-bottom: solid 1px var(--medium-grey);
+    background-color: white;
 }
 .logo-with-text{
     display: flex;
@@ -84,6 +84,7 @@ header{
     margin-left: 1em;
     font-weight: bold;
     text-transform: uppercase;
+    letter-spacing: 1.5px;
 }
 .logo-with-text span{
     display: block;

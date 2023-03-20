@@ -141,6 +141,15 @@ export const routes = [
     },
   },
   {
+    path: '/insight',
+    name: 'insight',
+    component: () => import('../views/InsightView.vue'),
+    meta: {
+      requiresAuth: true,
+      scrollUp: true,
+    },
+  },
+  {
     path: '/privacy-policy',
     name: 'privacy-policy',
     component: () => import('../views/PrivacyPolicyView.vue'),

@@ -2,7 +2,7 @@
     <footer>
             <div class="links-footer">
                 <router-link to="/landing">Home</router-link>
-                <router-link to="/contact">Insight</router-link>
+                <router-link to="/insight">Insight</router-link>
                 <router-link to="/contact">Contact</router-link>
                 <router-link to="/terms-of-purchase">Terms of Purchase</router-link>
                 <router-link to="/privacy-policy">Privacy Policy</router-link>
