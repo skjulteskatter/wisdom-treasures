@@ -6,8 +6,8 @@
                 <!-- wisdom treasures banner -->
                 <div>
                 <h1>Wisdom Treasures</h1>
-                <p>A toolbox with over 10000 wisdom words based on Gods Word that suit your needs. 
-                    All accessible in one multi-device application to help you go victoriously through your daily circumstances.</p>
+                <p>A toolbox with over 10 000 wisdom words based on Gods Word that suit your needs. 
+                    Everything accessible in one application to help you go victoriously through the day.</p>
                 <router-link to="/login" class="about-a">About The App</router-link>
                 <router-link to="/login" class="subscribe-a">Subscribe Now</router-link>
                 </div>
@@ -36,7 +36,7 @@
                     Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget.</p>
                     <p class="insight-read-more insight-read-more-last" >Read More ></p>
 
-                    <router-link to="/login" class="insight-a">> See more</router-link>
+                    <router-link to="/login" class="insight-a"> See more</router-link>
                 </div>
                 <img class="back-intro" src="/images/back-intro.png" />
             </div>
@@ -44,7 +44,7 @@
                 <!-- WW GALLERY  -->
                 <div>
                     <h2>Wisdom words</h2>
-                    <p>Examples</p>
+                    <p>Let us give you a taste of what`s to come</p>
                 </div>
                 <div class="WW-gallery-display">
                     <WisdomWordExample :author="author4" :content="content4" :imgSrc="imgSrc1"/>
@@ -61,15 +61,15 @@
                 <div class="col-holder">
                     <div class="col">
                         <div class="feature"><img src="/images/app-feat-1.png" class="app-feat-img skewX" /></div>
-                        <p>Get a wisdom word chosen especially for you</p>
+                        <p>Start every morning with reading todays wisdom word!</p>
                         <div class="feature glass-effect"><img src="/images/app-feat-2.png" class="app-feat-img app-feat-img-fill" /></div>
-                        <p>Listen to speeches full of wisdom</p>
+                        <p>Listen to speeches related to a topic of your choice</p>
                     </div>
                     <div class="col col-2">
                         <div class="feature glass-effect"><img src="/images/app-feat-3.png" class="app-feat-img app-feat-img-fill" /></div>
                         <p>Mark words as favourites and view history</p>
                         <div class="feature"><img src="/images/app-feat-4.1.png" class="app-feat-img skewY" /></div>
-                        <p>Choose a topic and find a word that helps you best</p>
+                        <p>Browse through topics</p>
                     </div>
                 </div>
             </div>
@@ -77,11 +77,9 @@
                 <!-- about wisdom treasures -->
                 <div class="about-inner-cont">
                     <h2>About Wisdom Treasures</h2>
-                    <p>Wisdom Treasures is created by the non-profit foundation 
-                        Stiftelsen Skjulte Skatters Forlag. Our goal is to provide 
-                        everyone who is interested in Christian Literature and intellectual works 
-                        the use and benefits of their edifying content. <br>
-                        We want to make wisdom words accessible for all age groups on a modern and effective platform.
+                    <p>Wisdom Treasures is a platform developed by the non-profit foundation Stiftelsen Skjulte Skatters Forlag.
+                        Our mission is to share edifying Christian literature and intellectual works with anyone who is interested. 
+                        Our goal is to make these wisdom treasures accessible to people of all ages through a modern and effective platform.
                         <br><br>
                         See also <a href="https://activechristianity.org/">activechristianity.org</a></p>
                 </div>
@@ -97,6 +95,11 @@
                 <div>
                     <h2>Have you already seen <br><span>Song Treasures</span>?</h2>
                     <p>Go to <a href="https://songtreasures.org/">songtreasures.org</a></p>
+                    <p :style="{'font-weight': 'normal'}">Song Treasures is another product on the Treasures platform. 
+                        While Wisdom Treasure provides you with edifying words, 
+                        the Song Treasures is a collection of spiritual/Christian music, songbooks and 
+                        uplifting melodies made available through a user-friendly App for the benefit of all 
+                        Christian groups and fellowships.</p>
                 </div>
                 <img src="/images/song-treasures2.png" />
                 <img class="back-ST-add" src="/images/back-ST-add.png" />
@@ -105,7 +108,7 @@
                 <div class="questions">
                 <!-- QUESTIONS SECTION -->
                     <div class="questions-text">
-                        <h2>Have questions?</h2>
+                        <h2>Do you have questions?</h2>
                         <p>Write to us!</p>
                     </div>
                     <form>

@@ -2,9 +2,9 @@
     <body class="contact">
       <LandingNavBar />
       <div class="text-insight-container">
-        <h1>Get some insight</h1>
+        <h1>Get insight</h1>
         <p>Follow along with the latest developments of the project and 
-            gain a deeper insight into the content and features of the app</p>
+            be updated on new content and features in the app.</p>
       </div>
       
         <div class="insight">
