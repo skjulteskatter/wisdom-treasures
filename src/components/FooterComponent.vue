@@ -1,6 +1,6 @@
 <template>
   <div class="">
-    <p class="text-sm opacity-50 text-center" >
+    <p class="text-sm opacity-50 text-center py-5" >
       Copyright 2022 © Stiftelsen Skjulte Skatters Forlag. All Rights Reserved
     </p>
   </div>

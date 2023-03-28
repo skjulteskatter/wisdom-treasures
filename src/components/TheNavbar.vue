@@ -2,15 +2,15 @@
 	<nav class="shadow-md z-50 max-h-16" @mouseup="store.globalCloseModal = !store.globalCloseModal">
 		<div id = "glassEffect" class="absolute glass w-full h-full"/>
 		<div class="w-full bg-white">
-			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex min-h-[4rem] justify-around sm:justify-start">
+			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex min-h-[4rem] justify-around sm:justify-start px-8">
 				<div id="leftNav" class="self-center flex gap-x-3">
-					<img class="h-10 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('dashboard')"/>
+					<img class="h-8 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('dashboard')"/>
 					<div class="flex sm:hidden self-center place-content-center cursor-pointer">
 						<SearchIcon class="w-7" @click="showSearchModal = true"/>
 						<SearchModal :show="showSearchModal" v-model="searchWord" @search-action="{showSearchModal = false; search($event)}" @close="showSearchModal = false"/>
 					</div>
 				</div>
-				<div id="middleNav" class="sm:flex self-center hidden grow place-content-center gap-x-3 max-h-8">
+				<div id="middleNav" class="sm:flex self-center hidden grow place-content-left gap-x-3 max-h-8 pl-6">
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" @click="e => navigate('dashboard', e)">Home</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" @click="e => navigate('favorites', e)">Favorites</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" @click="navigate('themes')">Themes</BaseButton>
@@ -24,10 +24,10 @@
 					<BaseInput v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
 					<div v-if="currentUser !== null" class="flex gap-x-3 ml-2">
 						<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
-							<QuestionMarkCircleIcon class="h-7 opacity-50"/>
+							<QuestionMarkCircleIcon class="h-6 opacity-50"/>
 						</BaseButton>
 						<BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8">
-							<BellIcon class="h-7 opacity-50" @click="addNotification()"/>
+							<BellIcon class="h-6 opacity-50" @click="addNotification()"/>
 						</BaseButton>
 						<img :src="currentUser?.photoURL || '/public/img/user.svg'" class="w-8 h-8 rounded-full border-primary border cursor-pointer"/>
 					</div>

@@ -29,7 +29,7 @@
       </div>
     </div>
     <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
-  </main> 
+  </main>
 </template>
 
 <script lang="ts">
