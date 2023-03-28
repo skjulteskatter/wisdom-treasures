@@ -96,6 +96,10 @@ export const useSessionStore = defineStore('session', {
                 this.authors.set(author.id, author);
             }
 
+            // TODO remove this test
+            console.log("author array");
+            console.log(authorArray);
+
             await putAuthors(authorArray);
         },
         async initializeArticles(ids : string[]) {

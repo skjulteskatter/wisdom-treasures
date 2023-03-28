@@ -19,8 +19,8 @@
             <div class="w-full flex">
                 <div class="grow self-center flex">See more from&nbsp;
                     <ClickableLink class="inline-block" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
-                    &nbsp;category
-                    <div v-if="getArticleYearWritten > 1000" class="italic">&nbsp;-&nbsp;{{getArticleYearWritten}}</div>
+                    &nbsp;category&nbsp;
+                    <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic">{{getSignature}}</div>
                 </div> 
                 <div>
                     <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
@@ -39,7 +39,7 @@
   </template>
     
   <script lang="ts">
-  import { Article } from 'hiddentreasures-js';
+  import { Article, Contributor } from 'hiddentreasures-js';
   import { defineComponent } from 'vue';
   import BaseCard from './BaseCard.vue';
   import { useSessionStore } from '@/stores/session';
@@ -104,6 +104,15 @@
         getArticleYearWritten(): number{
           let date = new Date(this.article.dateWritten);
           return date.getFullYear();
+        },
+        getAuthor(): Contributor | undefined {
+          return Array.from(this.store.authors.values()).find(x => x.id == this.article.authorId);
+        },
+        getSignature(): string {
+          let builder = " - ";
+          if (this.getAuthor) builder += this.getAuthor.name + " ";
+          if (this.getArticleYearWritten) builder += this.getArticleYearWritten;
+          return builder;
         }
       },
       watch: {

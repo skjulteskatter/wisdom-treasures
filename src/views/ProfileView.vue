@@ -1,12 +1,23 @@
 <template>
   <main>
-    <h1 class="my-6 text-3xl font-bold">
+    <div id="topPart" class="flex align-middle my-6">
+      <h1 class="text-3xl font-bold">
       Profile
-    </h1>
+      </h1>
+      <div id="spacerDiv" class="grow"/>
+      <div class="place-self-center">
+        <BaseButton theme='error' @click="async () => {await logout()}">
+        Log Out
+        <template #icon>
+          <LogoutIcon class="h-5"/>
+        </template>
+      </BaseButton>
+      </div>
+    </div>
     <div>
       <BaseCard>
         <template #header>
-          <div class="flex flex-row place-items-center">
+          <div class="flex flex-row place-items-center font-sans">
             <img :src="currentUser?.photoURL || '/img/user.svg'" class="h-28 rounded-full border-primary border-2"/>
             <div class="flex flex-col ml-6">
               <h1 class="text-3xl font-bold font-sans ">
@@ -17,7 +28,6 @@
               </p>
             </div>
           </div>
-          
         </template>
         <template #default>
           <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
@@ -59,12 +69,13 @@ import type { User } from "firebase/auth";
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
-import { KeyIcon, SaveIcon } from '@heroicons/vue/outline';
+import { KeyIcon, SaveIcon, LogoutIcon } from '@heroicons/vue/outline';
 import GenerelDropDown from '@/components/GenerelDropDown.vue';
 import { validLanguages, fallbackLocale } from '@/i18n';
 import ChangePasswordModal from '@/components/ChangePasswordModal.vue';
 import { Notification } from "@/classes/notification";
 import ClickableLink from '@/components/ClickableLink.vue';
+import { logOut } from "@/services/auth";
 
   export default defineComponent({
     name: "ProfileView",
@@ -91,7 +102,8 @@ import ClickableLink from '@/components/ClickableLink.vue';
       GenerelDropDown,
       SaveIcon,
       ChangePasswordModal,
-      ClickableLink
+      ClickableLink,
+      LogoutIcon
     },
     computed: {
       initialized(){
@@ -125,6 +137,10 @@ import ClickableLink from '@/components/ClickableLink.vue';
       async saveLocalSettings(): Promise<void> {
         this.changeLanguage(this.selectedLanguage);
         this.store.notifications.push(new Notification("Settings updated!"));
+      },
+      async logout(){
+        await logOut();
+        this.$router.push({name: "dashboard"});
       }
     },
     mounted() {

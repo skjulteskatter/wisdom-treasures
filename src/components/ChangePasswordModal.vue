@@ -58,6 +58,10 @@ export default defineComponent({
                 this.store.notifications.push(new Notification("Passwords are not identical", "error", true));
                 return;
             } 
+            if (this.firstPassword.length < 1 || this.secondPassword.length < 1){
+                this.store.notifications.push(new Notification("Password fields must be filled", "error", true));
+                return;
+            } 
             if (await resetPassword(this.oldPassword, this.firstPassword)) {
                 this.store.notifications.push(new Notification("Password updated!", "default", true));
             } else {
