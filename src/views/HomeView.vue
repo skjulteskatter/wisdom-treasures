@@ -1,29 +1,40 @@
 <template>
   <main>
-    <h1 class="my-6 text-3xl font-bold">
-      <span v-if="currentUser" class="font-bold">
-        Welcome, 
-        <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
-          {{currentUser.displayName}}
-        </span> 
-      </span>
-      <span v-else class="font-bold"> 
-        Welcome to 
-        <span class="animated-gradient font-bold">
-          WisdomTreasures
-        </span> 
-      </span>
-    </h1>
-    <div id="wordOfTheDayCotainer" class="mt-20 mb-20 grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
-      <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
-      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mt-2 sm:mt-0 mx-2 sm:mx-0">
+    <div class="flex items-center shadow-md sm:shadow-none z-50 max-h-16 sm:h-auto w-full bg-white fixed top-0 left-0 sm:static px-8">
+      <h1 class="text-xl my-6 sm:text-3xl font-bold">
+        <span v-if="currentUser" class="font-bold">
+          Welcome, 
+          <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
+            {{currentUser.displayName}}
+          </span> 
+        </span>
+        <span v-else class="font-bold"> 
+          Welcome to 
+          <span class="animated-gradient font-bold">
+            WisdomTreasures
+          </span> 
+        </span>
+      </h1>
+    </div>
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mb-20 sm:grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
+
+        <!-- <div class="sm:hidden absolute bottom-20 -left-20 flex -rotate-90">
+          <BaseButton theme="menuButton" @click="navigate('history')">History</BaseButton>
+          <BaseButton theme="menuButton" @click="e => navigate('favorites', e)">Favorites</BaseButton>
+          <BaseButton theme="menuButton" @click="e => navigate('dashboard', e)">Daily word</BaseButton>
+        </div> -->
+
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class="hidden sm:block col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class="sm:hidden col-span-2 w-80 " :customTitle="showWordOfTheDay ? ' ' : ' ' "/>
+        
+      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 sm:mt-0 sm:mx-0 sm:h-full">
         <p class="text-xl">Generate new word</p>
         <template #icon>
           <RefreshIcon class="w-8"/>
         </template>
       </ThreeDButton>
     </div>
-    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div id="WWCards" class="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
@@ -44,6 +55,7 @@ import router from '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
+import BaseButton from "@/components/BaseButton.vue";
 
   export default defineComponent({
     name: "HomeView",
@@ -60,7 +72,8 @@ import { RefreshIcon } from '@heroicons/vue/outline';
       WWCard,
       WWShowCard,
       ThreeDButton,
-      RefreshIcon
+      RefreshIcon,
+      BaseButton
     },
     computed: {
       articles() : Article[] {
@@ -110,6 +123,15 @@ import { RefreshIcon } from '@heroicons/vue/outline';
       if (this.sessionInitialized) this.getAndSetWordOfTheDayArticle();
     },
     methods:{
+      navigate(name: string, e? : Event){
+
+      if (name === "register"){
+        //Just to mmake sure the login forms appears as 'register' and not as 'login'
+        this.store.loginFormBridge = "register";
+        name = "login";
+      }
+      router.push({name: name});
+      },
       articleNotFound(num: number) : void{
         //Should probably navigate back 🤷‍♂️
         this.store.notifications.push(new Notification("Couldn't find article number: " + num.toString(), "error"));
@@ -150,3 +172,8 @@ import { RefreshIcon } from '@heroicons/vue/outline';
     },
   });
 </script>
+<style>
+.h-80vh{
+  height: 80vh
+}
+</style>
