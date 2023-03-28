@@ -35,7 +35,7 @@
       </ThreeDButton>
     </div>
     <div id="WWCards" class="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-      <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
+      <div v-for="(article, index) in articles.slice(0,100)" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
     </div>
