@@ -96,8 +96,8 @@
                     <h2>Have you already seen <br><span>Song Treasures</span>?</h2>
                     <p>Go to <a href="https://songtreasures.org/">songtreasures.org</a></p>
                     <p :style="{'font-weight': 'normal'}">Song Treasures is another product on the Treasures platform. 
-                        While Wisdom Treasure provides you with edifying words, 
-                        the Song Treasures is a collection of spiritual/Christian music, songbooks and 
+                        While Wisdom Treasures provides you with edifying words, 
+                        Song Treasures is a collection of spiritual/Christian music, songbooks and 
                         uplifting melodies made available through a user-friendly App for the benefit of all 
                         Christian groups and fellowships.</p>
                 </div>
@@ -108,7 +108,7 @@
                 <div class="questions">
                 <!-- QUESTIONS SECTION -->
                     <div class="questions-text">
-                        <h2>Do you have questions?</h2>
+                        <h2>Do you have any <br> questions?</h2>
                         <p>Write to us!</p>
                     </div>
                     <form>
@@ -250,6 +250,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
         font-size: 4vw;
         font-weight: bold;
         line-height: 4rem;
+        margin-bottom: .2em
     }
     h3{
         font-size: 1.5rem;
@@ -503,7 +504,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     .ST-add p{
         margin-top:1em;
-        font-weight: bold
+        width: 80%
     }
     .ST-add a{
         text-decoration: underline;

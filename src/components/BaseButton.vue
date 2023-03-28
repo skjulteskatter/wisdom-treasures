@@ -143,7 +143,7 @@ export default defineComponent({
                 inset 0 0 7px 0.5px rgba(255, 255, 255, 0.63),
                 inset 0 0 2px 1px rgba(255, 255, 255, 0.801);
         }
-        background: linear-gradient(-60deg, var(--wt-color-primary), rgb(255, 67, 255), rgb(63, 169, 255), var(--wt-color-primary), rgb(255, 67, 255), rgb(63, 169, 255), var(--wt-color-primary));
+        background: linear-gradient(-60deg, var(--wt-color-primary), #4f8c9c, #284b53, var(--wt-color-primary),#5f9faf, #285a66, var(--wt-color-primary));
         animation: gradientAnimated 20s ease infinite;
         background-size: 700% 700%;
     }
