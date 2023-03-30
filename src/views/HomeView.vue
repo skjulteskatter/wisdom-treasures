@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="flex items-center shadow-md sm:shadow-none z-50 max-h-16 sm:h-auto w-full bg-white fixed top-0 left-0 sm:static px-8">
+    <div class="flex items-center shadow-md sm:shadow-none z-50 max-h-16 sm:h-auto w-full bg-(--wt-c-black-soft) fixed top-0 left-0 sm:static px-8">
       <h1 class="text-xl my-6 sm:text-3xl font-bold">
         <span v-if="currentUser" class="font-bold">
           Welcome, 

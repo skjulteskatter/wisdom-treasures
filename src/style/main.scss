@@ -1,11 +1,11 @@
 @import 'variables';
 
 ::-moz-selection {
-  background: var(--wt-color-primary);
+  background: var(--wt-color-secondary-light);
   color: white;
 }
   
 ::selection {
-  background: var(--wt-color-primary);
+  background: var(--wt-color-secondary-light);
   color: white;
 }

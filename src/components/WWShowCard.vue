@@ -18,17 +18,17 @@
         <template #footer>
             <div class="w-full flex">
                 <div class="grow self-center flex">See more from&nbsp;
-                    <ClickableLink class="inline-block" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
+                    <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
                     &nbsp;category
                     <div v-if="getArticleYearWritten > 1000" class="italic">&nbsp;-&nbsp;{{getArticleYearWritten}}</div>
                 </div> 
                 <div>
                     <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
-                    <BaseButton theme="menuButton" size="small" class="hidden sm:block w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
+                    <BaseButton theme="menuButton" size="small" class="hidden sm:flex w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
                         <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
                     </BaseButton>
                 </div>
-                  <BaseButton theme="menuButton" size="small" class="hidden sm:block w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
+                  <BaseButton theme="menuButton" size="small" class="hidden sm:flex w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
                       <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
                   <HeartIcon v-else class="h-8 opacity-50 pop"/>
                 </BaseButton>
