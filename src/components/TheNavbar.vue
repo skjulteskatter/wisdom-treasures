@@ -29,7 +29,7 @@
 						<BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8">
 							<BellIcon class="h-6 opacity-50" @click="addNotification()"/>
 						</BaseButton>
-						<img :src="currentUser?.photoURL || '/public/img/user.svg'" class="w-8 h-8 rounded-full border-primary border cursor-pointer"/>
+						<img :src="currentUser?.photoURL || '/public/img/user.svg'" class="w-8 h-8 rounded-full border-primary border cursor-pointer" @click="navigate('profile')"/>
 					</div>
 					<div v-else class="flex gap-x-3">
 						<BaseButton theme="tertiary" @click="navigate('login')" class="border border-primary"><b>Log in</b></BaseButton>

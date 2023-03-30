@@ -66,6 +66,7 @@ export async function putAuthors(authors: Contributor[], expirySeconds: number =
     const promises: Promise<string>[] = []
     for (const author of authors) {
         tx.store.put(author, author.id);
+        console.log("Put!", author);
     }
 
     await Promise.all(promises);

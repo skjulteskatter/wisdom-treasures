@@ -114,8 +114,7 @@ export default defineComponent({
             return Array.from(this.store.publications.values());
         },
         allAuthors() : Contributor[] {
-            return [];
-            //TODO implement authors
+            return Array.from(this.store.authors.values());
         },
         numberOfResults() : number {
             return this.articleHits.length + (!this.onlySearchForArticles ? this.authorHits.length + this.themeHits.length : 0);
@@ -152,6 +151,8 @@ export default defineComponent({
                 this.authorHits = this.allAuthors.filter(x => 
                     (x.name.includes(this.searchedWord) || (x.subtitle ?? "").includes(this.searchedWord) || (x.biography ?? "").includes(this.searchedWord))
                 );
+
+                console.log("AuthorHits:", this.authorHits);
 
                 this.$emit('authors:authorHits', this.onlySearchForArticles ? [] : this.authorHits);
                 

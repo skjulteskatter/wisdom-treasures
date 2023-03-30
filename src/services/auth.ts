@@ -113,13 +113,20 @@ async function userLoggedInCallback(){
     const store = useSessionStore();
     let lang = await store.initializeLanguage();
     store.favorites = await favorites.get() ?? [];
+
     await store.initializePublications();
-    const pubId = store.publications.keys().next().value;
-    console.log(pubId);
-    await store.initializeArticles([pubId]);
-    await store.initializeAuthors([]);
+    const pubIds = Array.from(store.publications.keys());
+    console.log("pubIds: ", pubIds);
+
+    await store.initializeArticles(pubIds);
+    let authorIds = [...new Set(Array.from(store.articles.values()).map(x => x.authorId))];
+    console.log("Remove this: ",authorIds)
+
+    await store.initializeAuthors(authorIds);
     await store.intitializeArticleNumberLookup();
+
     store.sessionInitialized = true;
+    
     return;
     await store.initializeArticles(Array.from(store.publications.keys()));
 }

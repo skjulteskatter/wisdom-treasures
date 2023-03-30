@@ -79,7 +79,7 @@ import BaseCard from '@/components/BaseCard.vue';
     computed: {
       publications() : Publication[] {
         let pubs : Publication[] = Array.from(this.store.publications.values());
-        pubs.sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b)));
+        pubs.sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), this.store.locale));
 
         //If the publications refs is not indexed
         if (this.idLookUp.size <= 0){
@@ -114,7 +114,7 @@ import BaseCard from '@/components/BaseCard.vue';
           if (alphabet.includes(firstLetter)) continue;
           alphabet.push(this.getFirstLetter(publication));
         }
-        return alphabet.sort();
+        return alphabet.sort((a,b) => a.localeCompare(b, this.store.locale));
       }
     },
     watch: {
