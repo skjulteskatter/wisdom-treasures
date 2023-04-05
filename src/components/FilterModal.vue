@@ -1,6 +1,14 @@
 <template>
     <BaseModal :show="true" class="fixed w-full h-full left-0 top-0 z-40" @close="closeWithReturnArrays">
-        <div class="h-96 overflow-y-scroll">
+        <div id="authors" class="h-96 overflow-y-scroll">
+            <div v-for="(author, index) in allAuthors" :key="index" class="flex">
+                <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
+                    <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="()=>{if (!initialAuthorIds.includes(author.id)){authorCheckBoxArray[index] = false}}"/>
+                    {{ author.name }}
+                </label>
+            </div>
+        </div>
+        <div id="publications" class="h-96 overflow-y-scroll">
             <div v-for="(publication, index) in allPublications" :key="index" class="flex">
                 <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
                     <BaseCheckbox v-model="publicationCheckBoxArray[index]" @vnode-mounted="()=>{if (!initialPublicationIds.includes(publication.id)){publicationCheckBoxArray[index] = false}}"/>
@@ -28,6 +36,7 @@ export default defineComponent({
     data: () => ({
         store: useSessionStore(),
         publicationCheckBoxArray: [] as boolean[],
+        authorCheckBoxArray: [] as boolean[],
     }),
     emits: ["close:withSearch", "publicationIdArray:publicationIdArray", "contributorIdArray:contributorIdArray"],
     props: {
@@ -41,18 +50,22 @@ export default defineComponent({
         }
     },
     computed: {
-        allAuthors() : Contributor[] {
-            return []
-            //TODO implement authors!
-        },
         allPublications() : Publication[]{
             return Array.from(this.store.publications.values()).sort((a: Publication, b: Publication) => a.title.localeCompare(b.title));
+        },
+        allAuthors() : Contributor[]{
+            return Array.from(this.store.authors.values()).sort((a: Contributor, b: Contributor) => a.name.localeCompare(b.name));
         }
     },
     watch: {
         allPublications(newValue: Publication[]){
             while (this.publicationCheckBoxArray.length < newValue.length){
                 this.publicationCheckBoxArray.push(false);
+            }
+        },
+        allAuthors(newValue: Contributor[]){
+            while (this.authorCheckBoxArray.length < newValue.length){
+                this.authorCheckBoxArray.push(false);
             }
         }
     },
@@ -67,11 +80,19 @@ export default defineComponent({
                     publicationsArray.push(this.allPublications[i].id);
             }
 
-            withSearchOnClose = withSearchOnClose || publicationsArray.toString() !== this.initialPublicationIds.toString();
+            const authorsArray : string[] = [];
+            for (let i = 0; i < this.allPublications.length; i++) {
+                if (this.authorCheckBoxArray[i])
+                    authorsArray.push(this.allAuthors[i].id);
+            }
+
+            withSearchOnClose = withSearchOnClose || 
+                publicationsArray.toString() !== this.initialPublicationIds.toString() ||
+                authorsArray.toString() !== this.initialAuthorIds.toString();
 
             this.$emit('publicationIdArray:publicationIdArray', publicationsArray);
 
-            //TODO do the same thing as above but with authors
+            this.$emit('contributorIdArray:contributorIdArray', authorsArray);
 
             this.$emit('close:withSearch', withSearchOnClose);
         },
