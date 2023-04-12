@@ -30,8 +30,8 @@
                 </div>
                   <BaseButton theme="menuButton" size="small" class="hidden sm:flex w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
                       <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
-                  <HeartIcon v-else class="h-8 opacity-50 pop"/>
-                </BaseButton>
+                      <HeartIcon v-else class="h-8 opacity-50 pop"/>
+                  </BaseButton>
             </div>
         </template>
     </BaseCard>

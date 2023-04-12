@@ -1,38 +1,41 @@
 <template>
-  <main>
-    <div class="flex items-center shadow-md sm:shadow-none z-50 max-h-16 sm:h-auto w-full bg-(--wt-c-black-soft) fixed top-0 left-0 sm:static px-8 sm:px-0 ">
-      <h1 class="text-xl my-6 sm:text-3xl font-bold">
-        <span v-if="currentUser" class="font-bold">
+  <main class="flex flex-col justify-between">
+    <div class="flex items-center shadow-md sm:shadow-none z-50 max-h-16 sm:h-auto w-full bg-(--wt-c-black-soft) absolute top-0 left-0 sm:static px-8 sm:px-0 ">
+      <h1 class="text-xl my-6 sm:text-3xl sm:font-bold">
+        <span v-if="currentUser" class="sm:font-bold">
           Welcome, 
-          <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
+          <span class="animated-gradient sm:font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
             {{currentUser.displayName}}
-          </span> 
+          </span>
         </span>
-        <span v-else class="font-bold"> 
+        <span v-else class="sm:font-bold"> 
           Welcome to 
-          <span class="animated-gradient font-bold">
+          <span class="animated-gradient sm:font-bold">
             WisdomTreasures
           </span> 
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mb-20 sm:grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mb-20 sm:grid sm:grid-cols-3 sm:gap-2 px-8 sm:px-0">
 
-        <!-- <div class="sm:hidden absolute bottom-20 -left-20 flex -rotate-90">
-          <BaseButton theme="menuButton" @click="navigate('history')">History</BaseButton>
-          <BaseButton theme="menuButton" @click="e => navigate('favorites', e)">Favorites</BaseButton>
-          <BaseButton theme="menuButton" @click="e => navigate('dashboard', e)">Daily word</BaseButton>
-        </div> -->
-
+      <div class="flex my-container-test sm:hidden">
+        <div class="my-box-test">
+          <p>History</p>
+          <p>Favorites</p>
+          <p>Daily Word</p>
+        </div>
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-3/4" :customTitle="showWordOfTheDay ? ' ' : ' ' "/>
+      </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="hidden sm:block col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class="sm:hidden col-span-2 w-80 " :customTitle="showWordOfTheDay ? ' ' : ' ' "/>
         
+        <div class="flex-shrink-0">
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 sm:mt-0 sm:mx-0 sm:h-full">
         <p class="text-xl">Generate new word</p>
         <template #icon>
           <RefreshIcon class="w-8"/>
         </template>
       </ThreeDButton>
+        </div>
     </div>
     <div id="WWCards" class="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
@@ -175,5 +178,39 @@ import BaseButton from "@/components/BaseButton.vue";
 <style>
 .h-80vh{
   height: 80vh
+}
+.my-container-test{
+  justify-content: space-between;
+  margin-bottom: min(1em)
+}
+.my-box-test{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  rotate: 180deg;
+}
+
+.my-box-test p{
+  font-size: clamp(1rem, 2.5vh, 1.5rem);
+  writing-mode:vertical-rl;
+  margin-bottom: min(1.5em);
+  color: var(--wt-c-text-light-2);
+  font-weight: bold;
+  letter-spacing: 1px
+}
+.my-box-test p:last-child{
+  font-size: clamp(1rem, 2.8vh, 1.5rem);
+  margin-bottom: 0;
+  color: var(--wt-color-primary);
+}
+.my-box-test p:last-child::before{
+  content: "";
+  position: absolute;
+  top:0;
+  bottom:0;
+  right:1.75em;
+  background-color: var(--wt-color-secondary);
+  width: 2px;
 }
 </style>
