@@ -8,7 +8,7 @@
                 <h1>Wisdom Treasures</h1>
                 <p>A toolbox with over 10 000 wisdom words based on Gods Word that suit your needs. 
                     Everything accessible in one application to help you go victoriously through the day.</p>
-                <router-link to="/login" class="about-a">About The App</router-link>
+                <button @click="scrollToAbout" class="about-a">About The App</button>
                 <router-link to="/login" class="subscribe-a">Subscribe Now</router-link>
                 </div>
                 <img src="/images/banner3.png" />
@@ -73,7 +73,7 @@
                     </div>
                 </div>
             </div>
-            <div class="about">
+            <div id="about" class="about">
                 <!-- about wisdom treasures -->
                 <div class="about-inner-cont">
                     <h2>About Wisdom Treasures</h2>
@@ -84,18 +84,12 @@
                         See also <a href="https://activechristianity.org/">activechristianity.org</a></p>
                 </div>
             </div>
-            <div class="anim-section">
-                <!-- animation -->
-                <div class="animation">
-                    <img src="/images/app-feat-2.png" />
-                </div>
-            </div>
             <div class="ST-add">
                 <!-- ST add banner -->
                 <div>
                     <h2>Have you already seen <br><span>Song Treasures</span>?</h2>
                     <p>Go to <a href="https://songtreasures.org/">songtreasures.org</a></p>
-                    <p :style="{'font-weight': 'normal'}">Song Treasures is another product on the Treasures platform. 
+                    <p>Song Treasures is another product on the Treasures platform. 
                         While Wisdom Treasures provides you with edifying words, 
                         Song Treasures is a collection of spiritual/Christian music, songbooks and 
                         uplifting melodies made available through a user-friendly App for the benefit of all 
@@ -157,47 +151,10 @@ import LandingFooter from '@/components/LandingFooter.vue';
                     }
                 }
             },
-            scrollDown(){
-                let element = this.$refs.intro as HTMLElement,
-                    offset = 150; // 50 pixels above the element
-                window.scrollBy({
-                    top: element.offsetTop - offset,
-                    behavior: 'smooth'
-                });
+            scrollToAbout() {
+                const element = document.getElementById('about') as HTMLElement;
+                element.scrollIntoView({ behavior: 'smooth' });
             },
-            // scrolling with buttons (arrows)
-            scrollLeft() {
-                (this.$refs.scrollContainer as HTMLElement).scrollTo({
-                left: (this.$refs.scrollContainer as HTMLElement).scrollLeft - 400,
-                behavior: 'smooth'
-                });
-                (this.$refs.scrollContainer as HTMLElement).classList.add('snaps-inline')
-            },
-            scrollRight() {
-                (this.$refs.scrollContainer as HTMLElement).scrollTo({
-                left: (this.$refs.scrollContainer as HTMLElement).scrollLeft + 400,
-                behavior: 'smooth'
-                });
-                (this.$refs.scrollContainer as HTMLElement).classList.add('snaps-inline')
-            },
-            // scrolling with mouseup, -move and -down
-            startDrag(event: MouseEvent) {
-                this.isDown = true
-                // Store the initial position of the mouse
-                this.startX = event.pageX - (this.$refs.scrollContainer as HTMLElement).offsetLeft;
-                this.divScrollLeft = (this.$refs.scrollContainer as HTMLElement).scrollLeft as number;
-                (this.$refs.scrollContainer as HTMLElement).classList.remove('snaps-inline')
-            },
-            drag(event: MouseEvent) {
-                if(!this.isDown) return;
-                event.preventDefault();
-                    const x = event.pageX - (this.$refs.scrollContainer as HTMLElement).offsetLeft;
-                    const walk = x - this.startX;
-                    (this.$refs.scrollContainer as HTMLElement).scrollLeft = this.divScrollLeft - walk
-            },
-            endDrag() {
-                this.isDown = false;
-            }
         }, data() {
             return {
                 author1: 'Johan O. Smith',
@@ -211,10 +168,6 @@ import LandingFooter from '@/components/LandingFooter.vue';
                 imgSrc1: "images/JOS.webp",
                 imgSrc2: "images/SB.webp",
                 imgSrc3: "images/KJS.jpg",
-                // startX: 0,
-                // startY: 0,
-                // isDown: false as boolean,
-                // divScrollLeft: 0,
             }
         },
 });
@@ -242,7 +195,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     /* TYPOGRAPHY */
     h1{
-        font-size: clamp(1rem, 6vw, 3.5rem); /* nie wiem jaka jest najmniejsza wartosć */
+        font-size: clamp(1rem, 6vw, 3.5rem); /* what should be the min? */
         font-weight: bold;
         letter-spacing: 1px;
     }
@@ -274,15 +227,13 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     .intro h1{
         margin-bottom: .2em;
-        margin-right: -2em;
-
+        margin-right: -1em;
     }
     .intro p{
         width: 85%;
         margin-bottom: 2em;
-
     }
-    .intro a{
+    .intro a, .intro button{
         display: inline-block;
         padding: .5em 2em;
         border-radius: 4em;
@@ -302,6 +253,22 @@ import LandingFooter from '@/components/LandingFooter.vue';
     .intro img{
         height: 33em;
         margin-top: 4em;
+    }
+    @media(max-width: 925px){
+        :root{
+            --pad-inline: 4em;
+        }
+        .intro{
+            flex-direction: column;
+            margin-block: 20vh;
+            text-align: center;
+        }
+        .intro h1{
+            margin-right: 0
+        }
+        .intro p{
+            width: 100%;
+        }
     }
 
 
@@ -504,17 +471,20 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     .ST-add p{
         margin-top:1em;
-        width: 80%
+        width: 80%;
+        z-index: 1
     }
     .ST-add a{
         text-decoration: underline;
     }
     .ST-add img{
-        height: 90%;
+        width: 50%;
+        max-height: 90%;
         z-index: 1
     }
     .ST-add .back-ST-add{
         height: 100%;
+        max-height:100%;
         position:absolute;
         bottom:0;
         right:0;

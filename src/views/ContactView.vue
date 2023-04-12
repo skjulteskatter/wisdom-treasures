@@ -89,6 +89,9 @@ p{
   justify-content: space-between;
   z-index:99
 }
+.inner-contact-container p{
+  margin-right: 2em
+}
 .contact-form{
     display: flex;
     flex-direction: column;

@@ -32,6 +32,7 @@
         border-right: var(--accent-clr) solid 1.75px;
         border-top-right-radius: 1.75em;
         padding: 2em 2em 2em 0;
+        z-index: 99
     }
     .wisdom-content{
         margin-bottom: 0.5em;
