@@ -22,7 +22,7 @@
     <div id="wrapper" class="flex">
       <div class="w-full">
         <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-          <div v-for="(publication, index) in searchedPublications" :key="index" class="flex flex-col">
+          <div v-for="(publication, index) in searchedPublications" :key="publication.id" class="flex flex-col">
             <ThemeCard :publication="publication" class="grow" 
               :strech-y="true"/>
               <div :id="`${idLookUp.get(getFirstLetter(publication)) === index ? getFirstLetter(publication) : index.toString()}${idSalt}`"
@@ -31,7 +31,7 @@
           </div>
         </div>
       </div>
-      <div id="alphabetslider">
+      <div id="alphabetslider" v-if="searchedWord.trim().length <= 0">
         <div class="w-10 flex flex-col sticky top-16 items-center font-bold"
           @mousedown="mouseDownOverAlphabet = true" 
           @mouseup="()=> {mouseDownOverAlphabet = false; mouseOverAlphabet = '';}" 
@@ -54,6 +54,7 @@ import ThemeCard from '@/components/ThemeCard.vue';
 import type { Publication } from 'hiddentreasures-js';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseCard from '@/components/BaseCard.vue';
+import type Fuse from 'fuse.js';
 
   export default defineComponent({
     name: "ThemesView",
@@ -77,7 +78,7 @@ import BaseCard from '@/components/BaseCard.vue';
       BaseCard
     },
     computed: {
-      publications() : Publication[] {
+      publications(): Publication[]{
         let pubs : Publication[] = Array.from(this.store.publications.values());
         pubs.sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), this.store.locale));
 
@@ -89,13 +90,21 @@ import BaseCard from '@/components/BaseCard.vue';
               this.idLookUp.set(this.getFirstLetter(pub), i)
           }
         }
-
         return pubs;
       },
+      fusePublications() : Fuse<Publication> | undefined{
+            return this.store.fusePublications;
+        },
       searchedPublications() : Publication[]{
-        let pubs = this.publications;
-        if (this.searchedWord.length <= 0) return pubs;
-        return pubs.filter(x => x.title.includes(this.searchedWord))
+        let pubs = [] as Publication[];
+        if (this.fusePublications == undefined || this.searchedWord.length <= 0){
+          pubs = this.publications;
+        } else {
+          const result = this.fusePublications?.search(this.searchedWord);
+          pubs = result.map(x => x.item).sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), this.store.locale));
+        }
+        
+        return pubs;
       },
       mouseDownAndOverAlphabetEvent() : string {
         if (this.mouseDownOverAlphabet == false || this.mouseOverAlphabet == "" ) return "";

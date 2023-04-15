@@ -22,8 +22,10 @@
                         <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
                             @publication-id-array:publication-id-array="setPublicationIdFilter"
                             @contributor-id-array:contributor-id-array="setAuthorIdFilter"
+                            @only-favorites:only-favorites="setFavoriteFilter"
                             :initialPublicationIds="publicationIdFilter"
-                            :initialAuthorIds="authorIdFilter"/>
+                            :initialAuthorIds="authorIdFilter"
+                            :initialOnlyFavorites="onlyFavoriteFilter"/>
                     </BaseButton>
                     <div id="filterButtons" class="flex gap-4 mt-4 flex-wrap">
 
@@ -41,9 +43,15 @@
                             </BaseButton>
                         </div>
 
+                        <div v-if="onlyFavoriteFilter" class="flex items-center rounded-md w-min bg-black/10">
+                            <p class="w-max pl-2 pr-1">Favorites Only</p> 
+                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{onlyFavoriteFilter = false; search(undefined)}">
+                                <XIcon class="h-6"/>
+                            </BaseButton>
+                        </div>
 
                         <div v-if="publicationIdFilter.length > 0" class="flex items-center rounded-md w-min bg-black/10">
-                            <BaseButton theme="menuButton" class="self-center max-h-7" @click="()=>{publicationIdFilter = []; search(undefined)}">
+                            <BaseButton theme="menuButton" class="self-center max-h-7" @click="()=>{publicationIdFilter = []; authorIdFilter = []; onlyFavoriteFilter = false; search(undefined)}">
                                 <p class="w-max pl-2 pr-1 defaultFontSize">Reset all</p>
                             </BaseButton>
                         </div>
@@ -76,7 +84,6 @@ import BaseButton from './BaseButton.vue';
 import { AdjustmentsIcon, SwitchVerticalIcon, XIcon } from '@heroicons/vue/outline';
 import FilterModal from './FilterModal.vue';
 import type Fuse from 'fuse.js';
-import { stringLength } from '@firebase/util';
 
 export default defineComponent({
     name: "multi-search",
@@ -101,7 +108,7 @@ export default defineComponent({
             themeHits: [] as Publication[],
 
             publicationIdFilter: [] as string[],
-            favoriteFilter: undefined as boolean | undefined,
+            onlyFavoriteFilter: false as boolean,
             authorIdFilter: [] as string[],
 
             showFilterModal: false as boolean,
@@ -131,7 +138,7 @@ export default defineComponent({
             return this.articleHits.length + (!this.onlySearchForArticles ? this.authorHits.length + this.themeHits.length : 0);
         },
         onlySearchForArticles(): boolean {
-            return this.publicationIdFilter.length > 0 || this.authorIdFilter.length > 0;
+            return this.publicationIdFilter.length > 0 || this.authorIdFilter.length > 0 || this.onlyFavoriteFilter;
         },
         publicationIdFilterPublications(): Publication[] {
             return this.allThemes.filter(x => this.publicationIdFilter.includes(x.id));
@@ -173,7 +180,7 @@ export default defineComponent({
 
                 this.$emit('authors:authorHits', this.onlySearchForArticles ? [] : this.authorHits);
 
-                const query: Fuse.Expression = {
+                let  query: Fuse.Expression = {
                     $and: []
                 }
 
@@ -206,11 +213,33 @@ export default defineComponent({
                     )
                 }
 
+                //let orFavoriteFilter = this.store.favorites.map(id => ({id : `'${id}`}));
+                //if (this.onlyFavoriteFilter){
+                //    query.$and!.push( 
+                //        {$or: orFavoriteFilter}
+                //    )
+                //}
+
+                if (query.$and?.[0] && query.$and.length == 1){
+                    query = query.$and![0];
+                }
+
                 console.log(JSON.stringify(query, null, 2));
                 if (this.fuseArticles !== undefined){
-                    const result = query.$and?.length ? this.fuseArticles.search(query) : [];
-                    this.articleHits = (result.length ? result.map(x => x.item) : this.allArticles).slice(0,this.maxNumberOfArticlesDisplayed);
+                    
+                    let result: Fuse.FuseResult<Article>[] = [];
+                    if ('$and' in query && query.$and?.length){ result = this.fuseArticles.search(query) }
+                    else if ('$or' in query && query.$or?.length){ result = this.fuseArticles.search(query) }
+
+                    this.articleHits = (result.length ? result.map(x => x.item) : this.allArticles);
                 }
+
+                if (this.onlyFavoriteFilter)
+                {
+                    this.articleHits = this.articleHits.filter(x => this.store.favorites.includes(x.id));
+                }
+
+                this.articleHits = this.articleHits.slice(0,this.maxNumberOfArticlesDisplayed);
 
                 this.$emit('articles:articleHits', this.articleHits);
 
@@ -225,8 +254,8 @@ export default defineComponent({
         setAuthorIdFilter(value: string[]) {
             this.authorIdFilter = value;
         },
-        setFavoriteFilter(value: boolean | undefined) {
-            this.favoriteFilter = value;
+        setFavoriteFilter(value: boolean) {
+            this.onlyFavoriteFilter = value;
         },
     },
     mounted() {

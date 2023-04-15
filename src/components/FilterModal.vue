@@ -16,6 +16,12 @@
                 </label>
             </div>
         </div>
+        <div id="publications" class="">
+            <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
+                <BaseCheckbox v-model="onlyFavorites" @vnode-mounted="()=>{onlyFavorites = initialOnlyFavorites}"/>
+                Favorite
+            </label>
+        </div>
     </BaseModal>
 </template>
 
@@ -37,8 +43,9 @@ export default defineComponent({
         store: useSessionStore(),
         publicationCheckBoxArray: [] as boolean[],
         authorCheckBoxArray: [] as boolean[],
+        onlyFavorites: false as boolean,
     }),
-    emits: ["close:withSearch", "publicationIdArray:publicationIdArray", "contributorIdArray:contributorIdArray"],
+    emits: ["close:withSearch", "publicationIdArray:publicationIdArray", "contributorIdArray:contributorIdArray", "onlyFavorites:onlyFavorites"],
     props: {
         initialPublicationIds: {
             type: Array<String>,
@@ -47,6 +54,10 @@ export default defineComponent({
         initialAuthorIds: {
             type: Array<String>,
             default: [],
+        },
+        initialOnlyFavorites: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -88,11 +99,14 @@ export default defineComponent({
 
             withSearchOnClose = withSearchOnClose || 
                 publicationsArray.toString() !== this.initialPublicationIds.toString() ||
-                authorsArray.toString() !== this.initialAuthorIds.toString();
+                authorsArray.toString() !== this.initialAuthorIds.toString() || 
+                this.onlyFavorites !== this.initialOnlyFavorites;
 
             this.$emit('publicationIdArray:publicationIdArray', publicationsArray);
 
             this.$emit('contributorIdArray:contributorIdArray', authorsArray);
+
+            this.$emit('onlyFavorites:onlyFavorites', this.onlyFavorites);
 
             this.$emit('close:withSearch', withSearchOnClose);
         },
