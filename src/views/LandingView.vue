@@ -1,8 +1,8 @@
 <template>
     <body>
-        <LandingNavBar/>
+        <LandingNavBar />
         <main>
-            <div class="intro">
+            <div class="intro max-width-cont">
                 <!-- wisdom treasures banner -->
                 <div>
                 <h1>Wisdom Treasures</h1>
@@ -15,32 +15,36 @@
             </div>
             <div class="insight">
                 <!-- insight -->
-                <div class="insight-cont">
-                    <h3>Insight</h3>
+                <div class="insight-inner max-width-cont">
+                    <div class="insight-cont">
+                        <h3>Insight</h3>
 
-                    <p class="insight-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p class="insight-date">22. juli 2022</p>
-                    <p class="insight-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget.</p>
-                    <p class="insight-read-more">Read More ></p>
+                        <p class="insight-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p class="insight-date">22. juli 2022</p>
+                        <p class="insight-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget.</p>
+                        <p class="insight-read-more">Read More ></p>
 
-                    <p class="insight-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p class="insight-date">22. juli 2022</p>
-                    <p class="insight-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget.</p>
-                    <p class="insight-read-more">Read More ></p>
+                        <p class="insight-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p class="insight-date">22. juli 2022</p>
+                        <p class="insight-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget.</p>
+                        <p class="insight-read-more">Read More ></p>
 
-                    <p class="insight-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                    <p class="insight-date">22. juli 2022</p>
-                    <p class="insight-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
-                    Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget.</p>
-                    <p class="insight-read-more insight-read-more-last" >Read More ></p>
+                        <p class="insight-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                        <p class="insight-date">22. juli 2022</p>
+                        <p class="insight-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. 
+                        Vestibulum molestie tortor ipsum, vitae suscipit ex varius eget.</p>
+                        <p class="insight-read-more insight-read-more-last" >Read More ></p>
 
-                    <router-link to="/login" class="insight-a"> See more</router-link>
+                        <router-link to="/login" class="insight-a"> See more</router-link>
+                    </div>
+                    
                 </div>
                 <img class="back-intro" src="/images/back-intro.png" />
+                
             </div>
-            <div class="WW-gallery">
+            <div class="WW-gallery max-width-cont">
                 <!-- WW GALLERY  -->
                 <div>
                     <h2>Wisdom words</h2>
@@ -54,14 +58,14 @@
                 </div>
                 <img src="/img/logo.svg" class="watermark"/>
             </div>
-            <div class="app-features">
+            <div class="app-features max-width-cont">
                 <!-- app features -->
                 <h2>App features</h2>
                 <p>Check them out!</p>
                 <div class="col-holder">
                     <div class="col">
                         <div class="feature"><img src="/images/app-feat-1.png" class="app-feat-img skewX" /></div>
-                        <p>Start every morning with reading todays wisdom word!</p>
+                        <p>Start every morning with reading today's wisdom word!</p>
                         <div class="feature glass-effect"><img src="/images/app-feat-2.png" class="app-feat-img app-feat-img-fill" /></div>
                         <p>Listen to speeches related to a topic of your choice</p>
                     </div>
@@ -73,7 +77,7 @@
                     </div>
                 </div>
             </div>
-            <div id="about" class="about">
+            <div id="about" class="about max-width-cont">
                 <!-- about wisdom treasures -->
                 <div class="about-inner-cont">
                     <h2>About Wisdom Treasures</h2>
@@ -81,26 +85,29 @@
                         Our mission is to share edifying Christian literature and intellectual works with anyone who is interested. 
                         Our goal is to make these wisdom treasures accessible to people of all ages through a modern and effective platform.
                         <br><br>
-                        See also <a href="https://activechristianity.org/">activechristianity.org</a></p>
+                        <span>See also <a href="https://activechristianity.org/">activechristianity.org</a></span></p>
                 </div>
             </div>
             <div class="ST-add">
                 <!-- ST add banner -->
-                <div>
-                    <h2>Have you already seen <br><span>Song Treasures</span>?</h2>
-                    <p>Go to <a href="https://songtreasures.org/">songtreasures.org</a></p>
-                    <p>Song Treasures is another product on the Treasures platform. 
-                        While Wisdom Treasures provides you with edifying words, 
-                        Song Treasures is a collection of spiritual/Christian music, songbooks and 
-                        uplifting melodies made available through a user-friendly App for the benefit of all 
-                        Christian groups and fellowships.</p>
+                <div class="ST-add-inner max-width-cont">
+
+                    <div>
+                        <h2>Have you already seen <br><span>Song Treasures</span>?</h2>
+                        <p>Go to <a href="https://songtreasures.org/">songtreasures.org</a></p>
+                        <p>Song Treasures is another product on the Treasures platform. 
+                            While Wisdom Treasures provides you with edifying words, 
+                            Song Treasures is a collection of spiritual/Christian music, songbooks and 
+                            uplifting melodies made available through a user-friendly App for the benefit of all 
+                            Christian groups and fellowships.</p>
+                    </div>
+                    <img src="/images/song-treasures2.png" />
                 </div>
-                <img src="/images/song-treasures2.png" />
                 <img class="back-ST-add" src="/images/back-ST-add.png" />
             </div>
-            <div class="questions-cont">
-                <div class="questions">
+            <div class="questions-cont ">
                 <!-- QUESTIONS SECTION -->
+                <div class="questions max-width-cont">
                     <div class="questions-text">
                         <h2>Do you have any <br> questions?</h2>
                         <p>Write to us!</p>
@@ -113,7 +120,7 @@
                     </form>
                 </div>
             </div>
-            <div class="scroll-to-top">
+            <div class="scroll-to-top max-width-cont">
                 <div class="scroll-inner-cont">
                     <!-- scroll to the top -->
                     <div class="mobile-form"><img src="/img/logo.svg" /><p><span>wisdom</span>treasures</p></div>
@@ -177,6 +184,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
     :root{
         --primary-clr: #3D6E7C;
         --darker-primary: #33606C;
+        --lighter-accent: #f1e4cf;
         --accent-clr: #BB9758;
         --darker-accent: #ab884c;
         --very-light-grey: #f7f7f7;
@@ -213,7 +221,11 @@ import LandingFooter from '@/components/LandingFooter.vue';
         font-size: 1.15rem
     }
 
-
+    .max-width-cont{
+        max-width: 1400px;
+        margin-left: auto;
+        margin-right: auto
+    }
     /* BODY */
     .intro{
         height: 100vh;
@@ -273,12 +285,17 @@ import LandingFooter from '@/components/LandingFooter.vue';
 
 
     .insight{
-        padding-inline: var(--pad-inline);
         padding-block: var(--pad-block);
         display: flex;
         justify-content: center;
         align-items: center;
-        border-bottom: solid var(--light-grey) 1px;
+    }
+    .insight-inner{
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width:100%;
+        padding-inline: var(--pad-inline)
     }
     .insight-cont{
         width: 100%;
@@ -325,13 +342,17 @@ import LandingFooter from '@/components/LandingFooter.vue';
         bottom: 0;
         right:0;
     }
+    @media(min-width: 1700px){
+        .back-intro{height: 220%;}
+    }
 
     .WW-gallery{
         display: flex;
         justify-content: space-between;
         padding-top: var(--pad-block);
         padding-bottom: calc(2*var(--pad-block));
-        padding-inline: var(--pad-inline)
+        padding-inline: var(--pad-inline);
+        border-top: solid var(--light-grey) 1px;
     }
     .WW-gallery-display{
         width: 50%
@@ -349,7 +370,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
 
     .app-features{
         padding-inline: var(--pad-inline);
-        padding-top: calc(2*var(--pad-block))
+        padding-top: calc(2*var(--pad-block));
     }
     .col-holder{
         display: flex;
@@ -364,7 +385,8 @@ import LandingFooter from '@/components/LandingFooter.vue';
         padding-top:15em;
     }
     .feature{
-        height: 35em;
+        width:100%;
+        aspect-ratio: 1/1.25;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -419,13 +441,15 @@ import LandingFooter from '@/components/LandingFooter.vue';
         display: flex;
         align-items: center;
         padding-inline:var(--pad-inline);
-        background-color: var(--light-blue)
+        /* background-color: var(--light-blue) */
+        border-top: solid 1px var(--lighter-accent);
     }
     .about-inner-cont{
         display: flex;
     }
     .about-inner-cont a{
-        text-decoration: underline
+        text-decoration: underline;
+        color: var(--darker-accent)
     }
     .about h2{
         width: 50%
@@ -434,7 +458,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
         width: 50%
     }
 
-
+/* 
     .anim-section{
         height: 100vh;
         padding-block: var(--pad-block);
@@ -454,16 +478,23 @@ import LandingFooter from '@/components/LandingFooter.vue';
         position: absolute;
         top:-15em;
     }
-
+ */
 
     .ST-add{
         height: 100vh;
-        padding-inline: var(--pad-inline);
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        border-top: solid 1px var(--light-grey);
+        background-color: var(--very-light-grey);
+    }
+    .ST-add-inner{
         display:flex;
         align-items: center;
         justify-content: space-between;
-        border-block: solid 1px var(--medium-grey);
-        background-color: var(--very-light-grey);
+        height:100%;
+        width:100%;
+        padding-inline: var(--pad-inline);
     }
     .ST-add span{
         font-weight: bold;
@@ -476,10 +507,11 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     .ST-add a{
         text-decoration: underline;
+        color: var(--darker-accent)
     }
     .ST-add img{
         width: 50%;
-        max-height: 90%;
+        max-height: 80%;
         z-index: 1
     }
     .ST-add .back-ST-add{
@@ -497,13 +529,13 @@ import LandingFooter from '@/components/LandingFooter.vue';
         height: 100vh;
         display:flex;
         align-items: center;
-        padding-inline: var(--pad-inline);
         background-color: var(--light-blue)
     }
     .questions{
         width:100%;
         display: flex;
         justify-content: space-between;
+        padding-inline: var(--pad-inline);
     }
     .questions form{
         display: flex;
@@ -513,6 +545,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
     .questions input, textarea{
         width: 40vw;
         height: 3em;
+        margin-left: 3em;
         background: none;
         border: none;
         border-bottom: 2px solid var(--primary-clr);
@@ -539,6 +572,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
     .scroll-to-top{
         display: flex;
         justify-content: center;
+        margin-bottom: var(--pad-block)
     }
     .scroll-inner-cont{
         text-align: center

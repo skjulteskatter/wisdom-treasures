@@ -1,47 +1,52 @@
 <template>
     <header>
-        <div class="logo-with-text">
-            <img class="h-12 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('<!-- co tu ma być? --> landing')"/>
-            <p @click="navigate('')"><span>Wisdom</span>Treasures</p>
+        <div class="header-inner">
+
+            <div class="logo-with-text">
+                <img class="h-12 min-w-[2.5rem] cursor-pointer" src="/img/logo.svg" @click="navigate('<!-- idk? --> landing')"/>
+                <p class="hidden sm:block" @click="navigate('')"><span>Wisdom</span>Treasures</p>
+            </div>
+            
+            <button class="mobile-nav-toggle" 
+                    aria-controls="primary-nav" @click="isActive = !isActive">
+                <span class="sr-only">Menu</span>
+
+                <!-- X -->
+                <svg v-if="isActive" xmlns="http://www.w3.org/2000/svg" 
+                width="26" 
+                height="26" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="#fff" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line></svg>
+
+                <!-- ||| -->
+                <svg v-else class="menu" xmlns="http://www.w3.org/2000/svg" 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill="none" 
+                stroke="#fff" 
+                stroke-width="2" 
+                stroke-linecap="round" 
+                stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+                <div v-if="!isActive" class="btn-bg"></div>
+
+            <nav id="primary-nav" class="primary-nav" v-bind:class="{ 'is-active': isActive }">
+                <router-link to="/landing" class="home-a">Home</router-link>
+                <router-link to="/insight" class="insight-a">Insight</router-link>
+                <router-link to="/contact" class="contact-a">Contact</router-link>
+                <router-link to="/login" class="login-a">Log in</router-link>
+            </nav>
+
         </div>
-        
-        <button class="mobile-nav-toggle" 
-                aria-controls="primary-nav" @click="isActive = !isActive">
-            <span class="sr-only">Menu</span>
-
-            <!-- X -->
-            <svg v-if="isActive" xmlns="http://www.w3.org/2000/svg" 
-            width="26" 
-            height="26" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="#fff" 
-            stroke-width="2" 
-            stroke-linecap="round" 
-            stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line></svg>
-
-            <!-- ||| -->
-            <svg v-else class="menu" xmlns="http://www.w3.org/2000/svg" 
-            width="24" 
-            height="24" 
-            viewBox="0 0 24 24" 
-            fill="none" 
-            stroke="#fff" 
-            stroke-width="2" 
-            stroke-linecap="round" 
-            stroke-linejoin="round">
-            <line x1="3" y1="12" x2="21" y2="12"></line>
-            <line x1="3" y1="6" x2="21" y2="6"></line>
-            <line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
-            <div v-if="!isActive" class="btn-bg"></div>
-        <nav id="primary-nav" class="primary-nav" v-bind:class="{ 'is-active': isActive }">
-            <router-link to="/landing" class="home-a">Home</router-link>
-            <router-link to="/insight" class="insight-a">Insight</router-link>
-            <router-link to="/contact" class="contact-a">Contact</router-link>
-            <router-link to="/login" class="login-a">Log in</router-link>
-        </nav>
     </header>
   </template>
   
@@ -66,13 +71,23 @@ header{
     top: 0;
     width: 100%;
     z-index: 1000;
-    padding-inline: var(--pad-inline);
+    
     padding-block: 1em;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     border-bottom: solid 1px var(--medium-grey);
     background-color: white;
+}
+.header-inner{
+    width: 100%;
+    max-width: 1400px;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: var(--pad-inline);
 }
 .logo-with-text{
     display: flex;
@@ -111,11 +126,7 @@ header{
 }
 
 
-@media (max-width:500px){
-    header{
-        background-color: rgba(255, 255, 255, 0);
-        backdrop-filter: none;
-    }
+@media (max-width:600px){
     .logo{
         display: none
     }
