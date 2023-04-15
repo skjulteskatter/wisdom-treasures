@@ -3,13 +3,14 @@ import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { Notification } from '@/classes/notification'
 import { favorites as favoritesApi, session} from '@/services/api'
-import type {User, Article, Contributor, Publication, Settings, IUser } from 'hiddentreasures-js'
+import type {Article, Contributor, Publication } from 'hiddentreasures-js'
 import { articleService, publicationService, authorService } from '@/services/publications';
-import { reactive } from 'vue'
+import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
 import { dbPromise, putArticles, putAuthors, putPublications } from '@/services/cache'
 import type { HTUser } from '@/classes/HTUser'
 import { language } from '@/services/localStorage'
+import Fuse from 'fuse.js'
 
 const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
@@ -31,11 +32,15 @@ export const useSessionStore = defineStore('session', {
             //Favorites. GUID's of favorites stored as strings
             favorites: [] as string[],
 
-            publications: reactive(new Map) as Map<string, Publication>,
+            publications: shallowRef(new Map) as unknown as Map<string, Publication>,
+            fusePublications: undefined as Fuse<Publication> | undefined,
 
-            articles: reactive(new Map) as Map<string, Article>,
+            articles: shallowRef(new Map) as unknown as Map<string, Article>,
+            fuseArticles: undefined as Fuse<Article> | undefined,
 
-            authors: reactive(new Map) as Map<string, Contributor>,
+            authors: shallowRef(new Map) as unknown as Map<string, Contributor>,
+            fuseAuthors: undefined as Fuse<Contributor> | undefined,
+
             //Used to look up the id to the article number
             articleNumberLookup: reactive(new Map) as Map<number, string>,
 
@@ -74,25 +79,39 @@ export const useSessionStore = defineStore('session', {
         async initializePublications(fromIndexDb: boolean = true){
 
             let publicationArray: Publication[] = [];
+            let retrievedFromIndexDb = true;
 
-            if (fromIndexDb){
+            if (fromIndexDb) {
                 publicationArray = await (await dbPromise).getAll('publications');
             }
 
-            if (publicationArray.length <= 0) 
+            if (publicationArray.length <= 0) {
                 publicationArray = await publicationService.retrieve({parentIds: [WISDOM_WORDS_ID]});
-
+                retrievedFromIndexDb = false;
+            }
+                
             for (const publication of publicationArray) {
                 this.publications.set(publication.id, publication);
             }
 
-            await putPublications(publicationArray);
+            if (!retrievedFromIndexDb){
+                await putPublications(publicationArray);
+            }
+
+            const option = {
+                keys: ['title', 'id', 'description'],
+                includeScore: true,
+                threshold: 0.3
+            }
+            this.fusePublications = new Fuse(publicationArray, option, Fuse.createIndex(option.keys, publicationArray));
+
         },
         async initializeAuthors(ids : string[], fromIndexDb: boolean = true) {
 
             if (ids.length <= 0) return;
 
             let authorArray: Contributor[] = [];
+            let retrievedFromIndexDb = true;
 
             if (fromIndexDb){
                 authorArray = await (await dbPromise).getAll('authors');
@@ -100,19 +119,31 @@ export const useSessionStore = defineStore('session', {
             
             if (authorArray.length <= 0) {
                 authorArray = (await authorService.retrieve({itemIds: ids}));
+                retrievedFromIndexDb = false;
             }
 
             for (const author of authorArray) {
                 this.authors.set(author.id, author);
             }
 
-            await putAuthors(authorArray);
+            if (!retrievedFromIndexDb) {
+                await putAuthors(authorArray);
+            }
+
+            const option = {
+                keys: ['name', 'id' ],
+                includeScore: true,
+                threshold: 0.3,
+            }
+            this.fuseAuthors = new Fuse(authorArray, option, Fuse.createIndex(option.keys, authorArray));
+
         },
         async initializeArticles(ids : string[], fromIndexDb: boolean = true) {
 
             if (ids.length <= 0) return;
             
             let articlesArray: Article[] = [];
+            let retrievedFromIndexDb = true;
 
             if (fromIndexDb){
                 articlesArray = await (await dbPromise).getAll('articles');
@@ -123,14 +154,25 @@ export const useSessionStore = defineStore('session', {
                 parentIds: ids,
             };
 
-            if (articlesArray.length <= 0)
+            if (articlesArray.length <= 0){
                 articlesArray = (await articleService.retrieve(options));
-            
+                retrievedFromIndexDb = false;
+            }
+                            
             for (const article of articlesArray) {
                 this.articles.set(article.id, article);
             }
 
-            await putArticles(articlesArray);
+            if (!retrievedFromIndexDb){
+                await putArticles(articlesArray);
+            }
+
+            const option = {
+                keys: ['content.content', 'dateWritten', 'number', 'id', 'publicationId', 'authorId'],
+                includeScore: true,
+                threshold: 0.3
+            };
+            this.fuseArticles = new Fuse(articlesArray, option, Fuse.createIndex(option.keys, articlesArray));
         },
         async intitializeArticleNumberLookup(){
             for (const [key,value] of this.articles){

@@ -12,8 +12,8 @@
   </template>
     
   <script lang="ts">
-  import { Publication } from 'hiddentreasures-js';
-  import { defineComponent } from 'vue';
+  import type { Publication } from 'hiddentreasures-js';
+  import { defineComponent, type PropType } from 'vue';
   import BaseCard from './BaseCard.vue';
 import { useSessionStore } from '@/stores/session';
   
@@ -26,7 +26,7 @@ import { useSessionStore } from '@/stores/session';
       },
       props: {
         publication: {
-            type: Publication,
+            type: Object as PropType<Publication>,
             required: true
         },
         strechY: {
