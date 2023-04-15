@@ -8,8 +8,8 @@
 
 import BaseModal from "./BaseModal.vue"
 
-import { defineComponent } from "vue";
-import { Article } from "hiddentreasures-js";
+import { defineComponent, type PropType } from "vue";
+import type { Article } from "hiddentreasures-js";
 import { useSessionStore } from "@/stores/session";
 import { uuid } from 'vue-uuid';
 import WWShowCard from "./WWShowCard.vue";
@@ -28,7 +28,7 @@ export default defineComponent({
     emits: ["close"],
     props: {
         article: {
-            type: Article,
+            type: Object as PropType<Article>,
             required: true,
         },
     },

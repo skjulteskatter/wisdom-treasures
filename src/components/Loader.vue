@@ -1,6 +1,7 @@
 <template>
     <div
         class="loader"
+        v-bind="$attrs"
         v-if="loading">
         <strong>Loading</strong>
     </div>
@@ -12,6 +13,7 @@ import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "loader-component",
+    inheritAttrs: false,
     props: {
         loading: {
             type: Boolean,

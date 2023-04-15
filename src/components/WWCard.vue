@@ -26,8 +26,8 @@
   </template>
     
   <script lang="ts">
-  import { Article } from 'hiddentreasures-js';
-  import { defineComponent } from 'vue';
+  import type { Article } from 'hiddentreasures-js';
+  import { defineComponent, type PropType } from 'vue';
   import BaseCard from './BaseCard.vue';
   import { BookOpenIcon } from '@heroicons/vue/outline';
   import WWCardModal from './WWCardModal.vue';
@@ -44,7 +44,7 @@ import { useSessionStore } from '@/stores/session';
       },
       props: {
         article: {
-            type: Article,
+            type: Object as PropType<Article>,
             required: true
         },
         strechY: {

@@ -39,8 +39,8 @@
   </template>
     
   <script lang="ts">
-  import { Article, Contributor } from 'hiddentreasures-js';
-  import { defineComponent } from 'vue';
+  import type { Article, Contributor } from 'hiddentreasures-js';
+  import { defineComponent, type PropType } from 'vue';
   import BaseCard from './BaseCard.vue';
   import { useSessionStore } from '@/stores/session';
   import ClickableLink from './ClickableLink.vue';
@@ -61,7 +61,7 @@
       },
       props: {
         article: {
-            type: Article,
+            type: Object as PropType<Article>,
             required: true
         },
         strechY: {

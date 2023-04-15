@@ -3,8 +3,7 @@ import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
 
 const WWCard = {
-  //TODO: Find a better regex for 1-5 numbers. This is awful
-  path:':wwNumber(\\d|\\d\\d|\\d\\d\\d|\\d\\d\\d\\d|\\d\\d\\d\\d\\d$)',
+  path:':wwNumber(\\d{1,5}$)',
   children: [],
   meta: {
     scrollUp: false,
@@ -106,6 +105,15 @@ export const routes = [
         children: [
           WWCard
         ]
+      },
+      {
+        path: '/store',
+        name: 'store',
+        component: () => import('../views/StoreView.vue'),
+        meta: {
+          requiresAuth: true,
+          scrollUp: true,
+        },
       },
       {
         path: '/favorites',

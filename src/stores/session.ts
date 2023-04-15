@@ -71,8 +71,13 @@ export const useSessionStore = defineStore('session', {
                 this.favorites.splice(i, 1);
             }
         },
-        async initializePublications(){
-            let publicationArray: Publication[] = await (await dbPromise).getAll('publications');
+        async initializePublications(fromIndexDb: boolean = true){
+
+            let publicationArray: Publication[] = [];
+
+            if (fromIndexDb){
+                publicationArray = await (await dbPromise).getAll('publications');
+            }
 
             if (publicationArray.length <= 0) 
                 publicationArray = await publicationService.retrieve({parentIds: [WISDOM_WORDS_ID]});
@@ -83,30 +88,35 @@ export const useSessionStore = defineStore('session', {
 
             await putPublications(publicationArray);
         },
-        async initializeAuthors(ids : string[]) {
+        async initializeAuthors(ids : string[], fromIndexDb: boolean = true) {
 
             if (ids.length <= 0) return;
 
-            let authorArray: Contributor[] = await (await dbPromise).getAll('authors');
+            let authorArray: Contributor[] = [];
 
-            if (authorArray.length <= 0)
-            authorArray = (await authorService.retrieve({itemIds: ids}));
+            if (fromIndexDb){
+                authorArray = await (await dbPromise).getAll('authors');
+            }
+            
+            if (authorArray.length <= 0) {
+                authorArray = (await authorService.retrieve({itemIds: ids}));
+            }
 
             for (const author of authorArray) {
                 this.authors.set(author.id, author);
             }
 
-            // TODO remove this test
-            console.log("author array");
-            console.log(authorArray);
-
             await putAuthors(authorArray);
         },
-        async initializeArticles(ids : string[]) {
+        async initializeArticles(ids : string[], fromIndexDb: boolean = true) {
 
             if (ids.length <= 0) return;
             
-            let articlesArray: Article[] = await (await dbPromise).getAll('articles');
+            let articlesArray: Article[] = [];
+
+            if (fromIndexDb){
+                articlesArray = await (await dbPromise).getAll('articles');
+            }
 
             const options = {
                 withContent: true,

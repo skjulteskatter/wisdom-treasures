@@ -39,6 +39,12 @@
               </template>
             </BaseButton>
             <GenerelDropDown :input-map="validLangs" :initial-value="validLangs.get(store.locale) ?? fallbackLang" @value-clicked:chosen-value="setSelectedLanguage"></GenerelDropDown>
+            <BaseButton @click="()=>{$router.push({name: 'store'})}">
+              Buy Subscription
+              <template #icon>
+                <CreditCardIcon class="h-5"></CreditCardIcon>
+              </template>
+            </BaseButton>
           </div>
           <div class="flex mt-10 w-full place-content-end">
             <BaseButton theme='primary' @click="async ()=> {await saveLocalSettings()}">
@@ -69,7 +75,7 @@ import type { User } from "firebase/auth";
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
-import { KeyIcon, SaveIcon, LogoutIcon } from '@heroicons/vue/outline';
+import { KeyIcon, SaveIcon, LogoutIcon, CreditCardIcon } from '@heroicons/vue/outline';
 import GenerelDropDown from '@/components/GenerelDropDown.vue';
 import { validLanguages, fallbackLocale } from '@/i18n';
 import ChangePasswordModal from '@/components/ChangePasswordModal.vue';
@@ -103,7 +109,8 @@ import { logOut } from "@/services/auth";
       SaveIcon,
       ChangePasswordModal,
       ClickableLink,
-      LogoutIcon
+      LogoutIcon,
+      CreditCardIcon
     },
     computed: {
       initialized(){

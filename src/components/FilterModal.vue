@@ -51,10 +51,10 @@ export default defineComponent({
     },
     computed: {
         allPublications() : Publication[]{
-            return Array.from(this.store.publications.values()).sort((a: Publication, b: Publication) => a.title.localeCompare(b.title));
+            return Array.from(this.store.publications.values()).sort((a: Publication, b: Publication) => a.title.localeCompare(b.title, this.store.locale));
         },
         allAuthors() : Contributor[]{
-            return Array.from(this.store.authors.values()).sort((a: Contributor, b: Contributor) => a.name.localeCompare(b.name));
+            return Array.from(this.store.authors.values()).sort((a: Contributor, b: Contributor) => a.name.localeCompare(b.name, this.store.locale));
         }
     },
     watch: {
