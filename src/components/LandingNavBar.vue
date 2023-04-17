@@ -13,11 +13,11 @@
 
                 <!-- X -->
                 <svg v-if="isActive" xmlns="http://www.w3.org/2000/svg" 
-                width="26" 
-                height="26" 
+                width="32" 
+                height="32" 
                 viewBox="0 0 24 24" 
                 fill="none" 
-                stroke="#fff" 
+                stroke="#3D6E7C" 
                 stroke-width="2" 
                 stroke-linecap="round" 
                 stroke-linejoin="round">
@@ -26,18 +26,19 @@
 
                 <!-- ||| -->
                 <svg v-else class="menu" xmlns="http://www.w3.org/2000/svg" 
-                width="24" 
-                height="24" 
+                width="32" 
+                height="32" 
                 viewBox="0 0 24 24" 
                 fill="none" 
-                stroke="#fff" 
+                stroke="#3D6E7C" 
                 stroke-width="2" 
                 stroke-linecap="round" 
                 stroke-linejoin="round">
                 <line x1="3" y1="12" x2="21" y2="12"></line>
                 <line x1="3" y1="6" x2="21" y2="6"></line>
-                <line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
-                <div v-if="!isActive" class="btn-bg"></div>
+                <line x1="3" y1="18" x2="21" y2="18"></line></svg>
+            
+            </button>
 
             <nav id="primary-nav" class="primary-nav" v-bind:class="{ 'is-active': isActive }">
                 <router-link to="/landing" class="home-a">Home</router-link>
@@ -136,10 +137,8 @@ header{
         display: flex;
         flex-direction: column;
         padding: min(30vh, 8rem) 3em;
-
-        background: #101719cc;
-        backdrop-filter: blur(0.25rem);
-
+        background-color: #ffffffed;
+        
         transition: all 0.5s ease;
         transform: translateX(100%)
     }
@@ -151,21 +150,7 @@ header{
     }
     .mobile-nav-toggle{
         display: block;
-        position: absolute;
         z-index: 9999;
-        top: 1rem;
-        right: 1rem
-    }
-    .btn-bg{
-        position: absolute;
-        z-index: 999;
-        top:0;
-        right: 0;
-        width:4.5rem;
-        height:4.5rem;
-        border-bottom-left-radius: 6rem;
-        background-color: #101719cc;
-        backdrop-filter: blur(0.25rem);
     }
 }
 </style>
