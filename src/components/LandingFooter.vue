@@ -9,10 +9,10 @@
             </div>
             <div class="logo-and-copyright">
                 <div class="footer-logo">
-                    <img src="/img/logo.svg" class="drop-shadow" @click="navigate('<!-- co tu ma być? --> landing')"/>
+                    <img src="/img/logo.svg" class="drop-shadow" @click="navigate('<!-- what should we have here? --> landing')"/>
                     <p class="drop-shadow"><span>Wisdom</span> Treasures</p>
                 </div>
-                <p>Copyright 2023 © Stiftelsen Skjulte Skatters Forlag.<br>All Rights Reserved</p>
+                <p class="copyright">Copyright 2023 © Stiftelsen Skjulte Skatters Forlag.<br>All Rights Reserved</p>
             </div>
     </footer>
 </template>
@@ -74,5 +74,18 @@
     }
     footer p{
         font-size: 1rem
+    }
+    @media(max-width:600px){
+        footer{
+            flex-direction: column;
+            padding-block: 2em;
+        }
+        .footer-logo{
+            margin-block: 1.5em
+        }
+        .copyright{
+            font-size: .75rem;
+            text-align: center;
+        }
     }
     </style>
