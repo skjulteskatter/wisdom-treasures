@@ -10,7 +10,7 @@ import type { Manna } from '@/classes/manna'
 import { dbPromise, putArticles, putAuthors, putPublications } from '@/services/cache'
 import type { HTUser } from '@/classes/HTUser'
 import { language } from '@/services/localStorage'
-// import Fuse from 'fuse.js'
+import Fuse from 'fuse.js'
 
 const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
