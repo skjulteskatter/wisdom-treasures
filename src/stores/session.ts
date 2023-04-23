@@ -77,7 +77,6 @@ export const useSessionStore = defineStore('session', {
             }
         },
         async initializePublications(fromIndexDb: boolean = true){
-
             let publicationArray: Publication[] = [];
             let retrievedFromIndexDb = true;
 
