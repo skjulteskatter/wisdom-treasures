@@ -5,11 +5,11 @@
             <div class="intro max-width-cont">
                 <!-- wisdom treasures banner -->
                 <div>
-                <h1>Wisdom Treasures</h1>
-                <p>A toolbox with over 10 000 wisdom words based on Gods Word that suit your needs. 
-                    Everything accessible in one application to help you go victoriously through the day.</p>
-                <button @click="scrollToAbout" class="about-a">About The App</button>
-                <router-link to="/login" class="subscribe-a">Subscribe Now</router-link>
+                    <h1>Wisdom Treasures</h1>
+                    <p>A toolbox with over 10 000 wisdom words based on Gods Word that suit your needs. 
+                        Everything accessible in one application to help you go victoriously through the day.</p>
+                    <button @click="scrollToAbout" class="about-a">About The App</button>
+                    <router-link to="/login" class="subscribe-a">Subscribe Now</router-link>
                 </div>
                 <img src="/images/banner3.png" />
             </div>
@@ -46,7 +46,7 @@
             </div>
             <div class="WW-gallery max-width-cont">
                 <!-- WW GALLERY  -->
-                <div>
+                <div class="WW-gallery-title">
                     <h2>Wisdom words</h2>
                     <p>Let us give you a taste of what`s to come</p>
                 </div>
@@ -65,7 +65,7 @@
                 <div class="col-holder">
                     <div class="col">
                         <div class="feature"><img src="/images/app-feat-1.png" class="app-feat-img skewX" /></div>
-                        <p>Start every morning with reading today's wisdom word!</p>
+                        <p>Start every morning with reading today's wisdom word</p>
                         <div class="feature glass-effect"><img src="/images/app-feat-2.png" class="app-feat-img app-feat-img-fill" /></div>
                         <p>Listen to speeches related to a topic of your choice</p>
                     </div>
@@ -73,7 +73,7 @@
                         <div class="feature glass-effect"><img src="/images/app-feat-3.png" class="app-feat-img app-feat-img-fill" /></div>
                         <p>Mark words as favourites and view history</p>
                         <div class="feature"><img src="/images/app-feat-4.1.png" class="app-feat-img skewY" /></div>
-                        <p>Browse through topics</p>
+                        <p class="last-app-feat-p">Browse through topics</p>
                     </div>
                 </div>
             </div>
@@ -123,7 +123,7 @@
             <div class="scroll-to-top max-width-cont">
                 <div class="scroll-inner-cont">
                     <!-- scroll to the top -->
-                    <div class="mobile-form"><img src="/img/logo.svg" /><p><span>wisdom</span>treasures</p></div>
+                    <div class="mobile-form"><img src="/img/logo.svg" class="drop-shadow" /><p class="drop-shadow"><span>wisdom</span>treasures</p></div>
                     <button @click="scrollToTop">Scroll to the top</button>
                 </div>
             </div>
@@ -170,7 +170,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
                 author4: 'Johan O. Smith',
                 content1: 'Om du griper visdommen, vil du snart være et produkt av dens behandling.',
                 content2: 'Det å bli døpt med den Hellige Ånd tar ikke bort selvfornektelsens lidelse. Nei, men det gir deg kraft til å lide i kjødet. ',
-                content3: 'Som prest kan en ofre i sitt eget selvliv slik at en blir bevart i kjærligheten. Men skal en være konge, og ikke bare prest, da må en kunne si ifra og være et hode. Da blir det onde bundet der hvor en er.',
+                content3: 'De rettferdiges bønner kan flytte Guds hender rundt omkring på jorden.',
                 content4: 'Du kan i løpet av fem minutter si så meget ondt, at ikke fem år kan få helbredet det brutte samfund og få oprettet tillitsforholdet.',
                 imgSrc1: "images/JOS.webp",
                 imgSrc2: "images/SB.webp",
@@ -195,6 +195,16 @@ import LandingFooter from '@/components/LandingFooter.vue';
         --pad-block: 4em;
         --pad-inline: 5.5em;
     }
+    @media(max-width: 925px){
+        :root{
+            --pad-inline: 3em;
+        }
+    }
+    @media(max-width: 600px){
+        :root{
+            --pad-inline: 2em;
+        }
+    }
     html{
         margin: 0}
     body{
@@ -203,12 +213,12 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     /* TYPOGRAPHY */
     h1{
-        font-size: clamp(1rem, 6vw, 3.5rem); /* what should be the min? */
+        font-size: clamp(2rem, 6vw, 3.5rem); /* what should be the min? */
         font-weight: bold;
         letter-spacing: 1px;
     }
     h2{
-        font-size: 4vw;
+        font-size: clamp(2rem, 4vw, 3.5rem);
         font-weight: bold;
         line-height: 4rem;
         margin-bottom: .2em
@@ -267,9 +277,6 @@ import LandingFooter from '@/components/LandingFooter.vue';
         margin-top: 4em;
     }
     @media(max-width: 925px){
-        :root{
-            --pad-inline: 4em;
-        }
         .intro{
             flex-direction: column;
             margin-block: 20vh;
@@ -280,6 +287,15 @@ import LandingFooter from '@/components/LandingFooter.vue';
         }
         .intro p{
             width: 100%;
+        }
+    }
+    @media(max-width:400px){
+        .intro a, .intro button{
+            display:block;
+            width:100%
+        }
+        .intro .about-a{
+            margin: 1em 0
         }
     }
 
@@ -345,9 +361,15 @@ import LandingFooter from '@/components/LandingFooter.vue';
     @media(min-width: 1700px){
         .back-intro{height: 220%;}
     }
+    @media(max-width:600px){
+        .insight-cont{
+            padding:2em
+        }
+    }
 
     .WW-gallery{
         display: flex;
+        width:100%;
         justify-content: space-between;
         padding-top: var(--pad-block);
         padding-bottom: calc(2*var(--pad-block));
@@ -355,7 +377,10 @@ import LandingFooter from '@/components/LandingFooter.vue';
         border-top: solid var(--light-grey) 1px;
     }
     .WW-gallery-display{
-        width: 50%
+        width: 48%
+    }
+    .WW-gallery-title{
+        margin-bottom: 2em
     }
     .watermark{
         height: 50em;
@@ -363,10 +388,29 @@ import LandingFooter from '@/components/LandingFooter.vue';
         bottom:0;
         left:-14em;
         opacity: .5;
-
     }
 
-
+    @media(max-width:600px){
+        .WW-gallery{
+            flex-direction: column;
+            padding-bottom: 0;
+        }
+        .WW-gallery-display{
+            width:100%
+        }
+        .watermark{
+            bottom:-30em;
+            left:-20em;
+            opacity:.4
+        }
+    }
+    @media(max-width:400px){
+        .watermark{
+            bottom:-30em;
+            left:-14.5em;
+            opacity:.4
+        }
+    }
 
     .app-features{
         padding-inline: var(--pad-inline);
@@ -403,6 +447,27 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     .col-holder p{
         padding-block: 3em
+    }
+    @media(max-width:600px){
+        .app-features{
+            padding-top: var(--pad-block);
+        }
+        .col-holder{
+            flex-direction:column;
+            justify-content:center
+        }
+        .col{
+            width:100%
+        }
+        .col-2{
+            padding-top:0em;
+        }
+        .col-holder p{
+            padding-block: 2em
+        }
+        p.last-app-feat-p{
+            padding-bottom:0;
+        }
     }
 
     /* EFFECTS */
@@ -441,7 +506,6 @@ import LandingFooter from '@/components/LandingFooter.vue';
         display: flex;
         align-items: center;
         padding-inline:var(--pad-inline);
-        /* background-color: var(--light-blue) */
         border-top: solid 1px var(--lighter-accent);
     }
     .about-inner-cont{
@@ -456,6 +520,21 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     .about p{
         width: 50%
+    }
+    @media(max-width:600px){
+        .about{
+            height:auto;
+            padding-block: var(--pad-block)
+        }
+        .about-inner-cont{
+            flex-direction: column;
+        }
+        .about h2{
+            width: 100%
+        }
+        .about p{
+            width: 100%
+        }
     }
 
 /* 
@@ -495,6 +574,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
         height:100%;
         width:100%;
         padding-inline: var(--pad-inline);
+        z-index: 99;
     }
     .ST-add span{
         font-weight: bold;
@@ -521,6 +601,22 @@ import LandingFooter from '@/components/LandingFooter.vue';
         bottom:0;
         right:0;
         z-index: 0
+    }
+    @media(max-width:750px){
+        .ST-add{
+            height:auto;
+            padding-block: var(--pad-block)
+        }
+        .ST-add-inner{
+            flex-direction: column;
+        }
+        .ST-add p{
+            width:100%
+        }
+        .ST-add img{
+            width:80%;
+            margin-top:3em
+        }
     }
 
 
@@ -567,6 +663,18 @@ import LandingFooter from '@/components/LandingFooter.vue';
         background-color: var(--accent-clr);
         color: white
     }
+    @media(max-width:600px){
+        .questions{
+            flex-direction: column
+        }
+        .questions input, textarea{
+            width:100%;
+            margin-left: 0;
+        }
+        .questions form{
+            margin-block:2em;
+        }
+    }
 
 
     .scroll-to-top{
@@ -587,6 +695,11 @@ import LandingFooter from '@/components/LandingFooter.vue';
         margin-top: -5em;
         border: var(--primary-clr) solid 5px;
         border-radius: 2em
+    }
+    @media(max-width:600px){
+        .mobile-form{
+            margin-top: -3em;
+        }
     }
     .mobile-form img{
         height: 18%
