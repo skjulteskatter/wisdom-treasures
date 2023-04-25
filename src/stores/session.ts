@@ -181,7 +181,6 @@ export const useSessionStore = defineStore('session', {
         },
         async initializeFavorites() {
             try {
-                throw new Error();
                 this.favorites = await favoritesApi.get();
                 favorites.deleteAll();
                 for (const key of this.favorites) {
