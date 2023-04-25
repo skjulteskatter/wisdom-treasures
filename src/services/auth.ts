@@ -122,7 +122,8 @@ async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
     const store = useSessionStore();
     let lang = await store.initializeLanguage();
-    store.favorites = await favorites.get() ?? [];
+
+    await store.initializeFavorites();
 
     await store.initializePublications();
     const pubIds = Array.from(store.publications.keys());

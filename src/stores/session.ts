@@ -9,7 +9,7 @@ import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
 import { dbPromise, putArticles, putAuthors, putPublications } from '@/services/cache'
 import type { HTUser } from '@/classes/HTUser'
-import { language } from '@/services/localStorage'
+import { language, favorites } from '@/services/localStorage'
 import Fuse from 'fuse.js'
 
 const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
@@ -62,6 +62,9 @@ export const useSessionStore = defineStore('session', {
         },
         addFavorite(ids: string[]): void {
             favoritesApi.add(ids);
+            ids.forEach(id => {
+                favorites.addOrReplace(id);
+            });
             for (const id of ids)
             {
                 if (this.favorites.includes(id)) continue;
@@ -70,6 +73,9 @@ export const useSessionStore = defineStore('session', {
         },
         removeFavorite(ids: string[]): void {
             favoritesApi.delete(ids);
+            ids.forEach(id => {
+                favorites.delete(id);
+            });
             for (let i = this.favorites.length-1; i >= 0; i--)
             {
                 if (!ids.includes(this.favorites[i])) continue;
@@ -172,6 +178,22 @@ export const useSessionStore = defineStore('session', {
                 threshold: 0.3
             };
             this.fuseArticles = new Fuse(articlesArray, option, Fuse.createIndex(option.keys, articlesArray));
+        },
+        async initializeFavorites() {
+            try {
+                throw new Error();
+                this.favorites = await favoritesApi.get();
+                favorites.deleteAll();
+                for (const key of this.favorites) {
+                    favorites.addOrReplace(key);
+                }
+            }
+            catch 
+            {
+                for (const key of favorites.getAll().keys()) {
+                    this.favorites.push(key);
+                }
+            }
         },
         async intitializeArticleNumberLookup(){
             for (const [key,value] of this.articles){
