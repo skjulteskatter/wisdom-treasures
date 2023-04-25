@@ -1,8 +1,8 @@
 <template>
   <main>
-    <div class="flex items-center shadow-md sm:shadow-none z-50 max-h-16 sm:h-auto w-full bg-(--wt-c-black-soft) fixed top-0 left-0 sm:static px-8 sm:px-0 ">
+    <div class="flex items-center shadow-md sm:shadow-none z-50 max-h-16 sm:h-auto w-full bg-(--wt-color-ui-lm-medium) fixed top-0 left-0 sm:static px-8 sm:px-0 ">
       <h1 class="text-xl my-6 sm:text-3xl font-bold">
-        <span v-if="currentUser" class="font-bold">
+        <span v-if="currentUser" class="sm:font-bold">
           Welcome, 
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
             {{currentUser.displayName}}
@@ -16,7 +16,7 @@
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mb-20 sm:grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 mb-20 md:mb-20 md:grid md:grid-cols-3 grid-cols-1 md:gap-2">
 
         <!-- <div class="sm:hidden absolute bottom-20 -left-20 flex -rotate-90">
           <BaseButton theme="menuButton" @click="navigate('history')">History</BaseButton>
