@@ -1,13 +1,14 @@
 <template>
     <main>
-      <h1 class="my-6 text-3xl font-bold">
-        Manna
-      </h1>
+      <div class="flex bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none py-6">
+        <BackButton />
+        <h1 class="text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Manna</h1>
+      </div>
       <Loader :loading="store.mannaHistory.length <= 0">
-        <div class="w-full">
+        <div class="w-full px-5">
           <div id="wordOfTheDayCotainer" class="mt-20 grid sm:grid-cols-3 grid-cols-1 sm:gap-2">
             <MannaShowCard v-if="newestManna != null" :manna="newestManna" :loading="loadingManna === true" class="col-span-2"></MannaShowCard>
-            <ThreeDButton size="large" :three-d="true" @clicked="getAndSetManna" :loading="loadingManna !== undefined && loadingManna === true" class="mt-2 sm:mt-0 mx-2 sm:mx-0">
+            <ThreeDButton size="large" :three-d="true" @clicked="getAndSetManna" :loading="loadingManna !== undefined && loadingManna === true" class="mt-2 sm:mt-0">
               <div class="text-xl">
                 <p v-if="loadingManna">Retrieving Manna...</p>
                 <p v-else>Get Manna</p>
@@ -35,6 +36,7 @@
   import MannaShowCard from '@/components/MannaShowCard.vue';
   import type { Manna } from '@/classes/manna';
   import Loader from '@/components/Loader.vue';
+  import BackButton from '@/components/BackButton.vue';
   
     export default defineComponent({
       name: "HomeView",
@@ -48,6 +50,7 @@
         ThreeDButton,
         MannaShowCard,
         Loader,
+        BackButton
       },
       computed: {
         sessionInitialized() : boolean {

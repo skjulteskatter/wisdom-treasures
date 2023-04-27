@@ -1,9 +1,10 @@
 <template>
   <main>
-    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex flex-col items-center sm:items-start">
-      <h1 class="mt-6 sm:my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
-        Themes
-      </h1>
+    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
+      <div class="flex items-center mt-6 sm:my-6">
+        <BackButton/>
+        <h1 class="text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Themes</h1>
+      </div>
       <BaseCard class="hidden sm:block w-full">
           <template #header> 
               <div class="font-sans">
@@ -20,7 +21,7 @@
 
       <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)" class="my-5 px-5 sm:hidden"/>
     </div>
-    <div v-if="searchedWord" class="font-bold mt-4 sm:hidden">
+    <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden">
         Showing {{numberOfResults}} Results for "{{searchedWord}}"
     </div>
     <div id="wrapper" class="flex pl-5 sm:pl-0 py-5">
@@ -59,6 +60,7 @@ import type { Publication } from 'hiddentreasures-js';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseCard from '@/components/BaseCard.vue';
 import type Fuse from 'fuse.js';
+import BackButton from '@/components/BackButton.vue';
 
   export default defineComponent({
     name: "ThemesView",
@@ -79,7 +81,8 @@ import type Fuse from 'fuse.js';
     components: {
       ThemeCard,
       BaseInput,
-      BaseCard
+      BaseCard,
+      BackButton
     },
     computed: {
       publications(): Publication[]{

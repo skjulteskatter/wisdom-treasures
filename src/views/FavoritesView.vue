@@ -1,6 +1,7 @@
 <template>
   <main>
-    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex flex-col items-center sm:items-start mb-6 sm:mb-0">
+    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex items-center sm:items-start mb-6 sm:mb-0">
+      <BackButton/>
       <h1 class="my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
         Favorites
       </h1>
@@ -18,6 +19,7 @@ import type { Article, Publication } from 'hiddentreasures-js';
 import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
+import BackButton from '@/components/BackButton.vue';
 
   export default defineComponent({
     name: "FavoriteView",
@@ -29,7 +31,8 @@ import { useSessionStore } from '@/stores/session';
       }
     },
     components: {
-      WWCard
+      WWCard,
+      BackButton,
     },
     computed: {
       storeFavorites() : string[]{

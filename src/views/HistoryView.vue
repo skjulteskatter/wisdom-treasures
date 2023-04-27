@@ -46,8 +46,8 @@
   import { useSessionStore } from '@/stores/session';
   import WWCard from '@/components/WWCard.vue';
   import { history } from '@/services/localStorage';
-import type { Article } from 'hiddentreasures-js';
-import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
+  import type { Article } from 'hiddentreasures-js';
+  import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
   
     export default defineComponent({
       name: "SearchView",
