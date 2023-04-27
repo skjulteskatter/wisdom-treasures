@@ -120,7 +120,7 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
           if (timeDiff < 60 * 1000){
             return "Just now";
           } else if (timeDiff < 60 * 60 * 1000){
-            return `${(timeDiff/1000/60).toFixed()} miuntes ago`;
+            return `${(timeDiff/1000/60).toFixed()} minutes ago`;
           } else if (timeDiff < 24 * 60 * 60 * 1000){
             return `${(timeDiff/1000/60/60).toFixed()} hours ago`;
           } else if (Date.now() - date.getTime() < 24 * 6){
