@@ -1,9 +1,12 @@
 <template>
   <main>
-    <h1 class="my-6 text-3xl font-bold">
-      {{ publication?.title ?? "" }}
-    </h1>
-    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex">
+      <BackButton/>
+      <h1 class="my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
+        {{ publication?.title ?? "" }}
+      </h1>
+    </div>
+    <div id="WWCards" class="px-5 pt-5 sm:p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
@@ -18,6 +21,7 @@ import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
 import router from '@/router';
 import { Notification } from '@/classes/notification';
+import BackButton from '@/components/BackButton.vue';
 
   export default defineComponent({
     name: "ThemeView",
@@ -29,7 +33,8 @@ import { Notification } from '@/classes/notification';
       }
     },
     components: {
-      WWCard
+      WWCard,
+      BackButton
     },
     computed: {
       storeFavorites() : string[]{
