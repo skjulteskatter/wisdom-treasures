@@ -6,7 +6,7 @@
           Welcome, 
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
             {{currentUser.displayName}}
-          </span> 
+          </span>
         </span>
         <span v-else class="font-bold"> 
           Welcome to 
@@ -16,7 +16,7 @@
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 mb-20 md:mb-20 md:grid md:grid-cols-3 grid-cols-1 md:gap-2">
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 mb-20 md:mb-20 md:grid md:grid-cols-3 grid-cols-1 md:gap-2 px-5 sm:px-0">
 
         <!-- <div class="sm:hidden absolute bottom-20 -left-20 flex -rotate-90">
           <BaseButton theme="menuButton" @click="navigate('history')">History</BaseButton>
@@ -27,10 +27,10 @@
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="hidden sm:block col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="sm:hidden col-span-2 w-80 " :customTitle="showWordOfTheDay ? ' ' : ' ' "/>
         
-      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 sm:mt-0 sm:mx-0 sm:h-full">
+      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
         <p class="text-xl">Generate new word</p>
         <template #icon>
-          <RefreshIcon class="w-8"/>
+          <RefreshIcon class="h-6"/>
         </template>
       </ThreeDButton>
     </div>
