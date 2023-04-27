@@ -1,8 +1,8 @@
 <template>
   <main>
-    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex items-center sm:items-start mb-6 sm:mb-0">
+    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex items-center sm:items-start py-6 mb-5 sm:mb-0">
       <BackButton/>
-      <h1 class="my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
+      <h1 class=" text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
         Favorites
       </h1>
     </div>
