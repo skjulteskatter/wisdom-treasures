@@ -93,7 +93,7 @@ export default defineComponent({
             focus: false as Boolean,
             searchHistory: [] as string[],
             searchHistoryHoverOver: false as Boolean,
-            placeholder: 'Search a theme...'
+            placeholder: 'Search...'
         }
     },
     props: {
