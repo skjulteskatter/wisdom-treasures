@@ -22,7 +22,7 @@
                 :type="getType"
                 class="px-2 py-3 rounded-md border-black/20 placeholder-white/90 tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
                 :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', 
-                    styleType === 'search' ? ['pl-11 pr-10 bg-white/40 border-0'] : '', 
+                    styleType === 'search' ? ['pl-11 pr-10 bg-black/10 border-0'] : '', 
                     styleType === 'password' ? 'pr-8' : '',
                     size === 'lg' ? 'text-xl' : '',]"
                 :value="modelValue"
