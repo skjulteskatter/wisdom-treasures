@@ -1,10 +1,10 @@
 <template>
   <main>
     <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex flex-col items-center sm:items-start">
-      <h1 class="mt-4 sm:my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
+      <h1 class="mt-6 sm:my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
         Themes
       </h1>
-      <BaseCard class="hidden sm:block my-4 sm:my-0 w-full">
+      <BaseCard class="hidden sm:block w-full">
           <template #header> 
               <div class="font-sans">
                   <div v-if="searchedWord" class="font-bold">
@@ -23,7 +23,7 @@
     <div v-if="searchedWord" class="font-bold mt-4 sm:hidden">
         Showing {{numberOfResults}} Results for "{{searchedWord}}"
     </div>
-    <div id="wrapper" class="flex sm:pl-0 py-5">
+    <div id="wrapper" class="flex pl-5 sm:pl-0 py-5">
       <div class="w-full">
         <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
           <div v-for="(publication, index) in searchedPublications" :key="publication.id" class="flex flex-col">

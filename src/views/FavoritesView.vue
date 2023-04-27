@@ -1,9 +1,11 @@
 <template>
   <main>
-    <h1 class="my-6 text-3xl font-bold">
-      Favorites
-    </h1>
-    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex flex-col items-center sm:items-start mb-6 sm:mb-0">
+      <h1 class="my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
+        Favorites
+      </h1>
+    </div>
+    <div id="WWCards" class="px-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true" @close-modal="refreshDataFavorites" @click="refreshDataFavorites"/>
       </div>
