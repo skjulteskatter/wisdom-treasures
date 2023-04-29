@@ -21,7 +21,7 @@
             
           </template>
         </BaseCard>
-        <WWCardModal :show="openWWModal" @close="e => {navigateBack(e); $emit('closeModal', e)}" :article="article"/>
+        <WWCardModal :show="openWWModal" @close="(e: Event | undefined) => {navigateBack(e); $emit('closeModal', e)}" :article="article"/>
     </main>
   </template>
     

@@ -11,7 +11,7 @@ onBeforeMount(async () => {
     // Get the user from firebase if it exist. Just to make sure redirects work properly
     if (auth.currentUser) return;
     await getCurrentUserPromise();
-});
+})
 
 </script>
 

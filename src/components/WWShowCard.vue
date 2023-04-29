@@ -6,7 +6,6 @@
             <div id="spacerdiv1" class="flex grow"/>
             <div class="flex max-w-2xl flex-col font-serif sm:h-auto justify-center">
                 <div class="flex self-center">
-                  <!--Using v-show instead of v-if to make smoother transition between the two-->
                   <p v-show="customTitle" class="self-center font-bold text-3xl mt-3">{{ customTitle }}</p>
                   <img v-show="!customTitle" src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
                 </div>
@@ -23,17 +22,17 @@
                 <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic">{{getSignature}}</div>
 
                 <div class="flex grow">
-                <div class="grow"/>
-
-                <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
-                <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
-                    <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
-                </BaseButton>
-
-                <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
-                    <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
-                    <HeartIcon v-else class="h-8 opacity-50 pop"/>
-                </BaseButton>
+                  <div class="grow"/>
+                  <div class="self-center">
+                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
+                    <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
+                        <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
+                    </BaseButton>
+                  </div>
+                  <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
+                      <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
+                      <HeartIcon v-else class="h-8 opacity-50 pop"/>
+                  </BaseButton>
                 </div>
 
             </div>

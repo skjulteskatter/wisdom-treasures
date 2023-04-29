@@ -1,6 +1,6 @@
 <template>
     <main>
-      <div class="flex bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none py-6">
+      <div class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none py-6">
         <BackButton />
         <h1 class="text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Manna</h1>
       </div>

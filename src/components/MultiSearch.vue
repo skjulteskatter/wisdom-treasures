@@ -213,13 +213,6 @@ export default defineComponent({
                     )
                 }
 
-                //let orFavoriteFilter = this.store.favorites.map(id => ({id : `'${id}`}));
-                //if (this.onlyFavoriteFilter){
-                //    query.$and!.push( 
-                //        {$or: orFavoriteFilter}
-                //    )
-                //}
-
                 if (query.$and?.[0] && query.$and.length == 1){
                     query = query.$and![0];
                 }

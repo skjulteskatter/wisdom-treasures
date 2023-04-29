@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex">
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex">
       <BackButton/>
       <h1 class="my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
         {{ publication?.title ?? "" }}

@@ -1,7 +1,7 @@
 <template>
   <main>
     <div>
-      <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex items-center">
+      <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center">
           <BackButton/>
           <h1 class="my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">History</h1>
       </div>

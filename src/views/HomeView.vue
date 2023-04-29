@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="flex items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full bg-(--wt-color-ui-lm-medium) fixed top-0 left-0 sm:static px-8 sm:px-0 ">
+    <div class="flex bg-white sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full bg-(--wt-color-ui-lm-medium) fixed top-0 left-0 sm:static px-8 sm:px-0 ">
       <h1 class="text-xl my-6 sm:text-3xl font-bold">
         <span v-if="currentUser" class="sm:font-bold">
           Welcome, 
@@ -16,7 +16,7 @@
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 mb-20 md:mb-20 md:grid md:grid-cols-3 grid-cols-1 md:gap-2 px-5 sm:px-0">
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 mb-0 md:mb-20 md:grid md:grid-cols-3 grid-cols-1 md:gap-2 px-5 sm:px-0">
 
         <!-- <div class="sm:hidden absolute bottom-20 -left-20 flex -rotate-90">
           <BaseButton theme="menuButton" @click="navigate('history')">History</BaseButton>
@@ -24,7 +24,7 @@
           <BaseButton theme="menuButton" @click="e => navigate('dashboard', e)">Daily word</BaseButton>
         </div> -->
 
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
+      <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
         
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
         <p class="text-xl">Generate new word</p>
@@ -33,8 +33,9 @@
         </template>
       </ThreeDButton>
     </div>
-    <div id="WWCards" class="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-      <div v-for="(article, index) in articles.slice(0,100)" :key="index" class="flex flex-col">
+    <div class="text-xl sm:text-2xl font-bold opacity-80 mt-10">Other wisdom words 👇</div>
+    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5">
+      <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
     </div>
@@ -65,6 +66,8 @@ import BaseButton from "@/components/BaseButton.vue";
         store: useSessionStore(),
         randomArticle : null as Article | null,
         showWordOfTheDay : false as boolean,
+        randomArticleList : [] as Article[],
+        shuffeledArticleKeys: [] as string[],
       }
     },
     components: {
@@ -120,8 +123,31 @@ import BaseButton from "@/components/BaseButton.vue";
     async mounted() {
       this.currentUser = await getCurrentUserPromise() as User;
       if (this.sessionInitialized) this.getAndSetWordOfTheDayArticle();
+
+      for (const key of this.store.articles.keys()) {
+          this.shuffeledArticleKeys.push(key);
+      }
+      
+      this.fillRandomArticles(20);
+
+      window.addEventListener('scroll', this.onScroll);
     },
     methods:{
+      onScroll(){
+        let bottom = window.innerHeight + window.pageYOffset == document.body.scrollHeight;
+        if (!bottom) return;
+        this.fillRandomArticles(20);
+      },
+      fillRandomArticles(paginationCount : number){
+        for (let i = 0; i < Math.min(paginationCount, this.shuffeledArticleKeys.length); i++) {
+          let randomIndex = Math.floor(Math.random() * this.shuffeledArticleKeys.length);
+          let randomArticle = (this.store.articles.get(this.shuffeledArticleKeys[randomIndex]))
+          if (randomArticle != undefined){
+            this.randomArticleList.push(randomArticle);
+            this.shuffeledArticleKeys.splice(randomIndex, 1);
+          }
+        }
+      },
       navigate(name: string, e? : Event){
 
       if (name === "register"){
