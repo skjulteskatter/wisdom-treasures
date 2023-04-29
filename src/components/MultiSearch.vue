@@ -19,7 +19,7 @@
                         <template #icon>
                             <AdjustmentsIcon class="w-5"/>
                         </template>
-                        <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
+                        <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose: any) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
                             @publication-id-array:publication-id-array="setPublicationIdFilter"
                             @contributor-id-array:contributor-id-array="setAuthorIdFilter"
                             @only-favorites:only-favorites="setFavoriteFilter"

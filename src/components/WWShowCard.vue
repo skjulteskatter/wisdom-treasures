@@ -16,22 +16,26 @@
           </div>
         </template>
         <template #footer>
-            <div class="w-full flex">
-                <div class="grow self-center flex">See more from&nbsp;
-                    <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
-                    &nbsp;category&nbsp;
-                    <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic">{{getSignature}}</div>
-                </div> 
-                <div>
-                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
-                    <BaseButton theme="menuButton" size="small" class="hidden sm:flex w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
-                        <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
-                    </BaseButton>
-                </div>
-                  <BaseButton theme="menuButton" size="small" class="hidden sm:flex w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
-                      <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
-                  <HeartIcon v-else class="h-8 opacity-50 pop"/>
+            <div class="w-full flex flex-wrap grow self-center">
+                See more from&nbsp;
+                <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
+                &nbsp;
+                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic">{{getSignature}}</div>
+
+                <div class="flex grow">
+                <div class="grow"/>
+
+                <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
+                <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
+                    <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
                 </BaseButton>
+
+                <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
+                    <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
+                    <HeartIcon v-else class="h-8 opacity-50 pop"/>
+                </BaseButton>
+                </div>
+
             </div>
         </template>
     </BaseCard>

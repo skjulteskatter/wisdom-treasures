@@ -1,5 +1,5 @@
 <template>
-    <BaseModal class="fixed w-full h-full left-0 top-0 z-40" @close="e => {$emit('close', e)}" :useBaseCard="false">
+    <BaseModal class="fixed w-full h-full left-0 top-0 z-40" @close="(e: any) => {$emit('close', e)}" :useBaseCard="false">
         <WWShowCard :article="article"></WWShowCard>
     </BaseModal>
 </template>
