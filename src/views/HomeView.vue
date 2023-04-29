@@ -39,6 +39,9 @@
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
     </div>
+    <div id="loaderDiv">
+      <Loader :loading="loadingMoreArticles" class="mt-2"/>
+    </div>
     <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
   </main>
 </template>
@@ -56,6 +59,7 @@ import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
 import BaseButton from "@/components/BaseButton.vue";
+import Loader from '@/components/Loader.vue';
 
   export default defineComponent({
     name: "HomeView",
@@ -68,6 +72,7 @@ import BaseButton from "@/components/BaseButton.vue";
         showWordOfTheDay : false as boolean,
         randomArticleList : [] as Article[],
         shuffeledArticleKeys: [] as string[],
+        loadingMoreArticles: false as boolean,
       }
     },
     components: {
@@ -75,7 +80,8 @@ import BaseButton from "@/components/BaseButton.vue";
       WWShowCard,
       ThreeDButton,
       RefreshIcon,
-      BaseButton
+      BaseButton,
+      Loader
     },
     computed: {
       articles() : Article[] {
@@ -133,10 +139,16 @@ import BaseButton from "@/components/BaseButton.vue";
       window.addEventListener('scroll', this.onScroll);
     },
     methods:{
-      onScroll(){
+      async onScroll(){
         let bottom = window.innerHeight + window.pageYOffset == document.body.scrollHeight;
         if (!bottom) return;
-        this.fillRandomArticles(20);
+        this.loadingMoreArticles = true;
+        setTimeout(() => {
+          this.fillRandomArticles(20);
+        }, 1);
+        setTimeout(() => {
+          this.loadingMoreArticles = false;
+        }, 200);
       },
       fillRandomArticles(paginationCount : number){
         for (let i = 0; i < Math.min(paginationCount, this.shuffeledArticleKeys.length); i++) {
