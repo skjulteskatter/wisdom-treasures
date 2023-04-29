@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="flex items-center shadow-md sm:shadow-none z-50 max-h-16 sm:h-auto w-full bg-(--wt-color-ui-lm-medium) fixed top-0 left-0 sm:static px-8 sm:px-0 ">
+    <div class="flex items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full bg-(--wt-color-ui-lm-medium) fixed top-0 left-0 sm:static px-8 sm:px-0 ">
       <h1 class="text-xl my-6 sm:text-3xl font-bold">
         <span v-if="currentUser" class="sm:font-bold">
           Welcome, 
@@ -24,8 +24,7 @@
           <BaseButton theme="menuButton" @click="e => navigate('dashboard', e)">Daily word</BaseButton>
         </div> -->
 
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class="hidden sm:block col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class="sm:hidden col-span-2 w-80 " :customTitle="showWordOfTheDay ? ' ' : ' ' "/>
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
         
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
         <p class="text-xl">Generate new word</p>

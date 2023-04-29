@@ -21,7 +21,7 @@
 					<HomeIcon class="w-7"/>
 				</div>
 				<div id="rightNav" class="self-center hidden gap-x-3 max-h-8 lg:flex">
-					<BaseInput v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
+					<BaseInput v-model="searchWord" placeholder="Search..." style-type="search" class="self-center" @search-action="search($event)"/>
 					<div v-if="currentUser !== null" class="flex gap-x-3 ml-2">
 						<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
 							<QuestionMarkCircleIcon class="h-6 opacity-50"/>
