@@ -16,10 +16,10 @@
                   </div>
               </div>
           </template>
-          <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)" class="hidden sm:block"/>
+          <BaseInput v-model="searchWord" style-type="search" placeholder="Search..." size="lg" @search-action="search($event)" class="hidden sm:block"/>
       </BaseCard>
 
-      <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)" :white-text="true" class="my-5 px-5 sm:hidden"/>
+      <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search..." @search-action="search($event)" :white-text="true" class="my-5 px-5 sm:hidden"/>
     </div>
     <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden">
         Showing {{numberOfResults}} Results for "{{searchedWord}}"

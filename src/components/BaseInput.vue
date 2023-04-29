@@ -12,7 +12,7 @@
             >
             <component :is="insideHUMenu ? 'MenuItem' : 'div'" as="div">
                 <div v-if="styleType == 'search'" class="w-6 absolute left-2.5 -top-[11px] cursor-pointer z-40" @click="(_event: any) => search()">
-                    <SearchIcon :class="whiteText === true ? 'text-white/90' : ''"/>
+                    <SearchIcon :class="whiteText === true ? 'text-white/90' : 'opacity-40'"/>
                 </div>
             </component>
             <input
@@ -20,7 +20,7 @@
                 @focusout="focus = false"
                 @keyup.enter ="(_event: any) => search()"
                 :type="getType"
-                class="px-2 py-3 rounded-md border-black/20 tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
+                class="px-2 rounded-md border-black/20 tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
                 :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', 
                     styleType === 'search' ? ['pl-11 pr-10 bg-black/10 border-0'] : '', 
                     styleType === 'password' ? 'pr-8' : '',

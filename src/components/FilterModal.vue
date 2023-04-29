@@ -1,6 +1,6 @@
 <template>
     <BaseModal :show="true" class="fixed w-full h-full left-0 top-0 z-40" @close="closeWithReturnArrays">
-        <div id="authors" class="h-96 overflow-y-scroll">
+        <div id="authors" class="h-60 overflow-y-scroll">
             <div v-for="(author, index) in allAuthors" :key="index" class="flex">
                 <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
                     <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="()=>{if (!initialAuthorIds.includes(author.id)){authorCheckBoxArray[index] = false}}"/>
@@ -8,7 +8,7 @@
                 </label>
             </div>
         </div>
-        <div id="publications" class="h-96 overflow-y-scroll">
+        <div id="publications" class="h-60 overflow-y-scroll">
             <div v-for="(publication, index) in allPublications" :key="index" class="flex">
                 <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
                     <BaseCheckbox v-model="publicationCheckBoxArray[index]" @vnode-mounted="()=>{if (!initialPublicationIds.includes(publication.id)){publicationCheckBoxArray[index] = false}}"/>
@@ -22,6 +22,12 @@
                 Favorite
             </label>
         </div>
+        <BaseButton @click="closeWithReturnArrays" class="w-full mt-2">
+            Search
+            <template #icon>
+              <SearchIcon class="h-5"></SearchIcon>
+            </template>
+        </BaseButton>
     </BaseModal>
 </template>
 
@@ -32,12 +38,16 @@ import BaseCheckbox from "./BaseCheckbox.vue";
 import { defineComponent } from "vue";
 import type { Contributor, Publication } from "hiddentreasures-js";
 import { useSessionStore } from "@/stores/session";
+import BaseButton from "./BaseButton.vue";
+import { SearchIcon } from "@heroicons/vue/solid";
 
 export default defineComponent({
     name: "filter-modal",
     components: {
     BaseModal,
-    BaseCheckbox
+    BaseCheckbox,
+    BaseButton,
+    SearchIcon
 },
     data: () => ({
         store: useSessionStore(),

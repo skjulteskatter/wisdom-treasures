@@ -11,8 +11,8 @@
 					</div>
 				</div>
 				<div id="middleNav" class="sm:flex self-center hidden grow place-content-left gap-x-3 max-h-8 pl-6">
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" @click="e => navigate('dashboard', e)">Home</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" @click="e => navigate('favorites', e)">Favorites</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" @click="(e: Event | undefined) => navigate('dashboard', e)">Home</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" @click="navigate('themes')">Themes</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>

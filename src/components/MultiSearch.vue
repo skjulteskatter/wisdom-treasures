@@ -50,7 +50,7 @@
                             </BaseButton>
                         </div>
 
-                        <div v-if="publicationIdFilter.length > 0" class="flex items-center rounded-md w-min bg-black/10">
+                        <div v-if="publicationIdFilter.length + authorIdFilter.length > 0" class="flex items-center rounded-md w-min bg-black/10">
                             <BaseButton theme="menuButton" class="self-center max-h-7" @click="()=>{publicationIdFilter = []; authorIdFilter = []; onlyFavoriteFilter = false; search(undefined)}">
                                 <p class="w-max pl-2 pr-1 defaultFontSize">Reset all</p>
                             </BaseButton>
