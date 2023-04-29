@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="bg-[#3D6E7C] sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
       <div class="flex items-center mt-6 sm:my-6">
         <BackButton/>
         <h1 class="text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Themes</h1>
@@ -16,10 +16,10 @@
                   </div>
               </div>
           </template>
-          <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)"/>
+          <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)" class="hidden sm:block"/>
       </BaseCard>
 
-      <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)" class="my-5 px-5 sm:hidden"/>
+      <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)" :white-text="true" class="my-5 px-5 sm:hidden"/>
     </div>
     <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden">
         Showing {{numberOfResults}} Results for "{{searchedWord}}"
