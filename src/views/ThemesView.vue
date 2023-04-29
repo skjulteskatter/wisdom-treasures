@@ -87,7 +87,7 @@ import BackButton from '@/components/BackButton.vue';
     computed: {
       publications(): Publication[]{
         let pubs : Publication[] = Array.from(this.store.publications.values());
-        pubs.sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), this.store.locale));
+        pubs.sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), "no"));
 
         //If the publications refs is not indexed
         if (this.idLookUp.size <= 0){
@@ -108,7 +108,7 @@ import BackButton from '@/components/BackButton.vue';
           pubs = this.publications;
         } else {
           const result = this.fusePublications?.search(this.searchedWord);
-          pubs = result.map(x => x.item).sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), this.store.locale));
+          pubs = result.map(x => x.item).sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), "no"));
         }
         
         return pubs;
@@ -130,7 +130,7 @@ import BackButton from '@/components/BackButton.vue';
           if (alphabet.includes(firstLetter)) continue;
           alphabet.push(this.getFirstLetter(publication));
         }
-        return alphabet.sort((a,b) => a.localeCompare(b, this.store.locale));
+        return alphabet.sort((a,b) => a.localeCompare(b, "no"));
       }
     },
     watch: {
