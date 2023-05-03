@@ -6,7 +6,7 @@
 				<div id="leftNav" class="self-center flex gap-x-3">
 					<img class="h-8 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('dashboard')"/>
 					<div class="flex sm:hidden self-center place-content-center cursor-pointer">
-						<SearchIcon class="w-7" @click="showSearchModal = true"/>
+						<SearchIcon class="w-6 text-[color:var(--wt-color-text-grey)]" @click="showSearchModal = true"/>
 						<SearchModal :show="showSearchModal" v-model="searchWord" @search-action="{showSearchModal = false; search($event)}" @close="showSearchModal = false"/>
 					</div>
 				</div>
@@ -18,7 +18,7 @@
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
 				</div>
 				<div class="flex sm:hidden self-center place-content-center cursor-pointer" @click="navigate('dashboard')">
-					<HomeIcon class="w-7"/>
+					<HomeIcon class="w-6 text-[color:var(--wt-color-text-grey)]"/>
 				</div>
 				<div id="rightNav" class="self-center hidden gap-x-3 max-h-8 lg:flex">
 					<BaseInput v-model="searchWord" placeholder="Search..." style-type="search" class="self-center" @search-action="search($event)"/>
@@ -39,7 +39,7 @@
 				<div id="rightNavBurger" class="self-center flex gap-x-3 max-h-8 lg:hidden z-20">
 					<HUMenu as="div" class="self-center flex">
 						<MenuButton class="self-center">
-							<MenuIcon class="w-7"/>
+							<MenuIcon class="w-6 text-[color:var(--wt-color-text-grey)]"/>
 						</MenuButton>
 
 						<transition

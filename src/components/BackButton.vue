@@ -1,10 +1,7 @@
 <template>
     <BaseButton theme="menuButton" @click="navigateBack">
-        <!-- <template #default>
-            <div class="text-lg">Back</div>
-        </template> -->
         <template #firstIcon>
-            <ArrowLeftIcon class="h-5 text-white sm:text-inherit"/>
+            <ArrowLeftIcon class="h-4 text-white sm:text-inherit"/>
         </template>
     </BaseButton>
 </template>

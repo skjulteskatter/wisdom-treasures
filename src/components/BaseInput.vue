@@ -12,7 +12,7 @@
             >
             <component :is="insideHUMenu ? 'MenuItem' : 'div'" as="div">
                 <div v-if="styleType == 'search'" class="w-6 absolute left-2.5 -top-[11px] cursor-pointer z-40" @click="(_event: any) => search()">
-                    <SearchIcon :class="whiteText === true ? 'text-white/90' : 'opacity-40'"/>
+                    <SearchIcon :class="whiteText === true ? 'text-white/60' : 'opacity-40'"/>
                 </div>
             </component>
             <input
@@ -20,11 +20,11 @@
                 @focusout="focus = false"
                 @keyup.enter ="(_event: any) => search()"
                 :type="getType"
-                class="px-2 rounded-md border-black/20 tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
-                :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', 
-                    styleType === 'search' ? ['pl-11 pr-10 bg-black/10 border-0'] : '', 
+                class="px-2 rounded-md border-black/20 tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full placeholder:text-base"
+                :class="[error ? 'focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', 
+                    styleType === 'search' ? ['pl-11 pr-10 bg-black/10 border-0'] : '',
                     styleType === 'password' ? 'pr-8' : '',
-                    whiteText === true ? 'text-white placeholder-white/90' : '',
+                    whiteText === true ? 'text-white placeholder-white/90 bg-white/40' : '',
                     size === 'lg' ? 'text-xl' : '',]"
                 :value="modelValue"
                 :disabled="disabled"
@@ -42,7 +42,7 @@
                 class="w-5 absolute -left-7 -top-[10px] cursor-pointer opacity-40" 
                 @click="(_event: any) => $emit('update:modelValue', '')"
                 >
-                    <XIcon/>
+                    <XIcon class="text-white"/>
                 </div>
             </div>
         </div>
@@ -195,5 +195,4 @@ export default defineComponent({
 .glassDropDown > div {
 	background: rgba(255, 255, 255, 0.8);
 }
-
 </style>

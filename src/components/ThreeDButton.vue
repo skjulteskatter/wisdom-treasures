@@ -5,10 +5,10 @@
                 <slot/>
             </template>
             <template v-if="$slots.icon" #firstIcon>
-                <slot name="firstIcon" class="h-4"/>
+                <slot name="firstIcon"/>
             </template>
             <template v-if="$slots.icon" #icon>
-                <slot name="icon" class="h-4"/>
+                <slot name="icon"/>
             </template>
         </BaseButton>
         <div id="buttonBackground" class="overflow-hidden bg-primary brightness-50 w-[calc(100%-2px)] h-[calc(100%-4px)] ml-[1px] mt-1 absolute rounded-md top-0"/>

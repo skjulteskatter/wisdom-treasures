@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="flex bg-white sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full bg-(--wt-color-ui-lm-medium) fixed top-0 left-0 sm:static px-8 sm:px-0 ">
+    <div class="flex bg-white sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full fixed top-0 left-0 sm:static px-8 sm:px-0 ">
       <h1 class="text-xl my-6 sm:text-3xl font-bold">
         <span v-if="currentUser" class="sm:font-bold">
           Welcome, 
@@ -12,7 +12,7 @@
           Welcome to 
           <span class="animated-gradient font-bold">
             WisdomTreasures
-          </span> 
+          </span>
         </span>
       </h1>
     </div>

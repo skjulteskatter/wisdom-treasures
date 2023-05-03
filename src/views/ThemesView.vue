@@ -1,9 +1,10 @@
 <template>
   <main>
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
-      <div class="flex items-center mt-6 sm:my-6">
+      <div class="flex items-center mt-4 sm:my-6 justify-between">
         <BackButton/>
-        <h1 class="text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Themes</h1>
+        <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Themes</h1>
+        <BackButton class="opacity-0"/>
       </div>
       <BaseCard class="hidden sm:block w-full">
           <template #header> 
@@ -16,17 +17,17 @@
                   </div>
               </div>
           </template>
-          <BaseInput v-model="searchWord" style-type="search" placeholder="Search..." size="lg" @search-action="search($event)" class="hidden sm:block"/>
+          <BaseInput v-model="searchWord" style-type="search" placeholder="Search theme..." size="lg" @search-action="search($event)" class="hidden sm:block"/>
       </BaseCard>
 
-      <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search..." @search-action="search($event)" :white-text="true" class="my-5 px-5 sm:hidden"/>
+      <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search theme..." @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>
     </div>
-    <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden">
-        Showing {{numberOfResults}} Results for "{{searchedWord}}"
+    <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden text-[color:var(--wt-color-text-grey)]">
+        Showing {{numberOfResults}} results for "{{searchedWord}}"
     </div>
-    <div id="wrapper" class="flex pl-5 sm:pl-0 py-5">
+    <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5" :class="{ 'pr-5':searchWord }"> <!-- oops that's not an optimal solution -->
       <div class="w-full">
-        <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+        <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
           <div v-for="(publication, index) in searchedPublications" :key="publication.id" class="flex flex-col">
             <ThemeCard :publication="publication" class="grow" 
               :strech-y="true"/>
@@ -37,7 +38,7 @@
         </div>
       </div>
       <div id="alphabetslider" v-if="searchedWord.trim().length <= 0">
-        <div class="w-10 flex flex-col sticky top-16 items-center font-bold opacity-50"
+        <div class="w-10 flex flex-col sticky top-16 items-center font-bold opacity-30"
           @mousedown="mouseDownOverAlphabet = true"
           @mouseup="()=> {mouseDownOverAlphabet = false; mouseOverAlphabet = '';}" 
           @mouseleave="()=> {mouseDownOverAlphabet = false; mouseOverAlphabet = '';}">
