@@ -1,12 +1,13 @@
 <template>
   <main>
-    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex">
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
       <BackButton/>
-      <h1 class="my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
+      <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
         {{ publication?.title ?? "" }}
       </h1>
+      <BackButton class="opacity-0"/>
     </div>
-    <div id="WWCards" class="px-5 pt-5 sm:p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div id="WWCards" class="px-5 pt-5 sm:p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
       <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>

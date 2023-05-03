@@ -12,9 +12,9 @@
             <slot name="footer" v-if="$slots.footer"></slot>
             <div v-else class="flex">
               <div class="self-center mr-2">
-                  <BookOpenIcon class="h-6 opacity-40"/>
+                  <BookOpenIcon class="h-5 opacity-40"/>
               </div>
-              <div class="self-center opacity-50">
+              <div class="text-xs self-center opacity-50">
                 {{categoryName}}
               </div>
             </div>
