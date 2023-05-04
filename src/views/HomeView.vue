@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div class="flex bg-white sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full fixed top-0 left-0 sm:static px-8 sm:px-0 ">
-      <h1 class="text-base my-4 sm:text-3xl font-bold">
+    <div class="flex bg-white sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full fixed top-0 left-0 sm:static px-6 sm:px-0 ">
+      <h1 class="text-base my-4 sm:text-xl font-bold">
         <span v-if="currentUser" class="sm:font-bold">
           Welcome, 
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
@@ -33,7 +33,7 @@
         </template>
       </ThreeDButton>
     </div>
-    <div class="text-xl sm:text-2xl font-bold opacity-80 mt-10 mx-5 sm:mx-0">Other wisdom words</div>
+    <div class="text-xl sm:text-2xl font-bold text-[color:var(--wt-color-text-grey)] mt-10 mx-5 sm:mx-0">Other wisdom words</div>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
       <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>

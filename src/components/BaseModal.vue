@@ -26,12 +26,12 @@
                 >
                 <div class="fixed w-full flex flex-col h-full">
                     <div id="clickOutsideDetector" class="fixed w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20" @click="e => $emit('close', e)"/>
-                    <div class="grow basis-0">
-                        <BaseButton theme="menuButton" size="small" class="m-4 w-10 max-h-10 block sm:hidden z-30" @click="e => $emit('close', e)">
-                            <ArrowLeftIcon class="h-10 grayscale brightness-[3.5]"/>
+                    <div class="grow basis-0" :class="forSearchModal === true ? 'hidden' : ''">
+                        <BaseButton theme="menuButton" size="small" class="m-4 w-10 max-h-10 block sm:hidden z-30"  @click="e => $emit('close', e)">
+                            <ArrowLeftIcon class="h-8 grayscale brightness-[3.5]"/>
                         </BaseButton>
                     </div>
-                    <BaseCard v-if="useBaseCard" class="w-11/12 md:w-auto self-center z-30">
+                    <BaseCard v-if="useBaseCard" class="md:w-auto self-center z-30" :forBaseModal="true" :class="forSearchModal === true ? 'absolute top-0 left-0 w-full rounded-none bg-primary text-white ' : 'w-11/12'">
                         <template #header v-if="$slots.title || $slots.description || $slots.icon">
                             <div class="flex flex-col sm:flex-row gap-4">
                                 <slot name="icon"/>
@@ -105,6 +105,10 @@ export default defineComponent({
             type: Boolean,
             default: true,
         },
+        forSearchModal: {
+            type: Boolean,
+            default: false
+        }
     },
     emits: ["close"],
     computed: {

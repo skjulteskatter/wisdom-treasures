@@ -1,14 +1,16 @@
 <template>
-    <BaseModal :show="true" class="fixed w-full h-full left-0 top-0 z-40" @close="() => $emit('close')">
-        <template #title> 
-            <div class="flex">
-                <p class="grow">Search</p>
+    <BaseModal :show="true" :forSearchModal="true" class="fixed w-full h-full left-0 top-0 z-40" @close="() => $emit('close')">
+        <template #title class="w-full h-full"> 
+            <!-- why doesn't it wooooooooork... items-center -->
+            <div class="flex justify-between items-center w-full h-full">
+                <BackButton/>
+                <h1 class="font-bold mt-4 tracking-wide text-base self-center">Search</h1>
                 <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8" @click="() => $emit('close')">
-					<XIcon class="h-8 opacity-50"/>
+					<XIcon class="h-5 text-white"/>
 				</BaseButton>
             </div>
         </template>
-            <BaseInput v-model="unusedModelValue" style-type="search" size="lg"
+            <BaseInput v-model="unusedModelValue" placeholder="Search..." :white-text="true" style-type="search" size="lg"
             @search-action="(_event: any) => $emit('searchAction', modelValue)"
             @input="(event: any) => $emit('update:modelValue', event.target?.value ?? '')"/>
     </BaseModal>
@@ -18,7 +20,7 @@
 
 import BaseModal from "./BaseModal.vue"
 import BaseInput from "./BaseInput.vue"
-
+import BackButton from '@/components/BackButton.vue';
 import { defineComponent } from "vue";
 import { XIcon } from "@heroicons/vue/solid";
 import BaseButton from "./BaseButton.vue";
@@ -30,6 +32,7 @@ export default defineComponent({
         BaseInput,
         XIcon,
         BaseButton,
+        BackButton
     },
     data: () => ({
         searchWord: "" as string,

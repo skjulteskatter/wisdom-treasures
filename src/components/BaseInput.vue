@@ -3,7 +3,7 @@
         <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '', $slots.default || $slots.secondary ? 'mb-2' : '']">
             <slot name="default" class="block tracking-wide"></slot>
             <slot name="secondary" class="block tracking-wide"></slot>
-        </div> 
+        </div>
         <div 
             class="flex items-center w-full"
             :class="[error ? 'shake' : '']"
