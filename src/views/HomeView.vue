@@ -1,7 +1,7 @@
 <template>
   <main>
     <div class="flex bg-white sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full fixed top-0 left-0 sm:static px-8 sm:px-0 ">
-      <h1 class="text-xl my-6 sm:text-3xl font-bold">
+      <h1 class="text-base my-4 sm:text-3xl font-bold">
         <span v-if="currentUser" class="sm:font-bold">
           Welcome, 
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
@@ -27,14 +27,14 @@
       <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
         
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
-        <p class="text-xl">Generate new word</p>
+        <p class="text-base">Generate new word</p>
         <template #icon>
-          <RefreshIcon class="h-6"/>
+          <RefreshIcon class="h-5"/>
         </template>
       </ThreeDButton>
     </div>
-    <div class="text-xl sm:text-2xl font-bold opacity-80 mt-10">Other wisdom words 👇</div>
-    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5">
+    <div class="text-xl sm:text-2xl font-bold opacity-80 mt-10 mx-5 sm:mx-0">Other wisdom words</div>
+    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
       <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>

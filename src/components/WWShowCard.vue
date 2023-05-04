@@ -6,7 +6,7 @@
             <div id="spacerdiv1" class="flex grow"/>
             <div class="flex max-w-2xl flex-col font-serif sm:h-auto justify-center">
                 <div class="flex self-center">
-                  <p v-show="customTitle" class="self-center font-bold text-3xl mt-3">{{ customTitle }}</p>
+                  <p v-show="customTitle" class="self-center font-bold text-xl mt-3">{{ customTitle }}</p>
                   <img v-show="!customTitle" src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
                 </div>
                 <div class="sm:grow m-5" v-html="articleContent"/>
@@ -15,7 +15,7 @@
           </div>
         </template>
         <template #footer>
-            <div class="w-full flex flex-wrap grow self-center">
+            <div class="w-full flex flex-wrap grow self-center text-xs text-[color:var(--wt-color-text-grey)]">
                 See more from&nbsp;
                 <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
                 &nbsp;
