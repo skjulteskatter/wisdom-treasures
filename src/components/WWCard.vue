@@ -14,7 +14,7 @@
               <div class="self-center mr-2">
                   <BookOpenIcon class="h-5 opacity-40"/>
               </div>
-              <div class="text-xs self-center opacity-50">
+              <div class="text-xs self-center opacity-50 truncate w-4/5">
                 {{categoryName}}
               </div>
             </div>
