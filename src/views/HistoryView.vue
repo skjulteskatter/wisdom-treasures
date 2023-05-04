@@ -1,25 +1,26 @@
 <template>
   <main>
     <div>
-      <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center">
+      <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
           <BackButton/>
-          <h1 class="my-6 text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">History</h1>
+          <h1 class="my-4 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">History</h1>
+          <BackButton class="opacity-0"/>
       </div>
       <div class="flex mx-5 sm:mx-0 mt-5 sm:mt-0">
         <div class="grow"/>
         <div class="flex flex-col">
           <div v-for="(value, key) in periods" :key="key">
             <div id="wrapperDiv" :class="{'hidden' : loadPeriodName[key] !== true}">
-              <div class="text-xl sm:text-2xl font-bold opacity-80">{{key}}</div>
+              <div class="text-base sm:text-2xl font-bold opacity-80">{{key}}</div>
               <div class="border-l-2 pl-4 ml-2 my-6 border-[#BB9758]/50">
                 <div class="" v-for="article in getArticlesFromDays(value, key.toString())" :key="article.id">
                   <WWCard :article="article" class="my-2 sm:max-w-lg">
                     <template #footer>
                       <div class="flex">
                         <div class="self-center mr-2">
-                          <ClockIcon class="h-6 opacity-40"/>
+                          <ClockIcon class="h-5 opacity-40"/>
                         </div>
-                        <div class="self-center opacity-50">{{getStringFromDate(historyIds.find(x => x.id == article.id)?.lastViewed ?? new Date)}}</div>
+                        <div class="self-center opacity-50 text-xs">{{getStringFromDate(historyIds.find(x => x.id == article.id)?.lastViewed ?? new Date)}}</div>
                       </div>
                     </template>
                   </WWCard>
