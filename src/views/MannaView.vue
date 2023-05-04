@@ -1,8 +1,9 @@
 <template>
     <main>
-      <div class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none py-6">
+      <div class="flex items-center justify-between bg-primary sm:bg-transparent shadow-md sm:shadow-none py-4">
         <BackButton />
-        <h1 class="text-2xl sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Manna</h1>
+        <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Manna</h1>
+        <BackButton class="opacity-0"/>
       </div>
       <Loader :loading="store.mannaHistory.length <= 0">
         <div class="w-full px-5">
@@ -16,8 +17,8 @@
             </ThreeDButton>
           </div>
           <div v-if="mannaHistory.length > 0" id="wrapperDiv" class="my-6 mx-4">
-            <p class="text-2xl font-bold">History</p>
-            <div class="border-l-2 pl-4 my-3 border-black/50">
+            <p class="text-base sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">History</p>
+            <div class="border-l-2 pl-4 my-3 border-[color:var(--wt-color-secondary-light)]">
               <div class="" v-for="manna in mannaHistory" :key="manna.reference">
                 <MannaShowCard v-if="manna != null" :manna="manna" class="my-2"></MannaShowCard>
               </div>

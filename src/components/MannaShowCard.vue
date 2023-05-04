@@ -3,7 +3,7 @@
       <BaseCard :loading="loading">
         <template #footer>
             <div class="w-full flex">
-                <div class="grow self-center" v-html="mannaCopyRightHTML"/> 
+                <div class="grow self-center text-xs text-[color:var(--wt-color-text-grey)]" v-html="mannaCopyRightHTML"/> 
                 <div class="self-center">
                     <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
                     <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
@@ -17,7 +17,7 @@
             <div id="spacerdiv1" class="flex grow"/>
             <div class="flex max-w-2xl flex-col font-serif">
                 <div class="flex self-center">
-                  <p class="self-center font-bold text-3xl mt-3">{{ manna.reference }}</p>
+                  <p class="self-center font-bold text-xl mt-3">{{ manna.reference }}</p>
                 </div>
                 <div class="grow m-5">{{ mannaContent }} </div>
             </div>
