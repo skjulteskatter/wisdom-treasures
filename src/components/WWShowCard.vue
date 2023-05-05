@@ -20,7 +20,7 @@
                 <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
                 &nbsp;
                 <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic">{{getSignature}}</div>
-
+<!-- to trzeba zmienić -->
                 <div class="flex grow">
                   <div class="grow"/>
                   <div class="self-center">
