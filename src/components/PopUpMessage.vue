@@ -3,7 +3,7 @@
 		<TransitionRoot
 			:show="open"
 			as="div"
-			class='mb-2 absolute bottom-full px-2 py-1 -left-1/2 -translate-x-1/2 rounded-md shadow z-10 border-2 bg-white border-secondary'
+			class='mb-2 absolute bottom-full px-2 py-1 -left-1/2 -translate-x-1/2 rounded-md shadow z-10 border-2 bg-white border-secondary text-base'
 			enter="transition duration-100 ease-out"
 			enter-from="opacity-0 translate-y-1"
 			enter-to="opacity-100 translate-y-0"

@@ -1,6 +1,6 @@
 <template>
     
-    <div class="rounded-lg shadow-md flex flex-col" :class="[glass ? 'glass bg-white/50' : 'bg-white']">
+    <div class="rounded-lg shadow-md flex flex-col" :class="[glass ? 'glass bg-white/50' : 'bg-white/80']">
         <Loader :loading="loading" class="glassDropDown absolute z-50 overflow-hidden rounded-lg"></Loader>
         <div class=" " :class="forBaseModal === true ? 'p-0' : 'px-4 py-3 font-serif text-2xl border-b border-black/10'" v-if="$slots.header">
             <slot name="header" />

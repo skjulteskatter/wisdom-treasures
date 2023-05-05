@@ -1,6 +1,6 @@
 <template>
     <main>
-      <BaseCard :class="[WWCardHomeView ? 'h-70vh flex flex-col justify-between' : '']">
+      <BaseCard :class="[WWCardHomeView ? 'h-68vh flex flex-col justify-between' : '']">
         <template #header class="">
           <div class="flex">
                   <div class="grow"/>
@@ -25,8 +25,8 @@
                   <img v-show="!customTitle" src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
                 </div> -->
         
-                <div class="font-serif sm:grow m-5 leading-7" v-html="articleContent"/>
-                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic text-sm ml-5 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">{{getSignature}}</div>
+                <div class="font-serif sm:grow m-5 leading-6 text-sm" v-html="articleContent"/>
+                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic text-xs ml-5 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">{{getSignature}}</div>
             </div>
           </div>
         </template>
@@ -163,12 +163,12 @@
     });
   </script>
 <style>
-.h-70vh{
-  height:70vh;
+.h-68vh{
+  min-height:68vh;
 }
 @media(min-width:640px){
   .h-70vh{
-    height:auto;
+    min-height:auto;
   }
 }
 </style>

@@ -1,7 +1,7 @@
 <template>
   <main>
-    <div class="flex bg-white sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full fixed top-0 left-0 sm:static px-6 sm:px-0 ">
-      <h1 class="text-base my-4 sm:text-xl font-bold">
+    <div class="flex bg-var(--wt-c-white-soft) sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full fixed top-0 left-0 sm:static px-6 sm:px-0 ">
+      <h1 class="text-base my-4 sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
         <span v-if="currentUser" class="sm:font-bold">
           Welcome, 
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
@@ -16,22 +16,24 @@
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 mb-0 md:mb-20 md:grid md:grid-cols-3 grid-cols-1 md:gap-2 px-5 sm:px-0">
-
-        <!-- <div class="sm:hidden absolute bottom-20 -left-20 flex -rotate-90">
-          <BaseButton theme="menuButton" @click="navigate('history')">History</BaseButton>
-          <BaseButton theme="menuButton" @click="e => navigate('favorites', e)">Favorites</BaseButton>
-          <BaseButton theme="menuButton" @click="e => navigate('dashboard', e)">Daily word</BaseButton>
-        </div> -->
-
-      <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2" :WWCardHomeView="true" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-11vh mb-0 md:mb-20 md:grid md:grid-cols-3 grid-cols-1 md:gap-2.5 px-5 sm:px-0">
+      <div class="flex">
+        <div class="sm:hidden flex flex-col w-1/2 justify-between -ml-12 mt-12 mb-28">
+          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-22vh" @click="e => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-2/3 h-1/3"></div></p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="e => navigate('favorites', e)">Favorites</p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="navigate('history')">History</p>
+        </div>
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2 w-4/5 -ml-8 sm:w-full sm:m-0 sm:flex-grow" :WWCardHomeView="true" />
+      </div>
         
-      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
+      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-5vh flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
         <p class="text-base">Generate new word</p>
         <template #icon>
           <RefreshIcon class="h-5"/>
         </template>
       </ThreeDButton>
+
+      <div class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-7vh left-0 -z-50 rounded-t-4xl"></div>
     </div>
     <div class="text-xl sm:text-2xl font-bold text-[color:var(--wt-color-text-grey)] mt-10 mx-5 sm:mx-0">Other wisdom words</div>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
@@ -212,5 +214,24 @@ import Loader from '@/components/Loader.vue';
 <style>
 .h-80vh{
   height: 80vh
+}
+.tracking-075{
+  letter-spacing:0.075em
+}
+.mt-5vh{
+  margin-top:5vh
+}
+.mt-11vh{
+  margin-top:11vh
+}
+.w-22vh{
+  width:22vh
+}
+.bottom-7vh{
+  bottom:7vh
+}
+.rounded-t-4xl{
+  border-top-left-radius: 2.5rem; /* 40px */
+  border-top-right-radius: 2.5rem; /* 40px */ 
 }
 </style>
