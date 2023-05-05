@@ -24,7 +24,7 @@
           <BaseButton theme="menuButton" @click="e => navigate('dashboard', e)">Daily word</BaseButton>
         </div> -->
 
-      <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
+      <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2" :WWCardHomeView="true" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
         
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
         <p class="text-base">Generate new word</p>

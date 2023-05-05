@@ -1,6 +1,6 @@
 <template>
     <main>
-        <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${currentPath}${article.number}`})}"
+        <BaseCard :WWCard="true" class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${currentPath}${article.number}`})}"
           :class="[{'h-full': strechY}]">
           <template #default>
             <slot name="default" v-if="$slots.default" />

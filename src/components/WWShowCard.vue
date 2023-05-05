@@ -1,24 +1,23 @@
 <template>
     <main>
-      <BaseCard>
-        <template #default>  
-          <div class="flex flex-col">
-                <div class="flex grow">
+      <BaseCard :class="[WWCardHomeView ? 'h-70vh flex flex-col justify-between' : '']">
+        <template #header class="">
+          <div class="flex">
                   <div class="grow"/>
                   <div class="self-center">
                     <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
-                    <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
+                    <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2 opacity-70" @click="() => {copyToClipBoard()}">
                         <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
                     </BaseButton>
                   </div>
-                  <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
-                      <HeartIconSolid v-if="favorite" class="h-8 text-[color:var(--wt-color-secondary-light)] pop"/>
-                      <HeartIcon v-else class="h-8 text-[color:var(--wt-color-secondary-light)] pop"/>
+                  <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2 opacity-70" @click="() => {favoriteButton()}">
+                      <HeartIconSolid v-if="favorite" class="h-8 text-[color:var(--wt-color-secondary)] pop"/>
+                      <HeartIcon v-else class="h-8 text-[color:var(--wt-color-secondary)] pop"/>
                   </BaseButton>
                 </div>
-
-            <!-- <div id="spacerdiv1" class="flex grow"/> -->
-            
+        </template>
+        <template #default>
+          <div class="flex flex-col h-full">
             <div class="flex max-w-2xl flex-col sm:h-auto justify-center md:text-center">
 
                 <!-- <div class="flex self-center">
@@ -26,16 +25,13 @@
                   <img v-show="!customTitle" src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
                 </div> -->
         
-                <div class="font-serif sm:grow m-5" v-html="articleContent"/>
-                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic text-sm ml-5 mb-2 text-[color:var(--wt-color-text-grey)]">{{getSignature}}</div>
-
+                <div class="font-serif sm:grow m-5 leading-7" v-html="articleContent"/>
+                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic text-sm ml-5 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">{{getSignature}}</div>
             </div>
-
-            <!-- <div id="spacerdiv2" class="flex grow"/> -->
           </div>
         </template>
         <template #footer>
-            <div class="w-full flex flex-wrap grow self-center justify-center text-xs text-[color:var(--wt-color-text-grey)] py-2">
+            <div class="w-full flex flex-wrap self-center justify-center text-xs text-[color:var(--wt-color-text-grey)] py-2 opacity-70 tracking-wide">
                 See more from&nbsp;
                 <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
                 &nbsp;             
@@ -80,6 +76,10 @@
             type: String,
             required: false,
         },
+        WWCardHomeView: {
+            type: Boolean,
+            deafult: false,
+        }
       },
       components: {
         BaseCard,
@@ -162,3 +162,13 @@
       },
     });
   </script>
+<style>
+.h-70vh{
+  height:70vh;
+}
+@media(min-width:640px){
+  .h-70vh{
+    height:auto;
+  }
+}
+</style>
