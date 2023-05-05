@@ -23,7 +23,7 @@
           <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="e => navigate('favorites', e)">Favorites</p>
           <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="navigate('history')">History</p>
         </div>
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2 w-4/5 -ml-8 sm:w-full sm:m-0 sm:flex-grow" :WWCardHomeView="true" />
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2 w-4/5 -ml-8 sm:w-full sm:m-0" :WWCardHomeView="true" />
       </div>
         
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-5vh flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
