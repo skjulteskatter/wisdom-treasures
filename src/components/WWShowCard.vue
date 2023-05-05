@@ -2,25 +2,7 @@
     <main>
       <BaseCard>
         <template #default>  
-          <div class="flex">
-            <div id="spacerdiv1" class="flex grow"/>
-            <div class="flex max-w-2xl flex-col font-serif sm:h-auto justify-center">
-                <div class="flex self-center">
-                  <p v-show="customTitle" class="self-center font-bold text-xl mt-3">{{ customTitle }}</p>
-                  <img v-show="!customTitle" src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
-                </div>
-                <div class="sm:grow m-5" v-html="articleContent"/>
-            </div>
-            <div id="spacerdiv2" class="flex grow"/>
-          </div>
-        </template>
-        <template #footer>
-            <div class="w-full flex flex-wrap grow self-center text-xs text-[color:var(--wt-color-text-grey)]">
-                See more from&nbsp;
-                <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
-                &nbsp;
-                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic">{{getSignature}}</div>
-<!-- to trzeba zmienić -->
+          <div class="flex flex-col">
                 <div class="flex grow">
                   <div class="grow"/>
                   <div class="self-center">
@@ -30,10 +12,33 @@
                     </BaseButton>
                   </div>
                   <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
-                      <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
-                      <HeartIcon v-else class="h-8 opacity-50 pop"/>
+                      <HeartIconSolid v-if="favorite" class="h-8 text-[color:var(--wt-color-secondary-light)] pop"/>
+                      <HeartIcon v-else class="h-8 text-[color:var(--wt-color-secondary-light)] pop"/>
                   </BaseButton>
                 </div>
+
+            <!-- <div id="spacerdiv1" class="flex grow"/> -->
+            
+            <div class="flex max-w-2xl flex-col sm:h-auto justify-center md:text-center">
+
+                <!-- <div class="flex self-center">
+                  <p v-show="customTitle" class="self-center font-bold text-xl mt-3">{{ customTitle }}</p>
+                  <img v-show="!customTitle" src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
+                </div> -->
+        
+                <div class="font-serif sm:grow m-5" v-html="articleContent"/>
+                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic text-sm ml-5 mb-2 text-[color:var(--wt-color-text-grey)]">{{getSignature}}</div>
+
+            </div>
+
+            <!-- <div id="spacerdiv2" class="flex grow"/> -->
+          </div>
+        </template>
+        <template #footer>
+            <div class="w-full flex flex-wrap grow self-center justify-center text-xs text-[color:var(--wt-color-text-grey)] py-2">
+                See more from&nbsp;
+                <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
+                &nbsp;             
 
             </div>
         </template>
