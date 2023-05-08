@@ -1,11 +1,10 @@
 <template>
     <BaseModal :show="true" :forSearchModal="true" class="fixed w-full h-full left-0 top-0 z-40" @close="() => $emit('close')">
         <template #title class="w-full h-full"> 
-            <!-- why doesn't it wooooooooork... items-center -->
-            <div class="flex justify-between items-center w-full h-full">
+            <div class="flex justify-between items-center w-full h-full mt-4">
                 <BackButton/>
-                <h1 class="font-bold mt-4 tracking-wide text-base self-center">Search</h1>
-                <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8" @click="() => $emit('close')">
+                <h1 class="font-bold tracking-wide text-base self-center">Search</h1>
+                <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mr-2 ml-2" @click="() => $emit('close')">
 					<XIcon class="h-5 text-white"/>
 				</BaseButton>
             </div>
