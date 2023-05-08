@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="flex bg-var(--wt-c-white-soft) sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full fixed top-0 left-0 sm:static px-6 sm:px-0 ">
+    <div class="flex bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full absolute top-0 left-0 sm:static px-6 sm:px-0 ">
       <h1 class="text-base my-4 sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
         <span v-if="currentUser" class="sm:font-bold">
           Welcome, 

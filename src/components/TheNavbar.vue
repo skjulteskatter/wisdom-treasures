@@ -2,7 +2,7 @@
 	<nav class="shadow-md z-50 max-h-16 sm:max-h-16" @mouseup="store.globalCloseModal = !store.globalCloseModal">
 		<div id = "glassEffect" class="absolute glass w-full h-full"/>
 		<div class="w-full bg-white">
-			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex min-h-[4rem] justify-around sm:justify-start px-8">
+			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex min-h-[4rem] justify-around sm:justify-start px-8 border-t border-[color:var(--wt-color-ui-lm-dark)]">
 				<div id="leftNav" class="self-center flex gap-x-3">
 					<img class="h-8 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('dashboard')"/>
 					<div class="flex sm:hidden self-center place-content-center cursor-pointer">
@@ -51,7 +51,7 @@
 						leave-to-class="transform scale-95 opacity-0"
 						>
 							<MenuItems
-								class="fixed left-1/2 sm:left-auto w-11/12 sm:w-56 -translate-x-1/2 sm:right-0 sm:translate-x-0 ml-auto mr-auto origin-bottom-right bottom-16 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
+								class="fixed left-0 sm:left-auto w-3/4 sm:w-56 sm:right-0 sm:translate-x-0 ml-auto mr-auto bottom-16 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
 								<div class="flex flex-col sm:hidden p-1">
 									<MenuItem>
 										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">Favorites</BaseButton>
