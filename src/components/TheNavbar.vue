@@ -55,16 +55,16 @@
 								class="h-screen px-5 sm:px-0 py-32 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-3/4 sm:w-56 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm sm:rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
 								<div class="flex flex-col sm:hidden p-1">
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">Favorites</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">Favorites</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">Themes</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">Themes</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
 									</MenuItem>
 								</div>
 								<div class="hidden sm:flex p-1">
@@ -81,17 +81,17 @@
 								<div v-else class="p-1 border-t border-white/30 sm:border-black/30">
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">Profile</BaseButton>
+											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">Profile</BaseButton>
 										</div>
 									</MenuItem>
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="{}">Notifications</BaseButton>
+											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" @click="{}">Notifications</BaseButton>
 										</div>
 									</MenuItem>
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="{}">Help</BaseButton>
+											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" @click="{}">Help</BaseButton>
 										</div>
 									</MenuItem>
 								</div>

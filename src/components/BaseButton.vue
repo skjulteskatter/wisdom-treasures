@@ -42,6 +42,7 @@ export default defineComponent({
                         "warning",
                         "neutral",
                         "menuButton",
+                        "menuButtonSMWhite",
                         "magic",
                     ].includes(value)
                 );
@@ -121,16 +122,24 @@ export default defineComponent({
     }
 
     &--menuButton {
+        @apply text-[color:var(--color-text)] tracking-wide py-3 hover:bg-black/10;
+
+        &:hover:after {
+            content: "";
+            display: none;
+        }
+    }
+    &--menuButtonSMWhite{
         @apply text-white tracking-wide py-3;
+
         @screen sm {
-            @apply text-[color:var(--color-text)] hover:bg-black/10
+            @apply text-[color:var(--color-text)]
         }
 
         &:hover:after {
             content: "";
             display: none;
         }
-    
     }
 
     &--magic {
