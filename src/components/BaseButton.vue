@@ -121,7 +121,10 @@ export default defineComponent({
     }
 
     &--menuButton {
-        @apply text-[color:var(--color-text)] hover:bg-black/10;
+        @apply text-white tracking-wide py-3;
+        @screen sm {
+            @apply text-[color:var(--color-text)] hover:bg-black/10
+        }
 
         &:hover:after {
             content: "";

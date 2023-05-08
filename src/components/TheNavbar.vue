@@ -50,8 +50,9 @@
 						leave-from-class="transform scale-100 opacity-100"
 						leave-to-class="transform scale-95 opacity-0"
 						>
+						<!--			LOOK HERE - SIDE-MENU			 -->
 							<MenuItems
-								class="fixed left-0 sm:left-auto w-3/4 sm:w-56 sm:right-0 sm:translate-x-0 ml-auto mr-auto bottom-16 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
+								class="h-screen px-5 sm:px-0 py-32 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-3/4 sm:w-56 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm sm:rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
 								<div class="flex flex-col sm:hidden p-1">
 									<MenuItem>
 										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">Favorites</BaseButton>
@@ -77,7 +78,7 @@
 										</div>
 									</MenuItem>
 								</div>
-								<div v-else class="p-1 border-t border-black/30">
+								<div v-else class="p-1 border-t border-white/30 sm:border-black/30">
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
 											<BaseButton class="w-full" theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">Profile</BaseButton>
@@ -178,11 +179,16 @@ export default defineComponent({
 <style scoped>
 
 .glassDropDown {
-	background: (255, 255, 255, 0.1);
-	backdrop-filter: blur(5px);
-	-webkit-backdrop-filter: blur(5px);
+	background: #3d6e7cab;
+	backdrop-filter: blur(7px);
+	-webkit-backdrop-filter: blur(7px);
 }
-.glassDropDown > div {
+@media(min-width:640px){
+	.glassDropDown {
+		background: rgba(255, 255, 255, 0.5);
+	}
+}
+/* .glassDropDown > div {
 	background: rgba(255, 255, 255, 0.5);
-}
+} */
 </style>
