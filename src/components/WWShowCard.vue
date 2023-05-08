@@ -17,7 +17,7 @@
                 </div>
         </template>
         <template #default>
-          <div class="flex flex-col h-full">
+          <div class="flex flex-col h-full md:items-center">
             <div class="flex max-w-2xl flex-col sm:h-auto justify-center md:text-center">
 
                 <!-- <div class="flex self-center">
