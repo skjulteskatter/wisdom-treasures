@@ -1,5 +1,5 @@
 <template>
-    <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer bg-secondary flex" @click ="() => {$emit('click')}">
+    <BaseCard :loading="loading" class="border-2 hover:border-black/30 border-black/0 cursor-pointer flex" @click ="() => {$emit('click')}">
         <template #header>
           <div class="text-2xl font-sans">
             <slot name="header">
@@ -44,5 +44,11 @@ export default defineComponent({
     },
     methods: {
     },
+    props:{
+      loading: {
+        type: Boolean,
+        default: false,
+      }
+    }
 });
 </script>

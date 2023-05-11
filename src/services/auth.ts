@@ -134,6 +134,9 @@ async function userLoggedInCallback(){
     await store.initializeAuthors(authorIds);
     await store.intitializeArticleNumberLookup();
 
+    await store.intitializeProducts();
+    await store.intitializeStripeService();
+
     store.sessionInitialized = true;
     storeInitialized = true;
 }

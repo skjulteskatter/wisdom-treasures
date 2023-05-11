@@ -19,8 +19,8 @@
     <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-11vh mb-0 md:mb-20 md:grid md:grid-cols-3 grid-cols-1 md:gap-2.5 px-5 sm:px-0">
       <div class="flex">
         <div class="sm:hidden flex flex-col w-1/2 justify-between -ml-12 mt-12 mb-28">
-          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-22vh" @click="e => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-2/3 h-1/3"></div></p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="e => navigate('favorites', e)">Favorites</p>
+          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-22vh" @click="(e: Event | undefined) => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-2/3 h-1/3"></div></p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</p>
           <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="navigate('history')">History</p>
         </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="col-span-2 w-4/5 -ml-8 sm:w-full sm:m-0" :WWCardHomeView="true" />
