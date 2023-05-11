@@ -1,6 +1,9 @@
 import type { IUser, ISettings } from "hiddentreasures-js";
 import http from "./http";
 import type { HTUser } from "@/classes/HTUser";
+import type { RedirectToCheckoutOptions } from "@stripe/stripe-js";
+import type { IApiProduct } from "@/Interfaces/IApiProduct";
+import type { SessionRequest, SetupResponse } from "songtreasures-api/checkout";
 
 export const session = {
     async getCurrentUser() {
@@ -57,4 +60,37 @@ export const favorites = {
 
 export default {
     session
+};
+
+export const stripe = {
+    setup() {
+        return http.get<SetupResponse>("api/Store/Setup");
+    },
+    getProducts(){
+        return http.get<IApiProduct[]>("api/Store/Products", undefined, true, "4.0");
+    },
+    getSession(sessionId: string) {
+        return http.get<RedirectToCheckoutOptions>(`api/Store/Session/${sessionId}`);
+    },
+    getPortalSession() {
+        return http.post("api/Store/Portal", {
+            returnUrl: window.location.href,
+        });
+    },
+    refreshSubscriptions() {
+        return http.get("api/Store/Refresh");
+    },
+    async startSession(productIds: string[], type: "year" | "month") {
+        const country = await http.getCountry().catch(() => {
+            return undefined;
+        });
+
+        return await http.post<RedirectToCheckoutOptions, SessionRequest>("api/Store/Session", {
+            productIds,
+            cancelUrl: window.location.href,
+            successUrl: window.location.origin + "/success",
+            country,
+            type,
+        });
+    },
 };

@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { Notification } from '@/classes/notification'
-import { favorites as favoritesApi, session} from '@/services/api'
-import type {Article, Contributor, Publication } from 'hiddentreasures-js'
+import { favorites as favoritesApi, session, stripe} from '@/services/api'
+import type {Article, Contributor, Product, Publication } from 'hiddentreasures-js'
 import { articleService, publicationService, authorService } from '@/services/publications';
 import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
@@ -11,6 +11,8 @@ import { dbPromise, putArticles, putAuthors, putPublications } from '@/services/
 import type { HTUser } from '@/classes/HTUser'
 import { language, favorites } from '@/services/localStorage'
 import Fuse from 'fuse.js'
+import type { IApiProduct } from '@/Interfaces/IApiProduct'
+import StripeService from '@/services/stripe'
 
 const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
@@ -41,10 +43,16 @@ export const useSessionStore = defineStore('session', {
             authors: shallowRef(new Map) as unknown as Map<string, Contributor>,
             fuseAuthors: undefined as Fuse<Contributor> | undefined,
 
+            collectionId: "" as string,
+
+            apiProducts: [] as IApiProduct[],
+
             //Used to look up the id to the article number
             articleNumberLookup: reactive(new Map) as Map<number, string>,
 
             sessionInitialized: false as boolean,
+
+            stripeService: undefined as StripeService | undefined,
 
             mannaHistory: [] as Manna[],
             //Not used
@@ -102,6 +110,8 @@ export const useSessionStore = defineStore('session', {
             if (!retrievedFromIndexDb){
                 await putPublications(publicationArray);
             }
+
+            this.collectionId = publicationArray[0]?.collectionId ?? "";
 
             const option = {
                 keys: ['title', 'id', 'description'],
@@ -198,6 +208,12 @@ export const useSessionStore = defineStore('session', {
             for (const [key,value] of this.articles){
                 this.articleNumberLookup.set(value.number, key);
             }
+        },
+        async intitializeProducts(){
+            this.apiProducts = await stripe.getProducts();
+        },
+        async intitializeStripeService(){
+            this.stripeService = new StripeService((await stripe.setup()).key);
         },
         async initializeLanguage(): Promise<string>{
             let lang = language.get();

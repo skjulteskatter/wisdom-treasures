@@ -25,9 +25,9 @@
                     leave-to="opacity-0"
                 >
                 <div class="fixed w-full flex flex-col h-full">
-                    <div id="clickOutsideDetector" class="fixed w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20" @click="e => $emit('close', e)"/>
+                    <div id="clickOutsideDetector" class="fixed w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20" @click="(e: any) => $emit('close', e)"/>
                     <div class="grow basis-0" :class="forSearchModal === true ? 'hidden' : ''">
-                        <BaseButton theme="menuButton" size="small" class="m-4 w-10 max-h-10 block sm:hidden z-30"  @click="e => $emit('close', e)">
+                        <BaseButton theme="menuButton" size="small" class="m-4 w-10 max-h-10 block sm:hidden z-30"  @click="(e: any) => $emit('close', e)">
                             <ArrowLeftIcon class="h-8 grayscale brightness-[3.5]"/>
                         </BaseButton>
                     </div>
