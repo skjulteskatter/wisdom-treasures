@@ -25,7 +25,7 @@
     <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden text-[color:var(--wt-color-text-grey)]">
         Showing {{numberOfResults}} results for "{{searchedWord}}"
     </div>
-    <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5" :class="{ 'pr-5':searchWord }"> <!-- oops that's not an optimal solution -->
+    <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5" :class="{'pr-5' : searchedWord}">
       <div class="w-full">
         <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
           <div v-for="(publication, index) in searchedPublications" :key="publication.id" class="flex flex-col">
@@ -37,7 +37,7 @@
           </div>
         </div>
       </div>
-      <div id="alphabetslider" v-if="searchedWord.trim().length <= 0">
+      <div id="alphabetslider" v-if="!searchedWord">
         <div class="w-10 flex flex-col sticky top-16 items-center font-bold opacity-30"
           @mousedown="mouseDownOverAlphabet = true"
           @mouseup="()=> {mouseDownOverAlphabet = false; mouseOverAlphabet = '';}" 
