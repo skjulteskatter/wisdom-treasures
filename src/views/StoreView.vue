@@ -1,11 +1,16 @@
 <template>
   <main>
-    <h1 class="my-6 text-3xl font-bold">
-      Store
-    </h1>
-    <p>Buy just for one month, or a whole year!</p>
-    <div id="Cards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-2">
-      <StoreCard :loading="loadingCheckoutCard == 'month'" class="bg-primary text-white/80" @click="() => { checkout('month') }">
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
+      <BackButton />
+      <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
+        Store
+      </h1>
+      <BackButton class="opacity-0"/>
+    </div>
+    
+
+    <div id="Cards" class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-16 h-96">
+      <!-- <StoreCard :loading="loadingCheckoutCard == 'month'" class="bg-primary text-white/80" @click="() => { checkout('month') }">
         <template #header>
           <div class="w-full flex justify-center">
             <div>Buy wisdom treasures for one month!</div>
@@ -14,17 +19,28 @@
         <template #default>
           <div>Here are som of the reasons blah blah blah</div>
         </template>
-      </StoreCard>
-      <StoreCard :loading="loadingCheckoutCard == 'year'" @click="() => { checkout('year') }">
+      </StoreCard> -->
+      <h1 class="sm:hidden text-2xl font-bold tracking-wide">Buy subscribtion for WisdomTreasures for one year!</h1>
+      <StoreCard :loading="loadingCheckoutCard == 'year'" class="bg-primary text-white/90 justify-end" @click="() => { checkout('year') }">
         <template #header>
-          <div class="w-full flex justify-center">
-            <div>Buy wisdom treasures for one year!</div>
+          <div>
+            <div class="font-bold tracking-wide sm:pl-8">Get subscription</div>
           </div>
         </template>
         <template #default>
-          <div>Here are som of the reasons blah blah blah</div>
+          <div class="text-base tracking-wide sm:pl-8 sm:pb-8 text-white/80">for 156NOK/year</div>
         </template>
       </StoreCard>
+      <div>
+        <h1 class="hidden sm:block text-3xl font-bold tracking-wide">Buy subscribtion for WisdomTreasures for one year!</h1>
+        <p class="text-xl sm:mt-12 sm:mb-4 ">Get access to:</p>
+        <ul class="text-base list-disc list-inside">
+          <li>first reason to buy subscribtion</li>
+          <li>second reason to buy subscribtion</li>
+          <li>third reason to buy subscribtion</li>
+          <li>fourth reason to buy subscribtion</li>
+        </ul>
+      </div>
     </div>
   </main> 
 </template>
@@ -34,6 +50,7 @@ import { defineComponent } from 'vue';
 import { useSessionStore } from '@/stores/session';
 import BaseCard from '@/components/BaseCard.vue';
 import StoreCard from '@/components/StoreCard.vue';
+import BackButton from '@/components/BackButton.vue';
 
   export default defineComponent({
     name: "FavoriteView",
@@ -45,7 +62,8 @@ import StoreCard from '@/components/StoreCard.vue';
     },
     components: {
       BaseCard,
-      StoreCard
+      StoreCard,
+      BackButton,
     },
     computed: {
       wwProducts() : string[]{
