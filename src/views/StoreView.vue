@@ -9,7 +9,7 @@
     </div>
     
 
-    <div id="Cards" class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-16 h-96">
+    <div id="Cards" class="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-8 sm:gap-12 md:gap-16 md:h-96 mx-5 sm:mx-0">
       <!-- <StoreCard :loading="loadingCheckoutCard == 'month'" class="bg-primary text-white/80" @click="() => { checkout('month') }">
         <template #header>
           <div class="w-full flex justify-center">
@@ -21,18 +21,18 @@
         </template>
       </StoreCard> -->
       <h1 class="sm:hidden text-2xl font-bold tracking-wide">Buy subscribtion for WisdomTreasures for one year!</h1>
-      <StoreCard :loading="loadingCheckoutCard == 'year'" class="bg-primary text-white/90 justify-end" @click="() => { checkout('year') }">
+      <StoreCard :loading="loadingCheckoutCard == 'year'" class="h-64 sm:h-auto store-btn-bg bg-center bg-200% text-white/90 justify-end" @click="() => { checkout('year') }">
         <template #header>
           <div>
-            <div class="font-bold tracking-wide sm:pl-8">Get subscription</div>
+            <div class="text-2xl md:text-3xl font-bold tracking-wide sm:p-0 md:pl-4 lg:pl-8">Get subscription</div>
           </div>
         </template>
         <template #default>
-          <div class="text-base tracking-wide sm:pl-8 sm:pb-8 text-white/80">for 156NOK/year</div>
+          <div class="text-base tracking-wide sm:p-0 md:pl-4 md:pb-4 lg:pl-8 lg:pb-8 text-white/80">for 156NOK/year</div>
         </template>
       </StoreCard>
       <div>
-        <h1 class="hidden sm:block text-3xl font-bold tracking-wide">Buy subscribtion for WisdomTreasures for one year!</h1>
+        <h1 class="hidden sm:block text-3xl font-bold tracking-wide">Buy WisdomTreasures for one year!</h1>
         <p class="text-xl sm:mt-12 sm:mb-4 ">Get access to:</p>
         <ul class="text-base list-disc list-inside">
           <li>first reason to buy subscribtion</li>
@@ -79,3 +79,8 @@ import BackButton from '@/components/BackButton.vue';
     }
   });
 </script>
+<style>
+.store-btn-bg{
+  background-image: url('/images/store_btn_bg.png')
+}
+</style>
