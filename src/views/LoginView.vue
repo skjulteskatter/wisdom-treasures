@@ -1,46 +1,46 @@
 <template>
-  <main class="col-span-2 w-full h-full lg:flex place-items-center flex-col">
-    <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-black/20 flex">
-      <div class="cursor-pointer flex place-items-center max-h-20" @mouseover="()=>{hoverOverWTLogo = true}" @mouseleave="()=>{hoverOverWTLogo = false}" @click="() => {$router.push({name: 'dashboard'})}">
-        <img class="w-14 h-14 cursor-pointer" src="/img/logo.svg"/>
-        <span class="text-2xl pb-2 font-bold">Wisdom<div class="text-primary inline-block font-bold">Treasures</div></span>
+  <main class="bg-white col-span-2 min-h-full w-full lg:flex place-items-center flex-col">
+    <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-black/20 flex justify-center">
+      <div class="cursor-pointer flex place-items-center max-h-20 mt-8 mb-5" @mouseover="()=>{hoverOverWTLogo = true}" @mouseleave="()=>{hoverOverWTLogo = false}" @click="() => {$router.push({name: 'dashboard'})}">
+        <img class="w-14 h-14 cursor-pointer mr-2" src="/img/logo.svg"/>
+        <span class="text-xl text-primary pb-2 font-bold tracking-wide">Wisdom<div class="text-[color:var(--wt-color-text-lm)] font-bold -mt-1">Treasures</div></span>
         <ArrowRightIcon class="w-6 ml-1 opacity-0" :class="[{'arrowAppear': hoverOverWTLogo, 'arrowDisAppear' : hoverOverWTLogo === false}]"/>
       </div>
-      <div id="thisIsJustForSpacing" class="grow"/>
+      <!-- <div id="thisIsJustForSpacing" class="grow"/> -->
     </span>
-    <BaseCard class="mx-auto rounded-none lg:rounded-md lg:max-w-sm lg:w-96">
+    <BaseCard class="mx-auto rounded-none lg:rounded-md lg:max-w-sm lg:w-96 shadow-none">
       <template #header>
-        <div class="flex justify-center my-2">
+        <div class="font-sans flex justify-center">
           <div>
             <div v-if="include([forms.login])">
-              <p v-if="store.redirectAfterLoginName == 'profile'">Login to access your profile</p>
-              <p v-else-if="store.redirectAfterLoginName == 'store'">Login to access the store</p>
-              <p v-else>Login to your account</p>
+              <p class="font-bold" v-if="store.redirectAfterLoginName == 'profile'">Log in to access your profile</p>
+              <p class="font-bold" v-else-if="store.redirectAfterLoginName == 'store'">Log in to access the store</p>
+              <p class="font-bold" v-else>Log in</p>
             </div>
-            <p v-else-if="include([forms.register])">Create your account</p>
-            <p v-else>Reset your password</p>
+            <p class="font-bold" v-else-if="include([forms.register])">Create your account</p>
+            <p class="font-bold" v-else>Reset your password</p>
           </div>
         </div>
       </template>
       <template #default>
         <div class="flex flex-col">
-          <BaseInput v-model="email" class="p-4 border mt-2" :error="!!errors.email" v-on:keydown.enter="action()">
+          <BaseInput v-model="email" class="p-4 lg:px-0 border mt-2" :error="!!errors.email" v-on:keydown.enter="action()">
             <p>Email</p>
           </BaseInput>
 
-          <BaseInput v-model="fullName" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) class="p-4 border mt-2 max-h-0 opacity-0" 
+          <BaseInput v-model="fullName" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) class="p-4 lg:px-0 border mt-2 max-h-0 opacity-0" 
             :error="!!errors.fullName" :class="[include([forms.register]) ? 'smoothOpenInput' : [ registerFormLoaded ? 'smoothCloseInput' : '']]">
             <p>Full name</p>
           </BaseInput>
 
-          <BaseInput v-model="password" v-on:keydown.enter="action()" :disabled=include([forms.forgotPassword]) class="p-4 border mt-2" style-type="password" :error="!!errors.password" 
+          <BaseInput v-model="password" v-on:keydown.enter="action()" :disabled=include([forms.forgotPassword]) class="p-4 lg:px-0 border mt-2" style-type="password" :error="!!errors.password" 
             :class="[include([forms.register, forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : [ forgotPasswordFormLoaded ? 'smoothCloseInput' : '']]">
             <p>Password</p>
             <ClickableLink v-if="include([forms.login])" :disabled="actionLoading" v-on:click="changeForm('forgotPassword')">Forgot password?</ClickableLink>
           </BaseInput>
 
           <BaseInput v-model="repeatPassword" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) style-type="password" :error="!!errors.password" 
-            class="p-4 border mt-2 max-h-0 opacity-0" 
+            class="p-4 lg:px-0 border mt-2 max-h-0 opacity-0" 
             :class="[include([forms.register]) ? 'smoothOpenInput' : [registerFormLoaded ? 'smoothCloseInput' : '']]">
             <p>Repeat password</p>
           </BaseInput>
