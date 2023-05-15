@@ -20,7 +20,7 @@
           <div>Here are som of the reasons blah blah blah</div>
         </template>
       </StoreCard> -->
-      <h1 class="sm:hidden text-2xl font-bold tracking-wide">Buy subscribtion for WisdomTreasures for one year!</h1>
+      <h1 class="sm:hidden text-2xl font-bold tracking-wide">Buy WisdomTreasures for one year!</h1>
       <StoreCard :loading="loadingCheckoutCard == 'year'" class="h-64 sm:h-auto store-btn-bg bg-center bg-200% text-white/90 justify-end" @click="() => { checkout('year') }">
         <template #header>
           <div>
