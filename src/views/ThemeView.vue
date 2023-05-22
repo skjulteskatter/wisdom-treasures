@@ -7,6 +7,16 @@
       </h1>
       <BackButton class="opacity-0"/>
     </div>
+    <h1 class="text-base m-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Get Wisdom Manna in the topic:</h1>
+    <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true"/>
+    <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 sm:mx-0">
+      <p class="text-base">Get Wisdom Manna</p>
+      <template #icon>
+        <RefreshIcon class="h-5 md:hidden"/>
+      </template>
+    </ThreeDButton>
+
+    <h1 class="text-base mx-5 mt-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Rest of the words in the topic:</h1>
     <div id="WWCards" class="px-5 pt-5 sm:p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
       <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
@@ -23,6 +33,9 @@ import { useSessionStore } from '@/stores/session';
 import router from '@/router';
 import { Notification } from '@/classes/notification';
 import BackButton from '@/components/BackButton.vue';
+import ThreeDButton from '@/components/ThreeDButton.vue';
+import { RefreshIcon } from '@heroicons/vue/outline';
+import WWShowCard from '@/components/WWShowCard.vue';
 
   export default defineComponent({
     name: "ThemeView",
@@ -31,11 +44,16 @@ import BackButton from '@/components/BackButton.vue';
         store: useSessionStore(),
         dataFavorites : undefined as string[] | undefined,
         publication: undefined as Publication | undefined,
+        randomArticle : null as Article | null,
+        showWordOfTheDay : false as boolean,
       }
     },
     components: {
       WWCard,
-      BackButton
+      BackButton,
+      ThreeDButton,
+      RefreshIcon,
+      WWShowCard
     },
     computed: {
       storeFavorites() : string[]{
@@ -124,6 +142,10 @@ import BackButton from '@/components/BackButton.vue';
         let message = Number.isNaN(num) ? "Couldn't find article" : "Couldn't find article number: " + num.toString();
         this.store.notifications.push(new Notification(message, "error"));
         router.replace({path: this.$route.fullPath.replace(this.$route.params.wwNumber?.toString() ?? "", "") });
+      },
+      getAndSetRandomArticle(): void {
+        this.randomArticle = this.articles[Math.floor(Math.random()*this.articles.length)] || null;
+        this.showWordOfTheDay = false;
       },
     },
     mounted(){

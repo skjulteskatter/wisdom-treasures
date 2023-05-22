@@ -27,7 +27,7 @@
       </div>
         
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-5vh flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
-        <p class="text-base md:rotate-90">Generate new word</p>
+        <p class="text-base md:rotate-90">Get Wisdom Manna</p>
         <template #icon>
           <RefreshIcon class="h-5 md:hidden"/>
         </template>

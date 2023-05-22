@@ -1,6 +1,6 @@
 <template>
     <main>
-      <BaseCard :class="[WWCardHomeView ? 'h-68vh flex flex-col justify-between' : '']">
+      <BaseCard :class="[WWCardHomeView ? 'h-68vh flex flex-col justify-between' : '']" :hideFooter="forThemeView">
         <template #header class="">
           <div class="flex">
                   <div class="grow"/>
@@ -79,6 +79,10 @@
         WWCardHomeView: {
             type: Boolean,
             deafult: false,
+        },
+        forThemeView:{
+            type: Boolean,
+            default: false
         }
       },
       components: {

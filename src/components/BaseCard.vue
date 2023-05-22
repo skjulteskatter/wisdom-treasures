@@ -8,7 +8,7 @@
         <div class="p-4" :class="[WWCard ? 'flex-grow' : '']" v-if="$slots.default">
             <slot name="default" />
         </div>
-        <div class="px-4 py-3 border-t border-black/10" v-if="$slots.footer">
+        <div class="px-4 py-3 border-t border-black/10" v-if="!hideFooter && $slots.footer">
             <slot name="footer" />
         </div>
     </div>
@@ -40,6 +40,10 @@ export default defineComponent({
         WWCard: {
             type: Boolean,
             default: false,
+        },
+        hideFooter:{
+            type: Boolean,
+            default: false
         }
     }
 });
