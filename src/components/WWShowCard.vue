@@ -167,7 +167,7 @@
   min-height:68vh;
 }
 @media(min-width:640px){
-  .h-70vh{
+  .h-68vh{
     min-height:auto;
   }
 }
