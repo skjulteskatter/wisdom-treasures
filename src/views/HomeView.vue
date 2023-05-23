@@ -16,7 +16,7 @@
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-custom mb-0 md:mb-6 px-4 sm:px-0 pb-5">
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-custom mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-between -ml-12 mt-12 mb-28">
           <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-22vh" @click="(e: Event | undefined) => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-3/4 h-1/3"></div></p>
@@ -28,20 +28,11 @@
       <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
     </div>
 
-      <div id="originContainer" class="">
-        <h1 class="text-xl font-bold text-primary m-5 sm:mx-0">ORIGIN</h1>
-        <div class="mx-5 sm:mx-0 grid grid-flow-col overflow-x-auto gap-5">
-          <Origin/>
-          <Origin/>
-          <Origin/>
-          <Origin/>
-          <Origin/>
-          <Origin/>
-        </div>
+      <div class="ml-5 sm:ml-0">
+        <h1 class="text-xl font-bold text-primary my-5 sm:mt-0">ORIGIN</h1>
+        <OriginsSwiper/>
       </div>
-
-      <OriginsSwiper/>
-
+      
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 self-end mt-5vh flex-shrink-0 md:mt-0 sm:mx-0">
         <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
         <template #icon>
