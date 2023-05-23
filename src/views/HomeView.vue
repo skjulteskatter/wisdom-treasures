@@ -16,7 +16,7 @@
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-custom mb-0 md:mb-`6 md:grid md:grid-cols-4 md:gap-5 px-4 sm:px-0">
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-custom mb-0 md:mb-6 px-4 sm:px-0 pb-5">
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-between -ml-12 mt-12 mb-28">
           <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-22vh" @click="e => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-3/4 h-1/3"></div></p>
@@ -25,16 +25,28 @@
         </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class=" w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
       </div>
-        
-      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-5vh flex-shrink-0 md:mt-0 sm:mx-0 sm:h-full">
-        <p class="text-base md:rotate-90">Get Wisdom Manna</p>
+      <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
+    </div>
+
+      <div id="originContainer" class="">
+        <h1 class="text-xl font-bold text-primary m-5 sm:mx-0">ORIGIN</h1>
+        <div class="mx-5 sm:mx-0 grid grid-flow-col overflow-x-auto gap-5">
+          <Origin/>
+          <Origin/>
+          <Origin/>
+          <Origin/>
+          <Origin/>
+          <Origin/>
+        </div>
+      </div>
+
+      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 self-end mt-5vh flex-shrink-0 md:mt-0 sm:mx-0">
+        <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
         <template #icon>
-          <RefreshIcon class="h-5 md:hidden"/>
+          <!-- <RefreshIcon class="h-5 md:hidden"/> -->
         </template>
       </ThreeDButton>
 
-      <div class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-7vh left-0 -z-50 rounded-t-4xl"></div>
-    </div>
     <div class="text-xl sm:text-2xl font-bold text-[color:var(--wt-color-text-grey)] mt-10 mx-5 sm:mx-0">Other wisdom words</div>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
       <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
@@ -62,6 +74,7 @@ import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
 import BaseButton from "@/components/BaseButton.vue";
 import Loader from '@/components/Loader.vue';
+import Origin from '@/components/Origin.vue';
 
   export default defineComponent({
     name: "HomeView",
@@ -83,7 +96,8 @@ import Loader from '@/components/Loader.vue';
       ThreeDButton,
       RefreshIcon,
       BaseButton,
-      Loader
+      Loader,
+      Origin
     },
     computed: {
       articles() : Article[] {
