@@ -3,7 +3,7 @@
     <div class="flex bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full absolute top-0 left-0 sm:static px-6 sm:px-0 ">
       <h1 class="text-base my-4 sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
         <span v-if="currentUser" class="sm:font-bold">
-          Welcome, 
+          {{ $t('welcome')}},&nbsp
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
             {{currentUser.displayName}}
           </span>
@@ -19,8 +19,8 @@
     <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-custom mb-0 md:mb-6 px-4 sm:px-0 pb-5">
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-between -ml-12 mt-12 mb-28">
-          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-22vh" @click="e => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-3/4 h-1/3"></div></p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="e => navigate('favorites', e)">Favorites</p>
+          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-22vh" @click="(e: Event | undefined) => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-3/4 h-1/3"></div></p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</p>
           <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="navigate('history')">History</p>
         </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class=" w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
@@ -75,6 +75,7 @@ import { RefreshIcon } from '@heroicons/vue/outline';
 import BaseButton from "@/components/BaseButton.vue";
 import Loader from '@/components/Loader.vue';
 import Origin from '@/components/Origin.vue';
+import { mannaHistory } from '@/services/localStorage';
 
   export default defineComponent({
     name: "HomeView",
@@ -205,6 +206,7 @@ import Origin from '@/components/Origin.vue';
       },
       getAndSetRandomArticle(): void {
         this.randomArticle = this.articles[Math.floor(Math.random()*this.articles.length)] || null;
+        mannaHistory.addOrReplace(this.randomArticle.id);
         this.showWordOfTheDay = false;
       },
       getAndSetWordOfTheDayArticle(): void {

@@ -2,7 +2,7 @@
 	<nav class="shadow-md z-50 max-h-16 sm:max-h-16" @mouseup="store.globalCloseModal = !store.globalCloseModal">
 		<div id = "glassEffect" class="absolute glass w-full h-full"/>
 		<div class="w-full bg-white">
-			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex min-h-[4rem] justify-around sm:justify-start px-8 border-t border-[color:var(--wt-color-ui-lm-dark)]">
+			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex sm:flex-row min-h-[4rem] flex-row-reverse justify-around sm:justify-start px-8 border-t border-[color:var(--wt-color-ui-lm-dark)]">
 				<div id="leftNav" class="self-center flex gap-x-3">
 					<img class="h-8 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('dashboard')"/>
 					<div class="flex sm:hidden self-center place-content-center cursor-pointer">
@@ -15,7 +15,7 @@
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" @click="navigate('themes')">Themes</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
+					<!--<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>-->
 				</div>
 				<div class="flex sm:hidden self-center place-content-center cursor-pointer" @click="navigate('dashboard')">
 					<HomeIcon class="w-6 text-[color:var(--wt-color-text-grey)]"/>

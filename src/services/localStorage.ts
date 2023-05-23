@@ -31,6 +31,39 @@ export const history = {
     }
 };
 
+export const mannaHistory = {
+
+    mannaHistoryPrefix: 'mannaHistory:',
+
+    getAll(): Map<string, string> {
+        const items : Map<string, string> = new Map<string, string>();
+        for (const key in localStorage) {
+            if (key.startsWith(this.mannaHistoryPrefix)) {
+                const item = localStorage.getItem(key);
+                if (item == null) continue;
+                items.set(key.replace(this.mannaHistoryPrefix, ""), item);
+            }
+        }
+
+        return items;
+    },
+    get(id: string): string | null {
+        return localStorage.getItem(this.mannaHistoryPrefix + id);
+    },
+    addOrReplace(id: string, date: number = Date.now()) {
+        localStorage.setItem(this.mannaHistoryPrefix + id, date.toString());
+    },
+    delete(id: string) {
+        localStorage.removeItem(this.mannaHistoryPrefix + id);
+    },
+    deleteAll(){
+        const allItemKeys = this.getAll().keys();
+        for (const key of allItemKeys) {
+            this.delete(key);
+        }
+    }
+};
+
 export const favorites = {
 
     favoritePrefix: 'favorite:',

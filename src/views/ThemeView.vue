@@ -33,6 +33,7 @@ import BackButton from '@/components/BackButton.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
 import WWShowCard from '@/components/WWShowCard.vue';
+import { mannaHistory } from '@/services/localStorage';
 
   export default defineComponent({
     name: "ThemeView",
@@ -142,6 +143,7 @@ import WWShowCard from '@/components/WWShowCard.vue';
       },
       getAndSetRandomArticle(): void {
         this.randomArticle = this.articles[Math.floor(Math.random()*this.articles.length)] || null;
+        mannaHistory.addOrReplace(this.randomArticle.id);
         this.showWordOfTheDay = false;
       },
     },

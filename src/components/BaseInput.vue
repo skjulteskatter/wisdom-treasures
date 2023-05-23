@@ -42,7 +42,7 @@
                 class="w-5 absolute -left-7 -top-[10px] cursor-pointer opacity-40" 
                 @click="(_event: any) => $emit('update:modelValue', '')"
                 >
-                    <XIcon class="text-white"/>
+                    <XIcon :class="{whiteText : 'text-white'}"/>
                 </div>
             </div>
         </div>
@@ -160,7 +160,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 .shake{
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform: translate3d(0, 0, 0);

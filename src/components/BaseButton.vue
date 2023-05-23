@@ -235,7 +235,7 @@ export default defineComponent({
 }
 
 .threeDButton {
-    transform: translate3d(-2px, -4px, 1px);
+    transform: translate3d(-0px, -4px, 1px);
     transition:
       transform
       600ms
@@ -243,7 +243,7 @@ export default defineComponent({
   }
 
   .threeDButtonAnimation:hover {
-    transform: translate3d(-4px, -8px, 1px);
+    transform: translate3d(-0px, -8px, 1px);
     transition:
       transform
       250ms
@@ -251,7 +251,7 @@ export default defineComponent({
   }
 
   .threeDButtonAnimation:active {
-    transform: translate3d(-1px, -2px, 1px);
+    transform: translate3d(-0px, -2px, 1px);
     transition: transform 34ms;
   }
 

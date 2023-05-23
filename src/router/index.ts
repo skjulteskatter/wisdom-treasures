@@ -42,6 +42,7 @@ export const routes = [
           WWCard,
         ],
         meta:{
+          requiresAuth: true,
           scrollUp: true,
         }
       },
@@ -53,6 +54,7 @@ export const routes = [
           WWCard
         ],
         meta:{
+          requiresAuth: true,
           scrollUp: true,
         }
       },
@@ -78,6 +80,10 @@ export const routes = [
             name: 'themes',
             path: '',
             component: () => import('../views/ThemesView.vue'),
+            meta: {
+              requiresAuth: true,
+              scrollUp: true,
+            },
           },
           Theme
         ]
@@ -94,18 +100,18 @@ export const routes = [
           WWCard
         ]
       },
-      {
-        path: '/manna',
-        name: 'manna',
-        component: () => import('../views/MannaView.vue'),
-        meta: {
-          requiresAuth: true,
-          scrollUp: true,
-        },
-        children: [
-          WWCard
-        ]
-      },
+      //{
+      //  path: '/manna',
+      //  name: 'manna',
+      //  component: () => import('../views/MannaView.vue'),
+      //  meta: {
+      //    requiresAuth: true,
+      //    scrollUp: true,
+      //  },
+      //  children: [
+      //    WWCard
+      //  ]
+      //},
       {
         path: '/store',
         name: 'store',
@@ -187,6 +193,9 @@ export const routes = [
     path: '/:pathMatch(.*)*',
     name: 'notfound',
     component: () => import('../views/NotFoundView.vue'),
+    meta: {
+      requiresAuth: false
+    }
   }
 ]
 

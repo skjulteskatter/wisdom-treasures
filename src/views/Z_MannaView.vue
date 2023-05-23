@@ -40,7 +40,7 @@
   import BackButton from '@/components/BackButton.vue';
   
     export default defineComponent({
-      name: "HomeView",
+      name: "MannaView",
       data() {
         return {
           store: useSessionStore(),

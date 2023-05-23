@@ -67,7 +67,7 @@ import BackButton from '@/components/BackButton.vue';
     },
     computed: {
       wwProducts() : string[]{
-        return this.store.apiProducts.map(x => x.id);
+        return this.store.apiProducts.filter(x => x.collectionIds.includes("aa7d92e3-c92f-41f8-87a1-333375125a1c" /*Maybe not hardcode collection ID 🤷‍♂️*/)).map(x => x.id);
       },
     },
     methods: {
