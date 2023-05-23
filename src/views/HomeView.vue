@@ -29,18 +29,21 @@
     </div>
 
       <div class="ml-5 sm:ml-0">
-        <h1 class="text-xl font-bold text-primary my-5 sm:mt-0">ORIGIN</h1>
+        <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0">ORIGIN</h1>
         <OriginsSwiper/>
       </div>
       
-      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 self-end mt-8 flex-shrink-0 md:mt-0 sm:mx-0">
-        <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
-        <template #icon>
-          <!-- <RefreshIcon class="h-5 md:hidden"/> -->
-        </template>
-      </ThreeDButton>
+      <div class="mx-5 sm:mx-0">
+        <h1 class="text-sm font-bold my-5 sm:mt-0 tracking-wide">WISDOM MANNA</h1>
+        <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
+          <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
+          <template #icon>
+            <!-- <RefreshIcon class="h-5 md:hidden"/> -->
+          </template>
+        </ThreeDButton>
+      </div>
 
-    <div class="text-xl sm:text-2xl font-bold text-[color:var(--wt-color-text-grey)] mt-10 mx-5 sm:mx-0">Other wisdom words</div>
+    <h1 class="text-sm tracking-wide font-bold mt-10 mx-5 sm:mx-0">OTHER WISDOM WORDS</h1>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
       <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
