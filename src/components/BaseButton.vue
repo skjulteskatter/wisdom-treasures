@@ -42,6 +42,7 @@ export default defineComponent({
                         "warning",
                         "neutral",
                         "menuButton",
+                        "menuButtonSMWhite",
                         "magic",
                     ].includes(value)
                 );
@@ -119,15 +120,29 @@ export default defineComponent({
             display: none;
         }
     }
+    &--noBackground {
+        @apply bg-transparent border-2 border-primary text-primary
+    }
 
     &--menuButton {
-        @apply text-[color:var(--color-text)] hover:bg-black/10;
+        @apply text-[color:var(--color-text)] tracking-wide py-3 hover:bg-black/10;
 
         &:hover:after {
             content: "";
             display: none;
         }
-    
+    }
+    &--menuButtonSMWhite{
+        @apply text-white tracking-wide py-3;
+
+        @screen sm {
+            @apply text-[color:var(--color-text)]
+        }
+
+        &:hover:after {
+            content: "";
+            display: none;
+        }
     }
 
     &--magic {
@@ -220,7 +235,7 @@ export default defineComponent({
 }
 
 .threeDButton {
-    transform: translate3d(-2px, -4px, 1px);
+    transform: translate3d(-0px, -4px, 1px);
     transition:
       transform
       600ms
@@ -228,7 +243,7 @@ export default defineComponent({
   }
 
   .threeDButtonAnimation:hover {
-    transform: translate3d(-4px, -8px, 1px);
+    transform: translate3d(-0px, -8px, 1px);
     transition:
       transform
       250ms
@@ -236,7 +251,7 @@ export default defineComponent({
   }
 
   .threeDButtonAnimation:active {
-    transform: translate3d(-1px, -2px, 1px);
+    transform: translate3d(-0px, -2px, 1px);
     transition: transform 34ms;
   }
 

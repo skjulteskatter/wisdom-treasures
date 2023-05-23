@@ -19,11 +19,13 @@
                         <template #icon>
                             <AdjustmentsIcon class="w-5"/>
                         </template>
-                        <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
+                        <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose: any) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
                             @publication-id-array:publication-id-array="setPublicationIdFilter"
                             @contributor-id-array:contributor-id-array="setAuthorIdFilter"
+                            @only-favorites:only-favorites="setFavoriteFilter"
                             :initialPublicationIds="publicationIdFilter"
-                            :initialAuthorIds="authorIdFilter"/>
+                            :initialAuthorIds="authorIdFilter"
+                            :initialOnlyFavorites="onlyFavoriteFilter"/>
                     </BaseButton>
                     <div id="filterButtons" class="flex gap-4 mt-4 flex-wrap">
 
@@ -34,9 +36,22 @@
                             </BaseButton>
                         </div>
 
+                        <div v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md w-min bg-black/10">
+                            <p class="w-max pl-2 pr-1">Author: {{ author.name }}</p> 
+                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{authorIdFilter = authorIdFilter.filter(x => x != author.id); search(undefined)}">
+                                <XIcon class="h-6"/>
+                            </BaseButton>
+                        </div>
 
-                        <div v-if="publicationIdFilter.length > 0" class="flex items-center rounded-md w-min bg-black/10">
-                            <BaseButton theme="menuButton" class="self-center max-h-7" @click="()=>{publicationIdFilter = []; search(undefined)}">
+                        <div v-if="onlyFavoriteFilter" class="flex items-center rounded-md w-min bg-black/10">
+                            <p class="w-max pl-2 pr-1">Favorites Only</p> 
+                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{onlyFavoriteFilter = false; search(undefined)}">
+                                <XIcon class="h-6"/>
+                            </BaseButton>
+                        </div>
+
+                        <div v-if="publicationIdFilter.length + authorIdFilter.length > 0 || onlyFavoriteFilter" class="flex items-center rounded-md w-min bg-black/10">
+                            <BaseButton theme="menuButton" class="self-center max-h-7" @click="()=>{publicationIdFilter = []; authorIdFilter = []; onlyFavoriteFilter = false; search(undefined)}">
                                 <p class="w-max pl-2 pr-1 defaultFontSize">Reset all</p>
                             </BaseButton>
                         </div>
@@ -68,6 +83,7 @@ import BaseInput from './BaseInput.vue';
 import BaseButton from './BaseButton.vue';
 import { AdjustmentsIcon, SwitchVerticalIcon, XIcon } from '@heroicons/vue/outline';
 import FilterModal from './FilterModal.vue';
+import type Fuse from 'fuse.js';
 
 export default defineComponent({
     name: "multi-search",
@@ -92,11 +108,13 @@ export default defineComponent({
             themeHits: [] as Publication[],
 
             publicationIdFilter: [] as string[],
-            favoriteFilter: undefined as boolean | undefined,
+            onlyFavoriteFilter: false as boolean,
             authorIdFilter: [] as string[],
 
             showFilterModal: false as boolean,
             showSortModal: false as boolean,
+
+            maxNumberOfArticlesDisplayed: 100 as number,
         }
     },
     props: {
@@ -120,13 +138,22 @@ export default defineComponent({
             return this.articleHits.length + (!this.onlySearchForArticles ? this.authorHits.length + this.themeHits.length : 0);
         },
         onlySearchForArticles(): boolean {
-            return this.publicationIdFilter.length > 0 || this.authorIdFilter.length > 0;
+            return this.publicationIdFilter.length > 0 || this.authorIdFilter.length > 0 || this.onlyFavoriteFilter;
         },
         publicationIdFilterPublications(): Publication[] {
             return this.allThemes.filter(x => this.publicationIdFilter.includes(x.id));
         },
         authorIdFilterAuthors(): Contributor[] {
             return this.allAuthors.filter(x => this.authorIdFilter.includes(x.id));
+        },
+        fuseArticles() : Fuse<Article> | undefined {
+            return this.store.fuseArticles;
+        },
+        fusePublications() : Fuse<Publication> | undefined{
+            return this.store.fusePublications;
+        },
+        fuseAuthors(): Fuse<Contributor> | undefined{
+            return this.store.fuseAuthors;
         }
     },
     methods: {
@@ -135,16 +162,15 @@ export default defineComponent({
             this.$emit('searchLoading:searchLoading', true);
             
             setTimeout(() => {
-                this.testWait(2000) //TODO remove this
-
                 if (searchWord === undefined)
                     searchWord = this.searchWord ?? "";
 
                 this.searchedWord = searchWord;
 
-                this.themeHits = this.allThemes.filter(x => 
-                    (x.title.includes(this.searchedWord) || x.description.includes(this.searchedWord))
-                );
+                if (this.fusePublications !== undefined){
+                    const result = this.fusePublications.search(searchWord);
+                    this.themeHits = result.map(x => x.item);
+                }
 
                 this.$emit('themes:themeHits', this.onlySearchForArticles ? [] : this.themeHits);
 
@@ -152,16 +178,62 @@ export default defineComponent({
                     (x.name.includes(this.searchedWord) || (x.subtitle ?? "").includes(this.searchedWord) || (x.biography ?? "").includes(this.searchedWord))
                 );
 
-                console.log("AuthorHits:", this.authorHits);
-
                 this.$emit('authors:authorHits', this.onlySearchForArticles ? [] : this.authorHits);
-                
-                this.articleHits = this.allArticles.filter(x => 
-                    (x.content?.content.includes(this.searchedWord) || x.dateWritten.includes(this.searchedWord) || this.themeHits.some(y => y.id == x.publicationId) || this.authorHits.some(y => y.id == x.authorId)) &&
-                    (this.publicationIdFilter.length === 0 || this.publicationIdFilter.includes(x.publicationId)) &&
-                    (this.authorIdFilter.length === 0 || this.authorIdFilter.includes(x.authorId)) &&
-                    (this.favoriteFilter === undefined || this.store.favorites.includes(x.id) === this.favoriteFilter)
-                );
+
+                let  query: Fuse.Expression = {
+                    $and: []
+                }
+
+                if (this.searchedWord.trim().length > 1){
+                    query.$and!.push(
+                        {
+                            $or: [
+                                {
+                                    $path: ['content', 'content'],
+                                    $val: this.searchedWord
+                                },
+                                { dateWritten: this.searchedWord },
+                                { number: `'${this.searchedWord}` },
+                            ]
+                        }
+                    )
+                }
+
+                let orPublicationFilter = this.publicationIdFilter.map(id => ({publicationId : `'${id}`}));
+                if (this.publicationIdFilter.length > 0){
+                    query.$and!.push( 
+                        {$or: orPublicationFilter}
+                    )
+                }
+
+                let orAuthorFilter = this.authorIdFilter.map(id => ({authorId : `'${id}`}));
+                if (this.authorIdFilter.length > 0){
+                    query.$and!.push( 
+                        {$or: orAuthorFilter}
+                    )
+                }
+
+                if (query.$and?.[0] && query.$and.length == 1){
+                    query = query.$and![0];
+                }
+
+                console.log(JSON.stringify(query, null, 2));
+                if (this.fuseArticles !== undefined){
+                    
+                    let result: Fuse.FuseResult<Article>[] = [];
+                    if ('$and' in query && query.$and?.length){ result = this.fuseArticles.search(query) }
+                    else if ('$or' in query && query.$or?.length){ result = this.fuseArticles.search(query) }
+
+                    this.articleHits = (result.length ? result.map(x => x.item) : this.allArticles);
+                }
+
+                if (this.onlyFavoriteFilter)
+                {
+                    this.articleHits = this.articleHits.filter(x => this.store.favorites.includes(x.id));
+                }
+
+                this.articleHits = this.articleHits.slice(0,this.maxNumberOfArticlesDisplayed);
+
                 this.$emit('articles:articleHits', this.articleHits);
 
                 this.$emit('searchedWord:searchedWord', this.searchedWord);
@@ -175,16 +247,9 @@ export default defineComponent({
         setAuthorIdFilter(value: string[]) {
             this.authorIdFilter = value;
         },
-        setFavoriteFilter(value: boolean | undefined) {
-            this.favoriteFilter = value;
+        setFavoriteFilter(value: boolean) {
+            this.onlyFavoriteFilter = value;
         },
-        testWait(ms: number) {
-            var start = Date.now(),
-                now = start;
-            while (now - start < ms) {
-              now = Date.now();
-            }
-        }
     },
     mounted() {
         if (this.initialSearchWord != "") {

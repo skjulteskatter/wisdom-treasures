@@ -3,8 +3,9 @@
         <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${themesOrCurrentPath}${publication.id}`})}"
           :class="[{'h-full': strechY}]">
           <template #default>
-            <div class="h-full flex">
-                <p class="self-center text-xl font-bold">{{ publication.title }}</p>
+            <div class="h-full flex items-center justify-between">
+                <p class="self-center text-base font-bold text-[color:var(--wt-color-text-grey)] tracking-wide w-4/5 truncate">{{ publication.title }}</p>
+                <ArrowRightIcon class="h-4 text-[color:var(--wt-color-secondary)]"/>
             </div>
           </template>
         </BaseCard>
@@ -12,10 +13,11 @@
   </template>
     
   <script lang="ts">
-  import { Publication } from 'hiddentreasures-js';
-  import { defineComponent } from 'vue';
+  import type { Publication } from 'hiddentreasures-js';
+  import { defineComponent, type PropType } from 'vue';
   import BaseCard from './BaseCard.vue';
-import { useSessionStore } from '@/stores/session';
+  import { useSessionStore } from '@/stores/session';
+  import { ArrowRightIcon } from '@heroicons/vue/solid';
   
     export default defineComponent({
       name: "ThemeCard",
@@ -26,7 +28,7 @@ import { useSessionStore } from '@/stores/session';
       },
       props: {
         publication: {
-            type: Publication,
+            type: Object as PropType<Publication>,
             required: true
         },
         strechY: {
@@ -35,7 +37,8 @@ import { useSessionStore } from '@/stores/session';
         },
       },
       components: {
-        BaseCard
+        BaseCard,
+        ArrowRightIcon
       },
       computed: {
         themesOrCurrentPath(){

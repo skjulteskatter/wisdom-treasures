@@ -23,6 +23,78 @@ export const history = {
     delete(id: string) {
         localStorage.removeItem(this.historyPrefix + id);
     },
+    deleteAll(){
+        const allItemKeys = this.getAll().keys();
+        for (const key of allItemKeys) {
+            this.delete(key);
+        }
+    }
+};
+
+export const mannaHistory = {
+
+    mannaHistoryPrefix: 'mannaHistory:',
+
+    getAll(): Map<string, string> {
+        const items : Map<string, string> = new Map<string, string>();
+        for (const key in localStorage) {
+            if (key.startsWith(this.mannaHistoryPrefix)) {
+                const item = localStorage.getItem(key);
+                if (item == null) continue;
+                items.set(key.replace(this.mannaHistoryPrefix, ""), item);
+            }
+        }
+
+        return items;
+    },
+    get(id: string): string | null {
+        return localStorage.getItem(this.mannaHistoryPrefix + id);
+    },
+    addOrReplace(id: string, date: number = Date.now()) {
+        localStorage.setItem(this.mannaHistoryPrefix + id, date.toString());
+    },
+    delete(id: string) {
+        localStorage.removeItem(this.mannaHistoryPrefix + id);
+    },
+    deleteAll(){
+        const allItemKeys = this.getAll().keys();
+        for (const key of allItemKeys) {
+            this.delete(key);
+        }
+    }
+};
+
+export const favorites = {
+
+    favoritePrefix: 'favorite:',
+
+    getAll(): Map<string, string> {
+        const items : Map<string, string> = new Map<string, string>();
+        for (const key in localStorage) {
+            if (key.startsWith(this.favoritePrefix)) {
+                const item = localStorage.getItem(key);
+                if (item == null) continue;
+                items.set(key.replace(this.favoritePrefix, ""), item);
+            }
+        }
+
+        return items;
+    },
+    get(id: string): string | null {
+        return localStorage.getItem(this.favoritePrefix + id);
+    },
+    addOrReplace(id: string) {
+        localStorage.setItem(this.favoritePrefix + id, Date.now().toString());
+    },
+    delete(id: string) {
+        localStorage.removeItem(this.favoritePrefix + id);
+    },
+    deleteAll(){
+        const allItemKeys = this.getAll().keys();
+        for (const key of allItemKeys) {
+            this.delete(key);
+        }
+    }
 };
 
 export const search = {
@@ -62,6 +134,12 @@ export const search = {
     delete(id: string) {
         localStorage.removeItem(this.searchPrefix + id);
     },
+    deleteAll(){
+        const allItemKeys = this.getAll().keys();
+        for (const key of allItemKeys) {
+            this.delete(key);
+        }
+    }
 };
 
 export const language = {

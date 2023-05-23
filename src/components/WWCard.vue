@@ -1,6 +1,6 @@
 <template>
     <main>
-        <BaseCard class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${currentPath}${article.number}`})}"
+        <BaseCard :WWCard="true" class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${currentPath}${article.number}`})}"
           :class="[{'h-full': strechY}]">
           <template #default>
             <slot name="default" v-if="$slots.default" />
@@ -12,22 +12,22 @@
             <slot name="footer" v-if="$slots.footer"></slot>
             <div v-else class="flex">
               <div class="self-center mr-2">
-                  <BookOpenIcon class="h-8"/>
+                  <BookOpenIcon class="h-5 opacity-40"/>
               </div>
-              <div class="self-center">
+              <div class="text-xs self-center opacity-50 truncate w-4/5">
                 {{categoryName}}
               </div>
             </div>
             
           </template>
         </BaseCard>
-        <WWCardModal :show="openWWModal" @close="e => {navigateBack(e); $emit('closeModal', e)}" :article="article"/>
+        <WWCardModal :show="openWWModal" @close="(e: Event | undefined) => {navigateBack(e); $emit('closeModal', e)}" :article="article"/>
     </main>
   </template>
     
   <script lang="ts">
-  import { Article } from 'hiddentreasures-js';
-  import { defineComponent } from 'vue';
+  import type { Article } from 'hiddentreasures-js';
+  import { defineComponent, type PropType } from 'vue';
   import BaseCard from './BaseCard.vue';
   import { BookOpenIcon } from '@heroicons/vue/outline';
   import WWCardModal from './WWCardModal.vue';
@@ -44,7 +44,7 @@ import { useSessionStore } from '@/stores/session';
       },
       props: {
         article: {
-            type: Article,
+            type: Object as PropType<Article>,
             required: true
         },
         strechY: {

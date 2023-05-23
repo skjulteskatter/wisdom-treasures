@@ -52,6 +52,16 @@
     --pad-block: 4em;
     --pad-inline: 5.5em;
 }
+@media(max-width: 925px){
+    :root{
+        --pad-inline: 3em;
+    }
+}
+@media(max-width: 600px){
+    :root{
+        --pad-inline: 2em;
+    }
+}
 html{
     margin: 0}
 body{
@@ -59,12 +69,12 @@ body{
     background-color: white;
 }
 h1{
-    font-size: clamp(1rem, 6vw, 3.5rem); /* nie wiem jaka jest najmniejsza wartosć */
+    font-size: clamp(2rem, 6vw, 3.5rem);
     font-weight: bold;
     letter-spacing: 1px;
 }
 h2{
-    font-size: 4vw;
+  font-size: clamp(2rem, 4vw, 3.5rem);
     font-weight: bold;
     line-height: 4rem;
 }
@@ -89,6 +99,9 @@ p{
   justify-content: space-between;
   z-index:99
 }
+.inner-contact-container p{
+  margin-right: 2em
+}
 .contact-form{
     display: flex;
     flex-direction: column;
@@ -111,6 +124,7 @@ p{
 .contact-form button {
     align-self: flex-end;
 }
+
 .deco-line{
   height: 5px;
   width: 20vw;
@@ -121,18 +135,32 @@ p{
   margin: 2em 0 .75em 1em
 }
 .contact-form button {
-        align-self: flex-end;
-        margin-top: 1em;
-        padding: .5em 2.5em;
-        border-radius: 3em;
-        background-color: var(--accent-clr);
-        color: white
-    }
+    align-self: flex-end;
+    margin-top: 1em;
+    padding: .5em 2.5em;
+    border-radius: 3em;
+    background-color: var(--accent-clr);
+    color: white
+}
 .watermark-contact{
     height: 50em;
     position: absolute;
     bottom:-22em;
     left:-16em;
     opacity: .35;
+}
+
+@media(max-width:600px){
+  .inner-contact-container{
+    justify-content:center;
+    flex-direction: column
+  }
+  .inner-contact-container p{
+    margin-right:0;
+    margin-bottom:0
+  }
+  .contact-form input, textarea{
+    width: 100%
+  }
 }
   </style>

@@ -7,7 +7,7 @@
             be updated on new content and features in the app.</p>
       </div>
       
-        <div class="insight">
+        <div class="insight-out">
             <div class="insight-cont">
                 <p class="insight-title">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                 <p class="insight-date">22. juli 2022</p>
@@ -65,6 +65,16 @@
         --pad-block: 4em;
         --pad-inline: 5.5em;
     }
+    @media(max-width: 925px){
+        :root{
+            --pad-inline: 3em;
+        }
+    }
+    @media(max-width: 600px){
+        :root{
+            --pad-inline: 2em;
+        }
+    }
     html{
         margin: 0}
     body{
@@ -73,12 +83,12 @@
     }
     /* TYPOGRAPHY */
     h1{
-        font-size: clamp(1rem, 6vw, 3.5rem); /* nie wiem jaka jest najmniejsza wartosć */
+        font-size: clamp(2rem, 6vw, 3.5rem);
         font-weight: bold;
         letter-spacing: 1px;
     }
     h2{
-        font-size: 4vw;
+        font-size: clamp(2rem, 4vw, 3.5rem);
         font-weight: bold;
         line-height: 4rem;
     }
@@ -95,7 +105,15 @@
         padding-inline: var(--pad-inline);
         padding-top: 20vh
     }
-    .text-insight-container::before{
+    @media(max-width:800px){
+        .text-insight-container{
+            width: 80%;}
+    }
+    @media(max-width:800px){
+        .text-insight-container{
+            width: 100%;}
+    }
+    /* .text-insight-container::before{
         content: '';
         position: absolute;
         bottom: 4.75em;
@@ -103,8 +121,8 @@
         width: 12em;
         height: 1.5em;
         background: var(--accent-clr);
-    }
-    .insight{
+    } */
+    .insight-out{
         padding-inline: var(--pad-inline);
         padding-block: var(--pad-block);
         display: flex;
@@ -119,6 +137,11 @@
         background-color: white;
         box-shadow: 0 0 25px #00000031;
         z-index: 1;
+    }
+    @media(max-width:600px){
+        .insight-cont{
+            padding:2em
+        }
     }
     .insight-title{
         font-weight:bold;

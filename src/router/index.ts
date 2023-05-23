@@ -3,8 +3,7 @@ import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
 
 const WWCard = {
-  //TODO: Find a better regex for 1-5 numbers. This is awful
-  path:':wwNumber(\\d|\\d\\d|\\d\\d\\d|\\d\\d\\d\\d|\\d\\d\\d\\d\\d$)',
+  path:':wwNumber(\\d{1,5}$)',
   children: [],
   meta: {
     scrollUp: false,
@@ -43,6 +42,7 @@ export const routes = [
           WWCard,
         ],
         meta:{
+          requiresAuth: true,
           scrollUp: true,
         }
       },
@@ -54,6 +54,7 @@ export const routes = [
           WWCard
         ],
         meta:{
+          requiresAuth: true,
           scrollUp: true,
         }
       },
@@ -79,6 +80,10 @@ export const routes = [
             name: 'themes',
             path: '',
             component: () => import('../views/ThemesView.vue'),
+            meta: {
+              requiresAuth: true,
+              scrollUp: true,
+            },
           },
           Theme
         ]
@@ -95,17 +100,26 @@ export const routes = [
           WWCard
         ]
       },
+      //{
+      //  path: '/manna',
+      //  name: 'manna',
+      //  component: () => import('../views/MannaView.vue'),
+      //  meta: {
+      //    requiresAuth: true,
+      //    scrollUp: true,
+      //  },
+      //  children: [
+      //    WWCard
+      //  ]
+      //},
       {
-        path: '/manna',
-        name: 'manna',
-        component: () => import('../views/MannaView.vue'),
+        path: '/store',
+        name: 'store',
+        component: () => import('../views/StoreView.vue'),
         meta: {
           requiresAuth: true,
           scrollUp: true,
         },
-        children: [
-          WWCard
-        ]
       },
       {
         path: '/favorites',
@@ -179,6 +193,9 @@ export const routes = [
     path: '/:pathMatch(.*)*',
     name: 'notfound',
     component: () => import('../views/NotFoundView.vue'),
+    meta: {
+      requiresAuth: false
+    }
   }
 ]
 

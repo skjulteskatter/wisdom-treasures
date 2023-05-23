@@ -3,8 +3,8 @@
       <BaseCard :loading="loading">
         <template #footer>
             <div class="w-full flex">
-                <div class="grow self-center" v-html="mannaCopyRightHTML"/> 
-                <div>
+                <div class="grow self-center text-xs text-[color:var(--wt-color-text-grey)]" v-html="mannaCopyRightHTML"/> 
+                <div class="self-center">
                     <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
                     <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
                         <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
@@ -17,8 +17,7 @@
             <div id="spacerdiv1" class="flex grow"/>
             <div class="flex max-w-2xl flex-col font-serif">
                 <div class="flex self-center">
-                  <!--Using v-show insetad of v-if to make smoother transition between the two-->
-                  <p class="self-center font-bold text-3xl mt-3">{{ manna.reference }}</p>
+                  <p class="self-center font-bold text-xl mt-3">{{ manna.reference }}</p>
                 </div>
                 <div class="grow m-5">{{ mannaContent }} </div>
             </div>
@@ -30,14 +29,14 @@
   </template>
     
   <script lang="ts">
-  import { defineComponent } from 'vue';
+  import { defineComponent, type PropType } from 'vue';
   import BaseCard from './BaseCard.vue';
   import { useSessionStore } from '@/stores/session';
   import { uuid } from 'vue-uuid';
   import PopUpMessage from './PopUpMessage.vue';
   import BaseButton from './BaseButton.vue';
   import { ClipboardCopyIcon } from '@heroicons/vue/outline';
-  import { Manna } from '@/classes/manna';
+  import type { Manna } from '@/classes/manna';
   import { getCopyRightWithShortLinkHTML, getContent } from '@/services/mannaService'
 
     export default defineComponent({
@@ -51,7 +50,7 @@
       },
       props: {
         manna: {
-            type: Manna,
+            type: Object as PropType<Manna>,
             required: true
         },
         strechY: {

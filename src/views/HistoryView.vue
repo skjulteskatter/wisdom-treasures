@@ -1,23 +1,30 @@
 <template>
   <main>
-    <div class="mt-4">
-      <BackButton/>
-      <h1 class="my-6 text-3xl font-bold">History</h1>
-      <div class="flex">
+    <div>
+      <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
+          <BackButton/>
+          <h1 class="my-4 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">History</h1>
+          <BackButton class="opacity-0"/>
+      </div>
+      <div class="flex mx-5 sm:mx-0 mt-5 sm:mt-0">
         <div class="grow"/>
         <div class="flex flex-col">
-          <div v-for="(value, key) in periods" :key="key">
+          <ToggleSlideButton :label="'Show only manna history'" v-model="showOnlyMannaHistory"/>
+          <div v-for="(value, key) in periods" :key="key + showOnlyMannaHistory.toString()">
             <div id="wrapperDiv" :class="{'hidden' : loadPeriodName[key] !== true}">
-              <div class="text-2xl font-bold">{{key}}</div>
-              <div class="border-l-2 pl-4 my-3 border-black/50">
-                <div class="" v-for="article in getArticlesFromDays(value, key.toString())" :key="article.id">
+              <div class="text-base sm:text-2xl font-bold opacity-80 flex cursor-pointer whitespace-nowrap w-min" @click="addOrRemoveHiddenPeriod(key.toString())">
+                {{key}}
+                <ChevronUpIcon class="h-6 self-center ml-2" :class="{'rotate-180': hiddenPeridos.includes(key.toString())}"/>
+              </div>
+              <div class="border-l-2 pl-4 ml-2 my-6 border-[color:var(--wt-color-secondary-light)]" :class="{'hidden' : hiddenPeridos.includes(key.toString())}">
+                <div class="" v-for="article in getArticlesFromDays(value, key.toString())" :key="article.id + showOnlyMannaHistory.toString()">
                   <WWCard :article="article" class="my-2 sm:max-w-lg">
                     <template #footer>
                       <div class="flex">
                         <div class="self-center mr-2">
-                          <ClockIcon class="h-8 opacity-50"/>
+                          <ClockIcon class="h-5 opacity-40"/>
                         </div>
-                        <div class="self-center opacity-50">{{getStringFromDate(historyIds.find(x => x.id == article.id)?.lastViewed ?? new Date)}}</div>
+                        <div class="self-center opacity-50 text-xs">{{getStringFromDate(historyIds.find(x => x.id == article.id)?.lastViewed ?? new Date)}}</div>
                       </div>
                     </template>
                   </WWCard>
@@ -43,15 +50,18 @@
   import BackButton from '@/components/BackButton.vue';
   import { useSessionStore } from '@/stores/session';
   import WWCard from '@/components/WWCard.vue';
-  import { history } from '@/services/localStorage';
-import type { Article } from 'hiddentreasures-js';
-import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
+  import { mannaHistory, history } from '@/services/localStorage';
+  import type { Article } from 'hiddentreasures-js';
+  import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
+  import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
+  import { ChevronUpIcon } from '@heroicons/vue/outline';
   
     export default defineComponent({
-      name: "SearchView",
+      name: "HistoryView",
       data() {
           return {
               store: useSessionStore(),
+              showOnlyMannaHistory: true,
               periods: {
                 "Today": [-1,1],
                 "This Week": [1,7],
@@ -59,30 +69,47 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
                 "This Year": [30,365],
                 "Earlier": [365,1000],
               } as {[key:string]: [number, number]},
-              historyIds: [] as {id: string, lastViewed: Date}[],
+              historyIds: [] as {id: string, lastViewed: Date, manna: boolean}[],
               loadPeriodName : {} as {[key:string]:boolean},
+              displayedPeriodKeys: [] as string[],
+              historyArticles: [] as Article[],
+              mannaHistoryArticles: [] as Article[],
+              hiddenPeridos: [] as string[],
           }
       },
       components: {
-          BackButton,
-          WWCard,
-          ClockIcon,
-          QuestionMarkCircleIcon
-      },
+    BackButton,
+    WWCard,
+    ClockIcon,
+    QuestionMarkCircleIcon,
+    ToggleSlideButton,
+    ChevronUpIcon
+},
       computed: {
         historyIsEmpty() {
           for (let _ in this.loadPeriodName) {return false} return true;
         },
         articles(): Article[]{
           return Array.from(this.store.articles.values());
-        }
+        },
       },
       mounted() {
         this.setHistoryIds();
       },
       methods: {
+        addOrRemoveHiddenPeriod(key: string){
+          if (this.hiddenPeridos.includes(key)){
+            this.hiddenPeridos = this.hiddenPeridos.filter(x => x != key);
+          } else {
+            this.hiddenPeridos.push(key);
+          }
+        },
         getArticlesFromDays(days: [number, number], key:string) : Article[]{
           let IDs : string[] = this.historyIds.filter(x => {
+
+              if (this.showOnlyMannaHistory && ! x.manna){
+                return false;
+              }
 
               //Create date without hours, minutes...
               let y = new Date(x.lastViewed.getTime());
@@ -99,17 +126,19 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
               if ((this.historyIds.find(x => x.id == a.id)?.lastViewed ?? new Date()) < (this.historyIds.find(x => x.id == b.id)?.lastViewed ?? new Date())) return 1;
               return -1;
             });
-
-            if (articles.length > 0) {
-              this.loadPeriodName[key] = true;
-            }
+            
+            this.loadPeriodName[key] = articles.length > 0;
 
             return articles;
         },
         setHistoryIds(){
           for (let [key, value] of history.getAll())
           {
-            this.historyIds.push({id: key, lastViewed: new Date(+(value ?? Date.now()))});
+            this.historyIds.push({id: key, lastViewed: new Date(+(value ?? Date.now())), manna: false});
+          }
+          for (let [key, value] of mannaHistory.getAll())
+          {
+            this.historyIds.push({id: key, lastViewed: new Date(+(value ?? Date.now())), manna: true});
           }
         },
         getStringFromDate(date: Date): string {
@@ -120,7 +149,7 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
           if (timeDiff < 60 * 1000){
             return "Just now";
           } else if (timeDiff < 60 * 60 * 1000){
-            return `${(timeDiff/1000/60).toFixed()} miuntes ago`;
+            return `${(timeDiff/1000/60).toFixed()} minutes ago`;
           } else if (timeDiff < 24 * 60 * 60 * 1000){
             return `${(timeDiff/1000/60/60).toFixed()} hours ago`;
           } else if (Date.now() - date.getTime() < 24 * 6){

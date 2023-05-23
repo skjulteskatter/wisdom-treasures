@@ -5,14 +5,14 @@
             <slot name="secondary" class="block tracking-wide"></slot>
         </div>
         <div 
-            class="flex items-center"
+            class="flex items-center w-full"
             :class="[error ? 'shake' : '']"
             @mouseover="hover = true"
             @mouseleave="hover = false"
             >
             <component :is="insideHUMenu ? 'MenuItem' : 'div'" as="div">
-                <div v-if="styleType == 'search'" class="w-5 absolute left-2 -top-[10px] cursor-pointer z-40 opacity-40" @click="(_event: any) => search()">
-                    <SearchIcon/>
+                <div v-if="styleType == 'search'" class="w-6 absolute left-2.5 -top-[11px] cursor-pointer z-40" @click="(_event: any) => search()">
+                    <SearchIcon :class="whiteText === true ? 'text-white/60' : 'opacity-40'"/>
                 </div>
             </component>
             <input
@@ -20,11 +20,12 @@
                 @focusout="focus = false"
                 @keyup.enter ="(_event: any) => search()"
                 :type="getType"
-                class="px-2 py-1 rounded-md border-black/20 placeholder-gray-500 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full text-base"
-                :class="[error ? ' focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', 
-                    styleType === 'search' ? ['pl-8 pr-8 bg-black/10 border-0'] : '', 
+                class="px-2 rounded-md border-black/20 tracking-wide focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 w-full placeholder:text-base"
+                :class="[error ? 'focus-visible:border-[color:var(--wt-color-error)] focus-visible:ring-[color:var(--wt-color-error)] border-[color:var(--wt-color-error)]' : ' focus-visible:border-primary focus-visible:ring-primary', 
+                    styleType === 'search' ? ['pl-11 pr-10 bg-black/10 border-0'] : '',
                     styleType === 'password' ? 'pr-8' : '',
-                    size === 'lg' ? 'text-2xl' : '',]"
+                    whiteText === true ? 'text-white placeholder-white/90 bg-white/40' : '',
+                    size === 'lg' ? 'text-xl' : '',]"
                 :value="modelValue"
                 :disabled="disabled"
                 :placeholder="placeholder"
@@ -41,7 +42,7 @@
                 class="w-5 absolute -left-7 -top-[10px] cursor-pointer opacity-40" 
                 @click="(_event: any) => $emit('update:modelValue', '')"
                 >
-                    <XIcon/>
+                    <XIcon :class="{whiteText : 'text-white'}"/>
                 </div>
             </div>
         </div>
@@ -121,6 +122,10 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        whiteText: {
+            type: Boolean,
+            default: false,
+        }
     },
     emits: ["update:modelValue", "searchAction"],
     computed: {
@@ -155,7 +160,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-
 .shake{
     animation: shake 0.82s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform: translate3d(0, 0, 0);
@@ -190,5 +194,4 @@ export default defineComponent({
 .glassDropDown > div {
 	background: rgba(255, 255, 255, 0.8);
 }
-
 </style>

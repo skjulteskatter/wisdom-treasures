@@ -87,11 +87,15 @@ export async function signupWithEmailAndPassword(email: string, password: string
 }
 
 let userLoaded: boolean = false || !!auth.currentUser;
+let storeInitialized = false;
 export function getCurrentUserPromise(): Promise<User | null> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
      if (userLoaded) {
-          resolve(auth.currentUser);
-          return;
+            resolve(auth.currentUser);
+            if (!storeInitialized){
+                await userLoggedInCallback();
+            }
+            return;
      }
      const unsubscribe = auth.onAuthStateChanged(async (user : User | null) => {
         userLoaded = true;
@@ -105,6 +109,12 @@ export function getCurrentUserPromise(): Promise<User | null> {
   });
 }
 
+//auth.onAuthStateChanged(async () => {
+//    if (!!auth.currentUser){
+//        await userLoggedInCallback();
+//    }
+//})
+
 /**
  * Things you do when the user logs in, no matter which method
  */
@@ -112,23 +122,23 @@ async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
     const store = useSessionStore();
     let lang = await store.initializeLanguage();
-    store.favorites = await favorites.get() ?? [];
+
+    await store.initializeFavorites();
 
     await store.initializePublications();
     const pubIds = Array.from(store.publications.keys());
-    console.log("pubIds: ", pubIds);
 
     await store.initializeArticles(pubIds);
     let authorIds = [...new Set(Array.from(store.articles.values()).map(x => x.authorId))];
-    console.log("Remove this: ",authorIds)
 
     await store.initializeAuthors(authorIds);
     await store.intitializeArticleNumberLookup();
 
+    await store.intitializeProducts();
+    await store.intitializeStripeService();
+
     store.sessionInitialized = true;
-    
-    return;
-    await store.initializeArticles(Array.from(store.publications.keys()));
+    storeInitialized = true;
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? ""): Promise<boolean> {

@@ -1,46 +1,53 @@
 <template>
-  <main class="flex flex-col justify-between">
-    <div class="flex items-center shadow-md sm:shadow-none z-50 max-h-16 sm:h-auto w-full bg-(--wt-c-black-soft) absolute top-0 left-0 sm:static px-8 sm:px-0 ">
-      <h1 class="text-xl my-6 sm:text-3xl sm:font-bold">
+  <main>
+    <div class="flex bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full absolute top-0 left-0 sm:static px-6 sm:px-0 ">
+      <h1 class="text-base my-4 sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
         <span v-if="currentUser" class="sm:font-bold">
-          Welcome, 
-          <span class="animated-gradient sm:font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
+          {{ $t('welcome')}},&nbsp
+          <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
             {{currentUser.displayName}}
           </span>
         </span>
-        <span v-else class="sm:font-bold"> 
+        <span v-else class="font-bold"> 
           Welcome to 
-          <span class="animated-gradient sm:font-bold">
+          <span class="animated-gradient font-bold">
             WisdomTreasures
-          </span> 
+          </span>
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mb-20 sm:grid sm:grid-cols-3 sm:gap-2 px-8 sm:px-0">
-
-      <div class="flex my-container-test sm:hidden">
-        <div class="my-box-test">
-          <p>History</p>
-          <p>Favorites</p>
-          <p>Daily Word</p>
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-custom mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
+      <div class="flex col-span-3">
+        <div class="sm:hidden flex flex-col w-1/2 justify-between -ml-12 mt-12 mb-28">
+          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-22vh" @click="(e: Event | undefined) => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-3/4 h-1/3"></div></p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="navigate('history')">History</p>
         </div>
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-3/4" :customTitle="showWordOfTheDay ? ' ' : ' ' "/>
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class=" w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
       </div>
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class="hidden sm:block col-span-2" :customTitle="showWordOfTheDay ? 'Word of the day' : ''"/>
-        
-        <div class="flex-shrink-0">
-      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end w-full mt-2 flex-shrink-0 sm:mt-0 sm:mx-0 sm:h-full">
-        <p class="text-xl">Generate new word</p>
+      <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
+    </div>
+
+      <div class="ml-5 sm:ml-0">
+        <h1 class="text-xl font-bold text-primary my-5 sm:mt-0">ORIGIN</h1>
+        <OriginsSwiper/>
+      </div>
+      
+      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 self-end mt-5vh flex-shrink-0 md:mt-0 sm:mx-0">
+        <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
         <template #icon>
-          <RefreshIcon class="w-8"/>
+          <!-- <RefreshIcon class="h-5 md:hidden"/> -->
         </template>
       </ThreeDButton>
-        </div>
-    </div>
-    <div id="WWCards" class="hidden sm:grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-      <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
+
+    <div class="text-xl sm:text-2xl font-bold text-[color:var(--wt-color-text-grey)] mt-10 mx-5 sm:mx-0">Other wisdom words</div>
+    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
+      <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
+    </div>
+    <div id="loaderDiv">
+      <Loader :loading="loadingMoreArticles" class="mt-2"/>
     </div>
     <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
   </main>
@@ -59,6 +66,10 @@ import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
 import BaseButton from "@/components/BaseButton.vue";
+import Loader from '@/components/Loader.vue';
+import Origin from '@/components/Origin.vue';
+import { mannaHistory } from '@/services/localStorage';
+import OriginsSwiper from '@/components/OriginsSwiper.vue';
 
   export default defineComponent({
     name: "HomeView",
@@ -69,15 +80,21 @@ import BaseButton from "@/components/BaseButton.vue";
         store: useSessionStore(),
         randomArticle : null as Article | null,
         showWordOfTheDay : false as boolean,
+        randomArticleList : [] as Article[],
+        shuffeledArticleKeys: [] as string[],
+        loadingMoreArticles: false as boolean,
       }
     },
     components: {
-      WWCard,
-      WWShowCard,
-      ThreeDButton,
-      RefreshIcon,
-      BaseButton
-    },
+    WWCard,
+    WWShowCard,
+    ThreeDButton,
+    RefreshIcon,
+    BaseButton,
+    Loader,
+    Origin,
+    OriginsSwiper
+},
     computed: {
       articles() : Article[] {
         const articles = Array.from(this.store.articles.values());
@@ -124,8 +141,37 @@ import BaseButton from "@/components/BaseButton.vue";
     async mounted() {
       this.currentUser = await getCurrentUserPromise() as User;
       if (this.sessionInitialized) this.getAndSetWordOfTheDayArticle();
+
+      for (const key of this.store.articles.keys()) {
+          this.shuffeledArticleKeys.push(key);
+      }
+      
+      this.fillRandomArticles(20);
+
+      window.addEventListener('scroll', this.onScroll);
     },
     methods:{
+      async onScroll(){
+        let bottom = window.innerHeight + window.pageYOffset == document.body.scrollHeight;
+        if (!bottom) return;
+        this.loadingMoreArticles = true;
+        setTimeout(() => {
+          this.fillRandomArticles(20);
+        }, 1);
+        setTimeout(() => {
+          this.loadingMoreArticles = false;
+        }, 200);
+      },
+      fillRandomArticles(paginationCount : number){
+        for (let i = 0; i < Math.min(paginationCount, this.shuffeledArticleKeys.length); i++) {
+          let randomIndex = Math.floor(Math.random() * this.shuffeledArticleKeys.length);
+          let randomArticle = (this.store.articles.get(this.shuffeledArticleKeys[randomIndex]))
+          if (randomArticle != undefined){
+            this.randomArticleList.push(randomArticle);
+            this.shuffeledArticleKeys.splice(randomIndex, 1);
+          }
+        }
+      },
       navigate(name: string, e? : Event){
 
       if (name === "register"){
@@ -155,6 +201,7 @@ import BaseButton from "@/components/BaseButton.vue";
       },
       getAndSetRandomArticle(): void {
         this.randomArticle = this.articles[Math.floor(Math.random()*this.articles.length)] || null;
+        mannaHistory.addOrReplace(this.randomArticle.id);
         this.showWordOfTheDay = false;
       },
       getAndSetWordOfTheDayArticle(): void {
@@ -179,38 +226,28 @@ import BaseButton from "@/components/BaseButton.vue";
 .h-80vh{
   height: 80vh
 }
-.my-container-test{
-  justify-content: space-between;
-  margin-bottom: min(1em)
+.tracking-075{
+  letter-spacing:0.075em
 }
-.my-box-test{
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  rotate: 180deg;
+.mt-5vh{
+  margin-top:5vh
 }
-
-.my-box-test p{
-  font-size: clamp(1rem, 2.5vh, 1.5rem);
-  writing-mode:vertical-rl;
-  margin-bottom: min(1.5em);
-  color: var(--wt-c-text-light-2);
-  font-weight: bold;
-  letter-spacing: 1px
+.mt-custom{
+  margin-top:11vh
 }
-.my-box-test p:last-child{
-  font-size: clamp(1rem, 2.8vh, 1.5rem);
-  margin-bottom: 0;
-  color: var(--wt-color-primary);
+.w-22vh{
+  width:22vh
 }
-.my-box-test p:last-child::before{
-  content: "";
-  position: absolute;
-  top:0;
-  bottom:0;
-  right:1.75em;
-  background-color: var(--wt-color-secondary);
-  width: 2px;
+.bottom-7vh{
+  bottom:7vh
+}
+@media(min-width:640px){
+  .mt-custom{
+    margin-top:1em
+  }
+}
+.rounded-t-4xl{
+  border-top-left-radius: 2.5rem; /* 40px */
+  border-top-right-radius: 2.5rem; /* 40px */ 
 }
 </style>

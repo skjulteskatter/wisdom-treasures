@@ -1,6 +1,7 @@
 {
-    "common_login": "Sign in",
-    "common_logout": "Log out!",
-    "common_register": "Create account",
-    "common_loading": "Loading"
+  "common_login": "Sign in",
+  "common_logout": "Log out!",
+  "common_register": "Create account",
+  "common_loading": "Loading",
+  "welcome": "Welcome"
 }

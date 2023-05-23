@@ -1,37 +1,41 @@
 <template>
     <main>
-      <BaseCard>
-        <template #default>  
+      <BaseCard :class="[WWCardHomeView ? 'h-68vh flex flex-col justify-between' : '']" :hideFooter="forThemeView">
+        <template #header class="">
           <div class="flex">
-            <div id="spacerdiv1" class="flex grow"/>
-            <div class="flex max-w-2xl flex-col font-serif sm:h-auto justify-center">
-                <div class="flex self-center">
-                  <!--Using v-show instead of v-if to make smoother transition between the two-->
-                  <p v-show="customTitle" class="self-center font-bold text-3xl mt-3">{{ customTitle }}</p>
-                  <img v-show="!customTitle" src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
+                  <div class="grow"/>
+                  <div class="self-center">
+                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
+                    <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2 opacity-70" @click="() => {copyToClipBoard()}">
+                        <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
+                    </BaseButton>
+                  </div>
+                  <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2 opacity-70" @click="() => {favoriteButton()}">
+                      <HeartIconSolid v-if="favorite" class="h-8 text-[color:var(--wt-color-secondary)] pop"/>
+                      <HeartIcon v-else class="h-8 text-[color:var(--wt-color-secondary)] pop"/>
+                  </BaseButton>
                 </div>
-                <div class="sm:grow m-5" v-html="articleContent"/>
+        </template>
+        <template #default>
+          <div class="flex flex-col h-full md:items-center">
+            <div class="flex max-w-2xl flex-col sm:h-auto justify-center md:text-center">
+
+                <!-- <div class="flex self-center">
+                  <p v-show="customTitle" class="self-center font-bold text-xl mt-3">{{ customTitle }}</p>
+                  <img v-show="!customTitle" src="/img/quote.svg" alt="“" class="self-center max-h-10 mt-2"/>
+                </div> -->
+        
+                <div class="font-serif sm:grow m-5 leading-6 text-sm" v-html="articleContent"/>
+                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic text-xs ml-5 sm:ml-0 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">{{getSignature}}</div>
             </div>
-            <div id="spacerdiv2" class="flex grow"/>
           </div>
         </template>
         <template #footer>
-            <div class="w-full flex">
-                <div class="grow self-center flex">See more from&nbsp;
-                    <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
-                    &nbsp;category&nbsp;
-                    <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic">{{getSignature}}</div>
-                </div> 
-                <div>
-                    <PopUpMessage class="z-10" :open="openCopyToClipBoardPopUpSemaphore > 0" :text="'Copied to clipboard!'"></PopUpMessage>
-                    <BaseButton theme="menuButton" size="small" class="hidden sm:flex w-8 self-center max-h-8 mx-2" @click="() => {copyToClipBoard()}">
-                        <ClipboardCopyIcon class="h-8 opacity-50 pop" :key="copyToClipBoardKey"/>
-                    </BaseButton>
-                </div>
-                  <BaseButton theme="menuButton" size="small" class="hidden sm:flex w-8 self-center max-h-8 mx-2" @click="() => {favoriteButton()}">
-                      <HeartIconSolid v-if="favorite" class="h-8 error-color-filter pop"/>
-                      <HeartIcon v-else class="h-8 opacity-50 pop"/>
-                  </BaseButton>
+            <div class="w-full flex flex-wrap self-center justify-center text-xs text-[color:var(--wt-color-text-grey)] py-2 opacity-70 tracking-wide">
+                See more from&nbsp;
+                <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
+                &nbsp;             
+
             </div>
         </template>
     </BaseCard>
@@ -39,8 +43,8 @@
   </template>
     
   <script lang="ts">
-  import { Article, Contributor } from 'hiddentreasures-js';
-  import { defineComponent } from 'vue';
+  import type { Article, Contributor } from 'hiddentreasures-js';
+  import { defineComponent, type PropType } from 'vue';
   import BaseCard from './BaseCard.vue';
   import { useSessionStore } from '@/stores/session';
   import ClickableLink from './ClickableLink.vue';
@@ -61,7 +65,7 @@
       },
       props: {
         article: {
-            type: Article,
+            type: Object as PropType<Article>,
             required: true
         },
         strechY: {
@@ -72,6 +76,14 @@
             type: String,
             required: false,
         },
+        WWCardHomeView: {
+            type: Boolean,
+            deafult: false,
+        },
+        forThemeView:{
+            type: Boolean,
+            default: false
+        }
       },
       components: {
         BaseCard,
@@ -154,3 +166,13 @@
       },
     });
   </script>
+<style>
+.h-68vh{
+  min-height:68vh;
+}
+@media(min-width:640px){
+  .h-68vh{
+    min-height:auto;
+  }
+}
+</style>

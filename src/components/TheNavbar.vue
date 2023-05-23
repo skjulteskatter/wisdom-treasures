@@ -1,27 +1,27 @@
 <template>
-	<nav class="shadow-md z-50 max-h-16" @mouseup="store.globalCloseModal = !store.globalCloseModal">
+	<nav class="shadow-md z-50 max-h-16 sm:max-h-16" @mouseup="store.globalCloseModal = !store.globalCloseModal">
 		<div id = "glassEffect" class="absolute glass w-full h-full"/>
 		<div class="w-full bg-white">
-			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex min-h-[4rem] justify-around sm:justify-start px-8">
+			<div class="h-full max-w-7xl xl:mx-auto mx-3 flex sm:flex-row min-h-[4rem] flex-row-reverse justify-around sm:justify-start px-8 border-t border-[color:var(--wt-color-ui-lm-dark)]">
 				<div id="leftNav" class="self-center flex gap-x-3">
 					<img class="h-8 min-w-[2.5rem] cursor-pointer hidden sm:block" src="/img/logo.svg" @click="navigate('dashboard')"/>
 					<div class="flex sm:hidden self-center place-content-center cursor-pointer">
-						<SearchIcon class="w-7" @click="showSearchModal = true"/>
+						<SearchIcon class="w-6 text-[color:var(--wt-color-text-grey)]" @click="showSearchModal = true"/>
 						<SearchModal :show="showSearchModal" v-model="searchWord" @search-action="{showSearchModal = false; search($event)}" @close="showSearchModal = false"/>
 					</div>
 				</div>
 				<div id="middleNav" class="sm:flex self-center hidden grow place-content-left gap-x-3 max-h-8 pl-6">
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" @click="e => navigate('dashboard', e)">Home</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" @click="e => navigate('favorites', e)">Favorites</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" @click="(e: Event | undefined) => navigate('dashboard', e)">Home</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" @click="navigate('themes')">Themes</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
+					<!--<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>-->
 				</div>
 				<div class="flex sm:hidden self-center place-content-center cursor-pointer" @click="navigate('dashboard')">
-					<HomeIcon class="w-7"/>
+					<HomeIcon class="w-6 text-[color:var(--wt-color-text-grey)]"/>
 				</div>
 				<div id="rightNav" class="self-center hidden gap-x-3 max-h-8 lg:flex">
-					<BaseInput v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)"/>
+					<BaseInput v-model="searchWord" placeholder="Search..." style-type="search" class="self-center" @search-action="search($event)"/>
 					<div v-if="currentUser !== null" class="flex gap-x-3 ml-2">
 						<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
 							<QuestionMarkCircleIcon class="h-6 opacity-50"/>
@@ -39,7 +39,7 @@
 				<div id="rightNavBurger" class="self-center flex gap-x-3 max-h-8 lg:hidden z-20">
 					<HUMenu as="div" class="self-center flex">
 						<MenuButton class="self-center">
-							<MenuIcon class="w-7"/>
+							<MenuIcon class="w-6 text-[color:var(--wt-color-text-grey)]"/>
 						</MenuButton>
 
 						<transition
@@ -50,20 +50,21 @@
 						leave-from-class="transform scale-100 opacity-100"
 						leave-to-class="transform scale-95 opacity-0"
 						>
+						<!--			LOOK HERE - SIDE-MENU			 -->
 							<MenuItems
-								class="fixed left-1/2 sm:left-auto w-11/12 sm:w-56 -translate-x-1/2 sm:right-0 sm:translate-x-0 ml-auto mr-auto origin-bottom-right bottom-16 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
+								class="h-screen px-5 sm:px-0 py-32 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-3/4 sm:w-56 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm sm:rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
 								<div class="flex flex-col sm:hidden p-1">
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">Favorites</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">Favorites</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">Themes</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">Themes</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
 									</MenuItem>
 								</div>
 								<div class="hidden sm:flex p-1">
@@ -77,20 +78,20 @@
 										</div>
 									</MenuItem>
 								</div>
-								<div v-else class="p-1 border-t border-black/30">
+								<div v-else class="p-1 border-t border-white/30 sm:border-black/30">
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButton" :center-text="false" :clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">Profile</BaseButton>
+											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">Profile</BaseButton>
 										</div>
 									</MenuItem>
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="{}">Notifications</BaseButton>
+											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" @click="{}">Notifications</BaseButton>
 										</div>
 									</MenuItem>
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButton" :center-text="false" @click="{}">Help</BaseButton>
+											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" @click="{}">Help</BaseButton>
 										</div>
 									</MenuItem>
 								</div>
@@ -178,11 +179,16 @@ export default defineComponent({
 <style scoped>
 
 .glassDropDown {
-	background: (255, 255, 255, 0.1);
-	backdrop-filter: blur(5px);
-	-webkit-backdrop-filter: blur(5px);
+	background: #3d6e7cab;
+	backdrop-filter: blur(7px);
+	-webkit-backdrop-filter: blur(7px);
 }
-.glassDropDown > div {
+@media(min-width:640px){
+	.glassDropDown {
+		background: rgba(255, 255, 255, 0.5);
+	}
+}
+/* .glassDropDown > div {
 	background: rgba(255, 255, 255, 0.5);
-}
+} */
 </style>

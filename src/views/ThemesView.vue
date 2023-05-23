@@ -1,28 +1,34 @@
 <template>
   <main>
-    <h1 class="my-6 text-3xl font-bold">
-      Themes
-    </h1>
-    <BaseCard class="my-4">
-        <template #header> 
-            <div class="font-sans">
-                <div v-if="searchedWord" class="font-bold">
-                    Showing {{numberOfResults}} Results for "{{searchedWord}}"
-                </div>
-                <div v-else class="font-bold">
-                    Search
-                </div>
-            </div>
-        </template>
-            <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)"/>
-        <template>
-            
-        </template>
-    </BaseCard>
-    <div id="wrapper" class="flex">
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
+      <div class="flex items-center mt-4 sm:my-6 justify-between">
+        <BackButton/>
+        <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Themes</h1>
+        <BackButton class="opacity-0"/>
+      </div>
+      <BaseCard class="hidden sm:block w-full">
+          <template #header> 
+              <div class="font-sans">
+                  <div v-if="searchedWord" class="font-bold">
+                      Showing {{numberOfResults}} Results for "{{searchedWord}}"
+                  </div>
+                  <div v-else class="font-bold">
+                      Search
+                  </div>
+              </div>
+          </template>
+          <BaseInput v-model="searchWord" style-type="search" placeholder="Search theme..." size="lg" @search-action="search($event)" class="hidden sm:block"/>
+      </BaseCard>
+
+      <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search theme..." @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>
+    </div>
+    <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden text-[color:var(--wt-color-text-grey)]">
+        Showing {{numberOfResults}} results for "{{searchedWord}}"
+    </div>
+    <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5" :class="{'pr-5' : searchedWord}">
       <div class="w-full">
-        <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-          <div v-for="(publication, index) in searchedPublications" :key="index" class="flex flex-col">
+        <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+          <div v-for="(publication, index) in searchedPublications" :key="publication.id" class="flex flex-col">
             <ThemeCard :publication="publication" class="grow" 
               :strech-y="true"/>
               <div :id="`${idLookUp.get(getFirstLetter(publication)) === index ? getFirstLetter(publication) : index.toString()}${idSalt}`"
@@ -31,9 +37,9 @@
           </div>
         </div>
       </div>
-      <div id="alphabetslider">
-        <div class="w-10 flex flex-col sticky top-16 items-center font-bold"
-          @mousedown="mouseDownOverAlphabet = true" 
+      <div id="alphabetslider" v-if="!searchedWord">
+        <div class="w-10 flex flex-col sticky top-16 items-center font-bold opacity-30"
+          @mousedown="mouseDownOverAlphabet = true"
           @mouseup="()=> {mouseDownOverAlphabet = false; mouseOverAlphabet = '';}" 
           @mouseleave="()=> {mouseDownOverAlphabet = false; mouseOverAlphabet = '';}">
           <div v-for="letter in alphabet" :key="letter" class="w-full flex justify-center cursor-pointer select-none" 
@@ -54,6 +60,8 @@ import ThemeCard from '@/components/ThemeCard.vue';
 import type { Publication } from 'hiddentreasures-js';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseCard from '@/components/BaseCard.vue';
+import type Fuse from 'fuse.js';
+import BackButton from '@/components/BackButton.vue';
 
   export default defineComponent({
     name: "ThemesView",
@@ -74,12 +82,13 @@ import BaseCard from '@/components/BaseCard.vue';
     components: {
       ThemeCard,
       BaseInput,
-      BaseCard
+      BaseCard,
+      BackButton
     },
     computed: {
-      publications() : Publication[] {
+      publications(): Publication[]{
         let pubs : Publication[] = Array.from(this.store.publications.values());
-        pubs.sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), this.store.locale));
+        pubs.sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), "no"));
 
         //If the publications refs is not indexed
         if (this.idLookUp.size <= 0){
@@ -89,13 +98,21 @@ import BaseCard from '@/components/BaseCard.vue';
               this.idLookUp.set(this.getFirstLetter(pub), i)
           }
         }
-
         return pubs;
       },
+      fusePublications() : Fuse<Publication> | undefined{
+            return this.store.fusePublications;
+        },
       searchedPublications() : Publication[]{
-        let pubs = this.publications;
-        if (this.searchedWord.length <= 0) return pubs;
-        return pubs.filter(x => x.title.includes(this.searchedWord))
+        let pubs = [] as Publication[];
+        if (this.fusePublications == undefined || this.searchedWord.length <= 0){
+          pubs = this.publications;
+        } else {
+          const result = this.fusePublications?.search(this.searchedWord);
+          pubs = result.map(x => x.item).sort((a: Publication,b : Publication) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), "no"));
+        }
+        
+        return pubs;
       },
       mouseDownAndOverAlphabetEvent() : string {
         if (this.mouseDownOverAlphabet == false || this.mouseOverAlphabet == "" ) return "";
@@ -114,7 +131,7 @@ import BaseCard from '@/components/BaseCard.vue';
           if (alphabet.includes(firstLetter)) continue;
           alphabet.push(this.getFirstLetter(publication));
         }
-        return alphabet.sort((a,b) => a.localeCompare(b, this.store.locale));
+        return alphabet.sort((a,b) => a.localeCompare(b, "no"));
       }
     },
     watch: {
