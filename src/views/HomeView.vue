@@ -16,7 +16,7 @@
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
           <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-full mb-12" @click="(e: Event | undefined) => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
@@ -225,11 +225,6 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
 <style>
 .tracking-075{
   letter-spacing:0.075em
-}
-@media(min-width:640px){
-  .mt-custom{
-    margin-top:1em
-  }
 }
 .rounded-t-4xl{
   border-top-left-radius: 2.5rem; /* 40px */
