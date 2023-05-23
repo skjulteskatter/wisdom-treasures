@@ -120,6 +120,9 @@ export default defineComponent({
             display: none;
         }
     }
+    &--noBackground {
+        @apply bg-transparent border-2 border-primary text-primary
+    }
 
     &--menuButton {
         @apply text-[color:var(--color-text)] tracking-wide py-3 hover:bg-black/10;
