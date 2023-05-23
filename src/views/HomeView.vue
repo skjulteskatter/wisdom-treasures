@@ -40,6 +40,8 @@
         </div>
       </div>
 
+      <OriginsSwiper/>
+
       <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 self-end mt-5vh flex-shrink-0 md:mt-0 sm:mx-0">
         <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
         <template #icon>
@@ -76,6 +78,7 @@ import BaseButton from "@/components/BaseButton.vue";
 import Loader from '@/components/Loader.vue';
 import Origin from '@/components/Origin.vue';
 import { mannaHistory } from '@/services/localStorage';
+import OriginsSwiper from '@/components/OriginsSwiper.vue';
 
   export default defineComponent({
     name: "HomeView",
@@ -92,14 +95,15 @@ import { mannaHistory } from '@/services/localStorage';
       }
     },
     components: {
-      WWCard,
-      WWShowCard,
-      ThreeDButton,
-      RefreshIcon,
-      BaseButton,
-      Loader,
-      Origin
-    },
+    WWCard,
+    WWShowCard,
+    ThreeDButton,
+    RefreshIcon,
+    BaseButton,
+    Loader,
+    Origin,
+    OriginsSwiper
+},
     computed: {
       articles() : Article[] {
         const articles = Array.from(this.store.articles.values());
