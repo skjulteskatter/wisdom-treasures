@@ -7,13 +7,13 @@
       </h1>
       <BackButton class="opacity-0"/>
     </div>
-    <h1 class="text-base m-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Get Wisdom Manna in the topic:</h1>
+    <h1 class="text-base m-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Get Wisdom Manna from the theme:</h1>
     <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true"/>
     <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 sm:mx-0">
       <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
     </ThreeDButton>
 
-    <h1 class="text-base mx-5 mt-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Rest of the Wisdom Words in the topic:</h1>
+    <h1 class="text-base mx-5 mt-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Rest of the Wisdom Words in the theme:</h1>
     <div id="WWCards" class="px-5 pt-5 sm:p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
       <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
