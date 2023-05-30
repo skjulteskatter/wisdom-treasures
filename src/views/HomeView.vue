@@ -105,7 +105,6 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
       },
       linkedArticle(): null | Article {
 
-        debugger
         if (this.homePath === this.currentPath) return null;
 
         const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
