@@ -1,10 +1,10 @@
 <template>
     <label class="border-none p-0 bg-transparent">
-        <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '', $slots.default || $slots.secondary ? 'mb-2' : '']">
+        <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '', $slots.default || $slots.secondary ? 'mb-2' : '', filterPositioning === true ? 'absolute right-0' : '']">
             <slot name="default" class="block tracking-wide"></slot>
             <slot name="secondary" class="block tracking-wide"></slot>
         </div>
-        <div 
+        <div
             class="flex items-center w-full"
             :class="[error ? 'shake' : '']"
             @mouseover="hover = true"
@@ -39,7 +39,7 @@
             </div>
             <div v-else-if="modelValue && (focus || hover) && styleType === 'search'">
                 <div 
-                class="w-5 absolute -left-7 -top-[10px] cursor-pointer opacity-40" 
+                class="w-5 absolute -left-7 -top-[10px] cursor-pointer opacity-40"
                 @click="(_event: any) => $emit('update:modelValue', '')"
                 >
                     <XIcon :class="{whiteText : 'text-white'}"/>
@@ -94,6 +94,7 @@ export default defineComponent({
             focus: false as Boolean,
             searchHistory: [] as string[],
             searchHistoryHoverOver: false as Boolean,
+            filterPositioning: true as Boolean,
         }
     },
     props: {

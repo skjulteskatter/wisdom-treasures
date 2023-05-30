@@ -1,21 +1,24 @@
 <template>
-    <BaseCard class="mt-4">
-        <template #header> 
-            <div class="font-sans">
-                <div v-if="searchedWord" class="font-bold">
-                    Showing {{numberOfResults}} Results for "{{searchedWord}}"
-                </div>
-                <div v-else class="font-bold">
-                    Search
-                </div>
-            </div>
-        </template>
-            <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)"/>
-        <template #footer>
-            <div class="flex">
+        <div class="px-5 pt-5 sm:p-0">
+            <BaseInput v-model="searchWord" style-type="search" size="lg" @search-action="search($event)" ><!-- CAUTION!! :filterPositioning="true" didn't work, so I set it to always true -->
+                <BaseButton theme="menuButton" class="h-min w-min" @click="showFilterModal = true">
+                    <template #icon>
+                        <AdjustmentsIcon class="w-5 opacity-40"/>
+                    </template>
+                    <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose: any) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
+                        @publication-id-array:publication-id-array="setPublicationIdFilter"
+                        @contributor-id-array:contributor-id-array="setAuthorIdFilter"
+                        @only-favorites:only-favorites="setFavoriteFilter"
+                        :initialPublicationIds="publicationIdFilter"
+                        :initialAuthorIds="authorIdFilter"
+                        :initialOnlyFavorites="onlyFavoriteFilter"/>
+                </BaseButton>
+            </BaseInput>
+        </div>
+
+            <div class="flex mx-5 sm:mx-0">
                 <div id="filtersection" class="flex-grow flex flex-col">
-                    <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min" @click="showFilterModal = true">
-                        Filter
+                    <!-- <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min" @click="showFilterModal = true">
                         <template #icon>
                             <AdjustmentsIcon class="w-5"/>
                         </template>
@@ -26,7 +29,7 @@
                             :initialPublicationIds="publicationIdFilter"
                             :initialAuthorIds="authorIdFilter"
                             :initialOnlyFavorites="onlyFavoriteFilter"/>
-                    </BaseButton>
+                    </BaseButton> -->
                     <div id="filterButtons" class="flex gap-4 mt-4 flex-wrap">
 
                         <div v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md w-min bg-black/10">
@@ -58,7 +61,7 @@
 
                     </div>
                 </div>
-                <div id="sortSection" class="flex flex-col place-items-end">
+                <!-- <div id="sortSection" class="flex flex-col place-items-end">
                     <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min">
                         Sort
                         <template #icon>
@@ -68,10 +71,9 @@
                     <div id="sortMessage" class="mt-4">
                         <p>Sorting by: something idk</p>
                     </div>
-                </div>
+                </div> -->
             </div>
-        </template>
-    </BaseCard>
+
 </template>
 
 <script lang="ts">

@@ -14,14 +14,14 @@
         @search-loading:search-loading="setSearchLoading">
     </MultiSearch>
     
-    <div class="" >
+    <div class="mx-5 sm:mx-0">
         <div v-if="searchLoading" class="absolute h-full w-full z-40 glass">
             <div class="h-40">
                 <Loader :loading="true" class="overflow-hidden"/>
             </div>
         </div>
         <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection" class="mt-4">
-            <h1 class="text-2xl font-bold">Themes</h1>
+            <h1 class="uppercase text-base font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)]">Themes</h1>
             <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(theme, index) in themeHits" :key="index" class="flex flex-col">
                     <ThemeCard :publication="theme" class="grow" :strech-y="true"/>
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div v-if="articleHits.length > 0" id="WordSection" class="mt-4">
-            <h1 class="text-2xl font-bold">Words</h1>
+            <h1 class="uppercase text-base font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)]">Words</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(article, index) in articleHits" :key="index" class="flex flex-col">
                     <WWCard :article="article" class="grow" :strech-y="true"/>
