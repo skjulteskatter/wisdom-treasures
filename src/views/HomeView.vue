@@ -30,12 +30,12 @@
     </div>
 
       <div class="ml-5 sm:ml-0">
-        <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">ORIGIN</h1>
+        <h1 class="text-sm font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">ORIGIN</h1>
         <OriginsSwiper/>
       </div>
       
       <div class="mx-5 sm:mx-0 mb-5">
-        <h1 class="text-sm font-bold my-5 sm:mt-0 tracking-wide text-[color:var(--wt-color-text-grey)] opacity-80">WISDOM MANNA</h1>
+        <h1 class="text-sm font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">WISDOM MANNA</h1>
         <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
           <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
           <template #icon>
