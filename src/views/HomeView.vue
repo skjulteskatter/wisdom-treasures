@@ -106,11 +106,10 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
       linkedArticle(): null | Article {
 
         if (this.homePath === this.currentPath) return null;
-
         const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
         if (articleId === undefined) return null;
 
-        if ((this.articles.some(x => x.id == articleId))) return null;
+        if ((this.randomArticleList.some(x => x.id == articleId))) return null;
 
         const article = this.store.articles.get(articleId || "");
         if (article === undefined) return null;
