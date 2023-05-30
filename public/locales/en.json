@@ -3,5 +3,6 @@
   "common_logout": "Log out!",
   "common_register": "Create account",
   "common_loading": "Loading",
-  "welcome": "Welcome"
+  "welcome": "Welcome",
+  "save-settings": "Save settings"
 }
