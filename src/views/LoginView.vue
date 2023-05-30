@@ -13,49 +13,49 @@
         <div class="font-sans flex justify-center">
           <div>
             <div v-if="include([forms.login])">
-              <p class="font-bold" v-if="store.redirectAfterLoginName == 'profile'">Log in to access your profile</p>
-              <p class="font-bold" v-else-if="store.redirectAfterLoginName == 'store'">Log in to access the store</p>
-              <p class="font-bold" v-else>Log in</p>
+              <p class="font-bold" v-if="store.redirectAfterLoginName == 'profile'">{{$t('signIn.logInMsg')}}</p>
+              <p class="font-bold" v-else-if="store.redirectAfterLoginName == 'store'">{{$t('signIn.logInStoreMsg')}}</p>
+              <p class="font-bold" v-else>{{ $t('signIn.logIn') }}</p>
             </div>
-            <p class="font-bold" v-else-if="include([forms.register])">Create your account</p>
-            <p class="font-bold" v-else>Reset your password</p>
+            <p class="font-bold" v-else-if="include([forms.register])">{{$t('signIn.createAccountMsg')}}</p>
+            <p class="font-bold" v-else>{{$t('signIn.resetPasswordMsg')}}</p>
           </div>
         </div>
       </template>
       <template #default>
         <div class="flex flex-col">
           <BaseInput v-model="email" class="p-4 lg:px-0 border mt-2" :error="!!errors.email" v-on:keydown.enter="action()">
-            <p>Email</p>
+            <p>{{ $t('common.Email') }}</p>
           </BaseInput>
 
           <BaseInput v-model="fullName" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) class="p-4 lg:px-0 border mt-2 max-h-0 opacity-0" 
             :error="!!errors.fullName" :class="[include([forms.register]) ? 'smoothOpenInput' : [ registerFormLoaded ? 'smoothCloseInput' : '']]">
-            <p>Full name</p>
+            <p>{{ $t('signIn.fullName') }}</p>
           </BaseInput>
 
           <BaseInput v-model="password" v-on:keydown.enter="action()" :disabled=include([forms.forgotPassword]) class="p-4 lg:px-0 border mt-2" style-type="password" :error="!!errors.password" 
             :class="[include([forms.register, forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : [ forgotPasswordFormLoaded ? 'smoothCloseInput' : '']]">
-            <p>Password</p>
-            <ClickableLink v-if="include([forms.login])" :disabled="actionLoading" v-on:click="changeForm('forgotPassword')">Forgot password?</ClickableLink>
+            <p>{{ $t('common.password') }}</p>
+            <ClickableLink v-if="include([forms.login])" :disabled="actionLoading" v-on:click="changeForm('forgotPassword')">{{ $t('signIn.forgotPasswordQst') }}</ClickableLink>
           </BaseInput>
 
           <BaseInput v-model="repeatPassword" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) style-type="password" :error="!!errors.password" 
             class="p-4 lg:px-0 border mt-2 max-h-0 opacity-0" 
             :class="[include([forms.register]) ? 'smoothOpenInput' : [registerFormLoaded ? 'smoothCloseInput' : '']]">
-            <p>Repeat password</p>
+            <p>{{ $t('signIn.repeatPassword') }}</p>
           </BaseInput>
 
           <label v-if="include([forms.login])" class="flex gap-2 mt-4 items-center cursor-pointer select-none">
             <BaseCheckbox v-model="rememberMe"/>
-            Stay signed in
+            {{ $t('signIn.staySignedIn') }}
           </label>
 
           <!--TODO fix the error message box getting to big for the card-->
           <span v-if="include([forms.register])" class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap lg:w-96">
             <BaseCheckbox v-model="agreeTerms" :error="!!errors.terms"/>
             <span :class="[{'text-[color:var(--wt-color-error)]' : !!errors.terms}]">
-              I agree to the
-              <ClickableLink class="inline-block" @link-clicked="showTermsModal = true" :disabled="actionLoading">Terms and Conditions</ClickableLink>
+              {{ $t('signIn.iAgree') }}
+              <ClickableLink class="inline-block" @link-clicked="showTermsModal = true" :disabled="actionLoading">{{ $t('common.tos') }}</ClickableLink>
             </span>
           </span>
           <TermsModal :show="showTermsModal" @close="showTermsModal = false"></TermsModal>
@@ -80,18 +80,18 @@
             :loading="actionLoading"
             @click="action()"  
             theme="primary">
-              <div v-if="include([forms.login]) && !actionLoading">Sign in</div>
-              <div v-else-if="include([forms.login])">Signing in...</div>
-              <div v-else-if="include([forms.register]) && !actionLoading">Create Account</div>
-              <div v-else-if="include([forms.register])">Creating Account...</div>
-              <div v-else-if="include([forms.forgotPassword]) && !actionLoading">Reset Password</div>
-              <div v-else-if="include([forms.forgotPassword])">Resetting Password...</div>
+              <div v-if="include([forms.login]) && !actionLoading">{{ $t('signIn.logIn') }}</div>
+              <div v-else-if="include([forms.login])">{{ $t('signIn.signingIn') }}.</div>
+              <div v-else-if="include([forms.register]) && !actionLoading">{{ $t('signIn.createAccount') }}</div>
+              <div v-else-if="include([forms.register])">{{ $t('signIn.creatingAccount') }}</div>
+              <div v-else-if="include([forms.forgotPassword]) && !actionLoading">{{ $t('signIn.resetPassword') }}</div>
+              <div v-else-if="include([forms.forgotPassword])">{{ $t('signIn.resettingPassword') }}</div>
             </BaseButton>
           </div>
 
           <div v-if="include([forms.register])" class="flex gap-4 mt-4 select-none">
             <div class="grow h-px bg-black/30 self-center"/>
-            <p class="grow-0 text-black/30 self-center">or use a provider</p>
+            <p class="grow-0 text-black/30 self-center">{{$t('signIn.providerMsg')}}</p>
             <div class="grow h-px bg-black/30 self-center"/>
           </div>
 
@@ -128,18 +128,18 @@
           <div class="my-4 flex justify-center flex-row">
               <span v-if="include([forms.login])">
                 <ClickableLink @link-clicked="changeForm('register')" :disabled="actionLoading">
-                  Create an account
+                  {{$t('signIn.createAccount')}}
                 </ClickableLink>
               </span>
               <span v-else-if="include([forms.register])" class="flex flex-row">
-                <div>Have an account?&nbsp;</div>
+                <div>{{$t('signIn.haveAccountQst')}}&nbsp;</div>
                 <ClickableLink @link-clicked="changeForm('login')" :disabled="actionLoading">
-                  Sign in
+                  {{$t('signIn.logIn')}}
                 </ClickableLink>
               </span>
               <span v-else class="flex flex-row">
                 <ClickableLink @link-clicked="changeForm('login')" :disabled="actionLoading">
-                  Return to sign in
+                  {{$t('signIn.returnSignIn')}}
                 </ClickableLink>
               </span>
           </div>
@@ -265,13 +265,13 @@ import TermsModal from '@/components/TermsModal.vue';
           if (this.include([this.forms.register])) 
           {
             await this.signup();
-            this.successMessage = "Account created successfully. A verification email was sent to " + this.email;
+            this.successMessage = this.$t('signIn.createdAccountSuccessMsg') + this.email;
             this.changeForm(this.forms.login);
           }
           else if (this.include([this.forms.login])) 
           {
             if (!await loginWithEmailAndPassword(this.email, this.password, this.rememberMe))
-              throw new Error("Email not verified");
+              throw new Error(this.$t('signIn.emailNotVerifiedMsg'));
             
           } else 
           {
@@ -280,7 +280,7 @@ import TermsModal from '@/components/TermsModal.vue';
             } catch (e: any){
               throw new Error(e.error);
             }
-            this.successMessage = "Password was reset successfully. The new password was sent to " + this.email;
+            this.successMessage = this.$t('signIn.passwordResetMsg') + this.email;
             this.changeForm(this.forms.login);
           }
 
@@ -300,12 +300,12 @@ import TermsModal from '@/components/TermsModal.vue';
       },
       validateEmail(): boolean {
         if (!this.email){
-          this.errors.email = "Email is required";
+          this.errors.email =this.$t('signIn.emailRequiredMsg');
           return false;
         }
 
         if (!this.email.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g)?.length){ 
-          this.errors.email = "Invalid email address";
+          this.errors.email = this.$t('signIn.invalidEmailMsg');
           return false;
         }
 
@@ -317,7 +317,7 @@ import TermsModal from '@/components/TermsModal.vue';
           return true;
 
         if (!this.fullName){
-          this.errors.fullName = "Name is required";
+          this.errors.fullName = this.$t('signIn.nameRequiredMsg');
           return false;
         }
 
@@ -329,7 +329,7 @@ import TermsModal from '@/components/TermsModal.vue';
           return true;
 
         if (!this.agreeTerms){
-          this.errors.terms = "You must agree to the terms and conditions to create a user";
+          this.errors.terms =  this.$t('signIn.tosMsg') ;
           return false;
         }
 
@@ -341,10 +341,10 @@ import TermsModal from '@/components/TermsModal.vue';
           return true;
 
         if (!this.password){
-          this.errors.password = "Password is required";
+          this.errors.password =  this.$t('signIn.passwordRequiredMsg');
           return false;
         } else if (this.password != this.repeatPassword && this.include([this.forms.register])){
-          this.errors.password = "Passwords doesn't match";
+          this.errors.password = this.$t('signIn.passwordDontMatchMsg');
           return false;
         }
 

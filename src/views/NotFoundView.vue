@@ -3,9 +3,9 @@
     <div class="flex items-center flex-col text-[1.5rem]">
       <div class="text-[6rem] gradient font font-bold">404</div>
       <div class="h-[1px] bg-black/30 w-full max-w-xs" />
-      <div class="mt-3 font-bold">Page not Found</div>
-      <ClickableLink class="font-bold" v-if="isLoggedIn" @link-clicked="navigate('dashboard')">Go to home page</ClickableLink>
-      <ClickableLink class="font-bold" v-else @link-clicked="navigate('login')">Go to login page</ClickableLink>
+      <div class="mt-3 font-bold">{{ $t('notFound.notFoundMsg') }}</div>
+      <ClickableLink class="font-bold" v-if="isLoggedIn" @link-clicked="navigate('dashboard')">{{ $t('notFound.goToHome') }}</ClickableLink>
+      <ClickableLink class="font-bold" v-else @link-clicked="navigate('login')">{{ $t('notFound.goToLogin') }}</ClickableLink>
     </div>
   </main>
 </template>

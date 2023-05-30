@@ -3,25 +3,25 @@
     <div class="flex bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full absolute top-0 left-0 sm:static px-6 sm:px-0 ">
       <h1 class="text-base my-4 sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
         <span v-if="currentUser" class="sm:font-bold">
-          {{ $t('welcome')}},&nbsp
+          {{ $t('common.welcome')}},&nbsp
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
             {{currentUser.displayName}}
           </span>
         </span>
         <span v-else class="font-bold"> 
-          Welcome to 
+          {{ $t('home.welcometo') }}  
           <span class="animated-gradient font-bold">
             WisdomTreasures
           </span>
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
+    <div id="wordOfTheDayCotainer" style="width: 80%;" class="flex flex-col justify-center items-center mx-auto mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
-          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-full mb-12" @click="(e: Event | undefined) => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10" @click="navigate('history')">History</p>
+          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-full mb-12" @click="(e: Event | undefined) => navigate('dashboard', e)">{{ $t('home.dailyWord') }}<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20" @click="(e: Event | undefined) => navigate('favorites', e)">{{ $t('home.dailyWord') }}</p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10" @click="navigate('history')">{{ $t('common.history') }}</p>
         </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
       </div>
@@ -29,21 +29,21 @@
     </div>
 
       <div class="ml-5 sm:ml-0">
-        <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0">ORIGIN</h1>
+        <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0">{{$t('common.origin').toUpperCase()}}</h1>
         <OriginsSwiper/>
       </div>
       
       <div class="mx-5 sm:mx-0">
-        <h1 class="text-sm font-bold my-5 sm:mt-0 tracking-wide">WISDOM MANNA</h1>
+        <h1 class="text-sm font-bold my-5 sm:mt-0 tracking-wide">{{ $t('common.wisdomManna').toUpperCase()}}</h1>
         <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
-          <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
+          <p class="text-base font-bold tracking-wide">{{ $t('home.getWisdomManna') }}</p>
           <template #icon>
             <!-- <RefreshIcon class="h-5 md:hidden"/> -->
           </template>
         </ThreeDButton>
       </div>
 
-    <h1 class="text-sm tracking-wide font-bold mt-10 mx-5 sm:mx-0">OTHER WISDOM WORDS</h1>
+    <h1 class="text-sm tracking-wide font-bold mt-10 mx-5 sm:mx-0">{{ $t('home.otherWisdomWords').toUpperCase() }}</h1>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
       <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
@@ -186,7 +186,7 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
       },
       articleNotFound(num: number) : void{
         //Should probably navigate back 🤷‍♂️
-        this.store.notifications.push(new Notification("Couldn't find article number: " + num.toString(), "error"));
+        this.store.notifications.push(new Notification(this.$t('home.couldNotFindArticleNumber')+ num.toString(), "error"));
         router.push({name: "dashboard"});
       },
       checkArticleNumberPath(){

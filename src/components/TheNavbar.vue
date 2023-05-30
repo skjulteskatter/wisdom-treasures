@@ -11,17 +11,17 @@
 					</div>
 				</div>
 				<div id="middleNav" class="sm:flex self-center hidden grow place-content-left gap-x-3 max-h-8 pl-6">
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" @click="(e: Event | undefined) => navigate('dashboard', e)">Home</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" @click="navigate('themes')">Themes</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" @click="(e: Event | undefined) => navigate('dashboard', e)">{{$t('common.home')}}</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" @click="(e: Event | undefined) => navigate('favorites', e)">{{$t('common.favorites')}}</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" @click="navigate('themes')">{{$t('common.themes')}}</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">{{$t('common.history')}}</BaseButton>
 					<!--<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>-->
 				</div>
 				<div class="flex sm:hidden self-center place-content-center cursor-pointer" @click="navigate('dashboard')">
 					<HomeIcon class="w-6 text-[color:var(--wt-color-text-grey)]"/>
 				</div>
 				<div id="rightNav" class="self-center hidden gap-x-3 max-h-8 lg:flex">
-					<BaseInput v-model="searchWord" placeholder="Search..." style-type="search" class="self-center" @search-action="search($event)"/>
+					<BaseInput v-model="searchWord" :placeholder="$t('common.search')" style-type="search" class="self-center" @search-action="search($event)"/>
 					<div v-if="currentUser !== null" class="flex gap-x-3 ml-2">
 						<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
 							<QuestionMarkCircleIcon class="h-6 opacity-50"/>
@@ -32,8 +32,8 @@
 						<img :src="currentUser?.photoURL || '/public/img/user.svg'" class="w-8 h-8 rounded-full border-primary border cursor-pointer" @click="navigate('profile')"/>
 					</div>
 					<div v-else class="flex gap-x-3">
-						<BaseButton theme="tertiary" @click="navigate('login')" class="border border-primary"><b>Log in</b></BaseButton>
-						<BaseButton theme="magic" @click="navigate('register')"><b>Sign up</b></BaseButton>
+						<BaseButton theme="tertiary" @click="navigate('login')" class="border border-primary"><b>{{$t('signIn.logIn')}}</b></BaseButton>
+						<BaseButton theme="magic" @click="navigate('register')"><b>{{$t('signIn.createAccount')}}</b></BaseButton>
 					</div>
 				</div>
 				<div id="rightNavBurger" class="self-center flex gap-x-3 max-h-8 lg:hidden z-20">
@@ -55,43 +55,43 @@
 								class="h-screen px-5 sm:px-0 py-32 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-3/4 sm:w-56 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm sm:rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
 								<div class="flex flex-col sm:hidden p-1">
 									<MenuItem>
-										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">Favorites</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">{{$t('common.favorites')}}</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">Themes</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">{{$t('common.themes')}}</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">{{$t('common.history')}}</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">{{$t('common.wisdomManna')}}</BaseButton>
 									</MenuItem>
 								</div>
 								<div class="hidden sm:flex p-1">
-									<BaseInput :inside-h-u-menu="true" v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)" @keydown.enter="search(undefined)"/>
+									<BaseInput :inside-h-u-menu="true" v-model="searchWord" :placeholder="$t('common.search')" style-type="search" class="self-center" @search-action="search($event)" @keydown.enter="search(undefined)"/>
 								</div>
 								<div v-if="currentUser === null" class="p-1">
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton theme="tertiary" @click="navigate('login')" class="border grow border-primary"><b>Log in</b></BaseButton>
-											<BaseButton theme="magic" @click="navigate('register')" class="grow"><b>Sign up</b></BaseButton>
+											<BaseButton theme="tertiary" @click="navigate('login')" class="border grow border-primary"><b>{{$t('signIn.logIn')}}</b></BaseButton>
+											<BaseButton theme="magic" @click="navigate('register')" class="grow"><b>{{$t('signIn.createAccount')}}</b></BaseButton>
 										</div>
 									</MenuItem>
 								</div>
 								<div v-else class="p-1 border-t border-white/30 sm:border-black/30">
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">Profile</BaseButton>
+											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">{{$t('common.profile')}}</BaseButton>
 										</div>
 									</MenuItem>
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" @click="{}">Notifications</BaseButton>
+											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" @click="{}">{{$t('common.notifications')}}</BaseButton>
 										</div>
 									</MenuItem>
 									<MenuItem>
 										<div class="flex gap-2 max-h-8">
-											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" @click="{}">Help</BaseButton>
+											<BaseButton class="w-full" theme="menuButtonSMWhite" :center-text="false" @click="{}">{{$t('common.help')}}</BaseButton>
 										</div>
 									</MenuItem>
 								</div>
@@ -166,7 +166,7 @@ export default defineComponent({
 			router.push({name: name});
 		},
 		addNotification(){
-			this.store.notifications.push(new Notification("Hello, this is just a notification. Don't mind me! " + this.removeThis.toString()));
+			this.store.notifications.push(new Notification(this.$t('notifications.placeholderMsg') + this.removeThis.toString()));
 			this.removeThis++;
 		},
 		shouldBeHighlighted(requiredName: string) : boolean {

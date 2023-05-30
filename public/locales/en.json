@@ -1,7 +1,114 @@
 {
-  "common_login": "Sign in",
-  "common_logout": "Log out!",
-  "common_register": "Create account",
-  "common_loading": "Loading",
-  "welcome": "Welcome"
+  "common": {
+    "welcome": "Welcome",
+    "add": "Add",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "title": "Title",
+    "description": "Description",
+    "faq": "FAQ",
+    "contact": "Contact Us",
+    "tos": "Terms of Service",
+    "policy": "Privacy Policy",
+    "yes": "Yes",
+    "no": "No",
+    "text": "Tekst",
+    "upload": "Upload",
+    "loading": "Loading",
+    "origin": "Origin",
+    "wisdomManna": "Wisdom manna",
+    "wisdomWord": "Wisdom word",
+    "wisdomWords": "Wisdom words",
+    "search": "Search",
+    "home": "Home",
+    "favorites": "Favourites",
+    "themes": "Themes",
+    "history": "History",
+    "profile": "Profile",
+    "notifications": "Notifikasjoner",
+    "help": "Help",
+    "justNow": "Just now",
+    "minutesAgo": "Minutes ago",
+    "hoursAgo": "Hours ago",
+    "Email": "Email",
+    "password": "Password",
+    "seeMore": "See more from",
+    "today": "Today",
+    "thisWeek": "This week",
+    "thisMonth": "This month",
+    "thisYear": "This year",
+    "earlier": "Earlier"
+  },
+  "signIn": {
+    "logIn": "Sign in",
+    "logOut": "Log out!",
+    "createAccount": "Create account",
+    "logInMsg": "Sign in",
+    "logInStoreMsg": "Sign in to see store",
+    "createAccountMsg": "Create an account",
+    "resetPasswordMsg": "Reset your password",
+    "fullName": "Full name",
+    "forgotPasswordQst": "Forgot password?",
+    "repeatPassword": "Repeat password",
+    "staySignedIn": "Stay signed in",
+    "iAgree": "I agree",
+    "signingIn": "Signing in...",
+    "creatingAccount": "Creating account..",
+    "resetPassword": "Reset password",
+    "resettingPassword": "Resetting password...",
+    "providerMsg": "or log in with provider",
+    "haveAccountQst": "Do you already have an account?",
+    "returnSignIn": "Return to sign in page",
+    "createdAccountSuccessMsg": "Account is created, a verification email has been sent to your inbox",
+    "emailNotVerifiedMsg": "Email is not verified",
+    "passwordResetMsg": "Reset password",
+    "emailRequiredMsg": "Email is required",
+    "invalidEmailMsg": "Invalid email",
+    "nameRequiredMsg": "Name is required",
+    "tosMsg": "Terms of Services and Conditions",
+    "passwordRequiredMsg": "Password is required",
+    "passwordDontMatchMsg": "The passwords does not match",
+    "change": "Change passwrod"
+  },
+  "home": {
+    "welcometo": "Welcome to",
+    "getWisdomManna": "Get wisdom manna",
+    "otherWisdomWords": "Other wisdom words",
+    "dailyWord": "Todays Word",
+    "couldNotFindArticleNumber": "Could not find article number: "
+  },
+  "custom": {
+    "notificationMsg": "Hello, this is just a notification. Don't mind me!"
+  },
+  "notifications": {
+    "placeholderMsg": " \"Hello, this is just a notification. Don't mind me! \""
+  },
+  "contact": {
+    "getInTouch": "Do not hestitate with contacting us with questions, suggestions or other enquiries.",
+    "infoMsg": "Info message",
+    "typeMsg": "Type your message here"
+  },
+  "history": {
+    "onlyManna": "Only see recently viewed wisdom manna",
+    "noWW": "Just now"
+  },
+  "notFound": {
+    "notFoundMsg": "Page not found",
+    "goToHome": "Go to home page",
+    "goToLogin": "Go to sign in"
+  },
+  "profile": {
+    "buySubscription": "Buy subscription",
+    "contactSupport": "Contact support: ",
+    "settingUpdatedMsg": "Settings are updated",
+    "saveSetting": "Save settings"
+  },
+  "themes": {
+    "showing": "Showing",
+    "resultsFor": "results for",
+    "searchTheme": "Search theme...",
+    "restWWTheme": "Rest of the Wisdom Words in the theme:",
+    "getWisdomMannaThisTheme": "Get a wisdom manna from this theme"
+  }
 }

@@ -3,27 +3,27 @@
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
       <div class="flex items-center mt-4 sm:my-6 justify-between">
         <BackButton/>
-        <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Themes</h1>
+        <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.themes') }}</h1>
         <BackButton class="opacity-0"/>
       </div>
       <BaseCard class="hidden sm:block w-full">
           <template #header> 
               <div class="font-sans">
                   <div v-if="searchedWord" class="font-bold">
-                      Showing {{numberOfResults}} Results for "{{searchedWord}}"
+                    {{ $t('themes.showing') }} {{numberOfResults}} {{ $t('themes.resultsFor') }} "{{searchedWord}}"
                   </div>
                   <div v-else class="font-bold">
-                      Search
+                    {{ $t('common.search') }}
                   </div>
               </div>
           </template>
-          <BaseInput v-model="searchWord" style-type="search" placeholder="Search theme..." size="lg" @search-action="search($event)" class="hidden sm:block"/>
+          <BaseInput v-model="searchWord" style-type="search" :placeholder="$t('themes.searchTheme')" size="lg" @search-action="search($event)" class="hidden sm:block"/>
       </BaseCard>
 
-      <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search theme..." @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>
+      <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>
     </div>
     <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden text-[color:var(--wt-color-text-grey)]">
-        Showing {{numberOfResults}} results for "{{searchedWord}}"
+      {{ $t('themes.showing') }} {{numberOfResults}} {{ $t('themes.resultsFor') }} "{{searchedWord}}"
     </div>
     <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5" :class="{'pr-5' : searchedWord}">
       <div class="w-full">
