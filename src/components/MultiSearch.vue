@@ -60,7 +60,7 @@
 
                     </div>
                 </div>
-                <!-- We don't need searching 
+                <!-- We don't need sorting 
                 <div id="sortSection" class="flex flex-col place-items-end">
                     <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min">
                         Sort
@@ -118,7 +118,7 @@ export default defineComponent({
             showFilterModal: false as boolean,
             showSortModal: false as boolean,
 
-            maxNumberOfArticlesDisplayed: 100 as number,
+            maxNumberOfArticlesDisplayed: 100000 as number,
         }
     },
     props: {

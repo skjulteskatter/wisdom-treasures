@@ -28,13 +28,8 @@
       <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
     </div>
 
-      <div class="ml-5 sm:ml-0">
-        <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0">ORIGIN</h1>
-        <OriginsSwiper/>
-      </div>
-      
-      <div class="mx-5 sm:mx-0">
-        <h1 class="text-sm font-bold my-5 sm:mt-0 tracking-wide">WISDOM MANNA</h1>
+    <div class="mx-5 sm:mx-0 mb-5">
+        <!--<h1 class="text-sm font-bold my-5 sm:mt-0 tracking-wide">WISDOM MANNA</h1>-->
         <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
           <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
           <template #icon>
@@ -42,6 +37,11 @@
           </template>
         </ThreeDButton>
       </div>
+
+    <div class="ml-5 sm:ml-0">
+      <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0">ORIGIN</h1>
+      <OriginsSwiper/>
+    </div>
 
     <h1 class="text-sm tracking-wide font-bold mt-10 mx-5 sm:mx-0">OTHER WISDOM WORDS</h1>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
@@ -165,7 +165,8 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
         }, 200);
       },
       fillRandomArticles(paginationCount : number){
-        for (let i = 0; i < Math.min(paginationCount, this.shuffeledArticleKeys.length); i++) {
+        let shuffeledArticleKeysMax = this.shuffeledArticleKeys.length;
+        for (let i = 0; i < Math.min(paginationCount, shuffeledArticleKeysMax); i++) {
           let randomIndex = Math.floor(Math.random() * this.shuffeledArticleKeys.length);
           let randomArticle = (this.store.articles.get(this.shuffeledArticleKeys[randomIndex]))
           if (randomArticle != undefined){
