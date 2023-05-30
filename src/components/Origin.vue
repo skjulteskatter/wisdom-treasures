@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="flex flex-col justify-center items-center">
         <div class="w-24 h-24 flex justify-center items-center bg-[color:var(--wt-c-white-mute)] rounded-xl">
             <h1 class="text-2xl font-bold text-primary">SS</h1>
         </div>

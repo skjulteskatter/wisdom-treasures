@@ -16,40 +16,34 @@
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-custom mb-0 md:mb-6 px-4 sm:px-0 pb-5">
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
       <div class="flex col-span-3">
-        <div class="sm:hidden flex flex-col w-1/2 justify-between -ml-12 mt-12 mb-28">
-          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-22vh" @click="(e: Event | undefined) => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-3/4 h-1/3"></div></p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-22vh" @click="navigate('history')">History</p>
+        <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
+          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-full mb-12" @click="(e: Event | undefined) => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10" @click="navigate('history')">History</p>
         </div>
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class=" w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
       </div>
       <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
     </div>
 
-      <div id="originContainer" class="">
-        <h1 class="text-xl font-bold text-primary m-5 sm:mx-0">ORIGIN</h1>
-        <div class="mx-5 sm:mx-0 grid grid-flow-col overflow-x-auto gap-5">
-          <Origin/>
-          <Origin/>
-          <Origin/>
-          <Origin/>
-          <Origin/>
-          <Origin/>
-        </div>
+      <div class="ml-5 sm:ml-0">
+        <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0">ORIGIN</h1>
+        <OriginsSwiper/>
+      </div>
+      
+      <div class="mx-5 sm:mx-0">
+        <h1 class="text-sm font-bold my-5 sm:mt-0 tracking-wide">WISDOM MANNA</h1>
+        <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
+          <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
+          <template #icon>
+            <!-- <RefreshIcon class="h-5 md:hidden"/> -->
+          </template>
+        </ThreeDButton>
       </div>
 
-      <OriginsSwiper/>
-
-      <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 self-end mt-5vh flex-shrink-0 md:mt-0 sm:mx-0">
-        <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
-        <template #icon>
-          <!-- <RefreshIcon class="h-5 md:hidden"/> -->
-        </template>
-      </ThreeDButton>
-
-    <div class="text-xl sm:text-2xl font-bold text-[color:var(--wt-color-text-grey)] mt-10 mx-5 sm:mx-0">Other wisdom words</div>
+    <h1 class="text-sm tracking-wide font-bold mt-10 mx-5 sm:mx-0">OTHER WISDOM WORDS</h1>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
       <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
@@ -233,28 +227,8 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
   });
 </script>
 <style>
-.h-80vh{
-  height: 80vh
-}
 .tracking-075{
   letter-spacing:0.075em
-}
-.mt-5vh{
-  margin-top:5vh
-}
-.mt-custom{
-  margin-top:11vh
-}
-.w-22vh{
-  width:22vh
-}
-.bottom-7vh{
-  bottom:7vh
-}
-@media(min-width:640px){
-  .mt-custom{
-    margin-top:1em
-  }
 }
 .rounded-t-4xl{
   border-top-left-radius: 2.5rem; /* 40px */

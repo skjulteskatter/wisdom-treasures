@@ -1,7 +1,7 @@
 <template>
   <swiper
     :slidesPerView="'auto'"
-    :spaceBetween="50"
+    :spaceBetween="25"
     :mousewheel="{
       forceToAxis: true
     }"

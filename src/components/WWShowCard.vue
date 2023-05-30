@@ -26,7 +26,7 @@
                 </div> -->
         
                 <div class="font-serif sm:grow m-5 leading-6 text-sm" v-html="articleContent"/>
-                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic text-xs ml-5 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">{{getSignature}}</div>
+                <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic text-xs ml-5 sm:ml-0 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">{{getSignature}}</div>
             </div>
           </div>
         </template>
