@@ -24,13 +24,16 @@
                 </div>
             </div>
         </div>
-        <div v-if="articleHits.length > 0" id="WordSection" class="mt-4">
+        <div v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
             <h1 class="text-2xl font-bold">Words</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-                <div v-for="(article, index) in articleHits" :key="index" class="flex flex-col">
+                <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
                     <WWCard :article="article" class="grow" :strech-y="true"/>
                 </div>
             </div>
+        </div>
+        <div id="loaderDiv">
+            <Loader :loading="loadingMoreArticles" class="mt-2"/>
         </div>
     </div>
     
@@ -58,6 +61,8 @@ import Loader from '@/components/Loader.vue';
             authorHits: [] as Contributor[],
             themeHits: [] as Publication[],
             searchLoading: false as boolean,
+            loadingMoreArticles: false as boolean,
+            articleHitsPagination: [] as Article[],
         }
     },
     props: {
@@ -88,10 +93,14 @@ import Loader from '@/components/Loader.vue';
             this.searchedWordInput = this.store.searchWordBridge;
             this.store.searchWordBridge = "";
         }
+
+        window.addEventListener('scroll', this.onScroll);
     },
     methods: {
         setArticles(value : Article[]){
             this.articleHits = value;
+            this.articleHitsPagination = [];
+            this.fillRandomArticles(20);
         },
         setThemes(value : Publication[]){
             this.themeHits = value;
@@ -104,7 +113,31 @@ import Loader from '@/components/Loader.vue';
         },
         setSearchLoading(value : boolean){
             this.searchLoading = value;
-        }
+        },
+        async onScroll(){
+            if (this.articleHits.length <= 0) return;
+
+            let bottom = window.innerHeight + window.pageYOffset == document.body.scrollHeight;
+            if (!bottom) return;
+            this.loadingMoreArticles = true;
+            setTimeout(() => {
+              this.fillRandomArticles(20);
+            }, 1);
+            setTimeout(() => {
+              this.loadingMoreArticles = false;
+            }, 200);
+        },
+        fillRandomArticles(paginationCount : number){
+          let articleHitsMax = this.articleHits.length;
+          for (let i = 0; i < Math.min(paginationCount, articleHitsMax); i++) {
+            let randomIndex = Math.floor(Math.random() * this.articleHits.length);
+            let randomArticle = this.articleHits[randomIndex]
+            if (randomArticle != undefined){
+              this.articleHitsPagination.push(randomArticle);
+              this.articleHits.splice(randomIndex, 1);
+            }
+          }
+        },
     }
   });
 </script>

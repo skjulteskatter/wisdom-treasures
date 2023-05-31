@@ -28,6 +28,7 @@
       <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
     </div>
 
+
       <div class="ml-5 sm:ml-0">
         <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0">{{$t('common.origin').toUpperCase()}}</h1>
         <OriginsSwiper/>
@@ -42,6 +43,7 @@
           </template>
         </ThreeDButton>
       </div>
+
 
     <h1 class="text-sm tracking-wide font-bold mt-10 mx-5 sm:mx-0">{{ $t('home.otherWisdomWords').toUpperCase() }}</h1>
     <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
@@ -106,11 +108,10 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
       linkedArticle(): null | Article {
 
         if (this.homePath === this.currentPath) return null;
-
         const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
         if (articleId === undefined) return null;
 
-        if ((this.articles.some(x => x.id == articleId))) return null;
+        if ((this.randomArticleList.some(x => x.id == articleId))) return null;
 
         const article = this.store.articles.get(articleId || "");
         if (article === undefined) return null;
@@ -166,7 +167,8 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
         }, 200);
       },
       fillRandomArticles(paginationCount : number){
-        for (let i = 0; i < Math.min(paginationCount, this.shuffeledArticleKeys.length); i++) {
+        let shuffeledArticleKeysMax = this.shuffeledArticleKeys.length;
+        for (let i = 0; i < Math.min(paginationCount, shuffeledArticleKeysMax); i++) {
           let randomIndex = Math.floor(Math.random() * this.shuffeledArticleKeys.length);
           let randomArticle = (this.store.articles.get(this.shuffeledArticleKeys[randomIndex]))
           if (randomArticle != undefined){

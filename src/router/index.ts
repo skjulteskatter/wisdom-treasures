@@ -100,6 +100,18 @@ export const routes = [
           WWCard
         ]
       },
+      {
+        path: '/success',
+        name: 'success',
+        component: () => import('../views/SuccessView.vue'),
+        meta: {
+          requiresAuth: true,
+          scrollUp: true,
+        },
+        children: [
+          WWCard
+        ]
+      },
       //{
       //  path: '/manna',
       //  name: 'manna',
