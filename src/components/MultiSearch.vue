@@ -5,18 +5,18 @@
                     <template #icon>
                         <AdjustmentsIcon class="w-5 opacity-40"/>
                     </template>
-                    <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose: any) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
+                </BaseButton>
+            </BaseInput>
+        </div>
+
+            <div class="flex flex-col mx-5 sm:mx-0">
+                <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose: any) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
                         @publication-id-array:publication-id-array="setPublicationIdFilter"
                         @contributor-id-array:contributor-id-array="setAuthorIdFilter"
                         @only-favorites:only-favorites="setFavoriteFilter"
                         :initialPublicationIds="publicationIdFilter"
                         :initialAuthorIds="authorIdFilter"
                         :initialOnlyFavorites="onlyFavoriteFilter"/>
-                </BaseButton>
-            </BaseInput>
-        </div>
-
-            <div class="flex mx-5 sm:mx-0">
                 <div id="filtersection" class="flex-grow flex flex-col">
                     <!-- <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min" @click="showFilterModal = true">
                         <template #icon>
