@@ -29,6 +29,7 @@
       <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
     </div>
 
+
       <div class="ml-5 sm:ml-0">
         <h1 class="text-sm font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">ORIGIN</h1>
         <OriginsSwiper/>
@@ -45,16 +46,6 @@
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
       </div>
 
-    <!-- <h1 class="text-sm tracking-wide font-bold mt-10 mx-5 sm:mx-0">OTHER WISDOM WORDS</h1>
-    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
-      <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
-        <WWCard :article="article" class="grow" :strech-y="true"/>
-      </div>
-    </div>
-    <div id="loaderDiv">
-      <Loader :loading="loadingMoreArticles" class="mt-2"/>
-    </div>
-    <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/> -->
   </main>
 </template>
 
@@ -108,11 +99,10 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
       linkedArticle(): null | Article {
 
         if (this.homePath === this.currentPath) return null;
-
         const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
         if (articleId === undefined) return null;
 
-        if ((this.articles.some(x => x.id == articleId))) return null;
+        if ((this.randomArticleList.some(x => x.id == articleId))) return null;
 
         const article = this.store.articles.get(articleId || "");
         if (article === undefined) return null;
@@ -168,7 +158,8 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
         }, 200);
       },
       fillRandomArticles(paginationCount : number){
-        for (let i = 0; i < Math.min(paginationCount, this.shuffeledArticleKeys.length); i++) {
+        let shuffeledArticleKeysMax = this.shuffeledArticleKeys.length;
+        for (let i = 0; i < Math.min(paginationCount, shuffeledArticleKeysMax); i++) {
           let randomIndex = Math.floor(Math.random() * this.shuffeledArticleKeys.length);
           let randomArticle = (this.store.articles.get(this.shuffeledArticleKeys[randomIndex]))
           if (randomArticle != undefined){
