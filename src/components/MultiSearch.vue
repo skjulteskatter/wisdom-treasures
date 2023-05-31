@@ -1,19 +1,7 @@
 <template>
-    <BaseCard class="mt-4">
-        <template #header> 
-            <div class="font-sans">
-                <div v-if="searchedWord" class="font-bold">
-                    Showing {{numberOfResults}} Results for "{{searchedWord}}"
-                </div>
-                <div v-else class="font-bold">
-                    Search
-                </div>
-            </div>
-        </template>
         <div class="flex">
             <BaseInput v-model="searchWord" style-type="search" class="grow" size="lg" @search-action="search($event)"/>
             <BaseButton v-if="filterOn" theme="menuButton" class="border border-black/20 flex h-min w-min ml-2" @click="showFilterModal = true">
-                Filter
                 <template #icon>
                     <AdjustmentsIcon class="w-5"/>
                 </template>
@@ -26,7 +14,7 @@
                     :initialOnlyFavorites="onlyFavoriteFilter"/>
             </BaseButton>
         </div>
-        <template #footer v-if="atLeastOneFilterIsActive && filterOn">
+        <!-- <template #footer v-if="atLeastOneFilterIsActive && filterOn"> -->
             <div class="flex">
                 <div id="filtersection" class="flex-grow flex flex-col">
                     <div id="filterButtons" class="flex gap-4 flex-wrap">
@@ -60,22 +48,8 @@
 
                     </div>
                 </div>
-                <!-- We don't need sorting 
-                <div id="sortSection" class="flex flex-col place-items-end">
-                    <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min">
-                        Sort
-                        <template #icon>
-                            <SwitchVerticalIcon class="w-5"/>
-                        </template>
-                    </BaseButton>
-                    <div id="sortMessage" class="mt-4">
-                        <p>Sorting by: something idk</p>
-                    </div>
-                </div>
-                -->
             </div>
-        </template>
-    </BaseCard>
+
 </template>
 
 <script lang="ts">

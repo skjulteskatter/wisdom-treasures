@@ -1,5 +1,5 @@
 <template>
-    <div :show="true" class="" @close="closeWithReturnArrays">
+    <BaseModal :show="true" class="fixed w-full h-full left-0 top-0 z-40" @close="closeWithReturnArrays">
         <div id="authors" class="h-60 overflow-y-scroll">
             <div v-for="(author, index) in allAuthors" :key="index" class="flex">
                 <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
@@ -28,7 +28,7 @@
               <SearchIcon class="h-5"></SearchIcon>
             </template>
         </BaseButton>
-    </div>
+    </BaseModal>
 </template>
 
 <script lang="ts">
