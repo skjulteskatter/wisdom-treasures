@@ -3,5 +3,6 @@
   "common_logout": "Log ut!",
   "common_register": "Registrer bruker",
   "common_loading": "Laster inn...",
-  "welcome": "Velkommen"
+  "welcome": "Velkommen",
+  "save-settings": "Lagre Instillinger"
 }

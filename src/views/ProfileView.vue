@@ -45,10 +45,16 @@
                 <CreditCardIcon class="h-5"></CreditCardIcon>
               </template>
             </BaseButton>
+            <BaseButton @click="goToManageSubscriptions()">
+              Manage Subscription
+              <template #icon>
+                <CurrencyDollarIcon class="h-5"></CurrencyDollarIcon>
+              </template>
+            </BaseButton>
           </div>
           <div class="flex mt-10 w-full place-content-end">
             <BaseButton theme='primary' @click="async ()=> {await saveLocalSettings()}">
-              Save settings
+              {{ $t('save-settings') }}
               <template #icon>
                 <SaveIcon class="h-5"></SaveIcon>
               </template>
@@ -75,7 +81,7 @@ import type { User } from "firebase/auth";
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
-import { KeyIcon, SaveIcon, LogoutIcon, CreditCardIcon } from '@heroicons/vue/outline';
+import { KeyIcon, SaveIcon, LogoutIcon, CreditCardIcon, CurrencyDollarIcon } from '@heroicons/vue/outline';
 import GenerelDropDown from '@/components/GenerelDropDown.vue';
 import { validLanguages, fallbackLocale } from '@/i18n';
 import ChangePasswordModal from '@/components/ChangePasswordModal.vue';
@@ -110,7 +116,8 @@ import { logOut } from "@/services/auth";
       ChangePasswordModal,
       ClickableLink,
       LogoutIcon,
-      CreditCardIcon
+      CreditCardIcon,
+      CurrencyDollarIcon
     },
     computed: {
       initialized(){
@@ -133,6 +140,9 @@ import { logOut } from "@/services/auth";
     methods: {
       async setCurrentUser(){
         this.currentUser = await getCurrentUserPromise();
+      },
+      goToManageSubscriptions(){
+        window.location.href = 'https://billing.stripe.com/p/login/aEUaG25ag6bybEA3cc';
       },
       changeLanguage(newLanguage : string){
         if (this.store.locale == newLanguage) return;

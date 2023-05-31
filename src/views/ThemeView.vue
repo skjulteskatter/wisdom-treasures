@@ -7,7 +7,16 @@
       </h1>
       <BackButton class="opacity-0"/>
     </div>
-    <h1 class="text-base m-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Get Wisdom Manna from the theme:</h1>
+
+    <MultiSearch 
+        :filter-on="false"
+        :initial-theme-filter="[$route.params.themeId]"
+        @articles:article-hits="setSearchArticles" 
+        @searched-word:searched-word=""
+        @search-loading:search-loading="">
+    </MultiSearch>
+
+    <h1 class="text-base m-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Get Wisdom Manna in the topic:</h1>
     <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true"/>
     <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 sm:mx-0">
       <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
@@ -15,7 +24,7 @@
 
     <h1 class="text-base mx-5 my-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Rest of the Wisdom Words in the theme:</h1>
     <div id="WWCards" class="px-5 pt-5 sm:p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-      <div v-for="(article, index) in articles" :key="index" class="flex flex-col">
+      <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
     </div>
@@ -34,6 +43,7 @@ import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
 import WWShowCard from '@/components/WWShowCard.vue';
 import { mannaHistory } from '@/services/localStorage';
+import MultiSearch from '@/components/MultiSearch.vue';
 
   export default defineComponent({
     name: "ThemeView",
@@ -44,6 +54,7 @@ import { mannaHistory } from '@/services/localStorage';
         publication: undefined as Publication | undefined,
         randomArticle : null as Article | null,
         showWordOfTheDay : false as boolean,
+        searchArticles: [] as Article[],
       }
     },
     components: {
@@ -51,9 +62,14 @@ import { mannaHistory } from '@/services/localStorage';
       BackButton,
       ThreeDButton,
       RefreshIcon,
-      WWShowCard
+      WWShowCard,
+      MultiSearch
     },
     computed: {
+      searchOrAllArticles(): Article[]{
+        if (this.searchArticles.length > 0) return this.searchArticles;
+        return this.articles;
+      },
       storeFavorites() : string[]{
         return this.store.favorites;
       },
@@ -88,6 +104,9 @@ import { mannaHistory } from '@/services/localStorage';
       }
     },
     methods: {
+      setSearchArticles(value : Article[]){
+            this.searchArticles = value;
+      },
       refreshDataFavorites(){
         this.dataFavorites = [...this.storeFavorites];
       },
