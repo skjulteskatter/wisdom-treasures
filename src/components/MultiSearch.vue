@@ -12,7 +12,7 @@
         </template>
         <div class="flex">
             <BaseInput v-model="searchWord" style-type="search" class="grow" size="lg" @search-action="search($event)"/>
-            <BaseButton v-if="filterOn" theme="menuButton" class="border border-black/20 flex h-min w-min ml-2" @click="showFilterModal = true">
+            <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min ml-2" @click="showFilterModal = true">
                 Filter
                 <template #icon>
                     <AdjustmentsIcon class="w-5"/>
@@ -23,22 +23,24 @@
                     @only-favorites:only-favorites="setFavoriteFilter"
                     :initialPublicationIds="publicationIdFilter"
                     :initialAuthorIds="authorIdFilter"
-                    :initialOnlyFavorites="onlyFavoriteFilter"/>
+                    :initialOnlyFavorites="onlyFavoriteFilter"
+                    :hidePublications="initialThemeFilter.length > 0"
+                    :hideAuthors="initialAuthorFilter.length > 0"/>
             </BaseButton>
         </div>
-        <template #footer v-if="atLeastOneFilterIsActive && filterOn">
+        <template #footer v-if="atLeastOneFilterIsActive">
             <div class="flex">
                 <div id="filtersection" class="flex-grow flex flex-col">
                     <div id="filterButtons" class="flex gap-4 flex-wrap">
 
-                        <div v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md w-min bg-black/10">
+                        <div v-if="initialThemeFilter.length <= 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md w-min bg-black/10">
                             <p class="w-max pl-2 pr-1">Publication: {{ publication.title }}</p> 
                             <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{publicationIdFilter = publicationIdFilter.filter(x => x != publication.id); search(undefined)}">
                                 <XIcon class="h-6"/>
                             </BaseButton>
                         </div>
 
-                        <div v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md w-min bg-black/10">
+                        <div v-if="initialAuthorFilter.length <= 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md w-min bg-black/10">
                             <p class="w-max pl-2 pr-1">Author: {{ author.name }}</p> 
                             <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{authorIdFilter = authorIdFilter.filter(x => x != author.id); search(undefined)}">
                                 <XIcon class="h-6"/>
@@ -53,7 +55,7 @@
                         </div>
 
                         <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/10">
-                            <BaseButton theme="menuButton" class="self-center max-h-7" @click="()=>{publicationIdFilter = []; authorIdFilter = []; onlyFavoriteFilter = false; search(undefined)}">
+                            <BaseButton theme="menuButton" class="self-center max-h-7" @click="resetAllFilter">
                                 <p class="w-max pl-2 pr-1 defaultFontSize">Reset all</p>
                             </BaseButton>
                         </div>
@@ -116,7 +118,6 @@ export default defineComponent({
             authorIdFilter: [] as string[],
 
             showFilterModal: false as boolean,
-            showSortModal: false as boolean,
 
             maxNumberOfArticlesDisplayed: 100000 as number,
         }
@@ -126,11 +127,11 @@ export default defineComponent({
             type: String,
             default: "",
         },
-        filterOn: {
-            type: Boolean,
-            default: true,
-        },
         initialThemeFilter: {
+            type: Array as PropType<string[]>,
+            default: []
+        },
+        initialAuthorFilter: {
             type: Array as PropType<string[]>,
             default: []
         }
@@ -138,7 +139,8 @@ export default defineComponent({
     emits: ["authors:authorHits", "themes:themeHits", "articles:articleHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],
     computed: {
         atLeastOneFilterIsActive(): boolean{
-            return this.publicationIdFilter.length + this.authorIdFilter.length > 0 || this.onlyFavoriteFilter;
+
+            return (this.publicationIdFilter.length + this.authorIdFilter.length) - (this.initialAuthorFilter.length + this.initialThemeFilter.length) > 0 || this.onlyFavoriteFilter; //TODO maybe a bit dirty
         },
         allArticles() : Article[] {
             return Array.from(this.store.articles.values());
@@ -269,15 +271,33 @@ export default defineComponent({
         setFavoriteFilter(value: boolean) {
             this.onlyFavoriteFilter = value;
         },
+        resetAllFilter(){
+            this.publicationIdFilter = [];
+            this.initialThemeFilter.forEach(themeId => {
+                this.publicationIdFilter.push(themeId.toString())
+            });
+            this.authorIdFilter = [];
+            this.initialAuthorFilter.forEach(authorId => {
+                this.authorIdFilter.push(authorId.toString())
+            });
+            this.onlyFavoriteFilter = false; 
+            this.search(undefined);
+        }
     },
-    mounted() {
+    created() {
         if (this.initialSearchWord != "") {
             this.search(this.initialSearchWord);
         }
 
         this.initialThemeFilter.forEach(themeId => {
-            this.publicationIdFilter.push(themeId.toString())
+            this.publicationIdFilter.push(themeId)
         });
+
+        this.initialAuthorFilter.forEach(authorId => {
+            this.authorIdFilter.push(authorId)
+        });
+
+        console.log(this.publicationIdFilter);
     },
     watch: {
         async initialSearchWord(newValue: string){

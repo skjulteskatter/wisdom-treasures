@@ -9,11 +9,11 @@
     </div>
 
     <MultiSearch 
-        :filter-on="false"
         :initial-theme-filter="[$route.params.themeId]"
         @articles:article-hits="setSearchArticles" 
         @searched-word:searched-word=""
-        @search-loading:search-loading="">
+        @search-loading:search-loading=""
+        >
     </MultiSearch>
 
     <h1 class="text-base m-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Get Wisdom Manna in the topic:</h1>
