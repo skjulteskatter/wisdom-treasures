@@ -1,26 +1,26 @@
 <template>
   <main>
-    <div id="topPart" class="flex align-middle my-6">
-      <h1 class="text-3xl font-bold">
+    <div id="topPart" class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none items-center justify-between py-4 sm:py-6">
+      <BackButton/>
+      <h1 class="text-base sm:text-3xl text-white sm:text-inherit tracking-wide font-bold">
       Profile
       </h1>
-      <div id="spacerDiv" class="grow"/>
       <div class="place-self-center">
-        <BaseButton theme='error' @click="async () => {await logout()}">
-        Log Out
-        <template #icon>
-          <LogoutIcon class="h-5"/>
-        </template>
-      </BaseButton>
+        <BaseButton @click="async () => {await logout()}">
+          <template #icon>
+            <LogoutIcon class="h-5"/>
+          </template>
+        </BaseButton>
       </div>
     </div>
+
     <div>
       <BaseCard>
         <template #header>
-          <div class="flex flex-row place-items-center font-sans">
-            <img :src="currentUser?.photoURL || '/img/user.svg'" class="h-28 rounded-full border-primary border-2"/>
-            <div class="flex flex-col ml-6">
-              <h1 class="text-3xl font-bold font-sans ">
+          <div class="flex flex-col place-items-center font-sans py-10">
+            <img :src="currentUser?.photoURL || '/img/user.svg'" class="h-28 rounded-full"/>
+            <div class="flex flex-col items-center">
+              <h1 class="text-2xl font-bold font-sans mt-3 mb-2">
                 {{getFullName}}
               </h1>
               <p class="text-sm font-sans ">
@@ -34,20 +34,20 @@
             <BaseInput :model-value="displayName" :placeholder="getFullName"></BaseInput>
             <BaseButton theme='error' @click="showPasswordModal = true">
               Change password
-              <template #icon>
+              <template #firstIcon>
                 <KeyIcon class="h-5"></KeyIcon>
               </template>
             </BaseButton>
             <GenerelDropDown :input-map="validLangs" :initial-value="validLangs.get(store.locale) ?? fallbackLang" @value-clicked:chosen-value="setSelectedLanguage"></GenerelDropDown>
             <BaseButton @click="()=>{$router.push({name: 'store'})}">
               Buy Subscription
-              <template #icon>
+              <template #firstIcon>
                 <CreditCardIcon class="h-5"></CreditCardIcon>
               </template>
             </BaseButton>
             <BaseButton @click="goToManageSubscriptions()">
               Manage Subscription
-              <template #icon>
+              <template #firstIcon>
                 <CurrencyDollarIcon class="h-5"></CurrencyDollarIcon>
               </template>
             </BaseButton>
@@ -81,6 +81,7 @@ import type { User } from "firebase/auth";
 import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
+import BackButton from '@/components/BackButton.vue';
 import { KeyIcon, SaveIcon, LogoutIcon, CreditCardIcon, CurrencyDollarIcon } from '@heroicons/vue/outline';
 import GenerelDropDown from '@/components/GenerelDropDown.vue';
 import { validLanguages, fallbackLocale } from '@/i18n';
@@ -117,7 +118,8 @@ import { logOut } from "@/services/auth";
       ClickableLink,
       LogoutIcon,
       CreditCardIcon,
-      CurrencyDollarIcon
+      CurrencyDollarIcon,
+      BackButton
     },
     computed: {
       initialized(){
