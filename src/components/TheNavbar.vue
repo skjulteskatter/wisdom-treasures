@@ -63,9 +63,9 @@
 									<MenuItem>
 										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">History</BaseButton>
 									</MenuItem>
-									<MenuItem>
+									<!-- <MenuItem>
 										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">Manna</BaseButton>
-									</MenuItem>
+									</MenuItem> -->
 								</div>
 								<div class="hidden sm:flex p-1">
 									<BaseInput :inside-h-u-menu="true" v-model="searchWord" placeholder="Search" style-type="search" class="self-center" @search-action="search($event)" @keydown.enter="search(undefined)"/>

@@ -1,6 +1,10 @@
 <template>
-  <main class="mt-4">
-    <BackButton/>
+  <main>
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between py-4 sm:py-6">
+        <BackButton/>
+        <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Search</h1>
+        <BackButton class="opacity-0"/>
+    </div>
     <MultiSearch 
         @articles:article-hits="setArticles" 
         :initial-search-word="searchedWordInput" 

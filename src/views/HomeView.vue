@@ -23,36 +23,29 @@
           <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</p>
           <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10" @click="navigate('history')">History</p>
         </div>
+        <!-- change so that the wisdom word doesn't change after the button is clicked -->
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
       </div>
       <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
     </div>
 
-    <div class="mx-5 sm:mx-0 mb-5">
-        <!--<h1 class="text-sm font-bold my-5 sm:mt-0 tracking-wide">WISDOM MANNA</h1>-->
+
+      <div class="ml-5 sm:ml-0">
+        <h1 class="text-sm font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">ORIGIN</h1>
+        <OriginsSwiper/>
+      </div>
+      
+      <div class="mx-5 sm:mx-0 mb-5">
+        <h1 class="text-sm font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">WISDOM MANNA</h1>
         <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
           <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
           <template #icon>
-            <!-- <RefreshIcon class="h-5 md:hidden"/> -->
+            <RefreshIcon class="h-5"/>
           </template>
         </ThreeDButton>
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
       </div>
 
-    <div class="ml-5 sm:ml-0">
-      <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0">ORIGIN</h1>
-      <OriginsSwiper/>
-    </div>
-
-    <h1 class="text-sm tracking-wide font-bold mt-10 mx-5 sm:mx-0">OTHER WISDOM WORDS</h1>
-    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
-      <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
-        <WWCard :article="article" class="grow" :strech-y="true"/>
-      </div>
-    </div>
-    <div id="loaderDiv">
-      <Loader :loading="loadingMoreArticles" class="mt-2"/>
-    </div>
-    <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
   </main>
 </template>
 

@@ -6,26 +6,13 @@
         <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Themes</h1>
         <BackButton class="opacity-0"/>
       </div>
-      <BaseCard class="hidden sm:block w-full">
-          <template #header> 
-              <div class="font-sans">
-                  <div v-if="searchedWord" class="font-bold">
-                      Showing {{numberOfResults}} Results for "{{searchedWord}}"
-                  </div>
-                  <div v-else class="font-bold">
-                      Search
-                  </div>
-              </div>
-          </template>
-          <BaseInput v-model="searchWord" style-type="search" placeholder="Search theme..." size="lg" @search-action="search($event)" class="hidden sm:block"/>
-      </BaseCard>
-
       <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search theme..." @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>
+      <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search theme..." @search-action="search($event)" class="hidden sm:block"/>
     </div>
-    <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden text-[color:var(--wt-color-text-grey)]">
+    <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:ml-0 text-[color:var(--wt-color-text-grey)] opacity-80">
         Showing {{numberOfResults}} results for "{{searchedWord}}"
     </div>
-    <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5" :class="{'pr-5' : searchedWord}">
+    <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5 sm:px-0" :class="{'pr-5' : searchedWord}">
       <div class="w-full">
         <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
           <div v-for="(publication, index) in searchedPublications" :key="publication.id" class="flex flex-col">
