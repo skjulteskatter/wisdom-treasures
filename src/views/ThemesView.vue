@@ -4,7 +4,7 @@
       <div class="flex items-center mt-4 sm:my-6 justify-between">
         <BackButton/>
         <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Themes</h1>
-        <BackButton class="opacity-0"/>
+        <BackButton class="opacity-0" disabled="true"/>
       </div>
       <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search theme..." @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>
       <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search theme..." @search-action="search($event)" class="hidden sm:block"/>

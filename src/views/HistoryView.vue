@@ -4,7 +4,7 @@
       <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
           <BackButton/>
           <h1 class="my-4 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">History</h1>
-          <BackButton class="opacity-0"/>
+          <BackButton class="opacity-0" disabled="true"/>
       </div>
       <div class="flex mx-5 sm:mx-0 mt-5 sm:mt-0">
         <div class="grow"/>

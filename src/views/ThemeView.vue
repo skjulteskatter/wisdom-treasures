@@ -5,7 +5,7 @@
       <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
         {{ publication?.title ?? "" }}
       </h1>
-      <BackButton class="opacity-0"/>
+      <BackButton class="opacity-0" disabled="true"/>
     </div>
 
     <MultiSearch 

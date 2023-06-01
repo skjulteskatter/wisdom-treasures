@@ -3,7 +3,7 @@
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between py-4 sm:py-6">
         <BackButton/>
         <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Search</h1>
-        <BackButton class="opacity-0"/>
+        <BackButton class="opacity-0" disabled="true"/>
     </div>
     <MultiSearch 
         @articles:article-hits="setArticles" 
@@ -21,7 +21,7 @@
             </div>
         </div>
         <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection" class="mt-4">
-            <h1 class="text-2xl font-bold">Themes</h1>
+            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Themes</h1>
             <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(theme, index) in themeHits" :key="index" class="flex flex-col">
                     <ThemeCard :publication="theme" class="grow" :strech-y="true"/>
@@ -29,7 +29,7 @@
             </div>
         </div>
         <div v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
-            <h1 class="text-2xl font-bold">Words</h1>
+            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Words</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
                     <WWCard :article="article" class="grow" :strech-y="true"/>

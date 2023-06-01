@@ -5,7 +5,7 @@
       <h1 class=" text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
         Favorites
       </h1>
-      <BackButton class="opacity-0"/>
+      <BackButton class="opacity-0" disabled="true"/>
     </div>
     <div id="WWCards" class="px-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
