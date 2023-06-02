@@ -11,9 +11,10 @@
             </div>
         </template> -->
         <div class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none pb-4 px-5 sm:px-0">
-            <BaseInput v-model="searchWord" style-type="search" class="grow" size="lg" :whiteText="true" placeholder="Search..." @search-action="search($event)"/>
+            <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow" size="lg" :whiteText="true" placeholder="Search..." @search-action="search($event)"/>
+            <BaseInput v-model="searchWord" style-type="search" class="hidden sm:block grow" size="lg" placeholder="Search..." @search-action="search($event)"/>
             <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min ml-2" @click="showFilterModal = true">
-                Filter
+                <!-- Filter -->
                 <template #icon>
                     <AdjustmentsIcon class="w-5"/>
                 </template>
@@ -29,7 +30,7 @@
             </BaseButton>
         </div>
 
-            <div class="flex px-5 sm:px-0 pt-4 sm:pt-0">
+            <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
                 <div id="filtersection" class="flex-grow flex flex-col">
                     <div id="filterButtons" class="flex gap-2 flex-wrap">
 
