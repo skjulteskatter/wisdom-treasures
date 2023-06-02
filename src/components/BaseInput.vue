@@ -25,7 +25,8 @@
                     styleType === 'search' ? ['pl-11 pr-10 bg-black/10 border-0'] : '',
                     styleType === 'password' ? 'pr-8' : '',
                     whiteText === true ? 'text-white placeholder-white/90 bg-white/40' : '',
-                    size === 'lg' ? 'text-xl' : '',]"
+                    size === 'lg' ? 'text-xl' : '',
+                    nameInput === true ? 'bg-transparent placeholder:text-2xl text-2xl border-none font-bold text-center placeholder:text-[color:var(--color-text)] py-1 mt-2 mb-1' : '']"
                 :value="modelValue"
                 :disabled="disabled"
                 :placeholder="placeholder"
@@ -95,6 +96,7 @@ export default defineComponent({
             searchHistory: [] as string[],
             searchHistoryHoverOver: false as Boolean,
             filterPositioning: true as Boolean,
+            $refs: {},
         }
     },
     props: {
@@ -126,6 +128,10 @@ export default defineComponent({
         whiteText: {
             type: Boolean,
             default: false,
+        },
+        nameInput: {
+            type: Boolean,
+            default: false
         }
     },
     emits: ["update:modelValue", "searchAction"],
@@ -155,7 +161,7 @@ export default defineComponent({
             this.$emit('update:modelValue', searchTerm);
             this.search(searchTerm);
             this.searchHistoryHoverOver = false;
-        }
+        },
     },
 });
 </script>

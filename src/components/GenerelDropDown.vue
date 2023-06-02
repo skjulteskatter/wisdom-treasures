@@ -1,9 +1,9 @@
 <template>
-    <Menu as="div" class="z-40">
-        <MenuButton class="w-full h-full px-2 py-1 rounded-md border-black/20 border">
+    <Menu as="div" class="z-40 opacity-80">
+        <MenuButton class="w-full h-full px-2 py-1 rounded-md border-black/20 border" :class="profileLanguage ? 'border-l-white/0 border-r-white/0 sm:border-t-white/0 py-3 rounded-none' : ''">
             <div class="flex place-content-center gap-2 place-items-center">
                 {{ chosenValue ?? initialValue }}
-                <ChevronDownIcon class="h-5"></ChevronDownIcon>
+                <ChevronDownIcon class="h-5 opacity-80"></ChevronDownIcon>
             </div>
         </MenuButton>
         <transition
@@ -53,6 +53,10 @@ export default defineComponent({
             type: Map<string, string>,
             required: true
         },
+        profileLanguage: {
+            type: Boolean,
+            default: false
+        }
     },
     emits: ["valueClicked:chosenValue"],
     computed: {

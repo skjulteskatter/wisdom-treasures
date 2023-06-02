@@ -44,6 +44,7 @@ export default defineComponent({
                         "menuButton",
                         "menuButtonSMWhite",
                         "magic",
+                        "noBg"
                     ].includes(value)
                 );
             },
@@ -131,6 +132,9 @@ export default defineComponent({
             content: "";
             display: none;
         }
+    }
+    &--noBg {
+        @apply bg-transparent text-[color:var(--color-text)] opacity-80 border-b border-black/20 rounded-none py-2 pb-4 px-4;
     }
     &--menuButtonSMWhite{
         @apply text-white tracking-wide py-3;

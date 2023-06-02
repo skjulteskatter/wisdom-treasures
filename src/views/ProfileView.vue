@@ -1,12 +1,17 @@
 <template>
   <main>
     <div id="topPart" class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none items-center justify-between py-4 sm:py-6">
-      <BackButton/>
+      <div class="flex">
+        <BackButton/>
+        <p id="justForLayout" class="hidden sm:block opacity-0 mr-2">Log out</p>
+      </div>
+      
       <h1 class="text-base sm:text-3xl text-white sm:text-inherit tracking-wide font-bold">
       Profile
       </h1>
       <div class="place-self-center">
         <BaseButton @click="async () => {await logout()}">
+          <p class="hidden sm:block ">Log out</p>
           <template #icon>
             <LogoutIcon class="h-5"/>
           </template>
@@ -15,44 +20,50 @@
     </div>
 
     <div>
-      <BaseCard>
-        <template #header>
+      
+        
           <div class="flex flex-col place-items-center font-sans py-10">
             <img :src="currentUser?.photoURL || '/img/user.svg'" class="h-28 rounded-full"/>
             <div class="flex flex-col items-center">
-              <h1 class="text-2xl font-bold font-sans mt-3 mb-2">
+              <!-- <h1 class="text-2xl font-bold font-sans mt-3">
                 {{getFullName}}
-              </h1>
+              </h1> -->
+              <div class="flex justify-center items-center">
+                <BaseInput :model-value="displayName" :placeholder="getFullName" :nameInput="true"></BaseInput>
+              </div>
               <p class="text-sm font-sans ">
                 {{getEmail}}
               </p>
             </div>
           </div>
-        </template>
-        <template #default>
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
-            <BaseInput :model-value="displayName" :placeholder="getFullName"></BaseInput>
-            <BaseButton theme='error' @click="showPasswordModal = true">
-              Change password
-              <template #firstIcon>
-                <KeyIcon class="h-5"></KeyIcon>
-              </template>
-            </BaseButton>
-            <GenerelDropDown :input-map="validLangs" :initial-value="validLangs.get(store.locale) ?? fallbackLang" @value-clicked:chosen-value="setSelectedLanguage"></GenerelDropDown>
-            <BaseButton @click="()=>{$router.push({name: 'store'})}">
+       
+        
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 px-10">
+            <GenerelDropDown :input-map="validLangs" :initial-value="validLangs.get(store.locale) ?? fallbackLang" @value-clicked:chosen-value="setSelectedLanguage" :profileLanguage="true"></GenerelDropDown>
+            <BaseButton theme="noBg" @click="()=>{$router.push({name: 'store'})}">
               Buy Subscription
               <template #firstIcon>
-                <CreditCardIcon class="h-5"></CreditCardIcon>
+                <CreditCardIcon class="h-5 opacity-80"></CreditCardIcon>
               </template>
             </BaseButton>
-            <BaseButton @click="goToManageSubscriptions()">
+            <BaseButton theme="noBg" @click="goToManageSubscriptions()">
               Manage Subscription
               <template #firstIcon>
-                <CurrencyDollarIcon class="h-5"></CurrencyDollarIcon>
+                <CurrencyDollarIcon class="h-5 opacity-80"></CurrencyDollarIcon>
               </template>
             </BaseButton>
+            <BaseButton theme='noBg' @click="showPasswordModal = true">
+              Change password
+              <template #firstIcon>
+                <KeyIcon class="h-5 opacity-80"></KeyIcon>
+              </template>
+            </BaseButton>
+            <BaseButton @click="sendEmail" theme="noBg">
+              Contact:&nbsp;<ClickableLink>{{ supportEmail }}</ClickableLink>
+            </BaseButton>
           </div>
-          <div class="flex mt-10 w-full place-content-end">
+
+          <div class="flex mt-8 pb-5 pr-10 sm:pr-5 w-full place-content-end">
             <BaseButton theme='primary' @click="async ()=> {await saveLocalSettings()}">
               {{ $t('save-settings') }}
               <template #icon>
@@ -60,14 +71,10 @@
               </template>
             </BaseButton>
           </div>
-        </template>
-        <template #footer>
-          <div class="flex flex-row place-items-center">
-            <div>Contact support:&nbsp;</div>
-            <ClickableLink ><a :href="'mailto:' + supportEmail">{{ supportEmail }}</a></ClickableLink>
-          </div>
-        </template>
-      </BaseCard>
+
+          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 bg-black/10 opacity-40 w-11/12 sm:w-full h-5/6 -z-10 rounded-t-5xl"></div>
+        
+      
       <ChangePasswordModal :show="showPasswordModal" @close="()=> {showPasswordModal = false}"/>
     </div>
   </main>
@@ -160,6 +167,9 @@ import { logOut } from "@/services/auth";
       async logout(){
         await logOut();
         this.$router.push({name: "dashboard"});
+      },
+      sendEmail(){
+        window.location.href = "mailto:" + this.supportEmail;
       }
     },
     mounted() {
@@ -168,3 +178,9 @@ import { logOut } from "@/services/auth";
     }
   });
 </script>
+<style>
+.rounded-t-5xl{
+  border-top-left-radius: 3rem;
+  border-top-right-radius: 3rem
+}
+</style>
