@@ -44,7 +44,7 @@
                 class="w-5 absolute -left-7 -top-[10px] cursor-pointer opacity-40"
                 @click="(_event: any) => $emit('update:modelValue', '')"
                 >
-                    <XIcon :class="{whiteText : 'text-white'}"/>
+                    <XIcon :class="[whiteText ? 'text-white' : '']"/>
                 </div>
             </div>
         </div>
