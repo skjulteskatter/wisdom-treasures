@@ -16,7 +16,7 @@
         >
             <slot />
         </span>
-        <span v-if="$slots.icon" :class="whiteText ? 'text-white/60 sm:text-inherit sm:opacity-40' : 'opacity-40'">
+        <span v-if="$slots.icon" :class="[whiteText ? 'text-white/60 sm:text-inherit sm:opacity-40' : '', forMultiSearch ? 'opacity-40' : '']">
             <slot name="icon" />
         </span>
     </button>
