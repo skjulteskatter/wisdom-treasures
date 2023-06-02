@@ -20,17 +20,16 @@
     <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
-          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-full mb-12" @click="(e: Event | undefined) => navigate('dashboard', e)">Daily word<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20" @click="(e: Event | undefined) => navigate('favorites', e)">Favorites</p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10" @click="navigate('history')">History</p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mb-12 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayWordOfTheDay}" @click="changeDisplayWOTD()">Daily word<div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayFavorites}" @click="changeDisplayFavorites()">Favorites<div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 h-1/3"></div></p>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10 cursor-pointer" @click="navigate('history')">History</p>
         </div>
-        <!-- change so that the wisdom word doesn't change after the button is clicked -->
-        <!-- <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" /> -->
 
+        <!-- change so that the wisdom word doesn't change after the button is clicked -->
+        <WWShowCard v-if="randomArticle && displayWordOfTheDay" :article="randomArticle" class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
 
         <!-- DIV for favourites -->
-
-        <div id="WWCards" class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+        <div v-if="displayFavorites" id="WWCards" class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
           <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
             <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
               <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" />
@@ -40,7 +39,6 @@
         </div>
 
         <!-- DIV for the history -->
-
         <!-- <div id="WWCards" class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
           <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
 
@@ -103,6 +101,8 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
         shuffeledArticleKeys: [] as string[],
         loadingMoreArticles: false as boolean,
         dataFavorites : undefined as string[] | undefined,
+        displayFavorites: false as Boolean,
+        displayWordOfTheDay: true as Boolean
       }
     },
     components: {
@@ -256,6 +256,15 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
       },
       refreshDataFavorites(){
         this.dataFavorites = [...this.storeFavorites];
+      },
+      changeDisplayFavorites(){
+        this.displayFavorites = true
+        this.displayWordOfTheDay = false
+        
+      },
+      changeDisplayWOTD(){
+        this.displayWordOfTheDay = true
+        this.displayFavorites = false
       }
     },
   });
