@@ -1,17 +1,17 @@
 <template>
     <BaseModal :show="true" class="fixed w-full h-full left-0 top-0 z-40" @close="closeWithReturnArrays">
-        <div id="authors" class="h-60 overflow-y-scroll">
+        <div id="authors" class="h-60 overflow-y-scroll" :class="{'hidden' : hideAuthors}">
             <div v-for="(author, index) in allAuthors" :key="index" class="flex">
                 <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
-                    <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="()=>{if (!initialAuthorIds.includes(author.id)){authorCheckBoxArray[index] = false}}"/>
+                    <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="setInitialAuthorValue(author.id, index)"/>
                     {{ author.name }}
                 </label>
             </div>
         </div>
-        <div id="publications" class="h-60 overflow-y-scroll">
+        <div id="publications" class="h-60 overflow-y-scroll" :class="{'hidden' : hidePublications}">
             <div v-for="(publication, index) in allPublications" :key="index" class="flex">
                 <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
-                    <BaseCheckbox v-model="publicationCheckBoxArray[index]" @vnode-mounted="()=>{if (!initialPublicationIds.includes(publication.id)){publicationCheckBoxArray[index] = false}}"/>
+                    <BaseCheckbox v-model="publicationCheckBoxArray[index]" @vnode-mounted="setInitialPublicationValue(publication.id, index)"/>
                     {{ publication.title }}
                 </label>
             </div>
@@ -68,6 +68,14 @@ export default defineComponent({
         initialOnlyFavorites: {
             type: Boolean,
             default: false
+        },
+        hidePublications: {
+            type: Boolean,
+            default: false
+        },
+        hideAuthors: {
+            type: Boolean,
+            default: false
         }
     },
     computed: {
@@ -91,8 +99,23 @@ export default defineComponent({
         }
     },
     methods: {
+        setInitialPublicationValue(id : string, index: number){
+            if (!this.initialPublicationIds.includes(id))
+            {
+                this.publicationCheckBoxArray[index] = false
+            }  else {
+                this.publicationCheckBoxArray[index] = true
+            }
+        },
+        setInitialAuthorValue(id : string, index: number){
+            if (!this.initialAuthorIds.includes(id))
+            {
+                this.authorCheckBoxArray[index] = false
+            }  else {
+                this.authorCheckBoxArray[index] = true
+            }
+        },
         closeWithReturnArrays() {
-
             let withSearchOnClose : boolean = false;
 
             const publicationsArray : string[] = [];
@@ -120,6 +143,9 @@ export default defineComponent({
 
             this.$emit('close:withSearch', withSearchOnClose);
         },
+    },
+    mounted(){
+        console.log(this.initialPublicationIds);
     }
 });
 </script>
