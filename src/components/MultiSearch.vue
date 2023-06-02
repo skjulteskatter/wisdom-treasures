@@ -1,6 +1,6 @@
 <template>
-    <BaseCard class="mt-4">
-        <template #header> 
+
+        <!-- <template #header> 
             <div class="font-sans">
                 <div v-if="searchedWord" class="font-bold">
                     Showing {{numberOfResults}} Results for "{{searchedWord}}"
@@ -9,9 +9,9 @@
                     Search
                 </div>
             </div>
-        </template>
-        <div class="flex">
-            <BaseInput v-model="searchWord" style-type="search" class="grow" size="lg" @search-action="search($event)"/>
+        </template> -->
+        <div class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none pb-4 px-5 sm:px-0">
+            <BaseInput v-model="searchWord" style-type="search" class="grow" size="lg" :whiteText="true" placeholder="Search..." @search-action="search($event)"/>
             <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min ml-2" @click="showFilterModal = true">
                 Filter
                 <template #icon>
@@ -28,33 +28,33 @@
                     :hideAuthors="initialAuthorFilter.length > 0"/>
             </BaseButton>
         </div>
-        <template #footer v-if="atLeastOneFilterIsActive">
-            <div class="flex">
+
+            <div class="flex px-5 sm:px-0 pt-4 sm:pt-0">
                 <div id="filtersection" class="flex-grow flex flex-col">
-                    <div id="filterButtons" class="flex gap-4 flex-wrap">
+                    <div id="filterButtons" class="flex gap-2 flex-wrap">
 
-                        <div v-if="initialThemeFilter.length <= 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md w-min bg-black/10">
-                            <p class="w-max pl-2 pr-1">Publication: {{ publication.title }}</p> 
+                        <div v-if="initialThemeFilter.length <= 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md bg-black/10 opacity-80">
+                            <p class="max-w-xxs truncate pl-2 pr-1">{{ publication.title }}</p> 
                             <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{publicationIdFilter = publicationIdFilter.filter(x => x != publication.id); search(undefined)}">
-                                <XIcon class="h-6"/>
+                                <XIcon class="h-5 opacity-70"/>
                             </BaseButton>
                         </div>
 
-                        <div v-if="initialAuthorFilter.length <= 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md w-min bg-black/10">
-                            <p class="w-max pl-2 pr-1">Author: {{ author.name }}</p> 
+                        <div v-if="initialAuthorFilter.length <= 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md bg-black/10 opacity-80">
+                            <p class="max-w-xxs truncate pl-2 pr-1">{{ author.name }}</p> 
                             <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{authorIdFilter = authorIdFilter.filter(x => x != author.id); search(undefined)}">
-                                <XIcon class="h-6"/>
+                                <XIcon class="h-5 opacity-70"/>
                             </BaseButton>
                         </div>
 
-                        <div v-if="onlyFavoriteFilter" class="flex items-center rounded-md w-min bg-black/10">
-                            <p class="w-max pl-2 pr-1">Favorites Only</p> 
+                        <div v-if="onlyFavoriteFilter" class="flex items-center rounded-md bg-black/10 opacity-80">
+                            <p class="max-w-xxs truncate pl-2 pr-1">Favorites Only</p>
                             <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{onlyFavoriteFilter = false; search(undefined)}">
-                                <XIcon class="h-6"/>
+                                <XIcon class="h-5 opacity-70"/>
                             </BaseButton>
                         </div>
 
-                        <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/10">
+                        <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/20">
                             <BaseButton theme="menuButton" class="self-center max-h-7" @click="resetAllFilter">
                                 <p class="w-max pl-2 pr-1 defaultFontSize">Reset all</p>
                             </BaseButton>
@@ -76,8 +76,8 @@
                 </div>
                 -->
             </div>
-        </template>
-    </BaseCard>
+
+
 </template>
 
 <script lang="ts">
@@ -311,5 +311,8 @@ export default defineComponent({
 <style scoped>
 .defaultFontSize {
     font-size: var(--wt-default-font-size);
+}
+.max-w-xxs{
+    max-width: 15rem
 }
 </style>
