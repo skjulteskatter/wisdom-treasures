@@ -14,7 +14,7 @@
             <div id="wrapperDiv" :class="{'hidden' : loadPeriodName[key] !== true}">
               <div class="text-base sm:text-2xl font-bold opacity-80 flex cursor-pointer whitespace-nowrap w-min" @click="addOrRemoveHiddenPeriod(key.toString())">
                 {{key}}
-                <ChevronUpIcon class="h-6 self-center ml-2" :class="{'rotate-180': hiddenPeridos.includes(key.toString())}"/>
+                <ChevronUpIcon class="h-5 self-center ml-2" :class="{'rotate-180': hiddenPeridos.includes(key.toString())}"/>
               </div>
               <div class="border-l-2 pl-4 ml-2 my-6 border-[color:var(--wt-color-secondary-light)]" :class="{'hidden' : hiddenPeridos.includes(key.toString())}">
                 <div class="" v-for="article in getArticlesFromDays(value, key.toString())" :key="article.id + showOnlyMannaHistory.toString()">
