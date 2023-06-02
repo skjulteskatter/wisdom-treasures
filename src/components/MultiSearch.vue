@@ -10,11 +10,10 @@
                 </div>
             </div>
         </template> -->
-        <div class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none pb-4 px-5 sm:px-0">
-            <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow" size="lg" :whiteText="true" placeholder="Search..." @search-action="search($event)"/>
-            <BaseInput v-model="searchWord" style-type="search" class="hidden sm:block grow" size="lg" placeholder="Search..." @search-action="search($event)"/>
-            <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min ml-2" @click="showFilterModal = true">
-                <!-- Filter -->
+        <div class="flex px-5 sm:px-0" :class="inSearchView ? 'pb-4 bg-primary sm:bg-transparent shadow-md sm:shadow-none': ''">
+            <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow" size="lg" :whiteText="inSearchView ? true : false" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
+            <BaseInput v-model="searchWord" style-type="search" class="hidden sm:block grow" size="lg" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
+            <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = true" :forMultiSearch="true" :whiteText="inSearchView ? true : false">
                 <template #icon>
                     <AdjustmentsIcon class="w-5"/>
                 </template>
@@ -135,6 +134,10 @@ export default defineComponent({
         initialAuthorFilter: {
             type: Array as PropType<string[]>,
             default: []
+        },
+        inSearchView:{
+            type: Boolean,
+            default: false
         }
     },
     emits: ["authors:authorHits", "themes:themeHits", "articles:articleHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],

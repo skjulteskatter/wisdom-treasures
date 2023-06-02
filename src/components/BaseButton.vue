@@ -3,7 +3,7 @@
         class="overflow-hidden z-10 text-white select-none cursor-pointer flex items-center gap-2 rounded-md relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ring-offset-2 active:text-opacity-50"
         :class="[`button--${theme} button`, { 'opacity-75 cursor-wait button--loading': loading, 'button--disabled': disabled, 'button--clicked': clicked, 'py-1 px-2': size == 'small', 
             'py-2 px-4': size == 'medium', 'py-3 px-6': size == 'large', 'justify-center' : centerText, 
-            'threeDButton opacity-100': threeD, 'threeDButtonAnimation' : threeD && !loading }]"
+            'threeDButton opacity-100': threeD, 'threeDButtonAnimation' : threeD && !loading, 'bg-white/40' : whiteText, 'rounded-l-none gap-0 border-none bg-black/10 sm:bg-black/10' : forMultiSearch }]"
         :disabled="loading || disabled"
         v-bind="$attrs"
     >
@@ -16,7 +16,7 @@
         >
             <slot />
         </span>
-        <span v-if="$slots.icon">
+        <span v-if="$slots.icon" :class="whiteText ? 'text-white/60 sm:text-inherit sm:opacity-40' : 'opacity-40'">
             <slot name="icon" />
         </span>
     </button>
@@ -78,6 +78,14 @@ export default defineComponent({
             type: Boolean,
             default: false,
         },
+        forMultiSearch:{
+            type: Boolean,
+            default: false
+        },
+        whiteText:{
+            type: Boolean,
+            default: false
+        }
     },
     computed: {
         isLoading() {

@@ -11,7 +11,8 @@
         @searched-word:searched-word="setSearchedWord"
         @authors:author-hits="setAuthors"
         @themes:theme-hits="setThemes"
-        @search-loading:search-loading="setSearchLoading">
+        @search-loading:search-loading="setSearchLoading"
+        :inSearchView="true">
     </MultiSearch>
     
     <div class="mx-5 sm:mx-0">

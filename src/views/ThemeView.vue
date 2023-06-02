@@ -14,7 +14,7 @@
       <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
     </ThreeDButton>
 
-    <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">Search in the topic:</h1>
+    <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Search in the topic:</h1>
     <MultiSearch 
         :initial-theme-filter="[$route.params.themeId]"
         @articles:article-hits="setSearchArticles" 
@@ -23,7 +23,7 @@
         class="mx-5 sm:mx-0">
     </MultiSearch>
 
-    <div id="WWCards" class="px-5 pt-5 sm:p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+    <div id="WWCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
       <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
