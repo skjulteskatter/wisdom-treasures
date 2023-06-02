@@ -8,21 +8,21 @@
       <BackButton class="opacity-0" disabled="true"/>
     </div>
 
-    <MultiSearch 
-        :initial-theme-filter="[$route.params.themeId]"
-        @articles:article-hits="setSearchArticles" 
-        @searched-word:searched-word=""
-        @search-loading:search-loading=""
-        >
-    </MultiSearch>
-
-    <h1 class="text-base m-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Get Wisdom Manna in the topic:</h1>
+    <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">Wisdom Manna in the topic:</h1>
     <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true"/>
     <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 sm:mx-0">
       <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
     </ThreeDButton>
 
-    <h1 class="text-base mx-5 my-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Rest of the Wisdom Words in the theme:</h1>
+    <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">Search in the topic:</h1>
+    <MultiSearch 
+        :initial-theme-filter="[$route.params.themeId]"
+        @articles:article-hits="setSearchArticles" 
+        @searched-word:searched-word=""
+        @search-loading:search-loading=""
+        class="mx-5 sm:mx-0">
+    </MultiSearch>
+
     <div id="WWCards" class="px-5 pt-5 sm:p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
       <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
