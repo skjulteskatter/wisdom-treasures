@@ -82,23 +82,20 @@
 
 <script lang="ts">
 import { defineComponent, type PropType } from 'vue';
-import BaseCard from './BaseCard.vue';
 import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import { useSessionStore } from '@/stores/session';
 import BaseInput from './BaseInput.vue';
 import BaseButton from './BaseButton.vue';
-import { AdjustmentsIcon, SwitchVerticalIcon, XIcon } from '@heroicons/vue/outline';
+import { AdjustmentsIcon, XIcon } from '@heroicons/vue/outline';
 import FilterModal from './FilterModal.vue';
 import type Fuse from 'fuse.js';
 
 export default defineComponent({
     name: "multi-search",
     components: {
-    BaseCard,
     BaseInput,
     BaseButton,
     AdjustmentsIcon,
-    SwitchVerticalIcon,
     FilterModal,
     XIcon,
 },
@@ -129,11 +126,11 @@ export default defineComponent({
         },
         initialThemeFilter: {
             type: Array as PropType<string[]>,
-            default: []
+            default: () => []
         },
         initialAuthorFilter: {
             type: Array as PropType<string[]>,
-            default: []
+            default: () => []
         },
         inSearchView:{
             type: Boolean,
@@ -227,12 +224,12 @@ export default defineComponent({
                 //    )
                 //}
 
-                let orAuthorFilter = this.authorIdFilter.map(id => ({authorId : `'${id}`}));
-                if (this.authorIdFilter.length > 0){
-                    query.$and!.push( 
-                        {$or: orAuthorFilter}
-                    )
-                }
+                //let orAuthorFilter = this.authorIdFilter.map(id => ({authorId : `'${id}`}));
+                //if (this.authorIdFilter.length > 0){
+                //    query.$and!.push( 
+                //        {$or: orAuthorFilter}
+                //    )
+                //}
 
                 if (query.$and?.[0] && query.$and.length == 1){
                     query = query.$and![0];
@@ -255,6 +252,10 @@ export default defineComponent({
 
                 if (this.publicationIdFilter.length > 0){
                     this.articleHits = this.articleHits.filter(x => this.publicationIdFilter.includes(x.publicationId));
+                }
+
+                if (this.authorIdFilter.length > 0){
+                    this.articleHits = this.articleHits.filter(x => this.authorIdFilter.includes(x.authorId));
                 }
 
                 this.articleHits = this.articleHits.slice(0,this.maxNumberOfArticlesDisplayed);
@@ -300,8 +301,6 @@ export default defineComponent({
         this.initialAuthorFilter.forEach(authorId => {
             this.authorIdFilter.push(authorId)
         });
-
-        console.log(this.publicationIdFilter);
     },
     watch: {
         async initialSearchWord(newValue: string){

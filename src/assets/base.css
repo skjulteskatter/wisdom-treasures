@@ -37,20 +37,6 @@
   --wt-default-font-size: 15px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-background: var(--wt-c-black);
-    --color-background-soft: var(--wt-c-black-soft);
-    --color-background-mute: var(--wt-c-black-mute);
-
-    --color-border: var(--wt-c-divider-dark-2);
-    --color-border-hover: var(--wt-c-divider-dark-1);
-
-    --color-heading: var(--wt-c-text-dark-1);
-    --color-text: var(--wt-c-text-dark-2);
-  }
-}
-
 *,
 *::before,
 *::after {

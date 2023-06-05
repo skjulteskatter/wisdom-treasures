@@ -1,10 +1,15 @@
 <template>
   <main>
+    <div id="scrollToTopButtonDiv" class="flex fixed top-20 left-0 z-40 w-full bg-gray-700 h-0">
+        <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
+        <ScrollToTopButton class="fixed top-0 h-max"/>
+        <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
+    </div>
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
       <div class="flex items-center mt-4 sm:my-6 justify-between">
         <BackButton/>
         <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Themes</h1>
-        <BackButton class="opacity-0" disabled="true"/>
+        <BackButton class="opacity-0"/>
       </div>
       <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search theme..." @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>
       <BaseInput v-model="searchWord" style-type="search" size="lg" placeholder="Search theme..." @search-action="search($event)" class="hidden sm:block"/>
@@ -46,9 +51,9 @@ import { useSessionStore } from '@/stores/session';
 import ThemeCard from '@/components/ThemeCard.vue';
 import type { Publication } from 'hiddentreasures-js';
 import BaseInput from '@/components/BaseInput.vue';
-import BaseCard from '@/components/BaseCard.vue';
 import type Fuse from 'fuse.js';
 import BackButton from '@/components/BackButton.vue';
+import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 
   export default defineComponent({
     name: "ThemesView",
@@ -69,8 +74,8 @@ import BackButton from '@/components/BackButton.vue';
     components: {
       ThemeCard,
       BaseInput,
-      BaseCard,
-      BackButton
+      BackButton,
+      ScrollToTopButton
     },
     computed: {
       publications(): Publication[]{

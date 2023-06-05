@@ -29,7 +29,7 @@ declare module "songtreasures-api" {
         registered: boolean;
     }
 
-    type ThemeType = "light" | "dark";
+    type ThemeType = "light";
     type ClefType = "treble" | "bass" | "alto";
 
     type ISettings = {

@@ -80,10 +80,10 @@ export default defineComponent({
     },
     computed: {
         allPublications() : Publication[]{
-            return Array.from(this.store.publications.values()).sort((a: Publication, b: Publication) => a.title.localeCompare(b.title, this.store.locale));
+            return Array.from(this.store.publications.values()).sort((a: Publication, b: Publication) => a.title.localeCompare(b.title, "no"));
         },
         allAuthors() : Contributor[]{
-            return Array.from(this.store.authors.values()).sort((a: Contributor, b: Contributor) => a.name.localeCompare(b.name, this.store.locale));
+            return Array.from(this.store.authors.values()).sort((a: Contributor, b: Contributor) => a.name.localeCompare(b.name, "no"));
         }
     },
     watch: {
@@ -144,9 +144,6 @@ export default defineComponent({
             this.$emit('close:withSearch', withSearchOnClose);
         },
     },
-    mounted(){
-        console.log(this.initialPublicationIds);
-    }
 });
 </script>
 

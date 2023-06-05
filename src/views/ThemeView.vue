@@ -1,11 +1,16 @@
 <template>
   <main>
+    <div id="scrollToTopButtonDiv" class="flex fixed top-20 left-0 z-40 w-full h-0">
+        <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
+        <ScrollToTopButton class="fixed top-0 h-max"/>
+        <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
+    </div>
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
       <BackButton/>
       <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
         {{ publication?.title ?? "" }}
       </h1>
-      <BackButton class="opacity-0" disabled="true"/>
+      <BackButton class="opacity-0"/>
     </div>
 
     <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">Wisdom Manna in the topic:</h1>
@@ -40,10 +45,10 @@ import router from '@/router';
 import { Notification } from '@/classes/notification';
 import BackButton from '@/components/BackButton.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
-import { RefreshIcon } from '@heroicons/vue/outline';
 import WWShowCard from '@/components/WWShowCard.vue';
 import { mannaHistory } from '@/services/localStorage';
 import MultiSearch from '@/components/MultiSearch.vue';
+import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 
   export default defineComponent({
     name: "ThemeView",
@@ -61,9 +66,9 @@ import MultiSearch from '@/components/MultiSearch.vue';
       WWCard,
       BackButton,
       ThreeDButton,
-      RefreshIcon,
       WWShowCard,
-      MultiSearch
+      MultiSearch,
+      ScrollToTopButton
     },
     computed: {
       searchOrAllArticles(): Article[]{

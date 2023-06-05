@@ -1,6 +1,6 @@
 <template>
     <BaseModal :show="true" :forSearchModal="true" class="fixed w-full h-full left-0 top-0 z-40" @close="() => $emit('close')">
-        <template #title class="w-full h-full"> 
+        <template #title> 
             <div class="flex justify-between items-center w-full h-full mt-4">
                 <BackButton/>
                 <h1 class="font-bold tracking-wide text-base self-center">Search</h1>

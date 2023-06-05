@@ -1,11 +1,16 @@
 <template>
   <main>
+    <div id="scrollToTopButtonDiv" class="flex fixed top-20 left-0 z-40 w-full h-0">
+        <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
+        <ScrollToTopButton class="fixed top-0 h-max"/>
+        <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
+    </div>
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between sm:items-start py-4 mb-5 sm:mb-0">
       <BackButton/>
       <h1 class=" text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
         Favorites
       </h1>
-      <BackButton class="opacity-0" disabled="true"/>
+      <BackButton class="opacity-0"/>
     </div>
     <div id="WWCards" class="px-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
