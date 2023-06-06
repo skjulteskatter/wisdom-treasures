@@ -3,7 +3,7 @@
     <div class="flex bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full absolute top-0 left-0 sm:static px-6 sm:px-0 ">
       <h1 class="text-base my-4 sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
         <span v-if="currentUser" class="sm:font-bold">
-          {{ $t('welcome')}},&nbsp
+          {{ $t('welcome')}},&nbsp;
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
             {{currentUser.displayName}}
           </span>
@@ -16,13 +16,25 @@
         </span>
       </h1>
     </div>
+    
+    <AudioPlayer></AudioPlayer>
 
     <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mb-12 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayWordOfTheDay}" @click="changeDisplayWOTD()">Daily word<div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayFavorites}" @click="changeDisplayFavorites()">Favorites<div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 h-1/3"></div></p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10 cursor-pointer" @click="navigate('history')">History</p>
+          <div class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mb-12 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayWordOfTheDay}" @click="changeDisplayWOTD()">
+            Daily word
+            <div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3">
+            </div>
+          </div>
+          <div class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayFavorites}" @click="changeDisplayFavorites()">
+            Favorites
+            <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 h-1/3">
+            </div>
+          </div>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10 cursor-pointer" @click="navigate('history')">
+            History
+          </p>
         </div>
 
         <!-- change so that the wisdom word doesn't change after the button is clicked -->
@@ -82,11 +94,9 @@ import router from '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
-import BaseButton from "@/components/BaseButton.vue";
-import Loader from '@/components/Loader.vue';
-import Origin from '@/components/Origin.vue';
 import { mannaHistory } from '@/services/localStorage';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
+import AudioPlayer from '@/components/AudioPlayer.vue';
 
   export default defineComponent({
     name: "HomeView",
@@ -110,10 +120,8 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
     WWShowCard,
     ThreeDButton,
     RefreshIcon,
-    BaseButton,
-    Loader,
-    Origin,
-    OriginsSwiper
+    OriginsSwiper,
+    AudioPlayer
 },
     computed: {
       articles() : Article[] {
