@@ -1,5 +1,5 @@
 <template>
-    <BaseButton @click="scrollToTop" class="opacity-0" :class="[{'buttonAppear': showButton, 'buttonDisAppear' : showButton === false, 'hidden' : initialOff}]">
+    <BaseButton @click="scrollToTop" class="opacity-0 shadow-xl" :class="[{'buttonAppear': showButton, 'buttonDisAppear' : showButton === false, 'hidden' : initialOff}]">
         Back to the top
     </BaseButton>
 </template>
