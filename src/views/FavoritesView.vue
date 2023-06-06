@@ -8,7 +8,7 @@
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between sm:items-start py-4 mb-5 sm:mb-0">
       <BackButton/>
       <h1 class=" text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
-        Favorites
+        {{$t('common.favorites')}}
       </h1>
       <BackButton class="opacity-0"/>
     </div>

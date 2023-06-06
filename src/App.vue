@@ -1,4 +1,5 @@
 <template>
+    <ScrollTop />
     <RouterView/>
 </template>
 
@@ -6,6 +7,7 @@
 import { onBeforeMount } from 'vue';
 import { RouterView } from 'vue-router'
 import { auth, getCurrentUserPromise } from './services/auth';
+import ScrollTop from "./components/ScrollTop.vue";
 
 onBeforeMount(async () => {
     // Get the user from firebase if it exist. Just to make sure redirects work properly

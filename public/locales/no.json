@@ -1,8 +1,113 @@
 {
-  "common_login": "Logg inn!",
-  "common_logout": "Log ut!",
-  "common_register": "Registrer bruker",
-  "common_loading": "Laster inn...",
-  "welcome": "Velkommen",
-  "save-settings": "Lagre Instillinger"
+  "common": {
+    "welcome": "Velkommen",
+    "add": "Legg til",
+    "cancel": "Avbryt",
+    "save": "Lagre",
+    "delete": "Slett",
+    "title": "Tittel",
+    "description": "Beskrivelse",
+    "faq": "Ofte stilte spørsmål",
+    "contact": "Kontakt oss",
+    "tos": "Vilkår for bruk",
+    "policy": "Personvernregler",
+    "yes": "Ja",
+    "no": "Nei",
+    "text": "Tekst",
+    "upload": "Last opp",
+    "loading": "Laster",
+    "origin": "Kilder",
+    "wisdomManna": "Visdoms-manna",
+    "wisdomWord": "Visdomsord",
+    "wisdomWords": "Visdomsord",
+    "search": "Søk",
+    "home": "Hjem",
+    "favorites": "Favoritter",
+    "themes": "Temaer",
+    "history": "Historikk",
+    "profile": "Profil",
+    "notifications": "Varsler",
+    "help": "Hjelp",
+    "justNow": "Akkurat nå",
+    "minutesAgo": "minutter siden ago",
+    "hoursAgo": "timer ago",
+    "Email": "Email",
+    "password": "Passord",
+    "seeMore": "Se mer fra",
+    "today": "I dag",
+    "thisWeek": "Denne uken",
+    "thisMonth": "Denne måneden",
+    "thisYear": "Dette året",
+    "earlier": "Tidligere"
+  },
+  "signIn": {
+    "logIn": "Logg inn",
+    "logOut": "Logg ut",
+    "createAccount": "Opprett konto",
+    "logInMsg": "Logg in",
+    "logInStoreMsg": "Logg inn for å kjøpe subscription",
+    "createAccountMsg": "Opprett en bruker",
+    "resetPasswordMsg": "Nullstill passord",
+    "fullName": "Fullt navn",
+    "forgotPasswordQst": "Glemt passord?",
+    "repeatPassword": "Gjenta passord",
+    "staySignedIn": "Forbli innlogget",
+    "iAgree": "Jeg godkjenner",
+    "signingIn": "Logger inn..",
+    "creatingAccount": "Oppretter bruker...",
+    "resetPassword": "Nullstill passord",
+    "resettingPassword": "Nullstiller passord...",
+    "providerMsg": "eller logg in med tredjepartssystem",
+    "haveAccountQst": "Har du allerede en bruker?",
+    "returnSignIn": "Gå tilbake til logg in side",
+    "createdAccountSuccessMsg": "Brukeren er opprettet, en verifiseringsemail har blitt sent til din innboks",
+    "emailNotVerifiedMsg": "Email er enda ikke verifisert",
+    "passwordResetMsg": "Nullstill passord",
+    "emailRequiredMsg": "Email er obligatorisk ",
+    "invalidEmailMsg": "Ugyldig email",
+    "nameRequiredMsg": "Navn er obligatorisk ",
+    "tosMsg": "Vilkår og Betingelser",
+    "passwordRequiredMsg": "Passord er obligatorisk",
+    "passwordDontMatchMsg": "Passordene stemmer ikke overens",
+    "change": "Endre passord"
+  },
+  "home": {
+    "welcometo": "Velkommen til",
+    "getWisdomManna": "Trekk et visdoms-mannakorn",
+    "otherWisdomWords": "Andre visdomsord",
+    "dailyWord": "Dagens ord",
+    "couldNotFindArticleNumber": "Finner ikke visdomsord med id nummer: "
+  },
+  "custom": {
+    "notificationMsg": "Hei, dette er bare en melding. Ikke bry deg om meg!"
+  },
+  "contact": {
+    "getInTouch": "Do not hestitate with contacting us with questions, suggestions or other enquiries.",
+    "infoMsg": "Info message",
+    "typeMsg": "Type your message here"
+  },
+  "history": {
+    "onlyManna": "Vis kun seneste visdoms-manna",
+    "noWW": "Just now"
+  },
+  "notFound": {
+    "notFoundMsg": "Siden ikke funnet",
+    "goToHome": "Gå til hjem siden"
+  },
+  "profile": {
+    "buySubscription": "Kjøp abonnement",
+    "contactSupport": "Kontakt support: ",
+    "settingUpdatedMsg": "Innstilligner er oppdatert",
+    "saveSetting": "Lagre innstillinger"
+  },
+  "themes": {
+    "showing": "Viser",
+    "resultsFor": "resultat for",
+    "searchTheme": "Søk i tema...",
+    "restWWTheme": "De resterende visdomsord i tema:",
+    "getWisdomMannaThisTheme": "Trekk et visdoms manna fra dette tema"
+  },
+  "notifications": {
+    "placeholderMsg": "Hei, dette er en placeholder for en notification"
+  }
 }

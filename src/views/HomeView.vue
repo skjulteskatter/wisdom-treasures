@@ -3,13 +3,14 @@
     <div class="flex bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-16 sm:h-auto w-full absolute top-0 left-0 sm:static px-6 sm:px-0 ">
       <h1 class="text-base my-4 sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
         <span v-if="currentUser" class="sm:font-bold">
-          {{ $t('welcome')}},&nbsp;
+          {{ $t('common.welcome')}},&nbsp
+
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
             {{currentUser.displayName}}
           </span>
         </span>
         <span v-else class="font-bold"> 
-          Welcome to 
+          {{ $t('home.welcometo') }}  
           <span class="animated-gradient font-bold">
             WisdomTreasures
           </span>
@@ -23,17 +24,17 @@
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
           <div class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mb-12 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayWordOfTheDay}" @click="changeDisplayWOTD()">
-            Daily word
+            {{ $t('common.dailyword') }}
             <div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3">
             </div>
           </div>
           <div class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayFavorites}" @click="changeDisplayFavorites()">
-            Favorites
+            {{ $t('common.favorites') }}
             <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 h-1/3">
             </div>
           </div>
           <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10 cursor-pointer" @click="navigate('history')">
-            History
+            {{ $t('common.history') }}
           </p>
         </div>
 
@@ -64,21 +65,20 @@
 
 
       <div class="ml-5 sm:ml-0">
-        <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">ORIGIN</h1>
+        <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">{{$t('common.origin').toUpperCase()}}</h1>
         <OriginsSwiper/>
       </div>
       
       <div class="mx-5 sm:mx-0 mb-5">
-        <h1 class="text-base font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">WISDOM MANNA</h1>
+        <h1 class="text-base font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{ $t('common.wisdomManna').toUpperCase()}}</h1>
         <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
-          <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
+          <p class="text-base font-bold tracking-wide">{{ $t('home.getWisdomManna') }}</p>
           <template #icon>
             <RefreshIcon class="h-5"/>
           </template>
         </ThreeDButton>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
       </div>
-
   </main>
 </template>
 
@@ -90,7 +90,7 @@ import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
 import { Notification } from '@/classes/notification';
-import router from '@/router';
+import router frm '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
@@ -226,7 +226,7 @@ import AudioPlayer from '@/components/AudioPlayer.vue';
       },
       articleNotFound(num: number) : void{
         //Should probably navigate back 🤷‍♂️
-        this.store.notifications.push(new Notification("Couldn't find article number: " + num.toString(), "error"));
+        this.store.notifications.push(new Notification(this.$t('home.couldNotFindArticleNumber')+ num.toString(), "error"));
         router.push({name: "dashboard"});
       },
       checkArticleNumberPath(){

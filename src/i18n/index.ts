@@ -6,7 +6,7 @@ export const validLanguages = new Map<string, string>([
     ["en", "English"]
 ]);
 
-export const fallbackLocale = "en";
+export const fallbackLocale = "no";
 
 export function getValidLanguageKeys(): string[]{
     return Array.from(validLanguages.keys());
@@ -14,7 +14,7 @@ export function getValidLanguageKeys(): string[]{
 
 async function fetchTranslations(language: string) : Promise<{ [key: string]: string; }> {
     try {
-        const translation =  await (await fetch(`/locales/${language}.json`)).json() as {
+        const translation =  await (await fetch(`./locales/${language}.json`)).json() as {
         [key: string]: string;
         }
         return translation;

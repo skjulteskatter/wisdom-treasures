@@ -7,11 +7,11 @@
       </div>
       
       <h1 class="text-base sm:text-3xl text-white sm:text-inherit tracking-wide font-bold">
-      Profile
+      {{$t('common.profile')}}
       </h1>
       <div class="place-self-center">
         <BaseButton @click="async () => {await logout()}">
-          <p class="hidden sm:block ">Log out</p>
+          <p class="hidden sm:block ">{{$t('signIn.logOut')}}</p>
           <template #icon>
             <LogoutIcon class="h-5"/>
           </template>
@@ -36,12 +36,10 @@
               </p>
             </div>
           </div>
-       
-        
           <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 px-10">
             <GenerelDropDown :input-map="validLangs" :initial-value="validLangs.get(store.locale) ?? fallbackLang" @value-clicked:chosen-value="setSelectedLanguage" :profileLanguage="true"></GenerelDropDown>
             <BaseButton theme="noBg" @click="()=>{$router.push({name: 'store'})}">
-              Buy Subscription
+              {{$t('profile.buySubscription')}}
               <template #firstIcon>
                 <CreditCardIcon class="h-5 opacity-80"></CreditCardIcon>
               </template>
@@ -65,7 +63,7 @@
 
           <div class="flex mt-8 pb-5 pr-10 sm:pr-5 w-full place-content-end">
             <BaseButton theme='primary' @click="async ()=> {await saveLocalSettings()}">
-              {{ $t('save-settings') }}
+              {{$t('profile.saveSetting')}}
               <template #icon>
                 <SaveIcon class="h-5"></SaveIcon>
               </template>
@@ -73,8 +71,6 @@
           </div>
 
           <div class="absolute bottom-0 left-1/2 -translate-x-1/2 bg-black/10 opacity-40 w-11/12 sm:w-full h-5/6 -z-10 rounded-t-5xl"></div>
-        
-      
       <ChangePasswordModal :show="showPasswordModal" @close="()=> {showPasswordModal = false}"/>
     </div>
   </main>
@@ -162,7 +158,7 @@ import { logOut } from "@/services/auth";
       },
       async saveLocalSettings(): Promise<void> {
         this.changeLanguage(this.selectedLanguage);
-        this.store.notifications.push(new Notification("Settings updated!"));
+        this.store.notifications.push(new Notification(this.$t('profile.settingUpdatedMsg')));
       },
       async logout(){
         await logOut();

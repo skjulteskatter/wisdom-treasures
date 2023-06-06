@@ -32,7 +32,7 @@
         </template>
         <template #footer>
             <div class="w-full flex flex-wrap self-center justify-center text-xs text-[color:var(--wt-color-text-grey)] py-2 opacity-70 tracking-wide">
-                See more from&nbsp;
+                {{$t('common.seeMore')}}&nbsp;
                 <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
                 &nbsp;             
 

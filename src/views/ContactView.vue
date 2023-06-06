@@ -4,15 +4,15 @@
     <div class="contact-container">
       <div class="inner-contact-container">
       <div>
-          <h1>Let's get in touch</h1>
-          <p>If you'd like to talk to us, need more information or have some suggestions, don't hesitate to write.</p>
+          <h1>{{ $t('contact.getInTouch') }}</h1>
+          <p>{{ $t('contact.infoMsg') }} </p>
         <div class="deco-line line-1"></div>
         <div class="deco-line line-2"></div>
       </div>
       <form class="contact-form">
           <input type="text" placeholder="name">
           <input type="email" placeholder="e-mail">
-          <textarea placeholder="type your message here"></textarea>
+          <textarea :placeholder="$t('contact.typeMsg')"></textarea>
           <button>submit</button>
       </form>
       </div>
