@@ -3,7 +3,7 @@
     <div id="topPart" class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none items-center justify-between py-4 sm:py-6">
       <div class="flex">
         <BackButton/>
-        <p id="justForLayout" class="hidden sm:block opacity-0 mr-2">Log out</p>
+        <p id="justForLayout" class="hidden sm:block opacity-0 mr-2">{{$t('signIn.logOut')}}</p>
       </div>
       
       <h1 class="text-base sm:text-3xl text-white sm:text-inherit tracking-wide font-bold">
@@ -45,19 +45,19 @@
               </template>
             </BaseButton>
             <BaseButton theme="noBg" @click="goToManageSubscriptions()">
-              Manage Subscription
+              {{$t('profile.manageSubscription')}}
               <template #firstIcon>
                 <CurrencyDollarIcon class="h-5 opacity-80"></CurrencyDollarIcon>
               </template>
             </BaseButton>
             <BaseButton theme='noBg' @click="showPasswordModal = true">
-              Change password
+              {{$t('signIn.passwordChange')}}
               <template #firstIcon>
                 <KeyIcon class="h-5 opacity-80"></KeyIcon>
               </template>
             </BaseButton>
             <BaseButton @click="sendEmail" theme="noBg">
-              Contact:&nbsp;<ClickableLink>{{ supportEmail }}</ClickableLink>
+              {{$t('profile.contactSupport')}}:&nbsp;<ClickableLink>{{ supportEmail }}</ClickableLink>
             </BaseButton>
           </div>
 

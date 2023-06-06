@@ -69,7 +69,8 @@
     "tosMsg": "Vilkår og Betingelser",
     "passwordRequiredMsg": "Passord er obligatorisk",
     "passwordDontMatchMsg": "Passordene stemmer ikke overens",
-    "change": "Endre passord"
+    "change": "Endre passord",
+    "passwordChange": "Endre Passord"
   },
   "home": {
     "welcometo": "Velkommen til",
@@ -98,7 +99,8 @@
     "buySubscription": "Kjøp abonnement",
     "contactSupport": "Kontakt support: ",
     "settingUpdatedMsg": "Innstilligner er oppdatert",
-    "saveSetting": "Lagre innstillinger"
+    "saveSetting": "Lagre innstillinger",
+    "manageSubscription": "Endre Abonnement"
   },
   "themes": {
     "showing": "Viser",

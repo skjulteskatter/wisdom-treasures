@@ -118,9 +118,6 @@ export default defineComponent({
     translatedEarlier() {
       return this.$t('common.earlier');
     },
-    articles(): Article[] {
-      return Array.from(this.store.articles.values());
-    },
   },
   mounted() {
     this.setHistoryIds();

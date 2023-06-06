@@ -69,7 +69,7 @@
     "tosMsg": "Terms of Services and Conditions",
     "passwordRequiredMsg": "Password is required",
     "passwordDontMatchMsg": "The passwords does not match",
-    "change": "Change passwrod"
+    "passwordChange": "Change password"
   },
   "home": {
     "welcometo": "Welcome to",
@@ -102,7 +102,8 @@
     "buySubscription": "Buy subscription",
     "contactSupport": "Contact support: ",
     "settingUpdatedMsg": "Settings are updated",
-    "saveSetting": "Save settings"
+    "saveSetting": "Save settings",
+    "manageSubscription": "Manage Subscription"
   },
   "themes": {
     "showing": "Showing",

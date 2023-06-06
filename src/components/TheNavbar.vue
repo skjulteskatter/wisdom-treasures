@@ -56,10 +56,10 @@
 								<div class="flex flex-col sm:hidden p-1">
 									<MenuItem>
 
-										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('dashboard')" @click="navigate('dashboard')">{{$t('common.home')</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('dashboard')" @click="navigate('dashboard')">{{$t('common.home')}}</BaseButton>
 									</MenuItem>
 									<MenuItem>
-										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">{{$t('common.favorites')</BaseButton>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">{{$t('common.favorites')}}</BaseButton>
 									</MenuItem>
 									<MenuItem>
 										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">{{$t('common.themes')}}</BaseButton>
