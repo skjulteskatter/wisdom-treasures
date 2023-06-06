@@ -90,7 +90,7 @@ import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
 import { Notification } from '@/classes/notification';
-import router frm '@/router';
+import router from '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
