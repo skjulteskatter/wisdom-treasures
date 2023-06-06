@@ -20,12 +20,12 @@
     <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mb-12 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayWordOfTheDay}" @click="changeDisplayWOTD()">Daily word<div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayFavorites}" @click="changeDisplayFavorites()">Favorites<div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 h-1/3"></div></p>
+          <p class="sideMenuBtn -rotate-90 font-bold tracking-075 w-full mb-12 cursor-pointer" :class="{'sideMenuBtnActive' : displayWordOfTheDay}" @click="changeDisplayWOTD()">Daily word<div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
+          <p class="sideMenuBtn -rotate-90 font-bold tracking-075 w-full my-20 cursor-pointer" :class="{'sideMenuBtnActive' : displayFavorites}" @click="changeDisplayFavorites()">Favorites<div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 h-1/3"></div></p>
           <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10 cursor-pointer" @click="navigate('history')">History</p>
         </div>
 
-        <!-- change so that the wisdom word doesn't change after the button is clicked -->
+        <!-- TO-DO: change so that the wisdom word doesn't change after the button is clicked -->
         <WWShowCard v-if="randomArticle && displayWordOfTheDay" :article="randomArticle" class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
 
         <!-- DIV for favourites -->
@@ -270,6 +270,18 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
   });
 </script>
 <style>
+.sideMenuBtn{
+  font-size: 1rem;
+  color: var(--wt-color-text-grey);
+  opacity: 0.8;
+  width: 100%;
+  transition: all 0.15s;
+}
+.sideMenuBtn.sideMenuBtnActive{
+  font-size: 1.25rem;
+  color: var(--wt-color-primary);
+  opacity: 0.9
+}
 .tracking-075{
   letter-spacing:0.075em
 }
