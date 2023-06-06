@@ -1,31 +1,23 @@
 <template>
   <main>
+    <div id="scrollToTopButtonDiv" class="flex fixed top-20 left-0 z-40 w-full h-0">
+        <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
+        <ScrollToTopButton class="fixed top-0 h-max"/>
+        <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
+    </div>
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
       <div class="flex items-center mt-4 sm:my-6 justify-between">
         <BackButton/>
         <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.themes') }}</h1>
         <BackButton class="opacity-0"/>
       </div>
-      <BaseCard class="hidden sm:block w-full">
-          <template #header> 
-              <div class="font-sans">
-                  <div v-if="searchedWord" class="font-bold">
-                    {{ $t('themes.showing') }} {{numberOfResults}} {{ $t('themes.resultsFor') }} "{{searchedWord}}"
-                  </div>
-                  <div v-else class="font-bold">
-                    {{ $t('common.search') }}
-                  </div>
-              </div>
-          </template>
-          <BaseInput v-model="searchWord" style-type="search" :placeholder="$t('themes.searchTheme')" size="lg" @search-action="search($event)" class="hidden sm:block"/>
-      </BaseCard>
-
       <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>
+      <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" class="hidden sm:block"/>
     </div>
-    <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:hidden text-[color:var(--wt-color-text-grey)]">
-      {{ $t('themes.showing') }} {{numberOfResults}} {{ $t('themes.resultsFor') }} "{{searchedWord}}"
+    <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:ml-0 text-[color:var(--wt-color-text-grey)] opacity-80">
+        {{ $t('themes.showing') }} {{numberOfResults}} {{ $t('themes.resultsFor') }} "{{searchedWord}}"
     </div>
-    <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5" :class="{'pr-5' : searchedWord}">
+    <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5 sm:px-0" :class="{'pr-5' : searchedWord}">
       <div class="w-full">
         <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
           <div v-for="(publication, index) in searchedPublications" :key="publication.id" class="flex flex-col">
@@ -59,9 +51,9 @@ import { useSessionStore } from '@/stores/session';
 import ThemeCard from '@/components/ThemeCard.vue';
 import type { Publication } from 'hiddentreasures-js';
 import BaseInput from '@/components/BaseInput.vue';
-import BaseCard from '@/components/BaseCard.vue';
 import type Fuse from 'fuse.js';
 import BackButton from '@/components/BackButton.vue';
+import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 
   export default defineComponent({
     name: "ThemesView",
@@ -82,8 +74,8 @@ import BackButton from '@/components/BackButton.vue';
     components: {
       ThemeCard,
       BaseInput,
-      BaseCard,
-      BackButton
+      BackButton,
+      ScrollToTopButton
     },
     computed: {
       publications(): Publication[]{

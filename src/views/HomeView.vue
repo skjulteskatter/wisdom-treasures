@@ -4,6 +4,7 @@
       <h1 class="text-base my-4 sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
         <span v-if="currentUser" class="sm:font-bold">
           {{ $t('common.welcome')}},&nbsp
+
           <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({name: 'profile'})">
             {{currentUser.displayName}}
           </span>
@@ -16,45 +17,68 @@
         </span>
       </h1>
     </div>
-    <div id="wordOfTheDayCotainer" style="width: 80%;" class="flex flex-col justify-center items-center mx-auto mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
+    
+    <AudioPlayer></AudioPlayer>
+
+    <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
       <div class="flex col-span-3">
         <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
-          <p class="-rotate-90 text-xl font-bold tracking-075 text-[color:var(--wt-color-primary)] w-full mb-12" @click="(e: Event | undefined) => navigate('dashboard', e)">{{ $t('home.dailyWord') }}<div class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3"></div></p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20" @click="(e: Event | undefined) => navigate('favorites', e)">{{ $t('home.dailyWord') }}</p>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10" @click="navigate('history')">{{ $t('common.history') }}</p>
+          <div class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mb-12 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayWordOfTheDay}" @click="changeDisplayWOTD()">
+            {{ $t('common.dailyword') }}
+            <div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3">
+            </div>
+          </div>
+          <div class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayFavorites}" @click="changeDisplayFavorites()">
+            {{ $t('common.favorites') }}
+            <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 h-1/3">
+            </div>
+          </div>
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10 cursor-pointer" @click="navigate('history')">
+            {{ $t('common.history') }}
+          </p>
         </div>
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
+
+        <!-- change so that the wisdom word doesn't change after the button is clicked -->
+        <WWShowCard v-if="randomArticle && displayWordOfTheDay" :article="randomArticle" class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
+
+        <!-- DIV for favourites -->
+        <div v-if="displayFavorites" id="WWCards" class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+          <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
+            <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
+              <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" />
+            </div>
+          </div>
+          <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent"></div>
+        </div>
+
+        <!-- DIV for the history -->
+        <!-- <div id="WWCards" class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+          <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
+
+          </div>
+          <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent"></div>
+        </div> -->
+
       </div>
       <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
     </div>
 
 
       <div class="ml-5 sm:ml-0">
-        <h1 class="text-sm font-bold tracking-wide my-5 sm:mt-0">{{$t('common.origin').toUpperCase()}}</h1>
+        <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">{{$t('common.origin').toUpperCase()}}</h1>
         <OriginsSwiper/>
       </div>
       
-      <div class="mx-5 sm:mx-0">
-        <h1 class="text-sm font-bold my-5 sm:mt-0 tracking-wide">{{ $t('common.wisdomManna').toUpperCase()}}</h1>
+      <div class="mx-5 sm:mx-0 mb-5">
+        <h1 class="text-base font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{ $t('common.wisdomManna').toUpperCase()}}</h1>
         <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
           <p class="text-base font-bold tracking-wide">{{ $t('home.getWisdomManna') }}</p>
           <template #icon>
-            <!-- <RefreshIcon class="h-5 md:hidden"/> -->
+            <RefreshIcon class="h-5"/>
           </template>
         </ThreeDButton>
+        <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
       </div>
-
-
-    <h1 class="text-sm tracking-wide font-bold mt-10 mx-5 sm:mx-0">{{ $t('home.otherWisdomWords').toUpperCase() }}</h1>
-    <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-5 mx-5 sm:mx-0">
-      <div v-for="(article, index) in randomArticleList" :key="index" class="flex flex-col">
-        <WWCard :article="article" class="grow" :strech-y="true"/>
-      </div>
-    </div>
-    <div id="loaderDiv">
-      <Loader :loading="loadingMoreArticles" class="mt-2"/>
-    </div>
-    <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
   </main>
 </template>
 
@@ -66,15 +90,13 @@ import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
 import { Notification } from '@/classes/notification';
-import router from '@/router';
+import router frm '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
-import BaseButton from "@/components/BaseButton.vue";
-import Loader from '@/components/Loader.vue';
-import Origin from '@/components/Origin.vue';
 import { mannaHistory } from '@/services/localStorage';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
+import AudioPlayer from '@/components/AudioPlayer.vue';
 
   export default defineComponent({
     name: "HomeView",
@@ -88,6 +110,9 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
         randomArticleList : [] as Article[],
         shuffeledArticleKeys: [] as string[],
         loadingMoreArticles: false as boolean,
+        dataFavorites : undefined as string[] | undefined,
+        displayFavorites: false as Boolean,
+        displayWordOfTheDay: true as Boolean
       }
     },
     components: {
@@ -95,10 +120,8 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
     WWShowCard,
     ThreeDButton,
     RefreshIcon,
-    BaseButton,
-    Loader,
-    Origin,
-    OriginsSwiper
+    OriginsSwiper,
+    AudioPlayer
 },
     computed: {
       articles() : Article[] {
@@ -132,7 +155,22 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
       },
       sessionInitialized() : boolean {
         return this.store.sessionInitialized;
-      }
+      },
+      storeFavorites() : string[]{
+        return this.store.favorites;
+      },
+      favorites() : string[]{
+        return this.dataFavorites === undefined ? this.storeFavorites : this.dataFavorites;
+      },
+      favoriteArticles() : Article[] {
+        const favoriteArticles = [];
+        for (const favorite of this.favorites) {
+          const article = this.store.articles.get(favorite);
+          if (article === null || article === undefined) continue;
+          favoriteArticles.push(article);
+        }
+        return favoriteArticles;
+      },
     },
     watch: {
       sessionInitialized(initialized){
@@ -223,6 +261,18 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
         t = Math.imul(t ^ t >>> 15, t | 1);
         t ^= t + Math.imul(t ^ t >>> 7, t | 61);
         return ((t ^ t >>> 14) >>> 0) / 4294967296;
+      },
+      refreshDataFavorites(){
+        this.dataFavorites = [...this.storeFavorites];
+      },
+      changeDisplayFavorites(){
+        this.displayFavorites = true
+        this.displayWordOfTheDay = false
+        
+      },
+      changeDisplayWOTD(){
+        this.displayWordOfTheDay = true
+        this.displayFavorites = false
       }
     },
   });
@@ -234,5 +284,13 @@ import OriginsSwiper from '@/components/OriginsSwiper.vue';
 .rounded-t-4xl{
   border-top-left-radius: 2.5rem; /* 40px */
   border-top-right-radius: 2.5rem; /* 40px */ 
+}
+.h-68vh{
+  height:68vh;
+}
+@media(min-width:640px){
+  .h-68vh{
+    height:auto;
+  }
 }
 </style>

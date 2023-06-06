@@ -1,5 +1,10 @@
 <template>
   <main>
+    <div id="scrollToTopButtonDiv" class="flex fixed top-20 left-0 z-40 w-full h-0">
+        <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
+        <ScrollToTopButton class="fixed top-0 h-max"/>
+        <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
+    </div>
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
       <BackButton/>
       <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
@@ -8,22 +13,22 @@
       <BackButton class="opacity-0"/>
     </div>
 
+    <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">Wisdom Manna in the topic:</h1>
+    <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true"/>
+    <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 sm:mx-0">
+      <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
+    </ThreeDButton>
+
+    <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Search in the topic:</h1>
     <MultiSearch 
-        :filter-on="false"
         :initial-theme-filter="[$route.params.themeId]"
         @articles:article-hits="setSearchArticles" 
         @searched-word:searched-word=""
-        @search-loading:search-loading="">
+        @search-loading:search-loading=""
+        class="mx-5 sm:mx-0">
     </MultiSearch>
 
-    <h1 class="text-base m-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">Get Wisdom Manna in the topic:</h1>
-    <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true"/>
-    <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 sm:mx-0">
-      <p class="text-base font-bold tracking-wide">{{$t('themes.getWisdomMannaThisTheme')}}</p>
-    </ThreeDButton>
-
-    <h1 class="text-base mx-5 mt-5 sm:mx-0 text-[color:var(--wt-color-text-grey)]">{{$t('themes.restWWTheme')}}</h1>
-    <div id="WWCards" class="px-5 pt-5 sm:p-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+    <div id="WWCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
       <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
@@ -40,10 +45,10 @@ import router from '@/router';
 import { Notification } from '@/classes/notification';
 import BackButton from '@/components/BackButton.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
-import { RefreshIcon } from '@heroicons/vue/outline';
 import WWShowCard from '@/components/WWShowCard.vue';
 import { mannaHistory } from '@/services/localStorage';
 import MultiSearch from '@/components/MultiSearch.vue';
+import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 
   export default defineComponent({
     name: "ThemeView",
@@ -61,9 +66,9 @@ import MultiSearch from '@/components/MultiSearch.vue';
       WWCard,
       BackButton,
       ThreeDButton,
-      RefreshIcon,
       WWShowCard,
-      MultiSearch
+      MultiSearch,
+      ScrollToTopButton
     },
     computed: {
       searchOrAllArticles(): Article[]{

@@ -2,7 +2,7 @@
     <BaseModal :show="true" class="fixed w-full h-full left-0 top-0 z-40" @close="() => $emit('close')">
         <template #title> 
             <div class="flex">
-                <p class="grow">Search</p>
+                <div class="grow"></div>
                 <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8" @click="() => $emit('close')">
 					<XIcon class="h-8 opacity-50"/>
 				</BaseButton>

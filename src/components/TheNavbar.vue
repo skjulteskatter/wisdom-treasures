@@ -55,16 +55,17 @@
 								class="h-screen px-5 sm:px-0 py-32 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-3/4 sm:w-56 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm sm:rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
 								<div class="flex flex-col sm:hidden p-1">
 									<MenuItem>
-										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">{{$t('common.favorites')}}</BaseButton>
+
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('dashboard')" @click="navigate('dashboard')">{{$t('common.home')</BaseButton>
+									</MenuItem>
+									<MenuItem>
+										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">{{$t('common.favorites')</BaseButton>
 									</MenuItem>
 									<MenuItem>
 										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">{{$t('common.themes')}}</BaseButton>
 									</MenuItem>
 									<MenuItem>
 										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">{{$t('common.history')}}</BaseButton>
-									</MenuItem>
-									<MenuItem>
-										<BaseButton theme="menuButtonSMWhite" :center-text="false" :clicked="shouldBeHighlighted('manna')" @click="navigate('manna')">{{$t('common.wisdomManna')}}</BaseButton>
 									</MenuItem>
 								</div>
 								<div class="hidden sm:flex p-1">

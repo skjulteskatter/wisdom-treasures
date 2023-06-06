@@ -1,5 +1,10 @@
 <template>
   <main>
+        <div id="scrollToTopButtonDiv" class="flex fixed top-20 left-0 z-40 w-full h-0">
+        <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
+        <ScrollToTopButton class="fixed top-0 h-max"/>
+        <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
+    </div>
     <div>
       <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
         <BackButton />
@@ -12,12 +17,11 @@
         <div class="flex flex-col">
           <ToggleSlideButton :label="$t('history.onlyManna')" v-model="showOnlyMannaHistory" />
           <div v-for="(value, key) in periods" :key="key + showOnlyMannaHistory.toString()">
-            <div id="wrapperDiv" :class="{ 'hidden': loadPeriodName[key] !== true }">
-              <div class="text-base sm:text-2xl font-bold opacity-80 flex cursor-pointer whitespace-nowrap w-min"
-                @click="addOrRemoveHiddenPeriod(key.toString())">
-                {{ key }}
-                <ChevronUpIcon class="h-6 self-center ml-2"
-                  :class="{ 'rotate-180': hiddenPeridos.includes(key.toString()) }" />
+
+            <div id="wrapperDiv" :class="{'hidden' : loadPeriodName[key] !== true}">
+              <div class="text-base sm:text-2xl font-bold opacity-80 flex cursor-pointer whitespace-nowrap w-min" @click="addOrRemoveHiddenPeriod(key.toString())">
+                {{key}}
+                <ChevronUpIcon class="h-5 self-center ml-2" :class="{'rotate-180': hiddenPeridos.includes(key.toString())}"/>
               </div>
               <div class="border-l-2 pl-4 ml-2 my-6 border-[color:var(--wt-color-secondary-light)]"
                 :class="{ 'hidden': hiddenPeridos.includes(key.toString()) }">
@@ -50,53 +54,55 @@
     </div>
   </main>
 </template>
+  <script lang="ts">
+  import { defineComponent } from 'vue';
+  import BackButton from '@/components/BackButton.vue';
+  import { useSessionStore } from '@/stores/session';
+  import WWCard from '@/components/WWCard.vue';
+  import { mannaHistory, history } from '@/services/localStorage';
+  import type { Article } from 'hiddentreasures-js';
+  import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
+  import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
+  import { ChevronUpIcon } from '@heroicons/vue/outline';
+  import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
   
-<script lang="ts">
-import { defineComponent } from 'vue';
-import BackButton from '@/components/BackButton.vue';
-import { useSessionStore } from '@/stores/session';
-import WWCard from '@/components/WWCard.vue';
-import { mannaHistory, history } from '@/services/localStorage';
-import type { Article } from 'hiddentreasures-js';
-import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
-import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
-import { ChevronUpIcon } from '@heroicons/vue/outline';
-
-
-
-export default defineComponent({
-  name: "HistoryView",
-  data() {
-    return {
-      store: useSessionStore(),
-      showOnlyMannaHistory: true,
-      periods: {
-        "Today": [-1, 1],
-        "This week": [1, 7],
-        "This month": [7, 30],
-        "This year": [30, 365],
-        "Earlier": [365, 1000],
-      } as { [key: string]: [number, number] },
-      historyIds: [] as { id: string, lastViewed: Date, manna: boolean }[],
-      loadPeriodName: {} as { [key: string]: boolean },
-      displayedPeriodKeys: [] as string[],
-      historyArticles: [] as Article[],
-      mannaHistoryArticles: [] as Article[],
-      hiddenPeridos: [] as string[],
-    }
-  },
-  components: {
+    export default defineComponent({
+      name: "HistoryView",
+      data() {
+          return {
+              store: useSessionStore(),
+              showOnlyMannaHistory: true,
+              periods: {
+                "Today": [-1,1],
+                "This Week": [1,7],
+                "This Month": [7,30],
+                "This Year": [30,365],
+                "Earlier": [365,1000],
+              } as {[key:string]: [number, number]},
+              historyIds: [] as {id: string, lastViewed: Date, manna: boolean}[],
+              loadPeriodName : {} as {[key:string]:boolean},
+              displayedPeriodKeys: [] as string[],
+              historyArticles: [] as Article[],
+              mannaHistoryArticles: [] as Article[],
+              hiddenPeridos: [] as string[],
+          }
+      },
+      components: {
     BackButton,
     WWCard,
     ClockIcon,
     QuestionMarkCircleIcon,
     ToggleSlideButton,
-    ChevronUpIcon
-  },
-  computed: {
-    computed: {
-      translatedToday() {
-        return this.$t('common.today');
+    ChevronUpIcon,
+    ScrollToTopButton
+},
+      computed: {
+        historyIsEmpty() {
+          for (let _ in this.loadPeriodName) {return false} return true;
+        },
+        articles(): Article[]{
+          return Array.from(this.store.articles.values());
+        },
       },
       translatedThisWeek() {
         return this.$t('common.thisWeek');

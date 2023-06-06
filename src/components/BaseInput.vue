@@ -1,10 +1,10 @@
 <template>
     <label class="border-none p-0 bg-transparent">
-        <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '', $slots.default || $slots.secondary ? 'mb-2' : '']">
+        <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '', $slots.default || $slots.secondary ? 'mb-2' : '', filterPositioning === true ? 'absolute right-0' : '']">
             <slot name="default" class="block tracking-wide"></slot>
             <slot name="secondary" class="block tracking-wide"></slot>
         </div>
-        <div 
+        <div
             class="flex items-center w-full"
             :class="[error ? 'shake' : '']"
             @mouseover="hover = true"
@@ -25,7 +25,9 @@
                     styleType === 'search' ? ['pl-11 pr-10 bg-black/10 border-0'] : '',
                     styleType === 'password' ? 'pr-8' : '',
                     whiteText === true ? 'text-white placeholder-white/90 bg-white/40' : '',
-                    size === 'lg' ? 'text-xl' : '',]"
+                    forMultiSearch === true ? 'rounded-r-none' : '',
+                    size === 'lg' ? 'text-xl' : '',
+                    nameInput === true ? 'bg-transparent placeholder:text-2xl text-2xl border-none font-bold text-center placeholder:text-[color:var(--color-text)] py-1 mt-2 mb-1' : '']"
                 :value="modelValue"
                 :disabled="disabled"
                 :placeholder="placeholder"
@@ -39,10 +41,10 @@
             </div>
             <div v-else-if="modelValue && (focus || hover) && styleType === 'search'">
                 <div 
-                class="w-5 absolute -left-7 -top-[10px] cursor-pointer opacity-40" 
+                class="w-5 absolute -left-7 -top-[10px] cursor-pointer opacity-40"
                 @click="(_event: any) => $emit('update:modelValue', '')"
                 >
-                    <XIcon :class="{whiteText : 'text-white'}"/>
+                    <XIcon :class="[whiteText ? 'text-white' : '']"/>
                 </div>
             </div>
         </div>
@@ -94,6 +96,8 @@ export default defineComponent({
             focus: false as Boolean,
             searchHistory: [] as string[],
             searchHistoryHoverOver: false as Boolean,
+            filterPositioning: true as Boolean,
+            $refs: {},
         }
     },
     props: {
@@ -125,6 +129,14 @@ export default defineComponent({
         whiteText: {
             type: Boolean,
             default: false,
+        },
+        nameInput: {
+            type: Boolean,
+            default: false
+        },
+        forMultiSearch:{
+            type: Boolean,
+            default: false
         }
     },
     emits: ["update:modelValue", "searchAction"],
@@ -154,7 +166,7 @@ export default defineComponent({
             this.$emit('update:modelValue', searchTerm);
             this.search(searchTerm);
             this.searchHistoryHoverOver = false;
-        }
+        },
     },
 });
 </script>
