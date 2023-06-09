@@ -1,14 +1,14 @@
 <template>
-    <ScrollTop />
-    <RouterView/>
+        
+        <RouterView />
+        <SuggestionForm/>
 </template>
 
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
 import { RouterView } from 'vue-router'
 import { auth, getCurrentUserPromise } from './services/auth';
-import ScrollTop from "./components/ScrollTop.vue";
-
+import SuggestionForm from './components/SuggestWWForm.vue'
 onBeforeMount(async () => {
     // Get the user from firebase if it exist. Just to make sure redirects work properly
     if (auth.currentUser) return;
@@ -18,8 +18,8 @@ onBeforeMount(async () => {
 </script>
 
 <style>
-    body{
-        width: 100%;
-        height: 100%;
-    }
+body {
+    width: 100%;
+    height: 100%;
+}
 </style>
