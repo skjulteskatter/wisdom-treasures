@@ -1,4 +1,5 @@
 <template>
+	<SuggestionForm />
 	<div class="flex flex-col h-full">
 		<main class="flex-grow pb-16 sm:pb-0 sm:pt-16">
 			<div class="h-full max-w-7xl mx-auto flex flex-col sm:px-8">
@@ -21,6 +22,7 @@
 				<FooterComponent />
 			</div>
 		</main>
+
 		<TheNavbar class="sm:order-first w-full fixed bottom-0 sm:top-0"/>
 		<NotificationContainer class="h-full"/>
 	</div>
