@@ -1,6 +1,6 @@
 <template>
-    <input @click="onChange()" type="checkbox" :checked="modelValue" class="rounded border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2" 
-    :class="[modelValue && hasBeenClicked ? 'pop' : '', error ? 'shake' : 'border-black/20 text-primary ring-primary focus-visible:ring-primary']"/>
+    <input @click="onChange()" type="checkbox" :checked="modelValue" class="rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2" 
+    :class="[modelValue && hasBeenClicked ? 'pop' : '', error ? 'shake' : 'text-primary ring-primary focus-visible:ring-primary', filterCheckbox ? 'bg-white/10 border-primary focus-visible:ring-primary' : 'border-black/20']"/>
 </template>
 
 <script lang="ts">
@@ -23,6 +23,10 @@ export default defineComponent({
         },
         error:{
             type: Boolean,
+        },
+        filterCheckbox:{
+            type: Boolean,
+            default: true
         },
     },
     emits: ["update:modelValue"],
