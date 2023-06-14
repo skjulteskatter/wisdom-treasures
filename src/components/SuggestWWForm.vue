@@ -15,23 +15,27 @@
           :action=appScriptsLink>
           <div class="form-field">
             <label class="label" for="wisdom-word">What is the wisdom word?</label>
-            <input name="WisdomWord" required type="text" id="wisdom-word" v-model="formData.wisdomWord" placeholder="Wisdomword" />
+            <input name="WisdomWord" required type="text" id="wisdom-word" v-model="formData.wisdomWord"  />
           </div>
           <div class="form-field">
             <label class="label" for="author">Who said this?</label>
-            <input name=Author required type="text" id="author" v-model="formData.author" placeholder="Kåre J Smith" />
+            <input name=Author required type="text" id="author" v-model="formData.author"  />
           </div>
           <div class="form-field">
             <label class="label" for="date">When was this said?</label>
-            <input name=Time required type="text" id="date" v-model="formData.date" placeholder="March 2023" />
+            <input name=Time required type="text" id="date" v-model="formData.date"  />
           </div>
           <div class="form-field">
             <label class="label" for="context">In which context was this said?</label>
-            <input Name="Source" required type="text" id="context" v-model="formData.context" placeholder="Easter Conference 2023" />
+            <input Name="Source" required type="text" id="context" v-model="formData.context"  />
           </div>
             <div class="form-field">
               <label class="label" for="Email">Your Email</label>
-              <input name="Email" required type="email" id="email" v-model="formData.email" placeholder="Navn Navnesen" />
+              <input name="Email" required type="email" id="email" v-model="formData.email" />
+            </div>
+            <div class="form-field">
+              <label class="label" for="namesender">Your Name</label>
+              <input name="NameSender" required type="text" id="namesender" v-model="formData.nameSender" />
             </div>
           <button class="submit-button" type="submit">Submit suggestion</button>
           <div v-if="isSubmitted" class="success-message">
@@ -63,6 +67,7 @@ export default {
         author: '',
         date: '',
         context: '',
+        nameSender: ''
       },
     };
   },
@@ -115,6 +120,7 @@ export default {
             author: '',
             date: '',
             context: '',
+            nameSender: ''
           };
         })
         .catch(error => {
