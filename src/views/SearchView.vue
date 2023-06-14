@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div id="scrollToTopButtonDiv" class="flex fixed top-20 left-0 z-40 w-full h-0">
+    <div id="scrollToTopButtonDiv" class="flex fixed top-4 sm:top-20 left-0 z-40 w-full h-0">
         <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
         <ScrollToTopButton class="fixed top-0 h-max"/>
         <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
@@ -8,7 +8,7 @@
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between py-4 sm:py-6">
         <BackButton/>
         <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Search</h1>
-        <BackButton class="opacity-0"/>
+        <BackButton class="opacity-0" disabled/>
     </div>
     <MultiSearch 
         @articles:article-hits="setArticles" 

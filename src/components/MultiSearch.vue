@@ -10,14 +10,17 @@
                 </div>
             </div>
         </template> -->
-        <div class="flex px-5 sm:px-0" :class="inSearchView ? 'pb-4 sm:pb-0 bg-primary sm:bg-transparent shadow-md sm:shadow-none': ''">
+        <div class="flex flex-col px-5 sm:px-0" :class="inSearchView ? 'pb-4 sm:pb-0 bg-primary sm:bg-transparent shadow-md sm:shadow-none': ''">
+            <div class="flex">
             <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow" size="lg" :whiteText="inSearchView ? true : false" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
             <BaseInput v-model="searchWord" style-type="search" class="hidden sm:block grow" size="lg" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
-            <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = true" :forMultiSearch="true" :whiteText="inSearchView ? true : false">
+            <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="inSearchView ? true : false">
                 <template #icon>
                     <AdjustmentsIcon class="w-5"/>
                 </template>
-                <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose: any) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
+            </BaseButton>
+            </div>
+            <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search(undefined)}}"
                     @publication-id-array:publication-id-array="setPublicationIdFilter"
                     @contributor-id-array:contributor-id-array="setAuthorIdFilter"
                     @only-favorites:only-favorites="setFavoriteFilter"
@@ -26,7 +29,6 @@
                     :initialOnlyFavorites="onlyFavoriteFilter"
                     :hidePublications="initialThemeFilter.length > 0"
                     :hideAuthors="initialAuthorFilter.length > 0"/>
-            </BaseButton>
         </div>
 
             <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
@@ -34,29 +36,29 @@
                     <div id="filterButtons" class="flex gap-2 flex-wrap">
 
                         <div v-if="initialThemeFilter.length <= 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 pr-1">{{ publication.title }}</p> 
-                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{publicationIdFilter = publicationIdFilter.filter(x => x != publication.id); search(undefined)}">
-                                <XIcon class="h-5 opacity-70"/>
+                            <p class="max-w-xxs truncate pl-2 text-xs">{{ publication.title }}</p> 
+                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{publicationIdFilter = publicationIdFilter.filter(x => x != publication.id); search(undefined)}">
+                                <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
 
                         <div v-if="initialAuthorFilter.length <= 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 pr-1">{{ author.name }}</p> 
-                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{authorIdFilter = authorIdFilter.filter(x => x != author.id); search(undefined)}">
-                                <XIcon class="h-5 opacity-70"/>
+                            <p class="max-w-xxs truncate pl-2 text-xs">{{ author.name }}</p> 
+                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{authorIdFilter = authorIdFilter.filter(x => x != author.id); search(undefined)}">
+                                <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
 
                         <div v-if="onlyFavoriteFilter" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 pr-1">Favorites Only</p>
-                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{onlyFavoriteFilter = false; search(undefined)}">
-                                <XIcon class="h-5 opacity-70"/>
+                            <p class="max-w-xxs truncate pl-2 text-xs">Favorites Only</p>
+                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{onlyFavoriteFilter = false; search(undefined)}">
+                                <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
 
                         <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/20">
-                            <BaseButton theme="menuButton" class="self-center max-h-7" @click="resetAllFilter">
-                                <p class="w-max pl-2 pr-1 defaultFontSize">Reset all</p>
+                            <BaseButton theme="filterXBtn" class="self-center max-h-7" @click="resetAllFilter">
+                                <p class="w-max defaultFontSize text-xs">Reset all</p>
                             </BaseButton>
                         </div>
 
@@ -312,9 +314,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.defaultFontSize {
+/* .defaultFontSize {
     font-size: var(--wt-default-font-size);
-}
+} */
 .max-w-xxs{
     max-width: 15rem
 }
