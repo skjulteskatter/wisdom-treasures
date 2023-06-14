@@ -1,18 +1,14 @@
 <template>
-    <BaseCard>
-        <template #default>
-            <div class="h-full flex items-center justify-between">
-                <vue-plyr>
-                  <audio controls crossorigin playsinline>
-                    <source
-                        src="../assets/example.mp3"
-                        type="audio/mp3"
-                    />
-                  </audio>
-                </vue-plyr>
-            </div>
-        </template>
-    </BaseCard>
+  <div class="h-full flex items-center justify-between">
+      <vue-plyr>
+        <audio controls crossorigin playsinline>
+          <source
+              src="../assets/example.mp3"
+              type="audio/mp3"
+          />
+        </audio>
+      </vue-plyr>
+  </div>
 </template>
 
 <script lang="ts">

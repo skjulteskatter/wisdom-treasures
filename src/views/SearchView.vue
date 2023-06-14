@@ -19,6 +19,8 @@
         @search-loading:search-loading="setSearchLoading"
         :inSearchView="true">
     </MultiSearch>
+
+    <ToggleSlideButton :label="'Show audio files'" class="mt-2" v-model="showAudioFiles" />
     
     <div class="mx-5 sm:mx-0">
         <div v-if="searchLoading" class="absolute h-full w-full z-40 glass">
@@ -34,11 +36,19 @@
                 </div>
             </div>
         </div>
-        <div v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
+        <div v-if="articleHitsPagination.length > 0 && !showAudioFiles" id="WordSection" class="mt-4">
             <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Words</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
                     <WWCard :article="article" class="grow" :strech-y="true"/>
+                </div>
+            </div>
+        </div>
+        <div v-if="articleHitsPagination.length > 0 && showAudioFiles" id="WordSection" class="mt-4">
+            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Words</h1>
+            <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+                <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
+                    <WWAudioCard :article="article" class="grow" :strech-y="true"/>
                 </div>
             </div>
         </div>
@@ -60,6 +70,8 @@ import MultiSearch from '@/components/MultiSearch.vue';
 import ThemeCard from '@/components/ThemeCard.vue';
 import Loader from '@/components/Loader.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
+import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
+import WWAudioCard from '@/components/WWAudioCard.vue';
 
   export default defineComponent({
     name: "SearchView",
@@ -74,6 +86,7 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
             searchLoading: false as boolean,
             loadingMoreArticles: false as boolean,
             articleHitsPagination: [] as Article[],
+            showAudioFiles: false as boolean,
         }
     },
     props: {
@@ -84,7 +97,9 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
     MultiSearch,
     ThemeCard,
     Loader,
-    ScrollToTopButton
+    ScrollToTopButton,
+    ToggleSlideButton,
+    WWAudioCard,
 },
     computed: {
         searchWordBridge(){

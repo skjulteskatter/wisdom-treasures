@@ -28,9 +28,16 @@
         class="mx-5 sm:mx-0">
     </MultiSearch>
 
-    <div id="WWCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+    <ToggleSlideButton :label="'Show audio files'" class="mt-2" v-model="showAudioFiles" />
+
+    <div v-if="!showAudioFiles" id="WWCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
       <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
+      </div>
+    </div>
+    <div v-else id="WWAudioCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+      <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
+        <WWAudioCard :article="article" class="grow" :strech-y="true"/>
       </div>
     </div>
   </main>
@@ -49,6 +56,8 @@ import WWShowCard from '@/components/WWShowCard.vue';
 import { mannaHistory } from '@/services/localStorage';
 import MultiSearch from '@/components/MultiSearch.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
+import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
+import WWAudioCard from '@/components/WWAudioCard.vue';
 
   export default defineComponent({
     name: "ThemeView",
@@ -60,6 +69,7 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
         randomArticle : null as Article | null,
         showWordOfTheDay : false as boolean,
         searchArticles: [] as Article[],
+        showAudioFiles : false as boolean,
       }
     },
     components: {
@@ -68,7 +78,9 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
       ThreeDButton,
       WWShowCard,
       MultiSearch,
-      ScrollToTopButton
+      ScrollToTopButton,
+      ToggleSlideButton,
+      WWAudioCard,
     },
     computed: {
       searchOrAllArticles(): Article[]{

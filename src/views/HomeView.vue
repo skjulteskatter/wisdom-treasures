@@ -17,8 +17,6 @@
         </span>
       </h1>
     </div>
-    
-    <AudioPlayer></AudioPlayer>
 
     <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
       <div class="flex col-span-3">
@@ -94,9 +92,9 @@ import router from '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
-import { mannaHistory } from '@/services/localStorage';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import AudioPlayer from '@/components/AudioPlayer.vue';
+import { mannaHistory, history } from '@/services/localStorage';
 
   export default defineComponent({
     name: "HomeView",
@@ -124,6 +122,16 @@ import AudioPlayer from '@/components/AudioPlayer.vue';
     AudioPlayer
 },
     computed: {
+      historyArticles() : Article[] {
+        let historyArticlesIds: string[] = [];
+        for (let [key, value] of history.getAll()) {
+          historyArticlesIds.push(key);
+        }
+        for (let [key, value] of mannaHistory.getAll()) {
+          historyArticlesIds.push(key);
+        }
+        return this.articles.filter(x => historyArticlesIds.includes(x.id));
+      },
       articles() : Article[] {
         const articles = Array.from(this.store.articles.values());
         return articles;

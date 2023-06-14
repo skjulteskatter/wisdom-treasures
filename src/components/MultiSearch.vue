@@ -159,10 +159,10 @@ export default defineComponent({
             return this.publicationIdFilter.length > 0 || this.authorIdFilter.length > 0 || this.onlyFavoriteFilter;
         },
         publicationIdFilterPublications(): Publication[] {
-            return this.allThemes.filter(x => this.publicationIdFilter.includes(x.id));
+            return this.allThemes.filter((x: { id: any; }) => this.publicationIdFilter.includes(x.id));
         },
         authorIdFilterAuthors(): Contributor[] {
-            return this.allAuthors.filter(x => this.authorIdFilter.includes(x.id));
+            return this.allAuthors.filter((x: { id: any; }) => this.authorIdFilter.includes(x.id));
         },
         fuseArticles() : Fuse<Article> | undefined {
             return this.store.fuseArticles;
@@ -187,12 +187,12 @@ export default defineComponent({
 
                 if (this.fusePublications !== undefined){
                     const result = this.fusePublications.search(searchWord);
-                    this.themeHits = result.map(x => x.item);
+                    this.themeHits = result.map((x: { item: any; }) => x.item);
                 }
 
                 this.$emit('themes:themeHits', this.onlySearchForArticles ? [] : this.themeHits);
 
-                this.authorHits = this.allAuthors.filter(x => 
+                this.authorHits = this.allAuthors.filter((x: { name: string | any[]; subtitle: any; biography: any; }) => 
                     (x.name.includes(this.searchedWord) || (x.subtitle ?? "").includes(this.searchedWord) || (x.biography ?? "").includes(this.searchedWord))
                 );
 
@@ -247,15 +247,15 @@ export default defineComponent({
 
                 if (this.onlyFavoriteFilter)
                 {
-                    this.articleHits = this.articleHits.filter(x => this.store.favorites.includes(x.id));
+                    this.articleHits = this.articleHits.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
                 }
 
                 if (this.publicationIdFilter.length > 0){
-                    this.articleHits = this.articleHits.filter(x => this.publicationIdFilter.includes(x.publicationId));
+                    this.articleHits = this.articleHits.filter((x: { publicationId: any; }) => this.publicationIdFilter.includes(x.publicationId));
                 }
 
                 if (this.authorIdFilter.length > 0){
-                    this.articleHits = this.articleHits.filter(x => this.authorIdFilter.includes(x.authorId));
+                    this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.authorIdFilter.includes(x.authorId));
                 }
 
                 this.articleHits = this.articleHits.slice(0,this.maxNumberOfArticlesDisplayed);
@@ -278,11 +278,11 @@ export default defineComponent({
         },
         resetAllFilter(){
             this.publicationIdFilter = [];
-            this.initialThemeFilter.forEach(themeId => {
+            this.initialThemeFilter.forEach((themeId: { toString: () => any; }) => {
                 this.publicationIdFilter.push(themeId.toString())
             });
             this.authorIdFilter = [];
-            this.initialAuthorFilter.forEach(authorId => {
+            this.initialAuthorFilter.forEach((authorId: { toString: () => any; }) => {
                 this.authorIdFilter.push(authorId.toString())
             });
             this.onlyFavoriteFilter = false; 
@@ -294,11 +294,11 @@ export default defineComponent({
             this.search(this.initialSearchWord);
         }
 
-        this.initialThemeFilter.forEach(themeId => {
+        this.initialThemeFilter.forEach((themeId: any) => {
             this.publicationIdFilter.push(themeId)
         });
 
-        this.initialAuthorFilter.forEach(authorId => {
+        this.initialAuthorFilter.forEach((authorId: any) => {
             this.authorIdFilter.push(authorId)
         });
     },
