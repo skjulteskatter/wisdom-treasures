@@ -31,7 +31,7 @@
             <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 h-1/3">
             </div>
           </div>
-          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10 cursor-pointer" @click="navigate('history')">
+          <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10 cursor-pointer" :class="{'text-xl text-[color:var(--wt-color-primary)] opacity-90' : displayHistory}" @click="changeDisplayHistory()">
             {{ $t('common.history') }}
           </p>
         </div>
@@ -49,13 +49,15 @@
           <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent"></div>
         </div>
 
-        <!-- DIV for the history -->
-        <!-- <div id="WWCards" class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+        <!-- DIV for History -->
+        <div v-if="displayHistory" id="WWCards" class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
           <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
-
+            <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
+              <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" />
+            </div>
           </div>
           <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent"></div>
-        </div> -->
+        </div>
 
       </div>
       <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
@@ -93,7 +95,6 @@ import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import { RefreshIcon } from '@heroicons/vue/outline';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
-import AudioPlayer from '@/components/AudioPlayer.vue';
 import { mannaHistory, history } from '@/services/localStorage';
 
   export default defineComponent({
@@ -110,7 +111,8 @@ import { mannaHistory, history } from '@/services/localStorage';
         loadingMoreArticles: false as boolean,
         dataFavorites : undefined as string[] | undefined,
         displayFavorites: false as Boolean,
-        displayWordOfTheDay: true as Boolean
+        displayWordOfTheDay: true as Boolean,
+        displayHistory : false as Boolean
       }
     },
     components: {
@@ -119,7 +121,6 @@ import { mannaHistory, history } from '@/services/localStorage';
     ThreeDButton,
     RefreshIcon,
     OriginsSwiper,
-    AudioPlayer
 },
     computed: {
       historyArticles() : Article[] {
@@ -276,11 +277,17 @@ import { mannaHistory, history } from '@/services/localStorage';
       changeDisplayFavorites(){
         this.displayFavorites = true
         this.displayWordOfTheDay = false
-        
+        this.displayHistory = false
+      },
+      changeDisplayHistory(){
+        this.displayFavorites = false
+        this.displayWordOfTheDay = false
+        this.displayHistory = true
       },
       changeDisplayWOTD(){
-        this.displayWordOfTheDay = true
         this.displayFavorites = false
+        this.displayWordOfTheDay = true
+        this.displayHistory = false
       }
     },
   });
