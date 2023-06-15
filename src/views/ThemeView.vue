@@ -30,12 +30,12 @@
 
     <ToggleSlideButton :label="'Show audio files'" class="mt-2" v-model="showAudioFiles" />
 
-    <div v-if="!showAudioFiles" id="WWCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+    <div v-show="!showAudioFiles" id="WWCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
       <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true"/>
       </div>
     </div>
-    <div v-else id="WWAudioCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+    <div v-show="showAudioFiles" id="WWAudioCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
       <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
         <WWAudioCard :article="article" class="grow" :strech-y="true"/>
       </div>

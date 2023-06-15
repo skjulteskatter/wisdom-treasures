@@ -21,7 +21,7 @@
         </template>
       </StoreCard> -->
       <h1 class="sm:hidden text-2xl font-bold tracking-wide">Buy WisdomTreasures for one year!</h1>
-      <StoreCard :loading="loadingCheckoutCard == 'year'" class="h-64 sm:h-auto store-btn-bg bg-center bg-200% text-white/90 justify-end" @click="() => { checkout('year') }">
+      <StoreCard :loading="loadingCheckoutCard == 'year'" class="h-64 sm:h-auto store-btn-bg bg-center bg-200% text-white/90 justify-end" @click="() => { checkout('month') }">
         <template #header>
           <div>
             <div class="text-2xl md:text-3xl font-bold tracking-wide sm:p-0 md:pl-4 lg:pl-8">Get subscription</div>
@@ -48,7 +48,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useSessionStore } from '@/stores/session';
-import BaseCard from '@/components/BaseCard.vue';
 import StoreCard from '@/components/StoreCard.vue';
 import BackButton from '@/components/BackButton.vue';
 
@@ -61,7 +60,6 @@ import BackButton from '@/components/BackButton.vue';
       }
     },
     components: {
-      BaseCard,
       StoreCard,
       BackButton,
     },

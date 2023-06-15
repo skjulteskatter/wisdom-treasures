@@ -36,7 +36,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="articleHitsPagination.length > 0 && !showAudioFiles" id="WordSection" class="mt-4">
+        <div v-show="!showAudioFiles" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
             <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Words</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-        <div v-if="articleHitsPagination.length > 0 && showAudioFiles" id="WordSection" class="mt-4">
+        <div v-show="showAudioFiles" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
             <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Words</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
