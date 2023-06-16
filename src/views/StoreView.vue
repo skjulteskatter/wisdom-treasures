@@ -21,7 +21,7 @@
         </template>
       </StoreCard> -->
       <h1 class="sm:hidden text-2xl font-bold tracking-wide">Buy WisdomTreasures for one year!</h1>
-      <StoreCard :loading="loadingCheckoutCard == 'year'" class="h-64 sm:h-auto store-btn-bg bg-center bg-200% text-white/90 justify-end" @click="() => { checkout('month') }">
+      <StoreCard :loading="loadingCheckoutCard == 'year'" class="h-64 sm:h-auto store-btn-bg bg-center bg-200% text-white/90 justify-end" @click="() => { checkout('year') }">
         <template #header>
           <div>
             <div class="text-2xl md:text-3xl font-bold tracking-wide sm:p-0 md:pl-4 lg:pl-8">Get subscription</div>
