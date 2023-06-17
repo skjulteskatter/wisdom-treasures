@@ -155,6 +155,7 @@ export default defineComponent({
     },
     methods: {
         search(searchTerm?: string) {
+            if (this.styleType != "search") return;
             if (searchTerm === undefined) searchTerm = this.modelValue;
             if (searchTerm !== undefined && searchTerm !== null && searchTerm.replace(/(\s)/g, "") !== "") {
                 search.addOrReplace(searchTerm, Date.now());

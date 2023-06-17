@@ -51,95 +51,37 @@
                     </div>
                     <div id="favorites" @click="showPublications = false, showAuthors = false" class="z-30 border-box flex justify-center items-center rounded-sm transition cursor-pointer">
                         <label class="w-full h-full flex justify-center items-center">
-                            <BaseCheckbox class="w-full h-full absolute opacity-0 cursor-pointer " v-model="onlyFavorites" @vnode-mounted="()=>{onlyFavorites = initialOnlyFavorites}" @click="closeWithReturnArrays"/>
-                            <p :class="{'bg-white/20 sm:bg-primary sm:text-white' : onlyFavorites }" class="w-full h-full text-center border-2 border-white/80 py-1.5 sm:border-primary text-white/80 sm:text-primary text-xs cursor-pointer">Favorites</p>
+                            <BaseCheckbox class="w-full h-full absolute opacity-0 cursor-pointer " v-model="store.onlyFavoriteSearchFilter" @click="closeWithReturnArrays(true)"/>
+                            <p :class="{'bg-white/20 sm:bg-primary sm:text-white' : store.onlyFavoriteSearchFilter }" class="w-full h-full text-center border-2 border-white/80 py-1.5 sm:border-primary text-white/80 sm:text-primary text-xs cursor-pointer">Favorites</p>
                         </label>
                     </div>
                 </div>
-                <!-- <BaseButton @click="closeWithReturnArrays" class="border w-full mt-2 z-30">
-                    Search
-                    <template #icon>
-                    <SearchIcon class="h-5"></SearchIcon>
-                    </template>
-                </BaseButton> -->
-                <div v-if="showPublications || showAuthors" id="clickOutsideDetector" class="bg-transparent fixed w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40" @click="closeWithReturnArrays"/>
+                <div v-if="showPublications || showAuthors" id="clickOutsideDetector" class="bg-transparent fixed w-full h-full top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-40" @click="closeWithReturnArrays(false)"/>
         </div>
     </transition>
-
-    <!-- <BaseModal :show="true" class="fixed w-full h-full left-0 top-0 z-40" @close="closeWithReturnArrays">
-        <div id="authors" class="h-60 overflow-y-scroll" :class="{'hidden' : hideAuthors}">
-            <div v-for="(author, index) in allAuthors" :key="index" class="flex">
-                <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
-                    <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="setInitialAuthorValue(author.id, index)"/>
-                    {{ author.name }}
-                </label>
-            </div>
-        </div>
-        <div id="publications" class="h-60 overflow-y-scroll" :class="{'hidden' : hidePublications}">
-            <div v-for="(publication, index) in allPublications" :key="index" class="flex">
-                <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
-                    <BaseCheckbox v-model="publicationCheckBoxArray[index]" @vnode-mounted="setInitialPublicationValue(publication.id, index)"/>
-                    {{ publication.title }}
-                </label>
-            </div>
-        </div>
-        <div id="publications" class="">
-            <label class="flex gap-2 ml-2 mt-2 items-center cursor-pointer select-none">
-                <BaseCheckbox v-model="onlyFavorites" @vnode-mounted="()=>{onlyFavorites = initialOnlyFavorites}"/>
-                Favorite
-            </label>
-        </div>
-        <BaseButton @click="closeWithReturnArrays" class="w-full mt-2">
-            Search
-            <template #icon>
-              <SearchIcon class="h-5"></SearchIcon>
-            </template>
-        </BaseButton>
-    </BaseModal> -->
 </template>
 
 <script lang="ts">
 
-import BaseModal from "./BaseModal.vue"
 import BaseCheckbox from "./BaseCheckbox.vue";
 import { defineComponent } from "vue";
 import type { Contributor, Publication } from "hiddentreasures-js";
 import { useSessionStore } from "@/stores/session";
-import BaseButton from "./BaseButton.vue";
-import { SearchIcon } from "@heroicons/vue/solid";
-import { TransitionRoot } from "@headlessui/vue";
 
 export default defineComponent({
     name: "filter-modal",
     components: {
-    BaseModal,
     BaseCheckbox,
-    BaseButton,
-    SearchIcon,
-    TransitionRoot,
 },
     data: () => ({
         store: useSessionStore(),
         publicationCheckBoxArray: [] as boolean[],
         authorCheckBoxArray: [] as boolean[],
-        onlyFavorites: false as boolean,
         showAuthors: false as boolean,
         showPublications: false as boolean,
     }),
-    emits: ["close:withSearch", "publicationIdArray:publicationIdArray", "contributorIdArray:contributorIdArray", "onlyFavorites:onlyFavorites", "close"],
+    emits: ["close:withSearch", "close"],
     props: {
-        initialPublicationIds: {
-            type: Array<String>,
-            default: [],
-        },
-        initialAuthorIds: {
-            type: Array<String>,
-            default: [],
-        },
-        initialOnlyFavorites: {
-            type: Boolean,
-            default: false
-        },
         hidePublications: {
             type: Boolean,
             default: false
@@ -161,6 +103,9 @@ export default defineComponent({
         },
         globalCloseModalEvent() {
           return this.store.globalCloseModal;
+        },
+        syncFilterCounter(){
+            return this.store.syncSearchFilter;
         }
     },
     watch: {
@@ -176,11 +121,22 @@ export default defineComponent({
         },
         globalCloseModalEvent(){
             if (this.show) this.$emit('close');
+        },
+        syncFilterCounter(newValue: number){
+            for (let index = 0; index < this.allPublications.length; index++) {
+                const pub = this.allPublications[index];
+                this.setInitialPublicationValue(pub.id, index);
+            }
+            for (let index = 0; index < this.allAuthors.length; index++) {
+                const pub = this.allAuthors[index];
+                this.setInitialAuthorValue(pub.id, index);
+            }
+            //console.log("Synced. This is a heavy operation and should not be triggered many times ⚠️")
         }
     },
     methods: {
         setInitialPublicationValue(id : string, index: number){
-            if (!this.initialPublicationIds.includes(id))
+            if (!this.store.publicationIdSearchFilter.includes(id))
             {
                 this.publicationCheckBoxArray[index] = false
             }  else {
@@ -188,14 +144,14 @@ export default defineComponent({
             }
         },
         setInitialAuthorValue(id : string, index: number){
-            if (!this.initialAuthorIds.includes(id))
+            if (!this.store.authorIdSearchFilter.includes(id))
             {
                 this.authorCheckBoxArray[index] = false
             }  else {
                 this.authorCheckBoxArray[index] = true
             }
         },
-        closeWithReturnArrays() {
+        closeWithReturnArrays(forceSearch: boolean = false) {
             let withSearchOnClose : boolean = false;
 
             const publicationsArray : string[] = [];
@@ -211,17 +167,14 @@ export default defineComponent({
             }
 
             withSearchOnClose = withSearchOnClose || 
-                publicationsArray.toString() !== this.initialPublicationIds.toString() ||
-                authorsArray.toString() !== this.initialAuthorIds.toString() || 
-                this.onlyFavorites !== this.initialOnlyFavorites;
+                publicationsArray.toString() !== this.store.publicationIdSearchFilter.toString() ||
+                authorsArray.toString() !== this.store.authorIdSearchFilter.toString()
 
-            this.$emit('publicationIdArray:publicationIdArray', publicationsArray);
-
-            this.$emit('contributorIdArray:contributorIdArray', authorsArray);
-
-            this.$emit('onlyFavorites:onlyFavorites', this.onlyFavorites);
-
-            this.$emit('close:withSearch', withSearchOnClose);
+            if (withSearchOnClose){
+                this.store.publicationIdSearchFilter = publicationsArray;
+                this.store.authorIdSearchFilter = authorsArray;
+            }
+            this.$emit('close:withSearch', withSearchOnClose || forceSearch);
             this.showPublications = false;
             this.showAuthors = false
         },
