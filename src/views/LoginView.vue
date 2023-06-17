@@ -24,23 +24,23 @@
       </template>
       <template #default>
         <div class="flex flex-col">
-          <BaseInput v-model="email" class="p-4 lg:px-0 border mt-2" :error="!!errors.email" v-on:keydown.enter="action()">
+          <BaseInput v-model="email" class="lg:px-0 border mt-2 small:mx-4" :error="!!errors.email" v-on:keydown.enter="action()">
             <p>{{ $t('common.Email') }}</p>
           </BaseInput>
 
-          <BaseInput v-model="fullName" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) class="p-4 lg:px-0 border mt-2 max-h-0 opacity-0" 
+          <BaseInput v-model="fullName" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) class=" lg:px-0 border mt-6 small:mx-4 max-h-0 opacity-0" 
             :error="!!errors.fullName" :class="[include([forms.register]) ? 'smoothOpenInput' : [ registerFormLoaded ? 'smoothCloseInput' : '']]">
             <p>{{ $t('signIn.fullName') }}</p>
           </BaseInput>
 
-          <BaseInput v-model="password" v-on:keydown.enter="action()" :disabled=include([forms.forgotPassword]) class="p-4 lg:px-0 border mt-2" style-type="password" :error="!!errors.password" 
+          <BaseInput v-model="password" v-on:keydown.enter="action()" :disabled=include([forms.forgotPassword]) class=" lg:px-0 border mt-6 small:mx-4" style-type="password" :error="!!errors.password" 
             :class="[include([forms.register, forms.login]) ? [ forgotPasswordFormLoaded ? 'smoothOpenInput' : ''] : [ forgotPasswordFormLoaded ? 'smoothCloseInput' : '']]">
             <p>{{ $t('common.password') }}</p>
             <ClickableLink v-if="include([forms.login])" :disabled="actionLoading" v-on:click="changeForm('forgotPassword')">{{ $t('signIn.forgotPasswordQst') }}</ClickableLink>
           </BaseInput>
 
           <BaseInput v-model="repeatPassword" v-on:keydown.enter="action()" :disabled=include([forms.login,forms.forgotPassword]) style-type="password" :error="!!errors.password" 
-            class="p-4 lg:px-0 border mt-2 max-h-0 opacity-0" 
+            class="lg:px-0 border mt-6 small:mx-4 max-h-0 opacity-0" 
             :class="[include([forms.register]) ? 'smoothOpenInput' : [registerFormLoaded ? 'smoothCloseInput' : '']]">
             <p>{{ $t('signIn.repeatPassword') }}</p>
           </BaseInput>
