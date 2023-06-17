@@ -14,8 +14,8 @@
                     :key="filterModalKey" 
                     :show="showFilterModal" 
                     @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search(undefined)}}"
-                    :hidePublications="false"
-                    :hideAuthors="false"/>
+                    :hidePublications="initialThemeFilter.length > 0"
+                    :hideAuthors="initialAuthorFilter.length > 0"/>
         </div>
 
             <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
@@ -57,7 +57,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, type PropType } from 'vue';
 import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import { useSessionStore } from '@/stores/session';
 import BaseInput from './BaseInput.vue';
@@ -101,6 +101,14 @@ export default defineComponent({
         initialSearchWord: {
             type: String,
             default: "",
+        },
+        initialThemeFilter: {
+            type: Array as PropType<string[]>,
+            default: () => []
+        },
+        initialAuthorFilter: {
+            type: Array as PropType<string[]>,
+            default: () => []
         },
     },
     emits: ["authors:authorHits", "themes:themeHits", "articles:articleHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],
@@ -215,11 +223,17 @@ export default defineComponent({
                     this.articleHits = this.articleHits.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
                 }
 
-                if (this.store.publicationIdSearchFilter.length > 0){
+                if (this.initialThemeFilter.length > 0){
+                    this.articleHits = this.articleHits.filter((x: { publicationId: any; }) => this.initialThemeFilter.includes(x.publicationId));
+                }
+                else if (this.store.publicationIdSearchFilter.length > 0){
                     this.articleHits = this.articleHits.filter((x: { publicationId: any; }) => this.store.publicationIdSearchFilter.includes(x.publicationId));
                 }
 
-                if (this.store.authorIdSearchFilter.length > 0){
+                if (this.initialAuthorFilter.length > 0){
+                    this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
+                }
+                else if (this.store.authorIdSearchFilter.length > 0){
                     this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.store.authorIdSearchFilter.includes(x.authorId));
                 }
 

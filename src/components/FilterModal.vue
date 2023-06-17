@@ -10,7 +10,7 @@
         <div :show="true" v-if="show" @close="closeWithReturnArrays">
                 <div class="grid grid-cols-3 gap-2 mt-4 items-center">
                     <div id="authors">
-                        <button @click="showAuthors = !showAuthors, showPublications = false" class="box-border w-full border-2 rounded-sm py-1.5 border-white/80 sm:border-primary text-white/80 sm:text-primary text-xs" :class="showAuthors ? 'border-b-none' : ''">Author</button>
+                        <button v-if="!hideAuthors" @click="showAuthors = !showAuthors, showPublications = false" class="box-border w-full border-2 rounded-sm py-1.5 border-white/80 sm:border-primary text-white/80 sm:text-primary text-xs" :class="showAuthors ? 'border-b-none' : ''">Author</button>
                         <transition
                             enter-active-class="transition duration-100 ease-out"
                             enter-from-class="transform scale-95 opacity-0"
@@ -30,7 +30,7 @@
                         </transition>
                     </div>
                     <div id="publications">
-                        <button @click="showPublications = !showPublications, showAuthors = false" class="w-full border-2 rounded-sm border-white/80 sm:border-primary py-1.5 text-white/80 sm:text-primary text-xs">Publication</button>
+                        <button v-if="!hidePublications" @click="showPublications = !showPublications, showAuthors = false" class="w-full border-2 rounded-sm border-white/80 sm:border-primary py-1.5 text-white/80 sm:text-primary text-xs">Publication</button>
                         <transition
                             enter-active-class="transition duration-100 ease-out"
                             enter-from-class="transform scale-95 opacity-0"

@@ -23,23 +23,32 @@
     <MultiSearch 
         :initial-theme-filter="[$route.params.themeId]"
         @articles:article-hits="setSearchArticles" 
-        @searched-word:searched-word=""
-        @search-loading:search-loading=""
+        @search-loading:search-loading="setSearchLoading"
         class="mx-5 sm:mx-0">
     </MultiSearch>
 
     <ToggleSlideButton :label="'Show audio files'" class="mt-2" v-model="showAudioFiles" />
-
-    <div v-show="!showAudioFiles" id="WWCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-      <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
-        <WWCard :article="article" class="grow" :strech-y="true"/>
+    <div>
+      <div v-if="searchingLoading" class="absolute h-full w-full z-40 glass">
+            <div class="h-40">
+                <Loader :loading="true" class="overflow-hidden"/>
+            </div>
+        </div>
+      <div v-show="!showAudioFiles" id="WWCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+        <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
+          <WWCard :article="article" class="grow" :strech-y="true"/>
+        </div>
       </div>
-    </div>
-    <div v-show="showAudioFiles" id="WWAudioCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-      <div v-for="(article, index) in searchOrAllArticles" :key="index" class="flex flex-col">
-        <WWAudioCard :article="article" class="grow" :strech-y="true"/>
+      <div v-show="showAudioFiles" id="WWAudioCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+        <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
+          <WWAudioCard :article="article" class="grow" :strech-y="true"/>
+        </div>
       </div>
+      <div id="loaderDiv">
+            <Loader :loading="loadingMoreArticles" class="mt-2"/>
+        </div>
     </div>
+    
   </main>
 </template>
 
@@ -58,6 +67,7 @@ import MultiSearch from '@/components/MultiSearch.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import WWAudioCard from '@/components/WWAudioCard.vue';
+import Loader from '@/components/Loader.vue';
 
   export default defineComponent({
     name: "ThemeView",
@@ -70,6 +80,9 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
         showWordOfTheDay : false as boolean,
         searchArticles: [] as Article[],
         showAudioFiles : false as boolean,
+        articleHitsPagination: [] as Article[],
+        searchingLoading: false as boolean,
+        loadingMoreArticles: false as boolean,
       }
     },
     components: {
@@ -81,10 +94,12 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
       ScrollToTopButton,
       ToggleSlideButton,
       WWAudioCard,
+      Loader
     },
     computed: {
       searchOrAllArticles(): Article[]{
         if (this.searchArticles.length > 0) return this.searchArticles;
+        console.log("Couldn't find any articles!!");
         return this.articles;
       },
       storeFavorites() : string[]{
@@ -121,8 +136,36 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
       }
     },
     methods: {
+      setSearchLoading(value : boolean){
+            this.searchingLoading = value;
+      },
+      async onScroll(){
+            if (this.searchArticles.length <= 0) return;
+
+            let bottom = window.innerHeight + window.pageYOffset == document.body.scrollHeight;
+            if (!bottom) return;
+            this.loadingMoreArticles = true;
+            setTimeout(() => {
+              this.fillRandomArticles(20);
+            }, 1);
+            setTimeout(() => {
+              this.loadingMoreArticles = false;
+            }, 200);
+        },
+        fillRandomArticles(paginationCount : number){
+          let articleHitsMax = this.searchArticles.length;
+          for (let i = 0; i < Math.min(paginationCount, articleHitsMax); i++) {
+            let nextArticle = this.searchArticles[i]
+            if (nextArticle != undefined){
+              this.articleHitsPagination.push(nextArticle);
+              this.searchArticles.splice(i, 1);
+            }
+          }
+        },
       setSearchArticles(value : Article[]){
             this.searchArticles = value;
+            this.articleHitsPagination = [];
+            this.fillRandomArticles(20);
       },
       refreshDataFavorites(){
         this.dataFavorites = [...this.storeFavorites];
@@ -189,6 +232,8 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
         this.assureCorrectSlug();
         this.assureCorrectArticleNumber();
       }
+      
+      window.addEventListener('scroll', this.onScroll);
     }
   });
 </script>

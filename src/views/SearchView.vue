@@ -155,13 +155,12 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
             }, 200);
         },
         fillRandomArticles(paginationCount : number){
-          let articleHitsMax = this.articleHits.length;
+            let articleHitsMax = this.articleHits.length;
           for (let i = 0; i < Math.min(paginationCount, articleHitsMax); i++) {
-            let randomIndex = Math.floor(Math.random() * this.articleHits.length);
-            let randomArticle = this.articleHits[randomIndex]
-            if (randomArticle != undefined){
-              this.articleHitsPagination.push(randomArticle);
-              this.articleHits.splice(randomIndex, 1);
+            let nextArticle = this.articleHits[i]
+            if (nextArticle != undefined){
+              this.articleHitsPagination.push(nextArticle);
+              this.articleHits.splice(i, 1);
             }
           }
         },
