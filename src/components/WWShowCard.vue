@@ -75,7 +75,7 @@
         customTitle: {
             type: String,
             required: false,
-        },
+        }, 
         WWCardHomeView: {
             type: Boolean,
             deafult: false,

@@ -38,6 +38,8 @@
                         </div>
                         <div class="self-center opacity-50 text-xs">{{ getStringFromDate(historyIds.find(x => x.id ==
                           article.id)?.lastViewed ?? new Date) }}</div>
+                        <div class="justify-end">
+                        </div>
                       </div>
                     </template>
                   </WWCard>
@@ -68,6 +70,8 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import { ChevronUpIcon } from '@heroicons/vue/outline';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
+import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
+import { HeartIcon, ClipboardCopyIcon } from '@heroicons/vue/outline';
 
 export default defineComponent({
   name: "HistoryView",
@@ -88,6 +92,7 @@ export default defineComponent({
       historyArticles: [] as Article[],
       mannaHistoryArticles: [] as Article[],
       hiddenPeridos: [] as string[],
+      
     }
   },
   components: {
@@ -173,7 +178,7 @@ export default defineComponent({
       if (timeDiff < 60 * 1000) {
         return this.$t('common.justNow');
       } else if (timeDiff < 60 * 60 * 1000) {
-        return `${(timeDiff / 1000 / 60).toFixed()} this.$t('common.minutesAgo')`;
+        return `${(timeDiff / 1000 / 60).toFixed()} {this.$t('common.minutesAgo')}`;
       } else if (timeDiff < 24 * 60 * 60 * 1000) {
         return `${(timeDiff / 1000 / 60 / 60).toFixed()} this.$t('common.hoursAgo')`;
       } else if (Date.now() - date.getTime() < 24 * 6) {

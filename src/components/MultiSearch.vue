@@ -2,7 +2,7 @@
 <template>
         <div class="flex flex-col px-5 sm:px-0" :class="inSearchView ? 'pb-4 sm:pb-0 bg-primary sm:bg-transparent shadow-md sm:shadow-none': ''">
             <div class="flex">
-            <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow" size="lg" :whiteText="inSearchView ? true : false" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
+            <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow rounded-full" size="lg" :whiteText="inSearchView ? true : false" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
             <BaseInput v-model="searchWord" style-type="search" class="hidden sm:block grow" size="lg" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
             <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="inSearchView ? true : false">
                 <template #icon>
