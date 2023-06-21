@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div id="scrollToTopButtonDiv" class="flex fixed top-20 left-0 z-40 w-full h-0">
+    <div id="scrollToTopButtonDiv" class="flex fixed top-4 sm:top-20 left-0 z-40 w-full h-0">
         <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
         <ScrollToTopButton class="fixed top-0 h-max"/>
         <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
@@ -8,7 +8,7 @@
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between py-4 sm:py-6">
         <BackButton/>
         <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Search</h1>
-        <BackButton class="opacity-0"/>
+        <BackButton class="opacity-0" disabled/>
     </div>
     <MultiSearch 
         @articles:article-hits="setArticles" 
@@ -19,6 +19,8 @@
         @search-loading:search-loading="setSearchLoading"
         :inSearchView="true">
     </MultiSearch>
+
+    <ToggleSlideButton :label="'Show audio files'" class="mt-2" v-model="showAudioFiles" />
     
     <div class="mx-5 sm:mx-0">
         <div v-if="searchLoading" class="absolute h-full w-full z-40 glass">
@@ -34,11 +36,19 @@
                 </div>
             </div>
         </div>
-        <div v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
+        <div v-show="!showAudioFiles" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
             <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Words</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
                     <WWCard :article="article" class="grow" :strech-y="true"/>
+                </div>
+            </div>
+        </div>
+        <div v-show="showAudioFiles" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
+            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Words</h1>
+            <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
+                <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
+                    <WWAudioCard :article="article" class="grow" :strech-y="true"/>
                 </div>
             </div>
         </div>
@@ -60,6 +70,8 @@ import MultiSearch from '@/components/MultiSearch.vue';
 import ThemeCard from '@/components/ThemeCard.vue';
 import Loader from '@/components/Loader.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
+import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
+import WWAudioCard from '@/components/WWAudioCard.vue';
 
   export default defineComponent({
     name: "SearchView",
@@ -74,6 +86,7 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
             searchLoading: false as boolean,
             loadingMoreArticles: false as boolean,
             articleHitsPagination: [] as Article[],
+            showAudioFiles: false as boolean,
         }
     },
     props: {
@@ -84,7 +97,9 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
     MultiSearch,
     ThemeCard,
     Loader,
-    ScrollToTopButton
+    ScrollToTopButton,
+    ToggleSlideButton,
+    WWAudioCard,
 },
     computed: {
         searchWordBridge(){
@@ -140,13 +155,12 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
             }, 200);
         },
         fillRandomArticles(paginationCount : number){
-          let articleHitsMax = this.articleHits.length;
+            let articleHitsMax = this.articleHits.length;
           for (let i = 0; i < Math.min(paginationCount, articleHitsMax); i++) {
-            let randomIndex = Math.floor(Math.random() * this.articleHits.length);
-            let randomArticle = this.articleHits[randomIndex]
-            if (randomArticle != undefined){
-              this.articleHitsPagination.push(randomArticle);
-              this.articleHits.splice(randomIndex, 1);
+            let nextArticle = this.articleHits[i]
+            if (nextArticle != undefined){
+              this.articleHitsPagination.push(nextArticle);
+              this.articleHits.splice(i, 1);
             }
           }
         },

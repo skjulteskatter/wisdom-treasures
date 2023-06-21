@@ -48,7 +48,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useSessionStore } from '@/stores/session';
-import BaseCard from '@/components/BaseCard.vue';
 import StoreCard from '@/components/StoreCard.vue';
 import BackButton from '@/components/BackButton.vue';
 
@@ -61,7 +60,6 @@ import BackButton from '@/components/BackButton.vue';
       }
     },
     components: {
-      BaseCard,
       StoreCard,
       BackButton,
     },

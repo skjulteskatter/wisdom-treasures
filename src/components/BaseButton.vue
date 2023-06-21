@@ -44,7 +44,8 @@ export default defineComponent({
                         "menuButton",
                         "menuButtonSMWhite",
                         "magic",
-                        "noBg"
+                        "noBg",
+                        "filterXBtn"
                     ].includes(value)
                 );
             },
@@ -140,6 +141,9 @@ export default defineComponent({
             content: "";
             display: none;
         }
+    }
+    &--filterXBtn{
+        @apply text-[color:var(--color-text)] tracking-wide py-1 hover:bg-black/10;
     }
     &--noBg {
         @apply bg-transparent text-[color:var(--color-text)] opacity-80 border-b border-black/20 rounded-none py-2 pb-4 px-4;

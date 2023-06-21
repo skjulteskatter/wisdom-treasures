@@ -1,80 +1,56 @@
+<!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
-
-        <!-- <template #header> 
-            <div class="font-sans">
-                <div v-if="searchedWord" class="font-bold">
-                    Showing {{numberOfResults}} Results for "{{searchedWord}}"
-                </div>
-                <div v-else class="font-bold">
-                    Search
-                </div>
-            </div>
-        </template> -->
-        <div class="flex px-5 sm:px-0" :class="inSearchView ? 'pb-4 sm:pb-0 bg-primary sm:bg-transparent shadow-md sm:shadow-none': ''">
+        <div class="flex flex-col px-5 sm:px-0" :class="inSearchView ? 'pb-4 sm:pb-0 bg-primary sm:bg-transparent shadow-md sm:shadow-none': ''">
+            <div class="flex">
             <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow" size="lg" :whiteText="inSearchView ? true : false" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
             <BaseInput v-model="searchWord" style-type="search" class="hidden sm:block grow" size="lg" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
-            <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = true" :forMultiSearch="true" :whiteText="inSearchView ? true : false">
+            <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="inSearchView ? true : false">
                 <template #icon>
                     <AdjustmentsIcon class="w-5"/>
                 </template>
-                <FilterModal :show="showFilterModal" @close:with-search="(searchOnClose: any) => {showFilterModal = false; if (searchOnClose) {search(undefined)}}"
-                    @publication-id-array:publication-id-array="setPublicationIdFilter"
-                    @contributor-id-array:contributor-id-array="setAuthorIdFilter"
-                    @only-favorites:only-favorites="setFavoriteFilter"
-                    :initialPublicationIds="publicationIdFilter"
-                    :initialAuthorIds="authorIdFilter"
-                    :initialOnlyFavorites="onlyFavoriteFilter"
+            </BaseButton>
+            </div>
+            <FilterModal
+                    :key="filterModalKey" 
+                    :show="showFilterModal" 
+                    @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search(undefined)}}"
                     :hidePublications="initialThemeFilter.length > 0"
                     :hideAuthors="initialAuthorFilter.length > 0"/>
-            </BaseButton>
         </div>
 
             <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
                 <div id="filtersection" class="flex-grow flex flex-col">
                     <div id="filterButtons" class="flex gap-2 flex-wrap">
 
-                        <div v-if="initialThemeFilter.length <= 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 pr-1">{{ publication.title }}</p> 
-                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{publicationIdFilter = publicationIdFilter.filter(x => x != publication.id); search(undefined)}">
-                                <XIcon class="h-5 opacity-70"/>
+                        <div v-if="store.publicationIdSearchFilter.length > 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md bg-black/10 opacity-80">
+                            <p class="max-w-xxs truncate pl-2 text-xs">{{ publication.title }}</p> 
+                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.publicationIdSearchFilter = store.publicationIdSearchFilter.filter(x => x != publication.id); search(undefined); syncFilter();}">
+                                <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
 
-                        <div v-if="initialAuthorFilter.length <= 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 pr-1">{{ author.name }}</p> 
-                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{authorIdFilter = authorIdFilter.filter(x => x != author.id); search(undefined)}">
-                                <XIcon class="h-5 opacity-70"/>
+                        <div v-if="store.authorIdSearchFilter.length > 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md bg-black/10 opacity-80">
+                            <p class="max-w-xxs truncate pl-2 text-xs">{{ author.name }}</p> 
+                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.authorIdSearchFilter = store.authorIdSearchFilter.filter(x => x != author.id); search(undefined); syncFilter();}">
+                                <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
 
-                        <div v-if="onlyFavoriteFilter" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 pr-1">Favorites Only</p>
-                            <BaseButton theme="menuButton" class="w-7 self-center max-h-7" @click="()=>{onlyFavoriteFilter = false; search(undefined)}">
-                                <XIcon class="h-5 opacity-70"/>
+                        <div v-if="store.onlyFavoriteSearchFilter" class="flex items-center rounded-md bg-black/10 opacity-80">
+                            <p class="max-w-xxs truncate pl-2 text-xs">Favorites Only</p>
+                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.onlyFavoriteSearchFilter = false; search(undefined); syncFilter();}">
+                                <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
 
                         <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/20">
-                            <BaseButton theme="menuButton" class="self-center max-h-7" @click="resetAllFilter">
-                                <p class="w-max pl-2 pr-1 defaultFontSize">Reset all</p>
+                            <BaseButton theme="filterXBtn" class="self-center max-h-7" @click="resetAllFilter">
+                                <p class="w-max defaultFontSize text-xs">Reset all</p>
                             </BaseButton>
                         </div>
 
                     </div>
                 </div>
-                <!-- We don't need sorting 
-                <div id="sortSection" class="flex flex-col place-items-end">
-                    <BaseButton theme="menuButton" class="border border-black/20 flex h-min w-min">
-                        Sort
-                        <template #icon>
-                            <SwitchVerticalIcon class="w-5"/>
-                        </template>
-                    </BaseButton>
-                    <div id="sortMessage" class="mt-4">
-                        <p>Sorting by: something idk</p>
-                    </div>
-                </div>
-                -->
             </div>
 
 
@@ -110,16 +86,18 @@ export default defineComponent({
             authorHits: [] as Contributor[],
             themeHits: [] as Publication[],
 
-            publicationIdFilter: [] as string[],
-            onlyFavoriteFilter: false as boolean,
-            authorIdFilter: [] as string[],
-
             showFilterModal: false as boolean,
 
             maxNumberOfArticlesDisplayed: 100000 as number,
+
+            filterModalKey: 0 as number,
         }
     },
     props: {
+        inSearchView:{
+            type: Boolean,
+            default: false
+        },
         initialSearchWord: {
             type: String,
             default: "",
@@ -132,16 +110,11 @@ export default defineComponent({
             type: Array as PropType<string[]>,
             default: () => []
         },
-        inSearchView:{
-            type: Boolean,
-            default: false
-        }
     },
     emits: ["authors:authorHits", "themes:themeHits", "articles:articleHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],
     computed: {
         atLeastOneFilterIsActive(): boolean{
-
-            return (this.publicationIdFilter.length + this.authorIdFilter.length) - (this.initialAuthorFilter.length + this.initialThemeFilter.length) > 0 || this.onlyFavoriteFilter; //TODO maybe a bit dirty
+            return this.store.authorIdSearchFilter.length + this.store.publicationIdSearchFilter.length > 0 || this.store.onlyFavoriteSearchFilter; 
         },
         allArticles() : Article[] {
             return Array.from(this.store.articles.values());
@@ -156,13 +129,13 @@ export default defineComponent({
             return this.articleHits.length + (!this.onlySearchForArticles ? this.authorHits.length + this.themeHits.length : 0);
         },
         onlySearchForArticles(): boolean {
-            return this.publicationIdFilter.length > 0 || this.authorIdFilter.length > 0 || this.onlyFavoriteFilter;
+            return this.atLeastOneFilterIsActive;
         },
         publicationIdFilterPublications(): Publication[] {
-            return this.allThemes.filter(x => this.publicationIdFilter.includes(x.id));
+            return this.allThemes.filter((x: { id: any; }) => this.store.publicationIdSearchFilter.includes(x.id));
         },
         authorIdFilterAuthors(): Contributor[] {
-            return this.allAuthors.filter(x => this.authorIdFilter.includes(x.id));
+            return this.allAuthors.filter((x: { id: any; }) => this.store.authorIdSearchFilter.includes(x.id));
         },
         fuseArticles() : Fuse<Article> | undefined {
             return this.store.fuseArticles;
@@ -172,7 +145,7 @@ export default defineComponent({
         },
         fuseAuthors(): Fuse<Contributor> | undefined{
             return this.store.fuseAuthors;
-        }
+        },
     },
     methods: {
         async search(searchWord: string | undefined) {
@@ -187,12 +160,12 @@ export default defineComponent({
 
                 if (this.fusePublications !== undefined){
                     const result = this.fusePublications.search(searchWord);
-                    this.themeHits = result.map(x => x.item);
+                    this.themeHits = result.map((x: { item: any; }) => x.item);
                 }
 
                 this.$emit('themes:themeHits', this.onlySearchForArticles ? [] : this.themeHits);
 
-                this.authorHits = this.allAuthors.filter(x => 
+                this.authorHits = this.allAuthors.filter((x: { name: string | any[]; subtitle: any; biography: any; }) => 
                     (x.name.includes(this.searchedWord) || (x.subtitle ?? "").includes(this.searchedWord) || (x.biography ?? "").includes(this.searchedWord))
                 );
 
@@ -245,17 +218,23 @@ export default defineComponent({
                     this.articleHits = (result.length ? result.map(x => x.item) : this.allArticles);
                 }
 
-                if (this.onlyFavoriteFilter)
+                if (this.store.onlyFavoriteSearchFilter)
                 {
-                    this.articleHits = this.articleHits.filter(x => this.store.favorites.includes(x.id));
+                    this.articleHits = this.articleHits.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
                 }
 
-                if (this.publicationIdFilter.length > 0){
-                    this.articleHits = this.articleHits.filter(x => this.publicationIdFilter.includes(x.publicationId));
+                if (this.initialThemeFilter.length > 0){
+                    this.articleHits = this.articleHits.filter((x: { publicationId: any; }) => this.initialThemeFilter.includes(x.publicationId));
+                }
+                else if (this.store.publicationIdSearchFilter.length > 0){
+                    this.articleHits = this.articleHits.filter((x: { publicationId: any; }) => this.store.publicationIdSearchFilter.includes(x.publicationId));
                 }
 
-                if (this.authorIdFilter.length > 0){
-                    this.articleHits = this.articleHits.filter(x => this.authorIdFilter.includes(x.authorId));
+                if (this.initialAuthorFilter.length > 0){
+                    this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
+                }
+                else if (this.store.authorIdSearchFilter.length > 0){
+                    this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.store.authorIdSearchFilter.includes(x.authorId));
                 }
 
                 this.articleHits = this.articleHits.slice(0,this.maxNumberOfArticlesDisplayed);
@@ -267,40 +246,21 @@ export default defineComponent({
                 this.$emit('searchLoading:searchLoading', false);
             }, 1);
         },
-        setPublicationIdFilter(value: string[]) {
-            this.publicationIdFilter = value;
-        },
-        setAuthorIdFilter(value: string[]) {
-            this.authorIdFilter = value;
-        },
-        setFavoriteFilter(value: boolean) {
-            this.onlyFavoriteFilter = value;
-        },
         resetAllFilter(){
-            this.publicationIdFilter = [];
-            this.initialThemeFilter.forEach(themeId => {
-                this.publicationIdFilter.push(themeId.toString())
-            });
-            this.authorIdFilter = [];
-            this.initialAuthorFilter.forEach(authorId => {
-                this.authorIdFilter.push(authorId.toString())
-            });
-            this.onlyFavoriteFilter = false; 
+            this.store.publicationIdSearchFilter = [];
+            this.store.authorIdSearchFilter = [];
+            this.store.onlyFavoriteSearchFilter = false; 
+            this.syncFilter();
             this.search(undefined);
+        },
+        syncFilter(){
+            this.store.syncSearchFilter++;
         }
     },
     created() {
         if (this.initialSearchWord != "") {
             this.search(this.initialSearchWord);
         }
-
-        this.initialThemeFilter.forEach(themeId => {
-            this.publicationIdFilter.push(themeId)
-        });
-
-        this.initialAuthorFilter.forEach(authorId => {
-            this.authorIdFilter.push(authorId)
-        });
     },
     watch: {
         async initialSearchWord(newValue: string){
@@ -312,9 +272,9 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.defaultFontSize {
+/* .defaultFontSize {
     font-size: var(--wt-default-font-size);
-}
+} */
 .max-w-xxs{
     max-width: 15rem
 }

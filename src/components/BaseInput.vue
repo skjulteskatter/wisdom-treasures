@@ -1,6 +1,6 @@
 <template>
     <label class="border-none p-0 bg-transparent">
-        <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '', $slots.default || $slots.secondary ? 'mb-2' : '', filterPositioning === true ? 'absolute right-0' : '']">
+        <div class="flex justify-between" :class="[error ? 'text-[color:var(--wt-color-error)]' : '', $slots.default || $slots.secondary ? 'mb-2' : '', filterPositioning ? 'absolute right-0' : '']">
             <slot name="default" class="block tracking-wide"></slot>
             <slot name="secondary" class="block tracking-wide"></slot>
         </div>
@@ -96,7 +96,7 @@ export default defineComponent({
             focus: false as Boolean,
             searchHistory: [] as string[],
             searchHistoryHoverOver: false as Boolean,
-            filterPositioning: true as Boolean,
+            filterPositioning: false as Boolean,
             $refs: {},
         }
     },
@@ -155,6 +155,7 @@ export default defineComponent({
     },
     methods: {
         search(searchTerm?: string) {
+            if (this.styleType != "search") return;
             if (searchTerm === undefined) searchTerm = this.modelValue;
             if (searchTerm !== undefined && searchTerm !== null && searchTerm.replace(/(\s)/g, "") !== "") {
                 search.addOrReplace(searchTerm, Date.now());

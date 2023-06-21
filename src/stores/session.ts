@@ -2,8 +2,8 @@ import { defineStore } from 'pinia'
 import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { Notification } from '@/classes/notification'
-import { favorites as favoritesApi, session, stripe} from '@/services/api'
-import type {Article, Contributor, Product, Publication } from 'hiddentreasures-js'
+import { favorites as favoritesApi, stripe} from '@/services/api'
+import type {Article, Contributor, Publication } from 'hiddentreasures-js'
 import { articleService, publicationService, authorService } from '@/services/publications';
 import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
@@ -56,7 +56,12 @@ export const useSessionStore = defineStore('session', {
 
             mannaHistory: [] as Manna[],
             //Not used
-            HTUser: null as HTUser | null
+            HTUser: null as HTUser | null,
+
+            publicationIdSearchFilter: [] as string[],
+            onlyFavoriteSearchFilter: false as boolean,
+            authorIdSearchFilter: [] as string[],
+            syncSearchFilter: 0 as number,
         }
     },
     actions: {

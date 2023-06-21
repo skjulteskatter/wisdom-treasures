@@ -1,5 +1,5 @@
 <template>
-    <BaseButton theme="menuButton" @click="navigateBack">
+    <BaseButton class="z-50" theme="menuButton" @click="navigateBack">
         <template #firstIcon>
             <ArrowLeftIcon class="h-4 text-white sm:text-inherit"/>
         </template>
