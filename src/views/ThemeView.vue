@@ -1,54 +1,65 @@
 <template>
   <main>
     <div id="scrollToTopButtonDiv" class="flex fixed top-4 sm:top-20 left-0 z-40 w-full h-0">
-        <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
-        <ScrollToTopButton class="fixed top-0 h-max"/>
-        <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
-    </div>
-    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
-      <BackButton/>
-      <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
-        {{ publication?.title ?? "" }}
-      </h1>
-      <BackButton class="opacity-0"/>
+      <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50" />
+      <ScrollToTopButton class="fixed top-0 h-max" />
+      <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50" />
     </div>
 
-    <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">Wisdom Manna in the topic:</h1>
-    <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true"/>
-    <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 sm:mx-0">
-      <p class="text-base font-bold tracking-wide">Get Wisdom Manna</p>
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none pb-5">
+      <div class="flex justify-between items-center h-full">
+        <div>
+          <BackButton />
+        </div>
+        <div class="flex justify-center">
+          <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
+            {{ publication?.title ?? "" }}
+          </h1>
+        </div>
+        <SearchIcon @click="toggleSearchBar" class="text-white opacity-50 text-right max-h-6 mr-3" />
+      </div>
+      <div v-if="showSearchBar">
+        <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]" @articles:article-hits="setSearchArticles"
+          @search-loading:search-loading="setSearchLoading" class="mx-5 sm:mx-10 text-white">
+        </MultiSearch>
+      </div>
+    </div>
+    <!-- <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Search in the topic:</h1> -->
+
+
+
+    <!-- <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">Wisdom Manna in the topic:</h1> -->
+    <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true" />
+    <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 sm:mx-0 p-10">
+      <p class="text-base font-bold tracking-wide">{{ $t('common.getWisdomMannaFromTheme') }}</p>
     </ThreeDButton>
 
-    <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Search in the topic:</h1>
-    <MultiSearch 
-        :initial-theme-filter="[$route.params.themeId]"
-        @articles:article-hits="setSearchArticles" 
-        @search-loading:search-loading="setSearchLoading"
-        class="mx-5 sm:mx-0">
-    </MultiSearch>
+
 
     <ToggleSlideButton :label="'Show audio files'" class="mt-2" v-model="showAudioFiles" />
     <div>
       <div v-if="searchingLoading" class="absolute h-full w-full z-40 glass">
-            <div class="h-40">
-                <Loader :loading="true" class="overflow-hidden"/>
-            </div>
-        </div>
-      <div v-show="!showAudioFiles" id="WWCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-        <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
-          <WWCard :article="article" class="grow" :strech-y="true"/>
+        <div class="h-40">
+          <Loader :loading="true" class="overflow-hidden" />
         </div>
       </div>
-      <div v-show="showAudioFiles" id="WWAudioCards" class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+      <div v-show="!showAudioFiles" id="WWCards"
+        class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
         <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
-          <WWAudioCard :article="article" class="grow" :strech-y="true"/>
+          <WWCard :article="article" class="grow" :strech-y="true" />
+        </div>
+      </div>
+      <div v-show="showAudioFiles" id="WWAudioCards"
+        class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
+        <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
+          <WWAudioCard :article="article" class="grow" :strech-y="true" />
         </div>
       </div>
       <div id="loaderDiv">
-            <Loader :loading="loadingMoreArticles" class="mt-2"/>
-        </div>
+        <Loader :loading="loadingMoreArticles" class="mt-2" />
+      </div>
     </div>
-    
+
   </main>
 </template>
 
@@ -68,6 +79,7 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import WWAudioCard from '@/components/WWAudioCard.vue';
 import Loader from '@/components/Loader.vue';
+import { SearchIcon } from "@heroicons/vue/solid";
 
   export default defineComponent({
     name: "ThemeView",
@@ -83,6 +95,7 @@ import Loader from '@/components/Loader.vue';
         articleHitsPagination: [] as Article[],
         searchingLoading: false as boolean,
         loadingMoreArticles: false as boolean,
+        showSearchBar: false as boolean,
       }
     },
     components: {
@@ -94,7 +107,9 @@ import Loader from '@/components/Loader.vue';
       ScrollToTopButton,
       ToggleSlideButton,
       WWAudioCard,
-      Loader
+      Loader,
+      SearchIcon
+      
     },
     computed: {
       searchOrAllArticles(): Article[]{
@@ -136,6 +151,9 @@ import Loader from '@/components/Loader.vue';
       }
     },
     methods: {
+      toggleSearchBar() {
+        this.showSearchBar = !this.showSearchBar
+      },
       setSearchLoading(value : boolean){
             this.searchingLoading = value;
       },

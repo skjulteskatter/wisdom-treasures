@@ -278,4 +278,8 @@ export default defineComponent({
 .max-w-xxs{
     max-width: 15rem
 }
+
+.--white {
+        @apply text-white;
+}
 </style>
