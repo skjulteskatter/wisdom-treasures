@@ -184,9 +184,9 @@ export default defineComponent({
 <style scoped>
 
 .glassDropDown {
-	background: #3d6e7cab;
-	backdrop-filter: blur(7px);
-	-webkit-backdrop-filter: blur(7px);
+	background: #fffff;
+	backdrop-filter: blur(20px);
+	-webkit-backdrop-filter: blur(20px);
 }
 @media(min-width:640px){
 	.glassDropDown {
