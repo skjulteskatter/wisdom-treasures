@@ -160,6 +160,18 @@ export default defineComponent({
             display: none;
         }
     }
+    &--menuButtonSMDark{
+        @apply text-[color:var(--wt-color-text-grey)] tracking-wide py-3 font-bold;
+
+        @screen sm {
+            @apply text-[color:var(--color-text)] font-bold;
+        }
+
+        &:hover:after {
+            content: "";
+            display: none;
+        }
+    }
 
     &--magic {
         @apply text-white;
