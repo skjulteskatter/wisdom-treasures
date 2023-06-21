@@ -38,7 +38,8 @@
     "thisWeek": "This week",
     "thisMonth": "This month",
     "thisYear": "This year",
-    "earlier": "Earlier"
+    "earlier": "Earlier",
+    "dailyword": "Daily Word"
   },
   "signIn": {
     "logIn": "Sign in",
