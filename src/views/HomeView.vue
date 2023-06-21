@@ -66,7 +66,7 @@
 
       <div class="ml-5 sm:ml-0">
         <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">{{$t('common.origin').toUpperCase()}}</h1>
-        <OriginsSwiper/>
+        <OriginsSwiper class="z-0"/>
       </div>
       
       <div class="mx-5 sm:mx-0 mb-5">
