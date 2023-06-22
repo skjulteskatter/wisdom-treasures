@@ -18,12 +18,12 @@
         </div>
         <MiniButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mr-3">
           <template #icon>
-            <img src="/img/mannakorn_white.svg" class="h-4 w-full">
+            <img src="/img/mannakorn_white.svg" class="md:hidden h-4 w-full">
           </template>
         </MiniButton>
       </div>
       <div>
-        <MultiSearch theme="white" :in-search-view="true" :initial-theme-filter="[$route.params.themeId]"
+        <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"
           @articles:article-hits="setSearchArticles" @search-loading:search-loading="setSearchLoading"
           class="mx-5 sm:mx-10 text-white">
         </MultiSearch>

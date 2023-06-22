@@ -125,7 +125,9 @@ export default defineComponent({
     &--secondary {
         background-color: var(--wt-color-secondary);
     }
-
+    &--primarylight {
+        background-color: #85A3AC;
+    }
     &--tertiary {
         @apply text-primary hover:bg-primary/20;
 

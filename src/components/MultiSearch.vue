@@ -17,7 +17,7 @@
                     :hidePublications="initialThemeFilter.length > 0"
                     :hideAuthors="initialAuthorFilter.length > 0"/>
         </div>
-        <hr v-if="atLeastOneFilterIsActive" class="mx-5" style="background-color: rgb(63, 63, 63);"/>
+        <hr v-if="atLeastOneFilterIsActive" class="mx-5 mt-4" style="background-color: rgb(63, 63, 63);"/>
 
             <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
                 <div id="filtersection" class="flex-grow flex flex-col">
