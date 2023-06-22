@@ -26,8 +26,8 @@
                     styleType === 'password' ? 'pr-8' : '',
                     whiteText === true ? 'text-white placeholder-white/90 bg-white/40' : '',
                     forMultiSearch === true ? 'rounded-r-none' : '',
-                    size === 'lg' ? 'text-xl' : '',
-                    nameInput === true ? 'bg-transparent placeholder:text-2xl text-2xl border-none font-bold text-center placeholder:text-[color:var(--color-text)] py-1 mt-2 mb-1' : '']"
+                    size === 'lg' ? 'text-xl' : 'xs',
+                    nameInput === true ? 'bg-transparent placeholder:text-1xl text-1xl border-none font-bold text-center placeholder:text-[color:var(--color-text)] py-1 mt-2 mb-1' : '']"
                 :value="modelValue"
                 :disabled="disabled"
                 :placeholder="placeholder"

@@ -72,9 +72,9 @@
       <div class="mx-5 sm:mx-0 mb-5">
         <h1 class="text-base font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{ $t('common.wisdomManna').toUpperCase()}}</h1>
         <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
-          <p class="text-base font-bold tracking-wide">{{ $t('home.getWisdomManna') }}</p>
+          <p class="text-base font-bold tracking-wide px-5">{{ $t('home.getWisdomManna') }}</p>
           <template #icon>
-            <RefreshIcon class="h-5"/>
+            <img src="/img/mannakorn.svg" class="justify-end h-5 mt-1">
           </template>
         </ThreeDButton>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
