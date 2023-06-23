@@ -1,6 +1,6 @@
 <template>
     <main>
-        <BaseButton @click="clicked" :threeD="true" :loading="loading" :loadingLabel="loadingLabel" class="w-[calc(100%-2px)] h-[calc(100%-4px)] absolute top-1 left-[2px]" theme="primarylight">
+        <BaseButton @click="clicked" :threeD="true" :loading="loading" :loadingLabel="loadingLabel" theme="noBackground">
             <template #default>
                 <slot/>
             </template>

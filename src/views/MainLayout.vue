@@ -27,11 +27,13 @@
 
 		<TheNavbar class="sm:order-first w-full fixed bottom-0 sm:top-0"/>
 		<NotificationContainer class="h-full"/>
+		<SuggestionForm/>
 	</div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
+import SuggestionForm from '../components/SuggestWWForm.vue'
 
 import TheNavbar from "@/components/TheNavbar.vue";
 import { XIcon } from "@heroicons/vue/solid";

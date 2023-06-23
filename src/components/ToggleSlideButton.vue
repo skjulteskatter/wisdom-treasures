@@ -1,33 +1,57 @@
 <template>
     <main>
-        <label class="relative inline-flex items-center cursor-pointer">
-            <input type="checkbox" @click="onChange()" :checked="modelValue" value="" class="sr-only peer">
-            <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-primary/70 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
-            <span v-if="label" class="ml-3 select-none">{{label}}</span>
+        <label for="toggleThree"
+            class="flex select-none items-center relative inline-flex w-full items-center cursor-pointer">
+            <div class="justify-center mx-auto w-full">
+                <div class="relative w-full">
+                    <input type="checkbox" @click="onChange()" :checked="modelValue" value="" class="sr-only peer"
+                        id="toggleThree" />
+                    <div class="block h-8 py-1 flex rounded-full bg-[#ACC0C5] shadow-lg">
+                        <p class="z-10 text-white font-semibold w-1/2 text-center" :class="{ 'text-primary': modelValue }">
+                            Wisdomwords
+                        </p>
+                        <p class="z-10 font-semibold w-1/2 text-primary text-center" :class="{ 'text-white': modelValue }">
+                            Audio
+                        </p>
+                    </div>
+
+                    <div class="dot absolute items-center left-0 top-0 flex h-8 w-1/2 rounded-full bg-[#3D6E7C] transition peer-checked:bg-primary"
+                        :class="{ 'translate-x-full': modelValue }"></div>
+                </div>
+            </div>
         </label>
     </main>
 </template>
+  
+  
     
 <script lang="ts">
-  import { defineComponent } from 'vue';
-  
-    export default defineComponent({
-        name: "ToggleSlideButton",
-        props: {
-            label: {
-                type: String,
-                required: false,
-                default: undefined
-            },
-            modelValue: {
-                type: Boolean,
-            },
+import { defineComponent } from 'vue';
+
+export default defineComponent({
+    name: "ToggleSlideButton",
+    data() {
+        return {
+            chosen: 'Words'
+        }
+    },
+    props: {
+        label: {
+            type: String,
+            required: false,
+            default: undefined,
         },
-        emits: ["update:modelValue"],
-        methods:{
-            onChange(){
-                this.$emit('update:modelValue', !this.modelValue);
-            }
+        modelValue: {
+            type: Boolean,
         },
-    });
+    },
+    emits: ["update:modelValue"],
+    methods: {
+        onChange() {
+            console.log(this.modelValue)
+            this.$emit('update:modelValue', !this.modelValue);
+            this.chosen = this.modelValue ? 'Words' : 'Audio'
+        }
+    },
+});
 </script>
