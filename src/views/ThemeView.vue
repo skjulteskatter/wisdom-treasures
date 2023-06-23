@@ -101,6 +101,7 @@ export default defineComponent({
     WWCard,
     BackButton,
     MiniButton,
+    ThreeDButton,
     WWShowCard,
     MultiSearch,
     ScrollToTopButton,
@@ -108,7 +109,6 @@ export default defineComponent({
     WWAudioCard,
     Loader,
     SearchIcon
-
   },
   computed: {
     searchOrAllArticles(): Article[] {
