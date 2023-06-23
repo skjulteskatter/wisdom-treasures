@@ -6,35 +6,36 @@
       <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50" />
     </div>
 
-    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none items-center justify-between pb-5">
-      <div class="flex ">
-        <BackButton />
-        <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
-          {{ publication?.title ?? "" }}
-        </h1>
-        <button @click="toggleSearchBar" class="m-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
-          Search
-        </button>
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none pb-5">
+      <div class="flex justify-between items-center h-full">
+        <div>
+          <BackButton />
+        </div>
+        <div class="flex justify-center">
+          <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
+            {{ publication?.title ?? "" }}
+          </h1>
+        </div>
+        <MiniButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mr-3">
+          <template #icon>
+            <img src="/img/mannakorn_white.svg" class="md:hidden h-4 w-full">
+          </template>
+        </MiniButton>
       </div>
-      <div v-if="showSearchBar">
-        <MultiSearch :initial-theme-filter="[$route.params.themeId]" @articles:article-hits="setSearchArticles"
-          @search-loading:search-loading="setSearchLoading" class="mx-5 sm:mx-10">
+      <div>
+        <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"
+          @articles:article-hits="setSearchArticles" @search-loading:search-loading="setSearchLoading"
+          class="mx-5 sm:mx-10 text-white">
         </MultiSearch>
       </div>
     </div>
     <!-- <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Search in the topic:</h1> -->
-
-
-
-    <!-- <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">Wisdom Manna in the topic:</h1> -->
+    <div class="flex mx-auto w-full justify-center">
+      <ToggleSlideButton :label="'Show audio files'" class="mx-5 sm:mx-0 py-3 w-full" v-model="showAudioFiles" />
+    </div>
+    <hr class="mx-10" />
     <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true" />
-    <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mx-5 sm:mx-0 p-10">
-      <p class="text-base font-bold tracking-wide">{{ $t('common.getWisdomMannaFromTheme') }}</p>
-    </ThreeDButton>
 
-
-
-    <ToggleSlideButton :label="'Show audio files'" class="mt-2" v-model="showAudioFiles" />
     <div>
       <div v-if="searchingLoading" class="absolute h-full w-full z-40 glass">
         <div class="h-40">
@@ -69,7 +70,7 @@ import { useSessionStore } from '@/stores/session';
 import router from '@/router';
 import { Notification } from '@/classes/notification';
 import BackButton from '@/components/BackButton.vue';
-import ThreeDButton from '@/components/ThreeDButton.vue';
+import MiniButton from '@/components/MiniButton.vue';
 import WWShowCard from '@/components/WWShowCard.vue';
 import { mannaHistory } from '@/services/localStorage';
 import MultiSearch from '@/components/MultiSearch.vue';
@@ -99,13 +100,15 @@ export default defineComponent({
   components: {
     WWCard,
     BackButton,
+    MiniButton,
     ThreeDButton,
     WWShowCard,
     MultiSearch,
     ScrollToTopButton,
     ToggleSlideButton,
     WWAudioCard,
-    Loader
+    Loader,
+    SearchIcon
   },
   computed: {
     searchOrAllArticles(): Article[] {
@@ -148,7 +151,6 @@ export default defineComponent({
   },
   methods: {
     toggleSearchBar() {
-      console.log('ktis')
       this.showSearchBar = !this.showSearchBar
     },
     setSearchLoading(value: boolean) {

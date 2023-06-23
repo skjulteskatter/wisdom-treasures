@@ -1,6 +1,6 @@
 <template>
     <button
-        class="overflow-hidden z-10 text-white select-none cursor-pointer flex items-center gap-2 rounded-md relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ring-offset-2 active:text-opacity-50"
+        class="overflow-hidden z-10 text-primary select-none cursor-pointer flex items-center gap-2 rounded-md relative focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary ring-offset-2 active:text-opacity-50"
         :class="[`button--${theme} button`, { 'opacity-75 cursor-wait button--loading': loading, 'button--disabled': disabled, 'button--clicked': clicked, 'py-1 px-2': size == 'small', 
             'py-2 px-4': size == 'medium', 'py-3 px-6': size == 'large', 'justify-center' : centerText, 
             'threeDButton opacity-100': threeD, 'threeDButtonAnimation' : threeD && !loading, 'bg-white/40' : whiteText, 'rounded-l-none gap-0 border-none bg-black/10 sm:bg-black/10' : forMultiSearch }]"
@@ -115,13 +115,19 @@ export default defineComponent({
     }
 
     &--primary {
-        background-color: var(--wt-color-primary);
+        border: 1.5px solid var(--wt-color-primary);
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    &--mini {
+        background-color: #85A4AC;
     }
 
     &--secondary {
         background-color: var(--wt-color-secondary);
     }
-
+    &--primarylight {
+        background-color: #85A3AC;
+    }
     &--tertiary {
         @apply text-primary hover:bg-primary/20;
 
@@ -131,7 +137,7 @@ export default defineComponent({
         }
     }
     &--noBackground {
-        @apply bg-transparent border-2 border-primary text-primary
+        @apply bg-transparent text-primary
     }
 
     &--menuButton {
@@ -143,7 +149,7 @@ export default defineComponent({
         }
     }
     &--filterXBtn{
-        @apply text-[color:var(--color-text)] tracking-wide py-1 hover:bg-black/10;
+        @apply text-white tracking-wide py-1 hover:bg-black/10;
     }
     &--noBg {
         @apply bg-transparent text-[color:var(--color-text)] opacity-80 border-b border-black/20 rounded-none py-2 pb-4 px-4;
@@ -153,6 +159,18 @@ export default defineComponent({
 
         @screen sm {
             @apply text-[color:var(--color-text)]
+        }
+
+        &:hover:after {
+            content: "";
+            display: none;
+        }
+    }
+    &--menuButtonSMDark{
+        @apply text-[color:var(--wt-color-text-grey)] tracking-wide py-3 font-bold;
+
+        @screen sm {
+            @apply text-[color:var(--color-text)] font-bold;
         }
 
         &:hover:after {

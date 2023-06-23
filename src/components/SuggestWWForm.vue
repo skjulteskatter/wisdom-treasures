@@ -7,11 +7,11 @@
 
 
 
-    <div v-if="isFormOpen" class="form-overlay">
-      <div class="form-card">
+    <div v-if="isFormOpen" @click="closeForm" class="form-overlay h-screen">
+      <div class="form-card p-10">
         <span class="close-icon" @click="closeForm">&#10005;</span>
         <div class="form-title">Suggest a Wisdom Word</div>
-        <form @submit.prevent="submitForm" method="POST"
+        <form @click.stop @submit.prevent="submitForm" method="POST"
           :action=appScriptsLink>
           <div class="form-field">
             <label class="label" for="wisdom-word">What is the wisdom word?</label>
@@ -82,15 +82,6 @@ export default {
       console.log('appScriptsLink', this.appScriptsLink)
       this.isFormOpen = !this.isFormOpen;
     },
-    handleMouseDown() {
-      this.isScrolling = true;
-    },
-    handleMouseOver() {
-      this.isHovered = true;
-    },
-    handleMouseOut() {
-      this.isHovered = false;
-    },
     closeForm() {
       this.isFormOpen = false;
       this.isSubmitted = false;
@@ -150,7 +141,7 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 999;
+    z-index: 100;
 
     &.moveLeft {
       right: 20px;
@@ -182,6 +173,8 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+    z-index: 100;
+    padding: 10px
   }
 
 }
@@ -190,7 +183,6 @@ export default {
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 24px;
   width: 400px;
   max-width: 100%;
   margin: 0 auto;

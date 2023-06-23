@@ -1,12 +1,12 @@
 <!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
-        <div class="flex flex-col px-5 sm:px-0" :class="inSearchView ? 'pb-4 sm:pb-0 bg-primary sm:bg-transparent shadow-md sm:shadow-none': ''">
+        <div class="flex flex-col px-5 sm:px-0" :class="inSearchView ? 'pb-4 sm:pb-0 bg-primary sm:bg-transparent ': ''">
             <div class="flex">
-            <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow rounded-full" size="lg" :whiteText="inSearchView ? true : false" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
-            <BaseInput v-model="searchWord" style-type="search" class="hidden sm:block grow" size="lg" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
+            <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow" size="" :whiteText="inSearchView ? true : false" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
+            <BaseInput v-model="searchWord" style-type="search" class="hidden sm:block grow" size="" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
             <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="inSearchView ? true : false">
                 <template #icon>
-                    <AdjustmentsIcon class="w-5"/>
+                    <AdjustmentsIcon class="w-4"/>
                 </template>
             </BaseButton>
             </div>
@@ -17,6 +17,7 @@
                     :hidePublications="initialThemeFilter.length > 0"
                     :hideAuthors="initialAuthorFilter.length > 0"/>
         </div>
+        <hr v-if="atLeastOneFilterIsActive" class="mx-5 mt-4" style="background-color: rgb(63, 63, 63);"/>
 
             <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
                 <div id="filtersection" class="flex-grow flex flex-col">
@@ -30,14 +31,14 @@
                         </div>
 
                         <div v-if="store.authorIdSearchFilter.length > 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 text-xs">{{ author.name }}</p> 
+                            <p class="max-w-xxs truncate pl-2 text-white text-xs">{{ author.name }}</p> 
                             <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.authorIdSearchFilter = store.authorIdSearchFilter.filter(x => x != author.id); search(undefined); syncFilter();}">
                                 <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
 
                         <div v-if="store.onlyFavoriteSearchFilter" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 text-xs">Favorites Only</p>
+                            <p class="max-w-xxs text-white truncate pl-2 text-xs">Favorites Only</p>
                             <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.onlyFavoriteSearchFilter = false; search(undefined); syncFilter();}">
                                 <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
@@ -45,7 +46,7 @@
 
                         <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/20">
                             <BaseButton theme="filterXBtn" class="self-center max-h-7" @click="resetAllFilter">
-                                <p class="w-max defaultFontSize text-xs">Reset all</p>
+                                <p class="w-max defaultFontSize text-white text-xs">Reset all</p>
                             </BaseButton>
                         </div>
 
@@ -277,5 +278,9 @@ export default defineComponent({
 } */
 .max-w-xxs{
     max-width: 15rem
+}
+
+.--white {
+        @apply text-white;
 }
 </style>

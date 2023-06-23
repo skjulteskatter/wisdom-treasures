@@ -21,7 +21,7 @@
                             >
                             <div v-if="showAuthors" id="authors" class="w-half-screen absolute top-7 left-0 bg-primary bg-[color:var(--wt-c-white-soft)] shadow-lg border-2 rounded-sm border-white-80 max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideAuthors}">
                                 <div v-for="(author, index) in allAuthors" :key="index" class="flex">
-                                    <label class="w-full flex gap-2 mx-2 my-2 items-center cursor-pointer select-none">
+                                    <label class="w-full flex gap-2 mx-2 my-2 items-center text-black cursor-pointer select-none">
                                         <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="setInitialAuthorValue(author.id, index)"/>
                                         <p :class="{'font-bold' : authorCheckBoxArray[index] }" class="max-w-80-percent truncate text-white/80 sm:text-inherit text-xs">{{ author.name }}</p>
                                     </label>
