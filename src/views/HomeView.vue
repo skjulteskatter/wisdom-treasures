@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="md:w-2/3 sm:w-full justify-center mx-auto">
+    <div class="lg:w-4/5 justify-center mx-auto">
       <div
         class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0 ">
         <h1 class="text-base sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">

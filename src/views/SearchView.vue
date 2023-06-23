@@ -20,7 +20,7 @@
         :inSearchView="true">
     </MultiSearch>
 
-    <ToggleSlideButton :label="'Show audio files'" class="mt-2" v-model="showAudioFiles" />
+    <ToggleSlideButton :label="'Show audio files'" class="mt-4 mx-5 sm:mx-0" v-model="showAudioFiles" />
     
     <div class="mx-5 sm:mx-0">
         <div v-if="searchLoading" class="absolute h-full w-full z-40 glass">

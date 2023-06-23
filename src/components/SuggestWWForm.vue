@@ -26,7 +26,7 @@
             <input name=Time required type="text" id="date" v-model="formData.date"  />
           </div>
           <div class="form-field">
-            <label class="label" for="context">In which context was this said?</label>
+            <label class="label" for="context">In what context was this said?</label>
             <input Name="Source" required type="text" id="context" v-model="formData.context"  />
           </div>
             <div class="form-field">
