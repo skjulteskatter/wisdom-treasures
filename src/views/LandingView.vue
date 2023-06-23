@@ -238,7 +238,7 @@ import LandingFooter from '@/components/LandingFooter.vue';
     }
     /* BODY */
     .intro{
-        height: 100vh;
+        height: 40rem;
         padding-inline: var(--pad-inline);
         margin-block: 1em;
         display: flex;
