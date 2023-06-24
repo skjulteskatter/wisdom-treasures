@@ -1,14 +1,8 @@
 <template>
     <BaseCard :loading="loading" class="border-2 hover:border-black/30 border-black/0 cursor-pointer flex" @click ="() => {$emit('click')}">
         <template #header>
-          <div class="text-3xl font-sans">
+          <div class="text-xl font-sans">
             <slot name="header">
-            </slot>
-          </div>
-        </template>
-        <template #default>
-          <div>
-            <slot name="default">
             </slot>
           </div>
         </template>
