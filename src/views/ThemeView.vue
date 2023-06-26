@@ -101,7 +101,6 @@ export default defineComponent({
     WWCard,
     BackButton,
     MiniButton,
-    ThreeDButton,
     WWShowCard,
     MultiSearch,
     ScrollToTopButton,
