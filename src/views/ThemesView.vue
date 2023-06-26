@@ -11,7 +11,7 @@
         <h1 class="text-base sm:text-xl self-center font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.themes') }}</h1>
         <BackButton class="opacity-0"/>
       </div>
-      <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>
+      <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" :whiteText="true" class="my-4 px-5 sm:hidden"/>
       <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" class="hidden sm:block"/>
     </div>
     <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:ml-0 text-[color:var(--wt-color-text-grey)] opacity-80">

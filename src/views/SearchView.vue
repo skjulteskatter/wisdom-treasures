@@ -17,7 +17,7 @@
         @authors:author-hits="setAuthors"
         @themes:theme-hits="setThemes"
         @search-loading:search-loading="setSearchLoading"
-        :inSearchView="true">
+        :inSearchView="true"> <!-- is inTheSearchView necessary?-->
     </MultiSearch>
 
     <ToggleSlideButton :label="'Show audio files'" class="mt-4 mx-5 sm:mx-0" v-model="showAudioFiles" />

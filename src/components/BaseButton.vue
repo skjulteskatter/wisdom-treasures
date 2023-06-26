@@ -149,7 +149,7 @@ export default defineComponent({
         }
     }
     &--filterXBtn{
-        @apply text-white tracking-wide py-1 hover:bg-black/10;
+        @apply text-white sm:text-inherit tracking-wide py-1 hover:bg-black/10;
     }
     &--noBg {
         @apply bg-transparent text-[color:var(--color-text)] opacity-80 border-b border-black/20 rounded-none py-2 pb-4 px-4;
