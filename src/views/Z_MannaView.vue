@@ -2,7 +2,7 @@
     <main>
       <div class="flex items-center justify-between bg-primary sm:bg-transparent shadow-md sm:shadow-none py-4">
         <BackButton />
-        <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">Manna</h1>
+        <h1 class="text-base sm:text-xl self-center font-bold text-white sm:text-inherit tracking-wide">Manna</h1>
         <BackButton class="opacity-0"/>
       </div>
       <Loader :loading="store.mannaHistory.length <= 0">

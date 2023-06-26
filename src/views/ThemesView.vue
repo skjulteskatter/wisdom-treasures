@@ -8,7 +8,7 @@
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
       <div class="flex items-center mt-4 sm:my-6 justify-between">
         <BackButton/>
-        <h1 class="text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.themes') }}</h1>
+        <h1 class="text-base sm:text-xl self-center font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.themes') }}</h1>
         <BackButton class="opacity-0"/>
       </div>
       <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" :white-text="true" class="my-4 px-5 sm:hidden"/>

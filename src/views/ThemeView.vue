@@ -12,7 +12,7 @@
           <BackButton />
         </div>
         <div class="flex justify-center">
-          <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">
+          <h1 class="my-4 sm:my-6 text-base sm:text-xl self-center font-bold text-white sm:text-inherit tracking-wide">
             {{ publication?.title ?? "" }}
           </h1>
         </div>

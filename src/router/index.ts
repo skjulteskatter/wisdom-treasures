@@ -112,18 +112,6 @@ export const routes = [
           WWCard
         ]
       },
-      //{
-      //  path: '/manna',
-      //  name: 'manna',
-      //  component: () => import('../views/MannaView.vue'),
-      //  meta: {
-      //    requiresAuth: true,
-      //    scrollUp: true,
-      //  },
-      //  children: [
-      //    WWCard
-      //  ]
-      //},
       {
         path: '/store',
         name: 'store',

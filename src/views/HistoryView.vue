@@ -8,10 +8,10 @@
     <div>
       <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between">
         <BackButton />
-        <h1 class="my-4 text-base sm:text-3xl font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.history')
+        <h1 class="my-4 text-base sm:text-xl self-center font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.history')
         }}
         </h1>
-        <BackButton class="opacity-0" />
+        <BackButton class="opacity-0" disabled/>
       </div>
       <div class="flex mx-5 sm:mx-0 mt-5 sm:mt-0">
         <div class="grow" />
@@ -19,8 +19,8 @@
           <ToggleSlideButton :label="$t('history.onlyManna')" v-model="showOnlyMannaHistory" />
           <div v-for="(value, key) in periods" :key="key + showOnlyMannaHistory.toString()">
 
-            <div id="wrapperDiv" :class="{ 'hidden': loadPeriodName[key] !== true }">
-              <div class="text-base sm:text-2xl font-bold opacity-80 flex cursor-pointer whitespace-nowrap w-min"
+            <div id="wrapperDiv" class="mt-5" :class="{ 'hidden': loadPeriodName[key] !== true }">
+              <div class="text-base font-bold opacity-80 flex cursor-pointer whitespace-nowrap w-min"
                 @click="addOrRemoveHiddenPeriod(key.toString())">
                 {{ key }}
                 <ChevronUpIcon class="h-5 self-center ml-2"

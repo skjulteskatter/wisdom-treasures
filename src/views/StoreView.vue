@@ -2,29 +2,28 @@
   <main>
     <div class="flex items-center justify-between">
       <BackButton /><!-- should be another color-->
-      <h1 class="my-4 sm:my-6 text-base sm:text-3xl font-bold tracking-wide">
+      <h1 class="self-center my-4 sm:my-6 text-base sm:text-xl font-bold tracking-wide">
         Store
       </h1>
       <BackButton class="opacity-0"/>
     </div>
-    
-    <AddSwiper class="mt-5"/>
-    
 
-    <div id="Cards" class="mt-5 w-full px-5 text-center">
-      <StoreCard :loading="loadingCheckoutCard == 'year'" class="w-full bg-primary text-white/90 flex justify-center items-center" @click="() => { checkout('year') }">
+    <AddSwiper class="mt-5 cursor-grab"/>
+
+    <div id="Cards" class="mt-5 w-full px-5 sm:p-0 text-center">
+      <StoreCard :loading="loadingCheckoutCard == 'year'" class="bg-primary text-white/90 flex justify-center items-center store-card-width py-3 rounded-none-overwritten" @click="() => { checkout('year') }">
         <template #header>
           <div>
-            <div class="text-lg md:text-2xl font-bold tracking-wide">Get subscription</div>
+            <div class="text-xl font-bold tracking-wide">Get subscription</div>
           </div>
         </template>
       </StoreCard>
       <p class="text-[color:var(--wt-color-text-grey)] opacity-50">13NOK/month billed annually </p>
     </div>
 
-    <div id="FAQ" class="text-center mx-5">
-      <div class="mt-5">
-        <h3 class="font-bold">How do I purchase a collection?</h3>
+    <div id="FAQ" class="text-center mx-5 py-8 mt-5  sm:ml-auto sm:mr-auto max-w-2xl">
+      <div class="">
+        <h3 class="font-bold">How do I get a subscription?</h3>
         <p class="leading-5  text-[color:var(--wt-color-text-grey)] opacity-50">Click on the button above and continue to checkout</p>
       </div>
       <div class="mt-5">
@@ -34,11 +33,11 @@
       </div>
       <div class="mt-5">
         <h3 class="font-bold">Does my subscription auto renew?</h3>
-        <p class="leading-5  text-[color:var(--wt-color-text-grey)] opacity-50">No, you have to buy a new subscription when the previous one is outdated</p>
+        <p class="leading-5  text-[color:var(--wt-color-text-grey)] opacity-50">No, you can buy a new subscription when the previous one is outdated</p>
       </div>
     </div>
 
-    <img id="add-bg" class="sm:hidden fixed top-0 left-0 width-screen -z-50" src="images/add-bg.png"/>
+    <img id="add-bg" class="sm:hidden fixed top-0 left-0 store-card-width -z-50" src="images/add-bg.png"/>
   </main> 
 </template>
 
@@ -76,3 +75,13 @@ import AddSwiper from '@/components/AddSwiper.vue';
     }
   });
 </script>
+<style>
+.store-card-width {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+}
+.rounded-none-overwritten{
+  border-radius: 0;
+}
+</style>

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <p class="text-xs sm:text-sm opacity-40 text-center py-4 px-5" >
+    <p class="text-xs sm:text-sm text-[color:var(--wt-color-text-grey)] opacity-50 text-center py-4 px-5" >
       Copyright 2022 © Stiftelsen Skjulte Skatters Forlag. All Rights Reserved
     </p>
   </div>
