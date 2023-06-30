@@ -29,11 +29,11 @@
         </MultiSearch>
       </div>
     </div>
-    <!-- <h1 class="m-5 sm:mx-0 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">Search in the topic:</h1> -->
+
     <div class="flex mx-auto w-full justify-center">
       <ToggleSlideButton :label="'Show audio files'" class="mx-5 sm:mx-0 py-3 w-full" v-model="showAudioFiles" />
     </div>
-    <hr class="mx-10" />
+
     <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true" />
 
     <div>

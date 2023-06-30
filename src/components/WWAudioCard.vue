@@ -5,14 +5,14 @@
           <template #header>
             <slot name="header" v-if="$slots.header" />
             <div v-else class="flex h-full">
-              <p class="self-center line-clamp-3 font-sans text-lg">{{ article.title }}</p>
+              <p class="self-center line-clamp-3 font-sans text-base">{{ article.title }}</p>
             </div>
           </template>
           <template #default>
             <slot name="default" v-if="$slots.default" />
             <AudioPlayer></AudioPlayer>
           </template>
-          <template #footer>
+          <!-- <template #footer>
             <slot name="footer" v-if="$slots.footer"></slot>
             <div v-else class="flex">
               <div class="self-center mr-2">
@@ -23,7 +23,7 @@
               </div>
             </div>
             
-          </template>
+          </template> -->
         </BaseCard>
     </main>
   </template>

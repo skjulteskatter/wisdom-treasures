@@ -10,7 +10,7 @@
         <div :show="true" v-if="show" @close="closeWithReturnArrays">
                 <div class="grid grid-cols-3 gap-2 mt-4 items-center">
                     <div id="authors">
-                        <button v-if="!hideAuthors" @click="showAuthors = !showAuthors, showPublications = false" class="box-border w-full border-2 rounded-full py-1.5 border-white/80 sm:border-primary text-white/80 sm:text-primary text-xs" :class="showAuthors ? 'border-b-none' : ''">author</button>
+                        <button v-if="!hideAuthors" @click="showAuthors = !showAuthors, showPublications = false" class="box-border w-full border-2 rounded-l-full py-1.5 border-white/80 sm:border-primary text-white/80 sm:text-primary text-xs" :class="showAuthors ? 'border-b-none' : ''">author</button>
                         <transition
                             enter-active-class="transition duration-100 ease-out"
                             enter-from-class="transform scale-95 opacity-0"
@@ -30,7 +30,7 @@
                         </transition>
                     </div>
                     <div id="publications">
-                        <button v-if="!hidePublications" @click="showPublications = !showPublications, showAuthors = false" class="w-full border-2 rounded-full border-white/80 sm:border-primary py-1.5 text-white/80 sm:text-primary text-xs">publication</button>
+                        <button v-if="!hidePublications" @click="showPublications = !showPublications, showAuthors = false" class="w-full border-2 border-white/80 sm:border-primary py-1.5 text-white/80 sm:text-primary text-xs">publication</button>
                         <transition
                             enter-active-class="transition duration-100 ease-out"
                             enter-from-class="transform scale-95 opacity-0"
@@ -52,7 +52,7 @@
                     <div id="favorites" @click="showPublications = false, showAuthors = false" class="z-30 border-box flex justify-center items-center transition cursor-pointer">
                         <label class="w-full h-full flex justify-center items-center">
                             <BaseCheckbox class="w-full h-full absolute opacity-0 cursor-pointer " v-model="store.onlyFavoriteSearchFilter" @click="closeWithReturnArrays(true)"/>
-                            <p :class="{'bg-white/20 sm:bg-primary sm:text-white' : store.onlyFavoriteSearchFilter }" class="w-full h-full rounded-full text-center border-2 border-white/80 py-1.5 sm:border-primary text-white/80 sm:text-primary text-xs cursor-pointer">favorites</p>
+                            <p :class="{'bg-white/20 sm:bg-primary sm:text-white' : store.onlyFavoriteSearchFilter }" class="w-full h-full rounded-r-full text-center border-2 border-white/80 py-1.5 sm:border-primary text-white/80 sm:text-primary text-xs cursor-pointer">favorites</p>
                         </label>
                     </div>
                 </div>

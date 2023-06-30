@@ -35,31 +35,49 @@ export default defineComponent({
 
 <style>
 .plyr--full-ui input[type=range] {
-  color: var(--wt-color-primary);
+  color: var(--wt-color-secondary);
+}
+.plyr__progress__buffer{
+  background-color:var(--wt-color-secondary);
 }
 
 .plyr__control--overlaid {
-  background: rgba(var(--wt-color-primary), .8);
-}
-
-.plyr--video .plyr__control.plyr__tab-focus,
-.plyr--video .plyr__control:hover,
-.plyr--video .plyr__control[aria-expanded=true] {
-  background: var(--wt-color-primary);
+  background: rgba(var(--wt-color-secondary), .8);
 }
 
 .plyr__control.plyr__tab-focus {
-  box-shadow: 0 0 0 5px rgba(var(--wt-color-primary), .5);
+  box-shadow: 0 0 0 5px rgba(var(--wt-color-secondary), .5);
 }
 
 .plyr__menu__container .plyr__control[role=menuitemradio][aria-checked=true]::before {
-  background: var(--wt-color-primary);
+  background: var(--wt-color-secondary);
+}
+
+.plyr__controls__item[data-plyr=play]{
+  height: 3rem;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  display:flex;
+  justify-content: center;
+  align-items:center;
+
+  background:#ba9b6787;
+}
+.plyr__controls__item[data-plyr=play] svg{
+  color:var(--wt-color-secondary);
+}
+.plyr__controls__item[data-plyr=play] svg:hover{
+  color:white
+}
+
+.plyr__control[data-plyr=mute]{
+  border-radius: 50%
 }
 
 .plyr--audio .plyr__control.plyr__tab-focus,
 .plyr--audio .plyr__control:hover,
 .plyr--audio .plyr__control[aria-expanded=true] {
-  background: var(--wt-color-primary);
+  background: #ba9b67dd;
 }
 
 /* Hide to  */
@@ -67,7 +85,6 @@ export default defineComponent({
     display: none;
     width: 0%;
     height: 0%;
-
 }
 
 </style>
