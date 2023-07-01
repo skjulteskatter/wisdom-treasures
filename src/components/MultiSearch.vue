@@ -110,6 +110,14 @@ export default defineComponent({
             type: Array as PropType<string[]>,
             default: () => []
         },
+        returnAllIfNoHits: {
+            type: Boolean,
+            default: false
+        },
+        searchOnLoad: {
+            type: Boolean,
+            default: false
+        },
     },
     emits: ["authors:authorHits", "themes:themeHits", "articles:articleHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],
     computed: {
@@ -218,6 +226,10 @@ export default defineComponent({
                     this.articleHits = (result.length ? result.map(x => x.item) : this.allArticles);
                 }
 
+                if (this.returnAllIfNoHits && this.articleHits.length <= 0){
+                    this.articleHits = Array.from(this.store.articles.values());
+                }
+
                 if (this.store.onlyFavoriteSearchFilter)
                 {
                     this.articleHits = this.articleHits.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
@@ -258,7 +270,7 @@ export default defineComponent({
         }
     },
     created() {
-        if (this.initialSearchWord != "") {
+        if (this.initialSearchWord != "" || this.searchOnLoad) {
             this.search(this.initialSearchWord);
         }
     },

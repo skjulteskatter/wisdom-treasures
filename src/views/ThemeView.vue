@@ -6,6 +6,8 @@
       <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50" />
     </div>
 
+    <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId == $route.params.themeId).map(x => x.id)"></MannaButton>
+
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none pb-5">
       <div class="flex justify-between items-center h-full">
         <div>
@@ -24,6 +26,8 @@
       </div>
       <div>
         <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"
+          :return-all-if-no-hits="true"
+          :search-on-load="true"
           @articles:article-hits="setSearchArticles" @search-loading:search-loading="setSearchLoading"
           class="mx-5 sm:mx-10 text-white">
         </MultiSearch>
@@ -78,13 +82,14 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import WWAudioCard from '@/components/WWAudioCard.vue';
 import Loader from '@/components/Loader.vue';
-import { SearchIcon } from "@heroicons/vue/solid";
+import MannaButton from '@/components/MannaButton.vue';
 
 export default defineComponent({
   name: "ThemeView",
   data() {
     return {
       store: useSessionStore(),
+      articles: [] as Article[], 
       dataFavorites: undefined as string[] | undefined,
       publication: undefined as Publication | undefined,
       randomArticle: null as Article | null,
@@ -107,7 +112,7 @@ export default defineComponent({
     ToggleSlideButton,
     WWAudioCard,
     Loader,
-    SearchIcon
+    MannaButton,
   },
   computed: {
     searchOrAllArticles(): Article[] {
@@ -133,10 +138,8 @@ export default defineComponent({
     sessionInitialized(): boolean {
       return this.store.sessionInitialized;
     },
-    articles(): Article[] {
-      const articles: Article[] = [];
-      if (this.publication === undefined) return articles;
-      return Array.from(this.store.articles.values()).filter(x => x.publicationId == this.publication?.id)
+    articleIds(): string[] {
+      return this.articles.map(x => x.id);
     },
   },
   watch: {
@@ -243,6 +246,8 @@ export default defineComponent({
     },
   },
   mounted() {
+    if (this.publication !== undefined) this.articles = Array.from(this.store.articles.values()).filter(x => x.publicationId == this.publication?.id)
+    
     if (this.sessionInitialized) {
       this.getAndSetPublication();
       this.assureCorrectSlug();

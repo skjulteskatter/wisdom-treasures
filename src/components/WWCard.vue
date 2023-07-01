@@ -1,7 +1,7 @@
 <template>
     <main>
-        <BaseCard :WWCard="true" class="border-2 hover:border-black/30 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${currentPath}${article.number}`})}"
-          :class="[{'h-full': strechY}]">
+        <BaseCard :WWCard="true" class="border-2 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${currentPath}${article.number}`})}"
+          :class="[{'h-full': strechY}, {'hover:border-black/30' : !hoverOverFavorite}]">
           <template #default>
             <slot name="default" v-if="$slots.default" />
             <div v-else class="flex h-full">
@@ -15,10 +15,13 @@
                   <BookOpenIcon class="h-5 opacity-40"/>
               </div>
               <div class="text-xs self-center opacity-50 truncate w-4/5">
-                {{categoryName}}
+                {{categoryName}}&nbsp;&nbsp;&nbsp;-{{ authorName }} <!--This needs better styling probably-->
               </div>
+              <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2 opacity-70" @mouseover="()=>{hoverOverFavorite = true}" @mouseleave="()=>{hoverOverFavorite = false}" @click="(e: Event | undefined) => {e?.stopPropagation(); favoriteButton();}">
+                <HeartIconSolid v-if="favorite" class="h-8 text-[color:var(--wt-color-secondary)] pop"/>
+                <HeartIcon v-else class="h-8 text-[color:var(--wt-color-secondary)] pop"/>
+              </BaseButton>
             </div>
-            
           </template>
         </BaseCard>
         <WWCardModal :show="openWWModal" @close="(e: Event | undefined) => {navigateBack(e); $emit('closeModal', e)}" :article="article"/>
@@ -29,10 +32,11 @@
   import type { Article } from 'hiddentreasures-js';
   import { defineComponent, type PropType } from 'vue';
   import BaseCard from './BaseCard.vue';
-  import { BookOpenIcon } from '@heroicons/vue/outline';
+  import { BookOpenIcon, HeartIcon } from '@heroicons/vue/outline';
   import WWCardModal from './WWCardModal.vue';
-  import { history } from '@/services/localStorage';
-import { useSessionStore } from '@/stores/session';
+  import { useSessionStore } from '@/stores/session';
+  import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
+  import BaseButton from './BaseButton.vue';
   
     export default defineComponent({
       name: "WWCard",
@@ -40,6 +44,7 @@ import { useSessionStore } from '@/stores/session';
         return {
           openWWModal: false,
           store: useSessionStore(),
+          hoverOverFavorite: false as boolean,
         }
       },
       props: {
@@ -56,15 +61,24 @@ import { useSessionStore } from '@/stores/session';
       components: {
         BaseCard,
         BookOpenIcon,
-        WWCardModal
+        WWCardModal,
+        HeartIcon,
+        HeartIconSolid,
+        BaseButton
       },
       computed: {
+        favorite() : boolean {
+          return this.store.favorites.includes(this.article.id);
+        },
         currentPath(){
           return this.$route.path.endsWith("/") ? this.$route.path : this.$route.path + "/";
         },
         categoryName(): string {
           return this.store.publications.get(this.article.publicationId)?.title ?? "";
-        }
+        },
+        authorName(): string{
+          return this.store.authors.get(this.article.authorId)?.name ?? "";
+        },
       },
       async mounted() {
         this.checkRouteToModal();
@@ -73,23 +87,23 @@ import { useSessionStore } from '@/stores/session';
         $route(){
           this.checkRouteToModal()
         },
-        openWWModal(value){
-          if (value == false) return;
-
-          //This is just a test
-          history.addOrReplace(this.article.id, Date.now());
-        },
       },
       methods:{
         checkRouteToModal(){
           let wwNumber = this.$route.params.wwNumber;
           if (wwNumber !== undefined && +wwNumber === this.article.number){
             this.openWWModal = true;
-            this.registerViewedWW();
           } else this.openWWModal = false;
         },
-        registerViewedWW(){
-          //TODO register somewhere that the user have clicked this specific WW
+        favoriteButton(): void
+        {
+          if (this.favorite){
+            console.log("before:", this.store.favorites)
+            this.store.favorites = this.store.favorites.filter(x => x != this.article.id);
+            console.log("after:", this.store.favorites)
+          } else {
+            this.store.favorites.push(this.article.id);
+          }
         },
         navigateBack(e?: Event){
 

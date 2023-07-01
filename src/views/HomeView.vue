@@ -5,7 +5,7 @@
         class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0 ">
         <h1 class="text-base sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
           <span v-if="currentUser" class="sm:font-bold text-xl">
-            {{ $t('common.welcome') }},&nbsp
+            {{ $t('common.welcome') }},&nbsp;
 
             <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({ name: 'profile' })">
               {{ currentUser.displayName }}
@@ -112,7 +112,6 @@ import { Notification } from '@/classes/notification';
 import router from '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
-import { RefreshIcon } from '@heroicons/vue/outline';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
 
@@ -129,16 +128,15 @@ export default defineComponent({
       shuffeledArticleKeys: [] as string[],
       loadingMoreArticles: false as boolean,
       dataFavorites: undefined as string[] | undefined,
-      displayFavorites: false as Boolean,
-      displayWordOfTheDay: true as Boolean,
-      displayHistory: false as Boolean
+      displayFavorites: false as boolean,
+      displayWordOfTheDay: true as boolean,
+      displayHistory: false as boolean
     }
   },
   components: {
     WWCard,
     WWShowCard,
     ThreeDButton,
-    RefreshIcon,
     OriginsSwiper,
   },
   computed: {
@@ -188,7 +186,7 @@ export default defineComponent({
       return this.store.favorites;
     },
     favorites(): string[] {
-      return this.dataFavorites === undefined ? this.storeFavorites : this.dataFavorites;
+      return this.dataFavorites ?? this.storeFavorites;
     },
     favoriteArticles(): Article[] {
       const favoriteArticles = [];
