@@ -23,8 +23,6 @@ export const useSessionStore = defineStore('session', {
             locale: i18n.global.locale ?? "en",
             // The name of the page to redirect to if trying to reach restricted to auth site when not logged in
             redirectAfterLoginName: "",
-            // The searchword to automatically search from when pushing to new search view (used in navbar when searching and redirecteing)
-            searchWordBridge: "",
             // The login form to start from when pushing from another view.
             loginFormBridge: "login" as "login" | "register" | "forgotPassword",
             // Global variable to close any active modal. For example when clicking the navbar: close every modal
@@ -62,6 +60,9 @@ export const useSessionStore = defineStore('session', {
             onlyFavoriteSearchFilter: false as boolean,
             authorIdSearchFilter: [] as string[],
             syncSearchFilter: 0 as number,
+
+            searchWord: "" as string,
+            serachEvent: false as boolean,
         }
     },
     actions: {

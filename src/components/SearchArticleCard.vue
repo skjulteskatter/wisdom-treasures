@@ -20,10 +20,6 @@ import { PencilAltIcon } from '@heroicons/vue/solid';
 
   export default defineComponent({
     name: "SearchArticleCard",
-    data() {
-      return {
-      }
-    },
     props: {
       article: {
           type: Object as PropType<Article>,
@@ -33,13 +29,6 @@ import { PencilAltIcon } from '@heroicons/vue/solid';
     components: {
       BaseCard,
       PencilAltIcon,
-    },
-    computed: {
-      shortContent() {
-        return ""
-      }
-    },
-    async mounted() {
     },
   });
 </script>

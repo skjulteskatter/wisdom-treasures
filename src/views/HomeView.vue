@@ -166,10 +166,16 @@ export default defineComponent({
 
       if (this.homePath === this.currentPath) return null;
       const articleId = this.store.articleNumberLookup.get(this.currentPathNumber ?? -1);
-      if (articleId === undefined) return null;
+      if (articleId === undefined) {
+        this.articleNotFound(this.currentPathNumber ?? -1);
+        return null;
+      }
 
       const article = this.store.articles.get(articleId || "");
-      if (article === undefined) return null;
+      if (article === undefined) {
+        this.articleNotFound(this.currentPathNumber ?? -1);
+        return null;
+      }
 
       return article;
     },

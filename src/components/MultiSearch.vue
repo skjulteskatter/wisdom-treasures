@@ -2,8 +2,8 @@
 <template>
         <div class="flex flex-col px-5 sm:px-0 pb-4 bg-primary sm:bg-transparent">
             <div class="flex">
-            <BaseInput v-model="searchWord" style-type="search" class="sm:hidden grow" size="" :whiteText="true" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
-            <BaseInput v-model="searchWord" style-type="search" class="hidden sm:block grow" size="" :forMultiSearch="true" placeholder="Search..." @search-action="search($event)"/>
+            <BaseInput v-model="store.searchWord" style-type="search" class="sm:hidden grow" size="" :whiteText="true" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
+            <BaseInput v-model="store.searchWord" style-type="search" class="hidden sm:block grow" size="" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
             <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="true">
                 <template #icon>
                     <AdjustmentsIcon class="w-4"/>
@@ -13,7 +13,7 @@
             <FilterModal
                     :key="filterModalKey" 
                     :show="showFilterModal" 
-                    @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search(undefined)}}"
+                    @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search()}}"
                     :hidePublications="initialThemeFilter.length > 0"
                     :hideAuthors="initialAuthorFilter.length > 0"/>
         </div>
@@ -24,21 +24,21 @@
 
                         <div v-if="store.publicationIdSearchFilter.length > 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md bg-black/10 opacity-80">
                             <p class="max-w-xxs truncate pl-2 text-white sm:text-inherit text-xs">{{ publication.title }}</p> 
-                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.publicationIdSearchFilter = store.publicationIdSearchFilter.filter(x => x != publication.id); search(undefined); syncFilter();}">
+                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.publicationIdSearchFilter = store.publicationIdSearchFilter.filter(x => x != publication.id); search(); syncFilter();}">
                                 <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
 
                         <div v-if="store.authorIdSearchFilter.length > 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md bg-black/10 opacity-80">
                             <p class="max-w-xxs truncate pl-2 text-white sm:text-inherit text-xs">{{ author.name }}</p> 
-                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.authorIdSearchFilter = store.authorIdSearchFilter.filter(x => x != author.id); search(undefined); syncFilter();}">
+                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.authorIdSearchFilter = store.authorIdSearchFilter.filter(x => x != author.id); search(); syncFilter();}">
                                 <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
 
                         <div v-if="store.onlyFavoriteSearchFilter" class="flex items-center rounded-md bg-black/10 opacity-80">
                             <p class="max-w-xxs text-white sm:text-inherit truncate pl-2 text-xs">Favorites Only</p>
-                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.onlyFavoriteSearchFilter = false; search(undefined); syncFilter();}">
+                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.onlyFavoriteSearchFilter = false; search(); syncFilter();}">
                                 <XIcon class="h-4 opacity-70"/>
                             </BaseButton>
                         </div>
@@ -77,9 +77,6 @@ export default defineComponent({
 },
     data() {
         return {
-            searchWord: "" as string,
-            searchedWord: "" as string,
-
             store: useSessionStore(),
 
             articleHits: [] as Article[],
@@ -97,10 +94,6 @@ export default defineComponent({
         inSearchView:{
             type: Boolean,
             default: false
-        },
-        initialSearchWord: {
-            type: String,
-            default: "",
         },
         initialThemeFilter: {
             type: Array as PropType<string[]>,
@@ -156,15 +149,12 @@ export default defineComponent({
         },
     },
     methods: {
-        async search(searchWord: string | undefined) {
+        async search() {
 
             this.$emit('searchLoading:searchLoading', true);
             
             setTimeout(() => {
-                if (searchWord === undefined)
-                    searchWord = this.searchWord ?? "";
-
-                this.searchedWord = searchWord;
+                let searchWord = this.store.searchWord;
 
                 if (this.fusePublications !== undefined){
                     const result = this.fusePublications.search(searchWord);
@@ -174,7 +164,7 @@ export default defineComponent({
                 this.$emit('themes:themeHits', this.onlySearchForArticles ? [] : this.themeHits);
 
                 this.authorHits = this.allAuthors.filter((x: { name: string | any[]; subtitle: any; biography: any; }) => 
-                    (x.name.includes(this.searchedWord) || (x.subtitle ?? "").includes(this.searchedWord) || (x.biography ?? "").includes(this.searchedWord))
+                    (x.name.includes(searchWord) || (x.subtitle ?? "").includes(searchWord) || (x.biography ?? "").includes(searchWord))
                 );
 
                 this.$emit('authors:authorHits', this.onlySearchForArticles ? [] : this.authorHits);
@@ -183,34 +173,20 @@ export default defineComponent({
                     $and: []
                 }
 
-                if (this.searchedWord.trim().length > 1){
+                if (searchWord.trim().length > 1){
                     query.$and!.push(
                         {
                             $or: [
                                 {
                                     $path: ['content', 'content'],
-                                    $val: this.searchedWord
+                                    $val: searchWord
                                 },
-                                { dateWritten: this.searchedWord },
-                                { number: `'${this.searchedWord}` },
+                                { dateWritten: searchWord },
+                                { number: `'${searchWord}` },
                             ]
                         }
                     )
                 }
-
-                //let orPublicationFilter = this.publicationIdFilter.map(id => ({publicationId : `'${id}`}));
-                //if (this.publicationIdFilter.length > 0){
-                //    query.$and!.push( 
-                //        {$or: orPublicationFilter}
-                //    )
-                //}
-
-                //let orAuthorFilter = this.authorIdFilter.map(id => ({authorId : `'${id}`}));
-                //if (this.authorIdFilter.length > 0){
-                //    query.$and!.push( 
-                //        {$or: orAuthorFilter}
-                //    )
-                //}
 
                 if (query.$and?.[0] && query.$and.length == 1){
                     query = query.$and![0];
@@ -253,7 +229,7 @@ export default defineComponent({
 
                 this.$emit('articles:articleHits', this.articleHits);
 
-                this.$emit('searchedWord:searchedWord', this.searchedWord);
+                this.$emit('searchedWord:searchedWord', searchWord);
                 
                 this.$emit('searchLoading:searchLoading', false);
             }, 1);
@@ -263,30 +239,21 @@ export default defineComponent({
             this.store.authorIdSearchFilter = [];
             this.store.onlyFavoriteSearchFilter = false; 
             this.syncFilter();
-            this.search(undefined);
+            this.search();
         },
         syncFilter(){
             this.store.syncSearchFilter++;
         }
     },
     created() {
-        if (this.initialSearchWord != "" || this.searchOnLoad) {
-            this.search(this.initialSearchWord);
+        if (this.searchOnLoad) {
+            this.search();
         }
     },
-    watch: {
-        async initialSearchWord(newValue: string){
-            if (newValue == "") return;
-            await this.search(newValue);
-        }
-    }
 });
 </script>
 
 <style scoped>
-/* .defaultFontSize {
-    font-size: var(--wt-default-font-size);
-} */
 .max-w-xxs{
     max-width: 15rem
 }

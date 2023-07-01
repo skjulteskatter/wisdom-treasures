@@ -11,16 +11,16 @@
         <BackButton class="opacity-0" disabled/>
     </div>
     <MultiSearch 
-        @articles:article-hits="setArticles" 
-        :initial-search-word="searchedWordInput" 
+        @articles:article-hits="setArticles"
         @searched-word:searched-word="setSearchedWord"
         @authors:author-hits="setAuthors"
         @themes:theme-hits="setThemes"
         @search-loading:search-loading="setSearchLoading"
-        :inSearchView="true"> <!-- is inTheSearchView necessary?-->
+        :inSearchView="true"
+        :search-on-load="true">
     </MultiSearch>
 
-    <ToggleSlideButton :label="'Show audio files'" class="mt-4 mx-5 sm:mx-0" v-model="showAudioFiles" />
+    <ToggleSlideButton :label="'Show audio files'" class="mt-2 sm:mt-0 mx-5 sm:mx-0" v-model="showAudioFiles" />
     
     <div class="mx-5 sm:mx-0">
         <div v-if="searchLoading" class="absolute h-full w-full z-40 glass">
@@ -77,7 +77,6 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
     name: "SearchView",
     data() {
         return {
-            searchedWordInput: "" as string,
             searchedWord: "" as string,
             store: useSessionStore(),
             articleHits: [] as Article[],
@@ -101,26 +100,7 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
     ToggleSlideButton,
     WWAudioCard,
 },
-    computed: {
-        searchWordBridge(){
-            return this.store.searchWordBridge;
-        },
-    },
-    watch : {
-        searchWordBridge(newValue: string){
-            if (newValue.length > 0){
-                this.searchedWordInput = newValue;
-                this.store.searchWordBridge = "";
-            }
-        },
-    },
     mounted() {
-        this.searchedWordInput = this.searchWordBridge;
-        if (this.searchedWordInput.length > 0){
-            this.searchedWordInput = this.store.searchWordBridge;
-            this.store.searchWordBridge = "";
-        }
-
         window.addEventListener('scroll', this.onScroll);
     },
     methods: {
