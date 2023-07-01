@@ -2,6 +2,10 @@
     <swiper
       :slidesPerView="'auto'"
       :spaceBetween="25"
+      :autoplay="{
+        delay: 3500,
+
+      }"
       :mousewheel="{
         forceToAxis: true
       }"
@@ -50,7 +54,7 @@
   import 'swiper/css/pagination';
   
   // import required modules
-  import { Mousewheel, Pagination } from 'swiper';
+  import { Autoplay, Mousewheel, Pagination } from 'swiper';
   
   export default {
     components: {
@@ -59,7 +63,7 @@
     },
     setup() {
       return {
-        modules: [Pagination, Mousewheel],
+        modules: [Pagination, Mousewheel, Autoplay],
       };
     },
   };

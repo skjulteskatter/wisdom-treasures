@@ -56,10 +56,14 @@
           <div v-if="displayFavorites" id="WWCards"
             class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
-              <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
-                <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" />
+              <div v-if="favoriteArticles.length > 0">
+                <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
+                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
+                </div>
               </div>
+              <div v-else class="h-full grid place-content-center">Looks like you have no favorites 😢</div>
             </div>
+            
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
             </div>
           </div>
@@ -68,9 +72,12 @@
           <div v-if="displayHistory" id="WWCards"
             class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
-              <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
-                <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" />
+              <div v-if="historyArticles.length > 0">
+                <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
+                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
+                </div>
               </div>
+              <div v-else class="h-full grid place-content-center">Looks like you have no history 😢</div>
             </div>
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
             </div>
