@@ -96,6 +96,7 @@
           </ThreeDButton>
         </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
+        <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
       </div>
     </div>
   </main>
@@ -157,10 +158,8 @@ export default defineComponent({
     linkedArticle(): null | Article {
 
       if (this.homePath === this.currentPath) return null;
-      const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
+      const articleId = this.store.articleNumberLookup.get(this.currentPathNumber ?? -1);
       if (articleId === undefined) return null;
-
-      if ((this.randomArticleList.some(x => x.id == articleId))) return null;
 
       const article = this.store.articles.get(articleId || "");
       if (article === undefined) return null;
