@@ -60,8 +60,8 @@
 import { defineComponent, type PropType } from 'vue';
 import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import { useSessionStore } from '@/stores/session';
-import BaseInput from './BaseInput.vue';
-import BaseButton from './BaseButton.vue';
+import BaseInput from '../BaseInput.vue';
+import BaseButton from '../BaseButton.vue';
 import { AdjustmentsIcon, XIcon } from '@heroicons/vue/outline';
 import FilterModal from './FilterModal.vue';
 import type Fuse from 'fuse.js';
@@ -259,6 +259,6 @@ export default defineComponent({
 }
 
 .--white {
-        @apply text-white;
+    @apply text-white;
 }
 </style>

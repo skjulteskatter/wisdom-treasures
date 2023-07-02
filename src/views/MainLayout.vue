@@ -41,8 +41,8 @@ import Loader from "@/components/Loader.vue";
 import { getCurrentUserPromise } from "@/services/auth";
 import FooterComponent from '@/components/FooterComponent.vue';
 import BaseCard from "@/components/BaseCard.vue";
-import NotificationCard from "@/components/NotificationCard.vue";
-import NotificationContainer from "@/components/NotificationContainer.vue";
+import NotificationCard from "@/components/Notification/NotificationCard.vue";
+import NotificationContainer from "@/components/Notification/NotificationContainer.vue";
 import { useSessionStore } from "@/stores/session";
 
 export default defineComponent({

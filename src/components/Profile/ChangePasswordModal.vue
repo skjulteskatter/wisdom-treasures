@@ -24,15 +24,13 @@
 
 <script lang="ts">
 
-import BaseModal from "./BaseModal.vue"
-import BaseInput from "./BaseInput.vue"
+import BaseModal from "../BaseModal.vue"
+import BaseInput from "../BaseInput.vue"
 
 import { defineComponent } from "vue";
 import { XIcon } from "@heroicons/vue/solid";
-import BaseButton from "./BaseButton.vue";
-import { notify } from "@/services/notifications";
-import { session } from "@/services/api";
-import { auth, resetPassword } from "@/services/auth";
+import BaseButton from "../BaseButton.vue";
+import { resetPassword } from "@/services/auth";
 import { useSessionStore } from "@/stores/session";
 import { Notification } from "@/classes/notification";
 

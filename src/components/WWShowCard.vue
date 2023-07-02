@@ -43,7 +43,7 @@
   import { useSessionStore } from '@/stores/session';
   import ClickableLink from './ClickableLink.vue';
   import { uuid } from 'vue-uuid';
-  import PopUpMessage from './PopUpMessage.vue';
+  import PopUpMessage from './Notification/PopUpMessage.vue';
   import BaseButton from './BaseButton.vue';
   import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
   import { HeartIcon, ClipboardCopyIcon } from '@heroicons/vue/outline';

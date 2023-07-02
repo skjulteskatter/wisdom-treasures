@@ -1,5 +1,6 @@
 <template>
   <main>
+
     <div id="scrollToTopButtonDiv" class="flex fixed top-4 sm:top-20 left-0 z-40 w-full h-0">
       <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50" />
       <ScrollToTopButton class="fixed top-0 h-max" />
@@ -62,6 +63,7 @@
         <Loader :loading="loadingMoreArticles" class="mt-2" />
       </div>
     </div>
+    <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
 
   </main>
 </template>
@@ -77,7 +79,7 @@ import BackButton from '@/components/BackButton.vue';
 import MiniButton from '@/components/MiniButton.vue';
 import WWShowCard from '@/components/WWShowCard.vue';
 import { mannaHistory } from '@/services/localStorage';
-import MultiSearch from '@/components/MultiSearch.vue';
+import MultiSearch from '@/components/Search/MultiSearch.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import WWAudioCard from '@/components/WWAudioCard.vue';
@@ -115,6 +117,28 @@ export default defineComponent({
     MannaButton,
   },
   computed: {
+    linkedArticle(): null | Article {
+
+      if (this.homePath === this.currentPath) return null;
+      const articleNumber = this.currentPathNumber ?? Number.NaN;
+      const articleId = this.store.articleNumberLookup.get(articleNumber);
+      if (articleId === undefined) {
+        return null;
+      }
+
+      if (this.articleHitsPagination.some(x => x.number == articleNumber))
+      {
+        return null;
+      }
+
+      const article = this.store.articles.get(articleId || "");
+
+      if (article === undefined) {
+        return null;
+      }
+
+      return article;
+    },
     searchOrAllArticles(): Article[] {
       if (this.searchArticles.length > 0) return this.searchArticles;
       console.log("Couldn't find any articles!!");
@@ -206,6 +230,7 @@ export default defineComponent({
       }
     },
     assureCorrectArticleNumber() {
+      this.setArticles();
       if (this.$route.params.wwNumber === undefined) return;
       let articleNumber: number = (+this.$route.params.wwNumber?.toString());
 
@@ -244,6 +269,11 @@ export default defineComponent({
       mannaHistory.addOrReplace(this.randomArticle.id);
       this.showWordOfTheDay = false;
     },
+    setArticles(): void {
+      if (this.articles.length <= 0){
+        this.articles = Array.from(this.store.articles.values()).filter(x => x.publicationId == this.publication?.id);
+      }
+    }
   },
   mounted() {
     if (this.publication !== undefined) this.articles = Array.from(this.store.articles.values()).filter(x => x.publicationId == this.publication?.id)

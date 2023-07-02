@@ -27,7 +27,6 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useSessionStore } from '@/stores/session';
-import BaseCard from '@/components/BaseCard.vue';
 import BackButton from '@/components/BackButton.vue';
 
   export default defineComponent({
@@ -38,8 +37,7 @@ import BackButton from '@/components/BackButton.vue';
         loadingCheckoutCard: "" as string,
       }
     },
-    components: {
-      BaseCard,
+    components: {,
       BackButton,
     },
     computed: {

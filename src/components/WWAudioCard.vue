@@ -32,7 +32,6 @@
   import type { Article } from 'hiddentreasures-js';
   import { defineComponent, type PropType } from 'vue';
   import BaseCard from './BaseCard.vue';
-  import { BookOpenIcon } from '@heroicons/vue/outline';
   import { history } from '@/services/localStorage';
   import { useSessionStore } from '@/stores/session';
   import AudioPlayer from './AudioPlayer.vue';
@@ -58,7 +57,6 @@
       emits: ["closeModal"],
       components: {
         BaseCard,
-        BookOpenIcon,
         AudioPlayer,
       },
       computed: {

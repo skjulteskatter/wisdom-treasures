@@ -147,7 +147,7 @@ import { getCurrentUserPromise } from "@/services/auth";
 import type { User } from "firebase/auth";
 import breakpoints from "@/style/breakpoints";
 import { Menu as HUMenu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import SearchModal from "./SearchModal.vue";
+import SearchModal from "./Search/SearchModal.vue";
 import { Notification } from '@/classes/notification';
 
 export default defineComponent({

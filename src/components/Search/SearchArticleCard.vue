@@ -15,7 +15,7 @@
 <script lang="ts">
 import type { Article } from 'hiddentreasures-js';
 import { defineComponent, type PropType } from 'vue';
-import BaseCard from './BaseCard.vue';
+import BaseCard from '../BaseCard.vue';
 import { PencilAltIcon } from '@heroicons/vue/solid';
 
   export default defineComponent({

@@ -66,7 +66,7 @@ import BackButton from '@/components/BackButton.vue';
 import { useSessionStore } from '@/stores/session';
 import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import WWCard from '@/components/WWCard.vue';
-import MultiSearch from '@/components/MultiSearch.vue';
+import MultiSearch from '@/components/Search/MultiSearch.vue';
 import ThemeCard from '@/components/ThemeCard.vue';
 import Loader from '@/components/Loader.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';

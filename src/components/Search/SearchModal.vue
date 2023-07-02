@@ -17,12 +17,12 @@
 
 <script lang="ts">
 
-import BaseModal from "./BaseModal.vue"
-import BaseInput from "./BaseInput.vue"
+import BaseModal from "../BaseModal.vue"
+import BaseInput from "../BaseInput.vue"
 import BackButton from '@/components/BackButton.vue';
 import { defineComponent } from "vue";
 import { XIcon } from "@heroicons/vue/solid";
-import BaseButton from "./BaseButton.vue";
+import BaseButton from "../BaseButton.vue";
 import { useSessionStore } from "@/stores/session";
 
 export default defineComponent({
