@@ -3,8 +3,8 @@
     <div class="lg:w-4/5 justify-center mx-auto">
       <div
         class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0 ">
-        <h1 class="text-base sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
-          <span v-if="currentUser" class="sm:font-bold text-xl">
+        <h1 class="text-base font-bold text-[color:var(--wt-color-text-grey)] opacity-80">
+          <span v-if="currentUser" class="sm:font-bold text-lg tracking-075">
             {{ $t('common.welcome') }},&nbsp;
 
             <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({ name: 'profile' })">
@@ -22,46 +22,45 @@
 
       <div id="wordOfTheDayCotainer"
         class="flex flex-col justify-between mt-10 sm:mt-0 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
-        <div class="flex col-span-3">
-          <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
+        <div class="flex col-span-3 sm:flex-row-reverse">
+          <div class="flex flex-col w-1/2 sm:w-1/5 justify-center sm:justify-between -ml-12 sm:ml-12 sm:my-10">
             <div
-              class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mb-12 cursor-pointer"
+              class="-rotate-90 sm:rotate-0 text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full sm:w-max mb-12 sm:m-0 cursor-pointer"
               :class="{ 'text-xl text-[color:var(--wt-color-primary)] opacity-90': displayWordOfTheDay }"
               @click="changeDisplayWOTD()">
               {{ $t('common.dailyword') }}
-              <div v-if="displayWordOfTheDay"
-                class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 h-1/3">
-              </div>
+              <div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 sm:w-full h-1/3"></div>
             </div>
             <div
-              class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full my-20 cursor-pointer"
+              class="-rotate-90 sm:rotate-0 text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w- sm:w-max my-20 sm:my-0 cursor-pointer"
               :class="{ 'text-xl text-[color:var(--wt-color-primary)] opacity-90': displayFavorites }"
               @click="changeDisplayFavorites()">
               {{ $t('common.favorites') }}
-              <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 h-1/3">
-              </div>
+              <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 sm:w-full h-1/3"></div>
             </div>
-            <p class="-rotate-90 text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full mt-12 mb-10 cursor-pointer"
+            <div class="-rotate-90 sm:rotate-0 text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full sm:w-max mt-12 mb-10 sm:m-0 cursor-pointer"
               :class="{ 'text-xl text-[color:var(--wt-color-primary)] opacity-90': displayHistory }"
               @click="changeDisplayHistory()">
               {{ $t('common.history') }}
-            </p>
+              <div v-if="displayHistory" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 sm:w-full h-1/3"></div>
+            </div>
           </div>
 
-          <!-- change so that the wisdom word doesn't change after the button is clicked -->
+          <!-- change so that the daily wisdom word doesn't change after the button is clicked -->
 
           <WWShowCard v-if="randomArticle && displayWordOfTheDay" :article="randomArticle"
             class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
+
           <!-- DIV for favourites -->
           <div v-if="displayFavorites" id="WWCards"
-            class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+            class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
               <div v-if="favoriteArticles.length > 0">
                 <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
                   <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
                 </div>
               </div>
-              <div v-else class="h-full grid place-content-center">Looks like you have no favorites 😢</div>
+              <div v-else class="h-full grid place-content-center">Looks like you have no favorites yet 😢</div>
             </div>
             
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
@@ -70,14 +69,14 @@
 
           <!-- DIV for History -->
           <div v-if="displayHistory" id="WWCards"
-            class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+            class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
               <div v-if="historyArticles.length > 0">
                 <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
                   <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
                 </div>
               </div>
-              <div v-else class="h-full grid place-content-center">Looks like you have no history 😢</div>
+              <div v-else class="h-full grid place-content-center">Looks like you have no history yet 😢</div>
             </div>
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
             </div>
@@ -340,6 +339,9 @@ export default defineComponent({
 @media(min-width:640px) {
   .h-68vh {
     height: auto;
+  }
+  .h-68vh.fav-his{
+    height: 18rem
   }
 }
 </style>

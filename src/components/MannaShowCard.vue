@@ -19,7 +19,7 @@
                 <div class="flex self-center">
                   <p class="self-center font-bold text-xl mt-3">{{ manna.reference }}</p>
                 </div>
-                <div class="grow m-5">{{ mannaContent }} </div>
+                <div class="grow m-5">{{ mannaContent }}</div>
             </div>
             <div id="spacerdiv2" class="flex grow"/>
           </div>

@@ -15,7 +15,7 @@
                   <BookOpenIcon class="h-5 opacity-40"/>
               </div>
               <div class="text-xs self-center opacity-50 truncate w-4/5">
-                {{categoryName}}&nbsp;&nbsp;&nbsp;-{{ authorName }} <!--This needs better styling probably-->
+                {{categoryName}}&nbsp;&nbsp;-&nbsp;&nbsp;{{ authorName }} <!--This needs better styling probably-->
               </div>
               <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2 opacity-70" @mouseover="()=>{hoverOverFavorite = true}" @mouseleave="()=>{hoverOverFavorite = false}" @click="(e: Event | undefined) => {e?.stopPropagation(); favoriteButton();}">
                 <HeartIconSolid v-if="favorite" class="h-8 text-[color:var(--wt-color-secondary)] pop"/>

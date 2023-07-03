@@ -17,8 +17,8 @@
                 </div>
         </template>
         <template #default>
-          <div class="flex flex-col h-full md:items-center">
-            <div class="flex max-w-2xl flex-col sm:h-auto justify-center md:text-center">
+          <div class="flex flex-col h-full sm:items-center">
+            <div class="flex max-w-2xl flex-col sm:h-auto justify-center sm:text-center">
                 <div class="font-serif sm:grow m-5 leading-6 text-sm" v-html="articleContent"/>
                 <div v-if="getArticleYearWritten > 1000 || getAuthor" class="italic text-xs ml-5 sm:ml-0 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">{{getSignature}}</div>
             </div>
