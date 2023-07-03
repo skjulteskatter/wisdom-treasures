@@ -1,6 +1,15 @@
 <template>
     <BaseModal class="fixed w-full h-full left-0 top-0 z-40" @close="(e: any) => {$emit('close', e)}" :useBaseCard="false">
-        <WWShowCard :article="article"></WWShowCard>
+        <WWShowCard :article="currentArticle"/>
+        <div v-if="mannaArticleIdList.length > 0" class="w-full h-16 flex items-end justify-center">
+            <BaseButton theme="secondary" @click="changeManna()">
+                Generate new Word
+                <template #icon>
+                    <RefreshIcon class="h-5"></RefreshIcon>
+                </template>
+            </BaseButton>
+        </div>
+
     </BaseModal>
 </template>
 
@@ -13,17 +22,23 @@ import type { Article } from "hiddentreasures-js";
 import { useSessionStore } from "@/stores/session";
 import { uuid } from 'vue-uuid';
 import WWShowCard from "./WWShowCard.vue";
+import BaseButton from "./BaseButton.vue";
+import { RefreshIcon } from "@heroicons/vue/outline";
+import { history } from "@/services/localStorage";
 
 export default defineComponent({
     name: "wwcard-modal",
     components: {
         BaseModal,
         WWShowCard,
+        BaseButton,
+        RefreshIcon
     },
     data: () => ({
         store: useSessionStore(),
-        copyToClipBoardKey: uuid.v4() as string,
+        copyToClipBoardKey: uuid.v4(),
         openCopyToClipBoardPopUpSemaphore: 0 as number,
+        currentArticle: {} as Article,
     }),
     emits: ["close"],
     props: {
@@ -31,6 +46,14 @@ export default defineComponent({
             type: Object as PropType<Article>,
             required: true,
         },
+        mannaArticleIdList: {
+            type: Array as PropType<Array<string>>,
+            required: false,
+            default: [] as Array<string>
+        },
+    },
+    mounted(){
+        this.currentArticle = this.article;
     },
     computed: {
         favorites(): string[] {
@@ -67,7 +90,23 @@ export default defineComponent({
             setTimeout(() => {
                 this.openCopyToClipBoardPopUpSemaphore--;
             }, 2000);
+        },
+        changeManna(){
+            
+            //Return if there's only similar id's in mannaArticleIdList
+            if (this.mannaArticleIdList.filter(x => this.currentArticle.id != x).length <= 0) return;
+
+            let newId = this.currentArticle.id;
+            while (newId == this.currentArticle.id){
+                newId = this.mannaArticleIdList[Math.floor(Math.random() * this.mannaArticleIdList.length)];
+            }
+            let newArticle = this.store.articles.get(newId);
+            if (newArticle !== undefined){
+                this.currentArticle = newArticle;
+                history.addOrReplace(newId, Date.now());
+            }
         }
     },
+    
 });
 </script>

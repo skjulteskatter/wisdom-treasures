@@ -14,13 +14,9 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import router from '@/router';
-import BaseCard from './BaseCard.vue';
 
 export default defineComponent({
     name: "audio-player",
-    components: {
-        BaseCard
-    },
     methods: {
         navigateBack(){
             if (router.options.history.state.back == null){

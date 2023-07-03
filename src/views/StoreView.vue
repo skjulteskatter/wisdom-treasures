@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <img id="add-bg" class="sm:hidden fixed top-0 left-0 store-card-width -z-50" src="images/add-bg.png"/>
+    <img id="add-bg" class="sm:hidden fixed top-0 left-0 store-card-width -z-50" src="../../images/add-bg.png"/>
   </main> 
 </template>
 

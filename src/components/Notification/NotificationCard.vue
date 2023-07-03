@@ -13,7 +13,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { XIcon } from '@heroicons/vue/outline';
-import BaseButton from './BaseButton.vue';
+import BaseButton from '../BaseButton.vue';
 import { Notification } from '@/classes/notification';
 
 export default defineComponent({

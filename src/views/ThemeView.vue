@@ -1,10 +1,13 @@
 <template>
   <main>
+
     <div id="scrollToTopButtonDiv" class="flex fixed top-4 sm:top-20 left-0 z-40 w-full h-0">
       <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50" />
       <ScrollToTopButton class="fixed top-0 h-max" />
       <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50" />
     </div>
+
+    <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId == $route.params.themeId).map(x => x.id)"></MannaButton>
 
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none pb-5">
       <div class="flex justify-between items-center h-full">
@@ -24,6 +27,8 @@
       </div>
       <div>
         <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"
+          :return-all-if-no-hits="true"
+          :search-on-load="true"
           @articles:article-hits="setSearchArticles" @search-loading:search-loading="setSearchLoading"
           class="mx-5 sm:mx-10 text-white">
         </MultiSearch>
@@ -58,6 +63,7 @@
         <Loader :loading="loadingMoreArticles" class="mt-2" />
       </div>
     </div>
+    <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
 
   </main>
 </template>
@@ -73,18 +79,19 @@ import BackButton from '@/components/BackButton.vue';
 import MiniButton from '@/components/MiniButton.vue';
 import WWShowCard from '@/components/WWShowCard.vue';
 import { mannaHistory } from '@/services/localStorage';
-import MultiSearch from '@/components/MultiSearch.vue';
+import MultiSearch from '@/components/Search/MultiSearch.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import WWAudioCard from '@/components/WWAudioCard.vue';
 import Loader from '@/components/Loader.vue';
-import { SearchIcon } from "@heroicons/vue/solid";
+import MannaButton from '@/components/MannaButton.vue';
 
 export default defineComponent({
   name: "ThemeView",
   data() {
     return {
       store: useSessionStore(),
+      articles: [] as Article[], 
       dataFavorites: undefined as string[] | undefined,
       publication: undefined as Publication | undefined,
       randomArticle: null as Article | null,
@@ -107,9 +114,31 @@ export default defineComponent({
     ToggleSlideButton,
     WWAudioCard,
     Loader,
-    SearchIcon
+    MannaButton,
   },
   computed: {
+    linkedArticle(): null | Article {
+
+      if (this.homePath === this.currentPath) return null;
+      const articleNumber = this.currentPathNumber ?? Number.NaN;
+      const articleId = this.store.articleNumberLookup.get(articleNumber);
+      if (articleId === undefined) {
+        return null;
+      }
+
+      if (this.articleHitsPagination.some(x => x.number == articleNumber))
+      {
+        return null;
+      }
+
+      const article = this.store.articles.get(articleId || "");
+
+      if (article === undefined) {
+        return null;
+      }
+
+      return article;
+    },
     searchOrAllArticles(): Article[] {
       if (this.searchArticles.length > 0) return this.searchArticles;
       console.log("Couldn't find any articles!!");
@@ -133,10 +162,8 @@ export default defineComponent({
     sessionInitialized(): boolean {
       return this.store.sessionInitialized;
     },
-    articles(): Article[] {
-      const articles: Article[] = [];
-      if (this.publication === undefined) return articles;
-      return Array.from(this.store.articles.values()).filter(x => x.publicationId == this.publication?.id)
+    articleIds(): string[] {
+      return this.articles.map(x => x.id);
     },
   },
   watch: {
@@ -203,6 +230,7 @@ export default defineComponent({
       }
     },
     assureCorrectArticleNumber() {
+      this.setArticles();
       if (this.$route.params.wwNumber === undefined) return;
       let articleNumber: number = (+this.$route.params.wwNumber?.toString());
 
@@ -241,8 +269,15 @@ export default defineComponent({
       mannaHistory.addOrReplace(this.randomArticle.id);
       this.showWordOfTheDay = false;
     },
+    setArticles(): void {
+      if (this.articles.length <= 0){
+        this.articles = Array.from(this.store.articles.values()).filter(x => x.publicationId == this.publication?.id);
+      }
+    }
   },
   mounted() {
+    if (this.publication !== undefined) this.articles = Array.from(this.store.articles.values()).filter(x => x.publicationId == this.publication?.id)
+    
     if (this.sessionInitialized) {
       this.getAndSetPublication();
       this.assureCorrectSlug();

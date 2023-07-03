@@ -70,8 +70,6 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import { ChevronUpIcon } from '@heroicons/vue/outline';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
-import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
-import { HeartIcon, ClipboardCopyIcon } from '@heroicons/vue/outline';
 
 export default defineComponent({
   name: "HistoryView",

@@ -5,7 +5,7 @@
         class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0 ">
         <h1 class="text-base sm:text-xl font-bold text-[color:var(--wt-color-text-grey)]">
           <span v-if="currentUser" class="sm:font-bold text-xl">
-            {{ $t('common.welcome') }},&nbsp
+            {{ $t('common.welcome') }},&nbsp;
 
             <span class="animated-gradient font-bold cursor-pointer" @click="$router.push({ name: 'profile' })">
               {{ currentUser.displayName }}
@@ -56,10 +56,14 @@
           <div v-if="displayFavorites" id="WWCards"
             class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
-              <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
-                <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" />
+              <div v-if="favoriteArticles.length > 0">
+                <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
+                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
+                </div>
               </div>
+              <div v-else class="h-full grid place-content-center">Looks like you have no favorites 😢</div>
             </div>
+            
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
             </div>
           </div>
@@ -68,9 +72,12 @@
           <div v-if="displayHistory" id="WWCards"
             class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
-              <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
-                <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" />
+              <div v-if="historyArticles.length > 0">
+                <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
+                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
+                </div>
               </div>
+              <div v-else class="h-full grid place-content-center">Looks like you have no history 😢</div>
             </div>
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
             </div>
@@ -96,6 +103,7 @@
           </ThreeDButton>
         </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
+        <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
       </div>
     </div>
   </main>
@@ -112,7 +120,6 @@ import { Notification } from '@/classes/notification';
 import router from '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
-import { RefreshIcon } from '@heroicons/vue/outline';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
 
@@ -129,16 +136,15 @@ export default defineComponent({
       shuffeledArticleKeys: [] as string[],
       loadingMoreArticles: false as boolean,
       dataFavorites: undefined as string[] | undefined,
-      displayFavorites: false as Boolean,
-      displayWordOfTheDay: true as Boolean,
-      displayHistory: false as Boolean
+      displayFavorites: false as boolean,
+      displayWordOfTheDay: true as boolean,
+      displayHistory: false as boolean
     }
   },
   components: {
     WWCard,
     WWShowCard,
     ThreeDButton,
-    RefreshIcon,
     OriginsSwiper,
   },
   computed: {
@@ -159,13 +165,17 @@ export default defineComponent({
     linkedArticle(): null | Article {
 
       if (this.homePath === this.currentPath) return null;
-      const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
-      if (articleId === undefined) return null;
-
-      if ((this.randomArticleList.some(x => x.id == articleId))) return null;
+      const articleId = this.store.articleNumberLookup.get(this.currentPathNumber ?? -1);
+      if (articleId === undefined) {
+        this.articleNotFound(this.currentPathNumber ?? -1);
+        return null;
+      }
 
       const article = this.store.articles.get(articleId || "");
-      if (article === undefined) return null;
+      if (article === undefined) {
+        this.articleNotFound(this.currentPathNumber ?? -1);
+        return null;
+      }
 
       return article;
     },
@@ -188,7 +198,7 @@ export default defineComponent({
       return this.store.favorites;
     },
     favorites(): string[] {
-      return this.dataFavorites === undefined ? this.storeFavorites : this.dataFavorites;
+      return this.dataFavorites ?? this.storeFavorites;
     },
     favoriteArticles(): Article[] {
       const favoriteArticles = [];

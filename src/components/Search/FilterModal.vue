@@ -64,7 +64,7 @@
 
 <script lang="ts">
 
-import BaseCheckbox from "./BaseCheckbox.vue";
+import BaseCheckbox from "../BaseCheckbox.vue";
 import { defineComponent } from "vue";
 import type { Contributor, Publication } from "hiddentreasures-js";
 import { useSessionStore } from "@/stores/session";
@@ -126,17 +126,6 @@ export default defineComponent({
         globalCloseModalEvent(){
             if (this.show) this.$emit('close');
         },
-        syncFilterCounter(newValue: number){
-            for (let index = 0; index < this.allPublications.length; index++) {
-                const pub = this.allPublications[index];
-                this.setInitialPublicationValue(pub.id, index);
-            }
-            for (let index = 0; index < this.allAuthors.length; index++) {
-                const pub = this.allAuthors[index];
-                this.setInitialAuthorValue(pub.id, index);
-            }
-            //console.log("Synced. This is a heavy operation and should not be triggered many times ⚠️")
-        }
     },
     methods: {
         setInitialPublicationValue(id : string, index: number){

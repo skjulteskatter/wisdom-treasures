@@ -1,8 +1,8 @@
 <template>
 	<SuggestionForm />
 	<div class="flex flex-col h-full">
-		<img src="images/bg-soft-2.png" class="hidden sm:block fixed -top-10 left-0 w-custom-45rem"/>
-		<img src="images/bg-soft-1.png" class="hidden sm:block fixed -top-10 -right-44 2xl:-right-5 w-custom-45rem"/>
+		<img src="../../images/bg-soft-2.png" class="hidden sm:block fixed -top-10 left-0 w-custom-45rem"/>
+		<img src="../../images/bg-soft-1.png" class="hidden sm:block fixed -top-10 -right-44 2xl:-right-5 w-custom-45rem"/>
 		<main class="flex-grow pb-16 sm:pb-0 sm:pt-16">
 			<div class="h-full max-w-7xl mx-auto flex flex-col sm:px-8">
 				<!-- Route transitions -->
@@ -41,8 +41,8 @@ import Loader from "@/components/Loader.vue";
 import { getCurrentUserPromise } from "@/services/auth";
 import FooterComponent from '@/components/FooterComponent.vue';
 import BaseCard from "@/components/BaseCard.vue";
-import NotificationCard from "@/components/NotificationCard.vue";
-import NotificationContainer from "@/components/NotificationContainer.vue";
+import NotificationCard from "@/components/Notification/NotificationCard.vue";
+import NotificationContainer from "@/components/Notification/NotificationContainer.vue";
 import { useSessionStore } from "@/stores/session";
 
 export default defineComponent({

@@ -10,9 +10,20 @@ const WWCard = {
   }
 } as RouteRecordRaw;
 
+const Manna = {
+  path:':mannaPath(\\manna)',
+  children: [],
+  meta: {
+    scrollUp: false,
+  }
+} as RouteRecordRaw;
+
 const ThemeAutoSlug = {
   path:':themeAutoSlug([^/]+)',
-  children: [WWCard],
+  children: [
+    WWCard,
+    Manna
+  ],
   meta: {
     scrollUp: false,
   }
@@ -40,6 +51,7 @@ export const routes = [
         component: () => import('../views/HomeView.vue'),
         children: [
           WWCard,
+          Manna,
         ],
         meta:{
           requiresAuth: true,
@@ -51,7 +63,8 @@ export const routes = [
         name: 'search',
         component: () => import('../views/SearchView.vue'),
         children: [
-          WWCard
+          WWCard,
+          Manna,
         ],
         meta:{
           requiresAuth: true,
@@ -97,7 +110,8 @@ export const routes = [
           scrollUp: true,
         },
         children: [
-          WWCard
+          WWCard,
+          Manna
         ]
       },
       {
@@ -109,7 +123,8 @@ export const routes = [
           scrollUp: true,
         },
         children: [
-          WWCard
+          WWCard,
+          Manna
         ]
       },
       {
@@ -130,7 +145,8 @@ export const routes = [
           scrollUp: true,
         },
         children: [
-          WWCard
+          WWCard,
+          Manna
         ]
       },
     ]

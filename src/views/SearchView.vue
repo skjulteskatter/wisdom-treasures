@@ -11,13 +11,13 @@
         <BackButton class="opacity-0" disabled/>
     </div>
     <MultiSearch 
-        @articles:article-hits="setArticles" 
-        :initial-search-word="searchedWordInput" 
+        @articles:article-hits="setArticles"
         @searched-word:searched-word="setSearchedWord"
         @authors:author-hits="setAuthors"
         @themes:theme-hits="setThemes"
         @search-loading:search-loading="setSearchLoading"
-        :inSearchView="true"> <!-- is inTheSearchView necessary?-->
+        :inSearchView="true"
+        :search-on-load="true">
     </MultiSearch>
 
     <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-4 mx-5 sm:ml-auto sm:mr-auto sm:mx-0" v-model="showAudioFiles" />
@@ -66,7 +66,7 @@ import BackButton from '@/components/BackButton.vue';
 import { useSessionStore } from '@/stores/session';
 import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import WWCard from '@/components/WWCard.vue';
-import MultiSearch from '@/components/MultiSearch.vue';
+import MultiSearch from '@/components/Search/MultiSearch.vue';
 import ThemeCard from '@/components/ThemeCard.vue';
 import Loader from '@/components/Loader.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
@@ -77,7 +77,6 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
     name: "SearchView",
     data() {
         return {
-            searchedWordInput: "" as string,
             searchedWord: "" as string,
             store: useSessionStore(),
             articleHits: [] as Article[],
@@ -101,26 +100,7 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
     ToggleSlideButton,
     WWAudioCard,
 },
-    computed: {
-        searchWordBridge(){
-            return this.store.searchWordBridge;
-        },
-    },
-    watch : {
-        searchWordBridge(newValue: string){
-            if (newValue.length > 0){
-                this.searchedWordInput = newValue;
-                this.store.searchWordBridge = "";
-            }
-        },
-    },
     mounted() {
-        this.searchedWordInput = this.searchWordBridge;
-        if (this.searchedWordInput.length > 0){
-            this.searchedWordInput = this.store.searchWordBridge;
-            this.store.searchWordBridge = "";
-        }
-
         window.addEventListener('scroll', this.onScroll);
     },
     methods: {

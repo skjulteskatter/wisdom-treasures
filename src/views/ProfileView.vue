@@ -77,7 +77,7 @@
 </template>
 
 <script lang="ts">
-import { auth, getCurrentUserPromise } from '@/services/auth';
+import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
 import { defineComponent } from 'vue';
 import type { User } from "firebase/auth";
@@ -88,7 +88,7 @@ import BackButton from '@/components/BackButton.vue';
 import { KeyIcon, SaveIcon, LogoutIcon, CreditCardIcon, CurrencyDollarIcon } from '@heroicons/vue/outline';
 import GenerelDropDown from '@/components/GenerelDropDown.vue';
 import { validLanguages, fallbackLocale } from '@/i18n';
-import ChangePasswordModal from '@/components/ChangePasswordModal.vue';
+import ChangePasswordModal from '@/components/Profile/ChangePasswordModal.vue';
 import { Notification } from "@/classes/notification";
 import ClickableLink from '@/components/ClickableLink.vue';
 import { logOut } from "@/services/auth";

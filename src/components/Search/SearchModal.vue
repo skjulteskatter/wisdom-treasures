@@ -9,7 +9,7 @@
 				</BaseButton>
             </div>
         </template>
-            <BaseInput v-model="unusedModelValue" placeholder="Search..." :white-text="true" style-type="search" size="lg"
+            <BaseInput v-model="store.searchWord" placeholder="Search..." :white-text="true" style-type="search" size="lg"
             @search-action="(_event: any) => $emit('searchAction', modelValue)"
             @input="(event: any) => $emit('update:modelValue', event.target?.value ?? '')"/>
     </BaseModal>
@@ -17,12 +17,13 @@
 
 <script lang="ts">
 
-import BaseModal from "./BaseModal.vue"
-import BaseInput from "./BaseInput.vue"
+import BaseModal from "../BaseModal.vue"
+import BaseInput from "../BaseInput.vue"
 import BackButton from '@/components/BackButton.vue';
 import { defineComponent } from "vue";
 import { XIcon } from "@heroicons/vue/solid";
-import BaseButton from "./BaseButton.vue";
+import BaseButton from "../BaseButton.vue";
+import { useSessionStore } from "@/stores/session";
 
 export default defineComponent({
     name: "search-modal",
@@ -34,8 +35,7 @@ export default defineComponent({
         BackButton
     },
     data: () => ({
-        searchWord: "" as string,
-        unusedModelValue: "" as string,
+        store: useSessionStore()
     }),
     emits: ["update:modelValue", "searchAction", "close"],
     props: {
@@ -45,6 +45,3 @@ export default defineComponent({
     },
 });
 </script>
-
-<style>
-</style>
