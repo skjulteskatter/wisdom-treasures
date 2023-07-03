@@ -48,7 +48,7 @@
 
           <!-- change so that the daily wisdom word doesn't change after the button is clicked -->
 
-          <WWShowCard v-if="randomArticle && displayWordOfTheDay" :article="randomArticle"
+          <WWShowCard v-if="wordOfTheDay && displayWordOfTheDay" :article="wordOfTheDay"
             class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
 
           <!-- DIV for favourites -->
@@ -130,6 +130,7 @@ export default defineComponent({
       currentUser: null as User | null,
       store: useSessionStore(),
       randomArticle: null as Article | null,
+      wordOfTheDay: null as Article | null,
       showWordOfTheDay: false as boolean,
       randomArticleList: [] as Article[],
       shuffeledArticleKeys: [] as string[],
@@ -290,7 +291,7 @@ export default defineComponent({
       let randomNumber: number = this.mulberry32(dateNumber);
       let adjustedRandomNumber = Math.round(randomNumber * (this.articles.length - 1));
       if (adjustedRandomNumber < 0 || (adjustedRandomNumber > this.articles.length - 1)) adjustedRandomNumber = 0;
-      this.randomArticle = this.articles[adjustedRandomNumber] || null;
+      this.wordOfTheDay = this.articles[adjustedRandomNumber] || null;
       this.showWordOfTheDay = true;
     },
     mulberry32(a: number): number {
