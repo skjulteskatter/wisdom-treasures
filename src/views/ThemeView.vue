@@ -31,7 +31,7 @@
     </div>
 
     <div class="flex mx-auto w-full justify-center">
-      <ToggleSlideButton :label="'Show audio files'" class="mx-5 sm:mx-0 py-3 w-full" v-model="showAudioFiles" />
+      <ToggleSlideButton :label="'Show audio files'" class="mx-5 sm:mx-0 py-3 w-full" v-model="showAudioFiles"/>
     </div>
 
     <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true" />

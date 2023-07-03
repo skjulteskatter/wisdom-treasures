@@ -37,9 +37,6 @@ export default defineComponent({
 .plyr--full-ui input[type=range] {
   color: var(--wt-color-secondary);
 }
-.plyr__progress__buffer{
-  background-color:var(--wt-color-secondary);
-}
 
 .plyr__control--overlaid {
   background: rgba(var(--wt-color-secondary), .8);

@@ -6,11 +6,11 @@
                 <div class="relative w-full">
                     <input type="checkbox" @click="onChange()" :checked="modelValue" value="" class="sr-only peer"
                         id="toggleThree" />
-                    <div class="h-8 py-1 flex rounded-full bg-[#ACC0C5] shadow-lg">
-                        <p class="z-10 text-white font-semibold w-1/2 text-center" :class="{ 'text-ehite': modelValue }">
+                    <div class="h-8 py-1 flex rounded-full bg-[#ACC0C5] shadow-lg items-center">
+                        <p class="z-10 text-sm text-white font-semibold w-1/2 text-center" :class="{ 'text-white': modelValue }">
                             wisdomwords
                         </p>
-                        <p class="z-10 font-semibold w-1/2 text-white text-center" :class="{ 'text-white': modelValue }">
+                        <p class="z-10 text-sm font-semibold w-1/2 text-white text-center" :class="{ 'text-white': modelValue }">
                             audiofiles
                         </p>
                     </div>

@@ -21,7 +21,7 @@
       </div>
 
       <div id="wordOfTheDayCotainer"
-        class="flex flex-col justify-between mt-20 sm:mt-5 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
+        class="flex flex-col justify-between mt-10 sm:mt-0 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
         <div class="flex col-span-3">
           <div class="sm:hidden flex flex-col w-1/2 justify-center -ml-12 ">
             <div

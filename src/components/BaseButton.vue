@@ -121,12 +121,14 @@ export default defineComponent({
     &--mini {
         background-color: #85A4AC;
     }
-
     &--secondary {
         background-color: var(--wt-color-secondary);
     }
     &--primarylight {
         background-color: #85A3AC;
+    }
+    &--threeDBtn{
+        @apply bg-primary text-white rounded-full tracking-wide
     }
     &--tertiary {
         @apply text-primary hover:bg-primary/20;
