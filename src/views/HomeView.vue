@@ -23,7 +23,7 @@
       <div id="wordOfTheDayCotainer"
         class="flex flex-col justify-between mt-10 sm:mt-0 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
         <div class="flex col-span-3 sm:flex-row-reverse">
-          <div class="flex flex-col w-1/2 sm:w-1/5 justify-center sm:justify-between -ml-12 sm:ml-12 sm:my-10">
+          <div class="flex flex-col w-1/2 sm:w-1/6 justify-center sm:justify-between -ml-12 sm:ml-12 sm:my-10">
             <div
               class="-rotate-90 sm:rotate-0 text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full sm:w-max mb-12 sm:m-0 cursor-pointer"
               :class="{ 'text-xl text-[color:var(--wt-color-primary)] opacity-90': displayWordOfTheDay }"

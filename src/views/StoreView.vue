@@ -8,33 +8,40 @@
       <BackButton class="opacity-0"/>
     </div>
 
-    <AddSwiper class="mt-5 cursor-grab"/>
+    <div class="sm:flex">
+      <AddSwiper class="mt-5 cursor-grab sm:w-1/2"/>
 
-    <div id="Cards" class="mt-5 w-full px-5 sm:p-0 text-center">
-      <StoreCard :loading="loadingCheckoutCard == 'year'" class="bg-primary text-white/90 flex justify-center items-center store-card-width py-3 rounded-none-overwritten" @click="() => { checkout('year') }">
-        <template #header>
+      <div class="sm:w-1/2 flex flex-col justify-center">
+
+        <div id="Cards" class="mt-5 sm:mt-10 w-full px-5 sm:p-0 text-center">
+          <StoreCard :loading="loadingCheckoutCard == 'year'" class="storeCard storeCardAnimation bg-primary-overwritten text-white/90 flex justify-center items-center store-card-width py-2 sm:py-0.5 rounded-none-overwritten" @click="() => { checkout('year') }">
+            <template #header>
+              <div>
+                <div class="text-xl font-bold tracking-wide">Get subscription</div>
+              </div>
+            </template>
+          </StoreCard>
+          <p class="text-[color:var(--wt-color-text-grey)] opacity-50">13NOK/month billed annually </p>
+        </div>
+
+        <div id="FAQ" class="text-center mx-5 py-8 mt-5 sm:ml-auto sm:mr-auto sm:w-3/4 max-w-2xl">
           <div>
-            <div class="text-xl font-bold tracking-wide">Get subscription</div>
+            <h3 class="font-bold">How do I get a subscription?</h3>
+            <p class="leading-5 text-[color:var(--wt-color-text-grey)] opacity-50 ml-auto mr-auto">Click on the button above and continue to checkout</p>
           </div>
-        </template>
-      </StoreCard>
-      <p class="text-[color:var(--wt-color-text-grey)] opacity-50">13NOK/month billed annually </p>
-    </div>
+          <div class="mt-5">
+            <h3 class="font-bold">When will my purchase be available?</h3>
+            <p class="leading-5 text-[color:var(--wt-color-text-grey)] opacity-50 ml-auto mr-auto">Your purchase or access should be available as soon as your payment has been processed. 
+              This can take several minutes, but in most cases just a few seconds. If you experience any problems, feel free to contact us</p>
+          </div>
+          <div class="mt-5">
+            <h3 class="font-bold">Does my subscription auto renew?</h3>
+            <p class="leading-5 text-[color:var(--wt-color-text-grey)] opacity-50 ml-auto mr-auto">No, you can buy a new subscription when the previous one is outdated</p>
+          </div>
+        </div>
 
-    <div id="FAQ" class="text-center mx-5 py-8 mt-5  sm:ml-auto sm:mr-auto max-w-2xl">
-      <div class="">
-        <h3 class="font-bold">How do I get a subscription?</h3>
-        <p class="leading-5  text-[color:var(--wt-color-text-grey)] opacity-50">Click on the button above and continue to checkout</p>
       </div>
-      <div class="mt-5">
-        <h3 class="font-bold">When will my purchase be available?</h3>
-        <p class="leading-5  text-[color:var(--wt-color-text-grey)] opacity-50">Your purchase or access should be available as soon as your payment has been processed. 
-          This can take several minutes, but in most cases just a few seconds. If you experience any problems, feel free to contact us</p>
-      </div>
-      <div class="mt-5">
-        <h3 class="font-bold">Does my subscription auto renew?</h3>
-        <p class="leading-5  text-[color:var(--wt-color-text-grey)] opacity-50">No, you can buy a new subscription when the previous one is outdated</p>
-      </div>
+
     </div>
 
     <img id="add-bg" class="sm:hidden fixed top-0 left-0 store-card-width -z-50" src="../../images/add-bg.png"/>
@@ -83,5 +90,41 @@ import AddSwiper from '@/components/AddSwiper.vue';
 }
 .rounded-none-overwritten{
   border-radius: 0;
+}
+@media (min-width:640px){
+  .store-card-width{
+    width:75%;
+    margin-left:auto;
+    margin-right:auto
+  }
+  .rounded-none-overwritten{
+    border-radius: 50rem;
+  }
+}
+
+.bg-primary-overwritten{
+  background-color: var(--wt-color-primary)
+}
+.bg-primary-overwritten:hover{
+  opacity: 0.95
+}
+
+.storeCard {
+  transform: translate3d(-0px, -4px, 1px);
+  transition:
+    transform
+    600ms
+    cubic-bezier(.3, .7, .4, 1);
+}
+.storeCardAnimation:hover {
+  transform: translate3d(-0px, -8px, 1px);
+  transition:
+    transform
+    250ms
+    cubic-bezier(.3, .7, .4, 1.5);
+}
+.storeCardAnimation:active {
+  transform: translate3d(-0px, -2px, 1px);
+  transition: transform 34ms;
 }
 </style>
