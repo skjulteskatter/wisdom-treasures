@@ -14,7 +14,7 @@
       </div>
       <div class="flex mx-5 sm:mx-0 mt-5 sm:mt-0">
         <div class="grow" />
-        <div class="flex flex-col">
+        <div class="flex flex-col min-w-50">
           <ToggleSlideButton :label="$t('history.onlyManna')" v-model="showOnlyMannaHistory" />
           <div v-for="(value, key) in periods" :key="key + showOnlyMannaHistory.toString()">
 
@@ -186,3 +186,8 @@ export default defineComponent({
   }
 });
 </script>
+<style>
+.min-w-50{
+  min-width: 50%
+}
+</style>
