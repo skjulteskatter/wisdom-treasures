@@ -25,12 +25,16 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showAuthors" id="authors" class="w-half-screen absolute top-7 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideAuthors}">
+                            <div v-if="showAuthors" id="authors" class="w-half-screen absolute top-8 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideAuthors}">
                                 <div v-for="(author, index) in allAuthors" :key="index" class="flex">
-                                    <label class="w-full flex gap-2 mx-2 my-2 items-center text-black cursor-pointer select-none">
+                                    <label class="w-full flex gap-2 mx-2 py-3 border-y border-grey-300 items-center text-black cursor-pointer select-none">
                                         <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="setInitialAuthorValue(author.id, index)"/>
-                                        <p :class="{'font-bold' : authorCheckBoxArray[index] }" class="max-w-80-percent truncate text-inherit text-xs">{{ author.name }}</p>
+                                        <p :class="{'font-bold tracking-wide opacity-80' : authorCheckBoxArray[index] }" class="max-w-80-percent truncate text-inherit text-xs">{{ author.name }}</p>
                                     </label>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 absolute w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
+                                    <button class="py-1.5 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
+                                    <button class="py-1.5 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
                                 </div>
                             </div>
                         </transition>
@@ -45,14 +49,19 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showPublications" id="publications" class="w-half-screen absolute top-7 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hidePublications}">
-                                <div v-for="(publication, index) in allPublications" :key="index" class="flex z-50">
-                                    <label class="w-full flex gap-2 ml-2 my-2 items-center cursor-pointer select-none">
+                            <div v-if="showPublications" id="publications" class="w-half-screen absolute top-8 right-0 sm:left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hidePublications}">
+                                <div v-for="(publication, index) in allPublications" :key="index" class="flex">
+                                    <label class="w-full flex gap-2 ml-2 py-3 border-y border-grey-300 items-center cursor-pointer select-none">
                                         <BaseCheckbox v-model="publicationCheckBoxArray[index]" @vnode-mounted="setInitialPublicationValue(publication.id, index)"/>
-                                        <p :class="{'font-bold' : publicationCheckBoxArray[index] }" class="max-w-80-percent truncate text-inherit text-xs">{{ publication.title }}</p>
+                                        <p :class="{'font-bold tracking-wide opacity-80' : publicationCheckBoxArray[index] }" class="max-w-80-percent truncate text-inherit text-xs">{{ publication.title }}</p>
                                     </label>
                                 </div>
+                                <div class="grid grid-cols-2 gap-2 absolute w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
+                                    <button class="py-1.5 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
+                                    <button class="py-1.5 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
+                                </div>
                             </div>
+                            
                         </transition>
                     </div>
                 </div>
@@ -180,7 +189,7 @@ export default defineComponent({
     max-height: 50vh;
 }
 .w-half-screen{
-    width: 50vw
+    width: min(50vw, 30rem)
 }
 .max-w-80-percent{
     max-width: 80%

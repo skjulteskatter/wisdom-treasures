@@ -45,7 +45,7 @@
 
                 <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/10 shadow-sm">
                     <BaseButton theme="filterXBtn" class="self-center max-h-7" @click="resetAllFilter">
-                        <p class="w-max defaultFontSize text-inherit text-xs">Reset all</p>
+                        <p class="w-max text-inherit text-xs">Reset all</p>
                     </BaseButton>
                 </div>
 
