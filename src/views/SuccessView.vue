@@ -18,7 +18,7 @@
       <p>To unsubscribe go to: <a>who would like to unsub?!</a></p>
     </div>
 
-    <img id="add-bg" class="sm:hidden fixed bottom-32 left-0 store-card-width -z-50 opacity-60" src="../../images/add-bg.png"/>
+    <img id="add-bg" class="sm:hidden fixed bottom-32 left-0 w-screen -z-50 opacity-60" src="../../images/add-bg.png"/>
   </main> 
 </template>
 
