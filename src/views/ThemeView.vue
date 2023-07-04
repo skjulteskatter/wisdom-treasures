@@ -7,14 +7,12 @@
       <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50" />
     </div>
 
-    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none pb-5">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center">
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none mb-5">
+      <div class="flex items-center py-4">
           <BackButton />
-          <h1 class="my-4 sm:my-6 text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
+          <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
             {{ publication?.title ?? "" }}
           </h1>
-        </div>
         <!-- <MiniButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mr-3">
           <template #icon>
             <img src="/img/mannakorn_white.svg" class="md:hidden h-4 w-full">

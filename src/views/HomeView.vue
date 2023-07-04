@@ -336,7 +336,7 @@ export default defineComponent({
   /* 40px */
 }
 .h-custom{
-  height: max(25rem, 64vh)
+  height: max(28rem, 64vh)
 }
 .highlighted{
   font-size: 1.15rem;

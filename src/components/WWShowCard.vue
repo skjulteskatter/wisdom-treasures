@@ -162,7 +162,7 @@
   </script>
 <style>
 .min-h-custom{
-  min-height: max(25rem, 64vh)
+  min-height: max(28rem, 64vh)
 }
 @media(min-width:640px){
   .min-h-custom{

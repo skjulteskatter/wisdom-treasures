@@ -6,9 +6,9 @@
       <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50" />
     </div>
     <div>
-      <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center">
+      <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center py-4">
         <BackButton />
-        <h1 class="my-4 text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
+        <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
           {{ $t('common.history')}}
         </h1>
       </div>

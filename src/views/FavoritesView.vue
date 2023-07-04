@@ -6,8 +6,8 @@
         <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
     </div>
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center py-4 mb-5 sm:mb-0">
-      <BackButton/>
-      <h1 class="text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
+      <BackButton />
+      <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
         {{$t('common.favorites')}}
       </h1>
     </div>

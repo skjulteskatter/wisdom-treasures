@@ -1,8 +1,8 @@
 <template>
   <main>
-    <div class="flex items-center">
+    <div class="flex items-center py-4">
       <BackButton /><!-- should be another color-->
-      <h1 class="my-4 sm:my-6 text-base sm:text-xl font-bold tracking-wide">
+      <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold tracking-wide">
         Store
       </h1>
     </div>

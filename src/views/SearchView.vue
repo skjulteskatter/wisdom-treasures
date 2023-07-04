@@ -5,9 +5,9 @@
         <ScrollToTopButton class="fixed top-0 h-max"/>
         <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
     </div>
-    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center py-4 sm:py-6">
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center py-4">
         <BackButton/>
-        <h1 class="text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">Search</h1>
+        <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">Search</h1>
     </div>
     <MultiSearch 
         @articles:article-hits="setArticles"
