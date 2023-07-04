@@ -7,32 +7,21 @@
       <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50" />
     </div>
 
-    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none mb-5">
-      <div class="flex items-center py-4">
-          <BackButton />
-          <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
-            {{ publication?.title ?? "" }}
-          </h1>
-        <!-- <MiniButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mr-3">
-          <template #icon>
-            <img src="/img/mannakorn_white.svg" class="md:hidden h-4 w-full">
-          </template>
-        </MiniButton> -->
-        <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId == $route.params.themeId).map(x => x.id)"></MannaButton>
-      </div>
-      <div>
-        <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"
-          :return-all-if-no-hits="true"
-          :search-on-load="true"
-          @articles:article-hits="setSearchArticles" @search-loading:search-loading="setSearchLoading"
-          class="mx-5 sm:mx-10 text-white">
-        </MultiSearch>
-      </div>
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between py-4">
+      <BackButton />
+      <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
+        {{ publication?.title ?? "" }}
+      </h1>
+      <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId == $route.params.themeId).map(x => x.id)"></MannaButton>
     </div>
+    <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"
+      :return-all-if-no-hits="true"
+      :search-on-load="true"
+      @articles:article-hits="setSearchArticles" @search-loading:search-loading="setSearchLoading"
+      class="mx-5 sm:mx-10 text-white">
+    </MultiSearch>
 
-    <div class="flex mx-auto w-full justify-center">
-      <ToggleSlideButton :label="'Show audio files'" class="mx-5 sm:mx-0 py-3 w-full" v-model="showAudioFiles"/>
-    </div>
+    <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-6 mx-10 sm:ml-auto sm:mr-auto" v-model="showAudioFiles"/>
 
     <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true" />
 

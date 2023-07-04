@@ -2,7 +2,7 @@
     <BaseModal class="fixed w-full h-full left-0 top-0 z-40" @close="(e: any) => {$emit('close', e)}" :useBaseCard="false">
         <WWShowCard :article="currentArticle"/>
         <div v-if="mannaArticleIdList.length > 0" class="w-full h-16 flex items-end justify-center">
-            <BaseButton theme="secondary" @click="changeManna()">
+            <BaseButton theme="threeDBtn" @click="changeManna()">
                 Generate new Word
                 <template #icon>
                     <RefreshIcon class="h-5"></RefreshIcon>

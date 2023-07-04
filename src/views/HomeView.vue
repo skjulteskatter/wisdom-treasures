@@ -24,7 +24,8 @@
         class="flex flex-col justify-between mt-8 sm:mt-0 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
 
         <div class="flex sm:flex-row-reverse">
-          <div class="flex flex-col sm:w-1/6 justify-between py-16 sm:py-0 -ml-4 sm:ml-12 sm:my-10">
+
+          <div class="flex flex-col sm:w-1/6 justify-between py-16 sm:py-0 -ml-4 sm:ml-6 sm:pl-6 sm:my-10 sm:border-l-2 sm:border-[#dcdcdc]">
             <div class="flex flex-col items-center sm:items-start">
               <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
                   @click="changeDisplayWOTD()">

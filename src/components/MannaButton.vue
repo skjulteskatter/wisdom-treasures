@@ -1,7 +1,7 @@
 <template>
     <main>
-        <BaseButton @click="()=>{$router.push({path: `${currentPath}manna`})}">
-          Get Manna!
+        <BaseButton @click="()=>{$router.push({path: `${currentPath}manna`})}" theme="wisdomMannaBtn">
+          Get Manna
         </BaseButton>
         <WWCardModal :show="showMannaModal" @close="(e: Event | undefined) => {navigateBack(e); $emit('closeModal', e)}" :mannaArticleIdList="mannaArticleIdList" :article="store.articles.get(mannaArticleIdList[Math.floor(Math.random() * mannaArticleIdList.length)])!"/>
     </main>

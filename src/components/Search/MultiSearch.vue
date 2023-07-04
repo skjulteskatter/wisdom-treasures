@@ -1,58 +1,59 @@
 <!-- eslint-disable vue/no-use-v-if-with-v-for -->
 <template>
-        <div class="flex flex-col px-5 sm:px-0 pb-4 bg-primary sm:bg-transparent">
-            <div class="flex">
-            <BaseInput v-model="store.searchWord" style-type="search" class="sm:hidden grow" size="" :whiteText="true" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
-            <BaseInput v-model="store.searchWord" style-type="search" class="hidden sm:block grow" size="" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
-            <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="true">
-                <template #icon>
-                    <AdjustmentsIcon class="w-4"/>
-                </template>
-            </BaseButton>
-            </div>
-            <FilterModal
-                    :key="filterModalKey" 
-                    :show="showFilterModal" 
-                    @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search()}}"
-                    :hidePublications="initialThemeFilter.length > 0"
-                    :hideAuthors="initialAuthorFilter.length > 0"/>
+    <div class="flex flex-col px-5 sm:px-0 pb-4 sm:pb-0 bg-primary sm:bg-transparent">
+        <div class="flex">
+        <BaseInput v-model="store.searchWord" style-type="search" class="sm:hidden grow" size="" :whiteText="true" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
+        <BaseInput v-model="store.searchWord" style-type="search" class="hidden sm:block grow" size="" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
+        <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="true">
+            <template #icon>
+                <AdjustmentsIcon class="w-4"/>
+            </template>
+        </BaseButton>
         </div>
+        <FilterModal
+                :key="filterModalKey" 
+                :show="showFilterModal" 
+                @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search()}}"
+                :hidePublications="initialThemeFilter.length > 0"
+                :hideAuthors="initialAuthorFilter.length > 0"/>
+    </div>
 
-            <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'bg-primary pb-4 sm:bg-transparent sm:pb-0' : ''">
-                <div id="filtersection" class="flex-grow flex flex-col">
-                    <div id="filterButtons" class="flex gap-2 flex-wrap">
+    <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
+        <div id="filterSection" class="flex flex-col max-h-24 overflow-auto">
+            <div id="filterButtons" class="flex gap-2 flex-wrap">
 
-                        <div v-if="store.publicationIdSearchFilter.length > 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 text-white sm:text-inherit text-xs">{{ publication.title }}</p> 
-                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.publicationIdSearchFilter = store.publicationIdSearchFilter.filter(x => x != publication.id); search(); syncFilter();}">
-                                <XIcon class="h-4 opacity-70"/>
-                            </BaseButton>
-                        </div>
-
-                        <div v-if="store.authorIdSearchFilter.length > 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs truncate pl-2 text-white sm:text-inherit text-xs">{{ author.name }}</p> 
-                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.authorIdSearchFilter = store.authorIdSearchFilter.filter(x => x != author.id); search(); syncFilter();}">
-                                <XIcon class="h-4 opacity-70"/>
-                            </BaseButton>
-                        </div>
-
-                        <div v-if="store.onlyFavoriteSearchFilter" class="flex items-center rounded-md bg-black/10 opacity-80">
-                            <p class="max-w-xxs text-white sm:text-inherit truncate pl-2 text-xs">Favorites Only</p>
-                            <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.onlyFavoriteSearchFilter = false; search(); syncFilter();}">
-                                <XIcon class="h-4 opacity-70"/>
-                            </BaseButton>
-                        </div>
-
-                        <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/20">
-                            <BaseButton theme="filterXBtn" class="self-center max-h-7" @click="resetAllFilter">
-                                <p class="w-max defaultFontSize text-white sm:text-inherit text-xs">Reset all</p>
-                            </BaseButton>
-                        </div>
-
-                    </div>
+                <div v-if="store.publicationIdSearchFilter.length > 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md bg-transparent shadow-sm">
+                    <p class="max-w-xxs truncate pl-2 text-inherit text-xs">{{ publication.title }}</p> 
+                    <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.publicationIdSearchFilter = store.publicationIdSearchFilter.filter(x => x != publication.id); search(); syncFilter();}">
+                        <XIcon class="h-4 opacity-80"/>
+                    </BaseButton>
                 </div>
-            </div>
 
+                <div v-if="store.authorIdSearchFilter.length > 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md bg-transparent shadow-sm">
+                    <p class="max-w-xxs truncate pl-2 text-inherit text-xs">{{ author.name }}</p> 
+                    <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.authorIdSearchFilter = store.authorIdSearchFilter.filter(x => x != author.id); search(); syncFilter();}">
+                        <XIcon class="h-4 opacity-80"/>
+                    </BaseButton>
+                </div>
+
+                <div v-if="store.onlyFavoriteSearchFilter" class="flex items-center rounded-md bg-transparent shadow-sm">
+                    <p class="max-w-xxs text-inherit truncate pl-2 text-xs">Favorites Only</p>
+                    <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.onlyFavoriteSearchFilter = false; search(); syncFilter();}">
+                        <XIcon class="h-4 opacity-80"/>
+                    </BaseButton>
+                </div>
+
+                <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/10 shadow-sm">
+                    <BaseButton theme="filterXBtn" class="self-center max-h-7" @click="resetAllFilter">
+                        <p class="w-max defaultFontSize text-inherit text-xs">Reset all</p>
+                    </BaseButton>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div v-if="atLeastOneFilterIsActive" class="w-5/6 sm:w-2/5 h-[0.075rem] sm:h-[0.1rem] bg-[color:var(--wt-color-secondary-light)] opacity-50 mr-auto ml-auto mt-6"/>
 
 </template>
 
@@ -91,10 +92,6 @@ export default defineComponent({
         }
     },
     props: {
-        inSearchView:{
-            type: Boolean,
-            default: false
-        },
         initialThemeFilter: {
             type: Array as PropType<string[]>,
             default: () => []

@@ -11,7 +11,7 @@
             <slot name="firstIcon" />
         </span>
         <span
-            :class="{ 'text-sm': size == 'medium', 'text-xs': size == 'small', 'text-base': size == 'large', 'font-semibold': theme == 'menuButton' }"
+            :class="{ 'text-sm': size == 'medium', 'text-xs': size == 'small', 'text-base': size == 'large', 'font-semibold': theme == 'menuButton' ||'wisdomMannaBtn' }"
             v-if="$slots.default"
         >
             <slot />
@@ -128,7 +128,7 @@ export default defineComponent({
         background-color: #85A3AC;
     }
     &--threeDBtn{
-        @apply bg-primary text-white rounded-full tracking-wide
+        @apply bg-primary text-white rounded-lg tracking-wide
     }
     &--tertiary {
         @apply text-primary hover:bg-primary/20;
@@ -150,8 +150,16 @@ export default defineComponent({
             display: none;
         }
     }
+    &--wisdomMannaBtn {
+        @apply text-white sm:text-[color:var(--color-text)] tracking-wide py-3 hover:bg-black/10;
+
+        &:hover:after {
+            content: "";
+            display: none;
+        }
+    }
     &--filterXBtn{
-        @apply text-white sm:text-inherit tracking-wide py-1 hover:bg-black/10;
+        @apply text-inherit tracking-wide py-1 hover:bg-black/10;
     }
     &--noBg {
         @apply bg-transparent text-[color:var(--color-text)] opacity-80 border-b border-black/20 rounded-none py-2 pb-4 px-4;

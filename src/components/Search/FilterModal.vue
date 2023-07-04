@@ -8,9 +8,15 @@
 		leave-to-class="transform scale-95 opacity-0"
 		>
         <div :show="true" v-if="show" @close="closeWithReturnArrays">
-                <div class="grid grid-cols-3 gap-2 mt-4 items-center w-1/2">
+                <div class="grid grid-cols-3 gap-2 mt-4 items-center sm:w-1/2">
+                    <div id="favorites" @click="showPublications = false, showAuthors = false" class="rounded-md border-2 sm:border-none border-white/80 flex justify-center items-center transition cursor-pointer">
+                        <label class="w-full h-full flex justify-center items-center">
+                            <BaseCheckbox class="w-full h-full absolute opacity-0 cursor-pointer " v-model="store.onlyFavoriteSearchFilter" @click="closeWithReturnArrays(true)"/>
+                            <p :class="[store.onlyFavoriteSearchFilter ? 'bg-[#acc0c572] sm:bg-[#ACC0C5]  shadow-inner' : 'bg-primary shadow-md'  ]" class="w-full h-full rounded-md text-center py-1 text-white/90 text-sm sm:font-semibold  cursor-pointer">favorites</p>
+                        </label>
+                    </div>
                     <div id="authors">
-                        <button v-if="!hideAuthors" @click="showAuthors = !showAuthors, showPublications = false" class="box-border w-full rounded-sm py-1 text-sm bg-[#ACC0C5] shadow-lg text-white font-semibold">author</button>
+                        <button v-if="!hideAuthors" @click="showAuthors = !showAuthors, showPublications = false" class="rounded-md border-2 sm:border-none border-white/80 w-full py-1 text-sm bg-primary shadow-md text-white/90 sm:font-semibold">author</button>
                         <transition
                             enter-active-class="transition duration-100 ease-out"
                             enter-from-class="transform scale-95 opacity-0"
@@ -19,18 +25,18 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showAuthors" id="authors" class="w-half-screen absolute top-7 left-0 bg-primary sm:bg-[color:var(--wt-c-white-soft)] shadow-lg border-2 rounded-sm border-white-80 max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideAuthors}">
+                            <div v-if="showAuthors" id="authors" class="w-half-screen absolute top-7 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideAuthors}">
                                 <div v-for="(author, index) in allAuthors" :key="index" class="flex">
                                     <label class="w-full flex gap-2 mx-2 my-2 items-center text-black cursor-pointer select-none">
                                         <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="setInitialAuthorValue(author.id, index)"/>
-                                        <p :class="{'font-bold' : authorCheckBoxArray[index] }" class="max-w-80-percent truncate text-white/80 sm:text-inherit text-xs">{{ author.name }}</p>
+                                        <p :class="{'font-bold' : authorCheckBoxArray[index] }" class="max-w-80-percent truncate text-inherit text-xs">{{ author.name }}</p>
                                     </label>
                                 </div>
                             </div>
                         </transition>
                     </div>
                     <div id="publications">
-                        <button v-if="!hidePublications" @click="showPublications = !showPublications, showAuthors = false" class="w-full rounded-sm py-1 bg-[#ACC0C5] text-sm shadow-lg text-white font-semibold">publication</button>
+                        <button v-if="!hidePublications" @click="showPublications = !showPublications, showAuthors = false" class="rounded-md border-2 sm:border-none border-white/80 w-full py-1 bg-primary text-sm shadow-md text-white/90 sm:font-semibold">publication</button>
                         <transition
                             enter-active-class="transition duration-100 ease-out"
                             enter-from-class="transform scale-95 opacity-0"
@@ -39,21 +45,15 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showPublications" id="publications" class="w-half-screen absolute top-7 left-0 bg-primary sm:bg-[color:var(--wt-c-white-soft)] shadow-lg border-2 rounded-sm border-white/80 max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hidePublications}">
+                            <div v-if="showPublications" id="publications" class="w-half-screen absolute top-7 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hidePublications}">
                                 <div v-for="(publication, index) in allPublications" :key="index" class="flex z-50">
                                     <label class="w-full flex gap-2 ml-2 my-2 items-center cursor-pointer select-none">
                                         <BaseCheckbox v-model="publicationCheckBoxArray[index]" @vnode-mounted="setInitialPublicationValue(publication.id, index)"/>
-                                        <p :class="{'font-bold' : publicationCheckBoxArray[index] }" class="max-w-80-percent truncate text-white/80 sm:text-inherit text-xs">{{ publication.title }}</p>
+                                        <p :class="{'font-bold' : publicationCheckBoxArray[index] }" class="max-w-80-percent truncate text-inherit text-xs">{{ publication.title }}</p>
                                     </label>
                                 </div>
                             </div>
                         </transition>
-                    </div>
-                    <div id="favorites" @click="showPublications = false, showAuthors = false" class="z-30 border-box flex justify-center items-center transition cursor-pointer">
-                        <label class="w-full h-full flex justify-center items-center">
-                            <BaseCheckbox class="w-full h-full absolute opacity-0 cursor-pointer " v-model="store.onlyFavoriteSearchFilter" @click="closeWithReturnArrays(true)"/>
-                            <p :class="[store.onlyFavoriteSearchFilter ? 'bg-primary' : 'bg-[#ACC0C5]'  ]" class="w-full h-full rounded-sm text-center py-1 text-white text-sm font-semibold shadow-lg cursor-pointer">favorites</p>
-                        </label>
                     </div>
                 </div>
 
