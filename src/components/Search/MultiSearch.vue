@@ -20,7 +20,7 @@
 
     <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
         <div id="filterSection" class="flex flex-col max-h-24 overflow-auto">
-            <div id="filterButtons" class="flex gap-2 flex-wrap">
+            <div id="filterButtons" class="flex gap-1 flex-wrap">
 
                 <div v-if="store.publicationIdSearchFilter.length > 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md bg-transparent shadow-sm">
                     <p class="max-w-xxs truncate pl-2 text-inherit text-xs">{{ publication.title }}</p> 
