@@ -1,15 +1,14 @@
 <template>
   <main>
-    <div id="scrollToTopButtonDiv" class="flex fixed top-20 left-0 z-40 w-full h-0">
+    <div id="scrollToTopButtonDiv" class="flex fixed top-4 sm:top-20 left-0 z-40 w-full h-0">
         <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50"/>
         <ScrollToTopButton class="fixed top-0 h-max"/>
         <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50"/>
     </div>
-    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
-      <div class="flex items-center mt-4 sm:my-6 justify-between">
-        <BackButton/>
-        <h1 class="text-base sm:text-xl self-center font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.themes') }}</h1>
-        <BackButton class="opacity-0"/>
+    <div class="w-full bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
+      <div class="w-full flex items-center mt-4 sm:my-6">
+        <BackButton />
+        <h1 class="text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.themes') }}</h1>
       </div>
       <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" :whiteText="true" class="my-4 px-5 sm:hidden"/>
       <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" class="hidden sm:block"/>

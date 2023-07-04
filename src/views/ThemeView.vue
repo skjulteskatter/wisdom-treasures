@@ -7,23 +7,20 @@
       <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50" />
     </div>
 
-    <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId == $route.params.themeId).map(x => x.id)"></MannaButton>
-
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none pb-5">
-      <div class="flex justify-between items-center h-full">
-        <div>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
           <BackButton />
-        </div>
-        <div class="flex justify-center">
-          <h1 class="my-4 sm:my-6 text-base sm:text-xl self-center font-bold text-white sm:text-inherit tracking-wide">
+          <h1 class="my-4 sm:my-6 text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
             {{ publication?.title ?? "" }}
           </h1>
         </div>
-        <MiniButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mr-3">
+        <!-- <MiniButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="mr-3">
           <template #icon>
             <img src="/img/mannakorn_white.svg" class="md:hidden h-4 w-full">
           </template>
-        </MiniButton>
+        </MiniButton> -->
+        <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId == $route.params.themeId).map(x => x.id)"></MannaButton>
       </div>
       <div>
         <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"

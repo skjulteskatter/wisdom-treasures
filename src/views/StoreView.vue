@@ -1,11 +1,10 @@
 <template>
   <main>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center">
       <BackButton /><!-- should be another color-->
-      <h1 class="self-center my-4 sm:my-6 text-base sm:text-xl font-bold tracking-wide">
+      <h1 class="my-4 sm:my-6 text-base sm:text-xl font-bold tracking-wide">
         Store
       </h1>
-      <BackButton class="opacity-0"/>
     </div>
 
     <div class="sm:flex">
