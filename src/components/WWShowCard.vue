@@ -1,6 +1,6 @@
 <template>
     <main>
-      <BaseCard :class="[WWCardHomeView ? 'min-h-68vh flex flex-col justify-between' : '']" :hideFooter="forThemeView">
+      <BaseCard :class="[WWCardHomeView ? 'min-h-custom flex flex-col justify-between' : '']" :hideFooter="forThemeView">
         <template #header>
           <div class="flex">
                   <div class="grow"/>
@@ -161,11 +161,11 @@
     });
   </script>
 <style>
-.min-h-68vh{
-  min-height:68vh;
+.min-h-custom{
+  min-height: max(25rem, 64vh)
 }
 @media(min-width:640px){
-  .min-h-68vh{
+  .min-h-custom{
     min-height:auto;
   }
 }

@@ -21,39 +21,43 @@
       </div>
 
       <div id="wordOfTheDayCotainer"
-        class="flex flex-col justify-between mt-10 sm:mt-0 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
-        <div class="flex col-span-3 sm:flex-row-reverse">
-          <div class="flex flex-col w-1/2 sm:w-1/6 justify-center sm:justify-between -ml-12 sm:ml-12 sm:my-10">
-            <div
-              class="-rotate-90 sm:rotate-0 text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full sm:w-max mb-12 sm:m-0 cursor-pointer"
-              :class="{ 'text-xl text-[color:var(--wt-color-primary)] opacity-90': displayWordOfTheDay }"
-              @click="changeDisplayWOTD()">
-              {{ $t('common.dailyword') }}
-              <div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-28 sm:w-full h-1/3"></div>
+        class="flex flex-col justify-between mt-8 sm:mt-0 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
+
+        <div class="flex sm:flex-row-reverse">
+          <div class="flex flex-col sm:w-1/6 justify-between py-16 sm:py-0 -ml-4 sm:ml-12 sm:my-10">
+            <div class="flex flex-col items-center sm:items-start">
+              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
+                  @click="changeDisplayWOTD()">
+                <span class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
+                  :class="{ 'highlighted': displayWordOfTheDay }">{{ $t('common.dailyword') }}</span>
+                <div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
+              </div>
             </div>
-            <div
-              class="-rotate-90 sm:rotate-0 text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w- sm:w-max my-20 sm:my-0 cursor-pointer"
-              :class="{ 'text-xl text-[color:var(--wt-color-primary)] opacity-90': displayFavorites }"
-              @click="changeDisplayFavorites()">
-              {{ $t('common.favorites') }}
-              <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 sm:w-full h-1/3"></div>
+            <div class="flex flex-col items-center sm:items-start">
+              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
+                  @click="changeDisplayFavorites()">
+                <span class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
+                  :class="{ 'highlighted': displayFavorites }">{{ $t('common.favorites') }}</span>
+                <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
+              </div>
             </div>
-            <div class="-rotate-90 sm:rotate-0 text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80 w-full sm:w-max mt-12 mb-10 sm:m-0 cursor-pointer"
-              :class="{ 'text-xl text-[color:var(--wt-color-primary)] opacity-90': displayHistory }"
-              @click="changeDisplayHistory()">
-              {{ $t('common.history') }}
-              <div v-if="displayHistory" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-24 sm:w-full h-1/3"></div>
+            <div class="flex flex-col items-center sm:items-start">
+              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
+                  @click="changeDisplayHistory()">
+                <span class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
+                  :class="{ 'highlighted': displayHistory }">{{ $t('common.history') }}</span>
+                <div v-if="displayHistory" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
+              </div>
             </div>
           </div>
 
-          <!-- change so that the daily wisdom word doesn't change after the button is clicked -->
 
           <WWShowCard v-if="wordOfTheDay && displayWordOfTheDay" :article="wordOfTheDay"
-            class="w-11/12 sm:w-full -ml-8 sm:m-0" :WWCardHomeView="true" />
+            class="w-11/12 sm:w-full" :WWCardHomeView="true" />
 
           <!-- DIV for favourites -->
           <div v-if="displayFavorites" id="WWCards"
-            class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
               <div v-if="favoriteArticles.length > 0">
                 <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
@@ -69,7 +73,7 @@
 
           <!-- DIV for History -->
           <div v-if="displayHistory" id="WWCards"
-            class="w-11/12 sm:w-full -ml-8 sm:m-0 h-68vh fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
               <div v-if="historyArticles.length > 0">
                 <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
@@ -325,23 +329,27 @@ export default defineComponent({
 .tracking-075 {
   letter-spacing: 0.075em
 }
-
 .rounded-t-4xl {
   border-top-left-radius: 2.5rem;
   /* 40px */
   border-top-right-radius: 2.5rem;
   /* 40px */
 }
-
-.h-68vh {
-  height: 68vh;
+.h-custom{
+  height: max(25rem, 64vh)
+}
+.highlighted{
+  font-size: 1.15rem;
+  color: var(--wt-color-primary);
+  opacity:0.9;
+  scale: 1.3;
 }
 
 @media(min-width:640px) {
-  .h-68vh {
+  .h-custom {
     height: auto;
   }
-  .h-68vh.fav-his{
+  .h-custom.fav-his{
     height: 18rem
   }
 }
