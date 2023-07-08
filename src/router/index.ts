@@ -18,8 +18,8 @@ const Manna = {
   }
 } as RouteRecordRaw;
 
-const ThemeAutoSlug = {
-  path:':themeAutoSlug([^/]+)',
+const AutoSlug = {
+  path:':autoSlug([^/]+)',
   children: [
     WWCard,
     Manna
@@ -32,11 +32,21 @@ const ThemeAutoSlug = {
 const Theme = {
   name: 'themeUUID',
   path:':themeId([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})',
-  children: [ThemeAutoSlug],
+  children: [AutoSlug],
   meta: {
     scrollUp: true,
   },
   component: () => import('../views/ThemeView.vue'),
+} as RouteRecordRaw;
+
+const Origin = {
+  name: 'originUUID',
+  path:':originId([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})', //TODO a lot here
+  children: [AutoSlug],
+  meta: {
+    scrollUp: true,
+  },
+  component: () => import('../views/OriginView.vue'),
 } as RouteRecordRaw;
 
 export const routes = [
@@ -83,7 +93,6 @@ export const routes = [
       {
         path: '/themes',
         name: 'themesIndex',
-        component: () => import('../views/EmptyView.vue'),
         meta: {
           requiresAuth: true,
           scrollUp: true,
@@ -99,6 +108,26 @@ export const routes = [
             },
           },
           Theme
+        ]
+      },
+      {
+        path: '/origins',
+        name: 'originsIndex',
+        meta: {
+          requiresAuth: true,
+          scrollUp: true,
+        },
+        children: [
+          {
+            name: 'origins',
+            path: '',
+            component: () => import('../views/OriginsView.vue'),
+            meta: {
+              requiresAuth: true,
+              scrollUp: true,
+            },
+          },
+          Origin
         ]
       },
       {

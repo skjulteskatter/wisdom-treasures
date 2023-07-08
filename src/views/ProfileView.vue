@@ -81,7 +81,6 @@ import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
 import { defineComponent } from 'vue';
 import type { User } from "firebase/auth";
-import BaseCard from '@/components/BaseCard.vue';
 import BaseInput from '@/components/BaseInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BackButton from '@/components/BackButton.vue';
@@ -89,7 +88,7 @@ import { KeyIcon, SaveIcon, LogoutIcon, CreditCardIcon, CurrencyDollarIcon } fro
 import GenerelDropDown from '@/components/GenerelDropDown.vue';
 import { validLanguages, fallbackLocale } from '@/i18n';
 import ChangePasswordModal from '@/components/Profile/ChangePasswordModal.vue';
-import { Notification } from "@/classes/notification";
+import { InlineNotification } from "@/classes/notification";
 import ClickableLink from '@/components/ClickableLink.vue';
 import { logOut } from "@/services/auth";
 
@@ -111,7 +110,6 @@ import { logOut } from "@/services/auth";
     props: {
     },
       components: {
-      BaseCard,
       BaseInput,
       BaseButton,
       KeyIcon,
@@ -158,7 +156,7 @@ import { logOut } from "@/services/auth";
       },
       async saveLocalSettings(): Promise<void> {
         this.changeLanguage(this.selectedLanguage);
-        this.store.notifications.push(new Notification(this.$t('profile.settingUpdatedMsg')));
+        this.store.notifications.push(new InlineNotification(this.$t('profile.settingUpdatedMsg')));
       },
       async logout(){
         await logOut();

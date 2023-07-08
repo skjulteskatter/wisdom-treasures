@@ -1,18 +1,20 @@
 import { defineStore } from 'pinia'
 import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
-import type { Notification } from '@/classes/notification'
+import type { InlineNotification } from '@/classes/notification'
 import { favorites as favoritesApi, stripe} from '@/services/api'
-import type {Article, Contributor, Publication } from 'hiddentreasures-js'
+import type {Article, Contributor, Publication, Source } from 'hiddentreasures-js'
 import { articleService, publicationService, authorService } from '@/services/publications';
 import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
-import { dbPromise, putArticles, putAuthors, putPublications } from '@/services/cache'
+import { dbPromise, putArticles, putAuthors, putPublications, putOrigins } from '@/services/cache'
 import type { HTUser } from '@/classes/HTUser'
 import { language, favorites } from '@/services/localStorage'
 import Fuse from 'fuse.js'
 import type { IApiProduct } from '@/Interfaces/IApiProduct'
 import StripeService from '@/services/stripe'
+import sourceService from '@/services/publications/sourceService'
+import { Origin } from '@/classes/Origin'
 
 const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
@@ -28,7 +30,7 @@ export const useSessionStore = defineStore('session', {
             // Global variable to close any active modal. For example when clicking the navbar: close every modal
             globalCloseModal: false,
             // The users notifications
-            notifications: [] as Notification[],
+            notifications: [] as InlineNotification[],
             //Favorites. GUID's of favorites stored as strings
             favorites: [] as string[],
 
@@ -40,6 +42,9 @@ export const useSessionStore = defineStore('session', {
 
             authors: shallowRef(new Map) as unknown as Map<string, Contributor>,
             fuseAuthors: undefined as Fuse<Contributor> | undefined,
+
+            origins: shallowRef(new Map) as unknown as Map<string, Origin>,
+            fuseOrigins: undefined as Fuse<Origin> | undefined,
 
             collectionId: "" as string,
 
@@ -59,6 +64,8 @@ export const useSessionStore = defineStore('session', {
             publicationIdSearchFilter: [] as string[],
             onlyFavoriteSearchFilter: false as boolean,
             authorIdSearchFilter: [] as string[],
+            originIdSearchFilter: [] as string[],
+
             syncSearchFilter: 0 as number,
 
             searchWord: "" as string,
@@ -71,7 +78,7 @@ export const useSessionStore = defineStore('session', {
                 this.locale = locale;
                 language.setOrReplace(locale);
                 return locale;
-            };
+            }
             return "en";
         },
         addFavorite(ids: string[]): void {
@@ -152,12 +159,44 @@ export const useSessionStore = defineStore('session', {
             }
 
             const option = {
-                keys: ['name', 'id' ],
+                keys: ['name', 'id', 'subtitle', 'biography'],
                 includeScore: true,
                 threshold: 0.3,
             }
             this.fuseAuthors = new Fuse(authorArray, option, Fuse.createIndex(option.keys, authorArray));
 
+        },
+        async initializeSources(ids : string[], fromIndexDb: boolean = true) {
+
+            //Add a check to make sure you're not getting the same 
+            if (ids.length <= 0) return;
+
+            let originArray: Origin[] = [];
+            let retrievedFromIndexDb = true;
+
+            if (fromIndexDb){
+                originArray = await (await dbPromise).getAll('origins');
+            }
+            
+            if (originArray.length <= 0) {
+                originArray = (await sourceService.retrieve({itemIds: ids})).map(x => new Origin(x));
+                retrievedFromIndexDb = false;
+            }
+
+            for (const origin of originArray) {
+                this.origins.set(origin.id, origin);
+            }
+
+            if (!retrievedFromIndexDb) {
+                await putOrigins(originArray); //Try to not await this
+            }
+
+            const option = {
+                keys: ['name', 'id' ],
+                includeScore: true,
+                threshold: 0.3,
+            }
+            this.fuseOrigins = new Fuse(originArray, option, Fuse.createIndex(option.keys, originArray));
         },
         async initializeArticles(ids : string[], fromIndexDb: boolean = true) {
 

@@ -11,10 +11,16 @@
         {{$t('common.favorites')}}
       </h1>
     </div>
-    <div id="WWCards" class="px-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    <div v-if="favoriteArticles.length > 0" id="WWCards" class="px-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
         <WWCard :article="article" class="grow" :strech-y="true" @close-modal="refreshDataFavorites" @click="refreshDataFavorites"/>
       </div>
+    </div>
+    <div v-else class="grow flex flex-col">
+      <div class="grow" />
+      <QuestionMarkCircleIcon class="w-20 grayscale opacity-80 place-self-center" />
+      <div class="place-self-center">Looks like you don't have any favorites </div>
+      <div class="grow" />
     </div>
   </main> 
 </template>
@@ -25,6 +31,7 @@ import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
 import BackButton from '@/components/BackButton.vue';
+import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
 
   export default defineComponent({
     name: "FavoriteView",
@@ -38,6 +45,7 @@ import BackButton from '@/components/BackButton.vue';
     components: {
       WWCard,
       BackButton,
+      QuestionMarkCircleIcon,
     },
     computed: {
       storeFavorites() : string[]{

@@ -1,4 +1,5 @@
-export class Notification {
+export class InlineNotification {
+
     message: string;
     type: "default" | "error";
     onDisplay: Boolean;

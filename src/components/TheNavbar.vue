@@ -23,6 +23,9 @@
 						@click="navigate('themes')">{{ $t('common.themes') }}</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">
 						{{ $t('common.history') }}</BaseButton>
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('origins')" @click="navigate('origins')">
+						Origins
+					</BaseButton>
 				</div>
 				<div class="flex sm:hidden self-center place-content-center cursor-pointer" @click="navigate('dashboard')">
 					<HomeIcon class="w-6 text-[color:var(--wt-color-text-grey)]" />
@@ -148,7 +151,7 @@ import type { User } from "firebase/auth";
 import breakpoints from "@/style/breakpoints";
 import { Menu as HUMenu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import SearchModal from "./Search/SearchModal.vue";
-import { Notification } from '@/classes/notification';
+import { InlineNotification } from '@/classes/notification';
 
 export default defineComponent({
 	name: "the-navbar",
@@ -186,7 +189,7 @@ export default defineComponent({
 			if (!this.$route.matched.some((x: { name: string; }) => x.name === "search"))
 				router.push({ name: "search" });
 		},
-		navigate(name: string, e?: Event) {
+		navigate(name: string) {
 
 			if (name === "register") {
 				//Just to mmake sure the login forms appears as 'register' and not as 'login'
@@ -196,7 +199,7 @@ export default defineComponent({
 			router.push({ name: name });
 		},
 		addNotification() {
-			this.store.notifications.push(new Notification(this.$t('notifications.placeholderMsg') + this.removeThis.toString()));
+			this.store.notifications.push(new InlineNotification(this.$t('notifications.placeholderMsg') + this.removeThis.toString()));
 			this.removeThis++;
 		},
 		shouldBeHighlighted(requiredName: string): boolean {

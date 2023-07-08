@@ -10,16 +10,18 @@
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between py-4">
       <BackButton />
       <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
-        {{ publication?.title ?? "" }}
+        {{ source?.name }}
       </h1>
-      <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId == $route.params.themeId).map(x => x.id)"></MannaButton>
+      <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId != null /**TODO make this a source filter instead of not null filter */).map(x => x.id)"></MannaButton>
     </div>
-    <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"
+    
+    <MultiSearch theme="white" :initial-origin-filter="[$route.params.originId]"
       :return-all-if-no-hits="true"
       :search-on-load="true"
       @articles:article-hits="setSearchArticles" @search-loading:search-loading="setSearchLoading"
       class="mx-5 sm:mx-10 text-white">
     </MultiSearch>
+    
 
     <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-6 mx-10 sm:ml-auto sm:mr-auto" v-model="showAudioFiles"/>
 
@@ -53,7 +55,7 @@
 </template>
 
 <script lang="ts">
-import type { Article, Publication } from 'hiddentreasures-js';
+import type { Article } from 'hiddentreasures-js';
 import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
@@ -68,6 +70,7 @@ import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import WWAudioCard from '@/components/WWAudioCard.vue';
 import Loader from '@/components/Loader.vue';
 import MannaButton from '@/components/MannaButton.vue';
+import type { Origin } from '@/classes/Origin';
 
 export default defineComponent({
   name: "ThemeView",
@@ -76,7 +79,6 @@ export default defineComponent({
       store: useSessionStore(),
       articles: [] as Article[], 
       dataFavorites: undefined as string[] | undefined,
-      publication: undefined as Publication | undefined,
       randomArticle: null as Article | null,
       showWordOfTheDay: false as boolean,
       searchArticles: [] as Article[],
@@ -85,18 +87,19 @@ export default defineComponent({
       searchingLoading: false as boolean,
       loadingMoreArticles: false as boolean,
       showSearchBar: false as boolean,
+      source: undefined as Origin | undefined,
     }
   },
   components: {
     WWCard,
     BackButton,
     WWShowCard,
-    MultiSearch,
     ScrollToTopButton,
     ToggleSlideButton,
     WWAudioCard,
     Loader,
     MannaButton,
+    MultiSearch
   },
   computed: {
     linkedArticle(): null | Article {
@@ -152,7 +155,7 @@ export default defineComponent({
     sessionInitialized(oldVal, newVal) {
       if (!newVal) return;
       console.log(this.$route.params.themeId.toString());
-      this.getAndSetPublication();
+      this.getAndSetSource();
       this.assureCorrectSlug();
       this.assureCorrectArticleNumber();
     }
@@ -195,18 +198,18 @@ export default defineComponent({
     refreshDataFavorites() {
       this.dataFavorites = [...this.storeFavorites];
     },
-    getAndSetPublication() {
-      this.publication = this.store.publications.get(this.$route.params.themeId.toString());
+    getAndSetSource() {
+      this.source = this.store.origins.get(this.$route.params.originId.toString());
     },
     assureCorrectSlug() {
-      if (this.publication !== undefined) {
+      if (this.source !== undefined) {
         const fullPath = this.$route.fullPath;
         let urlSlug: string = this.$route.params.autoSlug?.toString() ?? "";
         let newPath: string = "";
         if (urlSlug.length > 0)
-          newPath = fullPath.replace(this.$route.params.autoSlug.toString(), this.getFakeSlug(this.publication.title));
+          newPath = fullPath.replace(this.$route.params.autoSlug.toString(), this.getFakeSlug(this.source.name));
         else
-          newPath = `${fullPath}${fullPath.endsWith("/") ? "" : "/"}${this.getFakeSlug(this.publication.title)}`;
+          newPath = `${fullPath}${fullPath.endsWith("/") ? "" : "/"}${this.getFakeSlug(this.source.name)}`;
 
         this.$router.replace({ path: newPath })
       }
@@ -253,15 +256,15 @@ export default defineComponent({
     },
     setArticles(): void {
       if (this.articles.length <= 0){
-        this.articles = Array.from(this.store.articles.values()).filter(x => x.publicationId == this.publication?.id);
+        this.articles = Array.from(this.store.articles.values()).filter(x => x != null /**x.sourceId == this.source.id */); //Set this to be source ID instead
       }
     }
   },
   mounted() {
-    if (this.publication !== undefined) this.articles = Array.from(this.store.articles.values()).filter(x => x.publicationId == this.publication?.id)
+    if (this.source !== undefined) this.setArticles();
     
     if (this.sessionInitialized) {
-      this.getAndSetPublication();
+      this.getAndSetSource();
       this.assureCorrectSlug();
       this.assureCorrectArticleNumber();
     }
@@ -272,3 +275,4 @@ export default defineComponent({
   }
 });
 </script>
+@/classes/Origin

@@ -15,7 +15,7 @@
                   <BookOpenIcon class="h-5 opacity-40"/>
               </div>
               <div class="text-xs self-center opacity-50 truncate w-4/5">
-                {{categoryName}}&nbsp;&nbsp;-&nbsp;&nbsp;{{ authorName }} <!--This needs better styling probably-->
+                {{categoryName}}{{ authorName }}{{ originName }}
               </div>
               <div id="forStyling" class="grow"/>
               <BaseButton theme="menuButton" size="small" class="flex w-8 self-center max-h-8 mx-2 opacity-70" @mouseover="()=>{hoverOverFavorite = true}" @mouseleave="()=>{hoverOverFavorite = false}" @click="(e: Event | undefined) => {e?.stopPropagation(); favoriteButton();}">
@@ -78,7 +78,12 @@
           return this.store.publications.get(this.article.publicationId)?.title ?? "";
         },
         authorName(): string{
-          return this.store.authors.get(this.article.authorId)?.name ?? "";
+          let name = this.store.authors.get(this.article.authorId)?.name ?? "";
+          return name.length > 0 ? ` - ${name}` : "";
+        },
+        originName(): string{
+          let name = this.store.origins.get(this.article.sourceId ?? "")?.name ?? "";
+          return name.length > 0 ? ` - ${name}` : "";
         },
       },
       async mounted() {

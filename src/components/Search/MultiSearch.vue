@@ -15,7 +15,8 @@
                 :show="showFilterModal" 
                 @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search()}}"
                 :hidePublications="initialThemeFilter.length > 0"
-                :hideAuthors="initialAuthorFilter.length > 0"/>
+                :hideAuthors="initialAuthorFilter.length > 0"
+                :hideOrigins="initialOriginFilter.length > 0"/>
     </div>
 
     <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
@@ -36,12 +37,20 @@
                     </BaseButton>
                 </div>
 
+                <div v-if="store.originIdSearchFilter.length > 0" v-for="origin in originIdFilterOrigins" :key="origin.id" class="flex items-center rounded-md bg-transparent shadow-sm">
+                    <p class="max-w-xxs truncate pl-2 text-inherit text-xs">{{ origin.name }}</p> 
+                    <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.originIdSearchFilter = store.originIdSearchFilter.filter(x => x != origin.id); search(); syncFilter();}">
+                        <XIcon class="h-4 opacity-80"/>
+                    </BaseButton>
+                </div>
+
                 <div v-if="store.onlyFavoriteSearchFilter" class="flex items-center rounded-md bg-transparent shadow-sm">
                     <p class="max-w-xxs text-inherit truncate pl-2 text-xs">Favorites Only</p>
                     <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.onlyFavoriteSearchFilter = false; search(); syncFilter();}">
                         <XIcon class="h-4 opacity-80"/>
                     </BaseButton>
                 </div>
+                
 
                 <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/10 shadow-sm">
                     <BaseButton theme="filterXBtn" class="self-center max-h-7" @click="resetAllFilter">
@@ -66,6 +75,7 @@ import BaseButton from '../BaseButton.vue';
 import { AdjustmentsIcon, XIcon } from '@heroicons/vue/outline';
 import FilterModal from './FilterModal.vue';
 import type Fuse from 'fuse.js';
+import type { Origin } from '@/classes/Origin';
 
 export default defineComponent({
     name: "multi-search",
@@ -83,6 +93,7 @@ export default defineComponent({
             articleHits: [] as Article[],
             authorHits: [] as Contributor[],
             themeHits: [] as Publication[],
+            originHits: [] as Origin[],
 
             showFilterModal: false as boolean,
 
@@ -100,6 +111,10 @@ export default defineComponent({
             type: Array as PropType<string[]>,
             default: () => []
         },
+        initialOriginFilter: {
+            type: Array as PropType<string[]>,
+            default: () => []
+        },
         returnAllIfNoHits: {
             type: Boolean,
             default: false
@@ -109,10 +124,10 @@ export default defineComponent({
             default: false
         },
     },
-    emits: ["authors:authorHits", "themes:themeHits", "articles:articleHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],
+    emits: ["authors:authorHits", "themes:themeHits", "origin:originHits", "articles:articleHits", "origins:originHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],
     computed: {
         atLeastOneFilterIsActive(): boolean{
-            return this.store.authorIdSearchFilter.length + this.store.publicationIdSearchFilter.length > 0 || this.store.onlyFavoriteSearchFilter; 
+            return this.store.authorIdSearchFilter.length + this.store.publicationIdSearchFilter.length + this.store.originIdSearchFilter.length > 0 || this.store.onlyFavoriteSearchFilter; 
         },
         allArticles() : Article[] {
             return Array.from(this.store.articles.values());
@@ -123,8 +138,11 @@ export default defineComponent({
         allAuthors() : Contributor[] {
             return Array.from(this.store.authors.values());
         },
+        allOrigins() : Origin[] {
+            return Array.from(this.store.origins.values());
+        },
         numberOfResults() : number {
-            return this.articleHits.length + (!this.onlySearchForArticles ? this.authorHits.length + this.themeHits.length : 0);
+            return this.articleHits.length + (!this.onlySearchForArticles ? this.authorHits.length + this.themeHits.length + this.originHits.length : 0);
         },
         onlySearchForArticles(): boolean {
             return this.atLeastOneFilterIsActive;
@@ -135,6 +153,9 @@ export default defineComponent({
         authorIdFilterAuthors(): Contributor[] {
             return this.allAuthors.filter((x: { id: any; }) => this.store.authorIdSearchFilter.includes(x.id));
         },
+        originIdFilterOrigins(): Origin[] {
+            return this.allOrigins.filter((x: Origin) => this.store.originIdSearchFilter.includes(x.id));
+        },
         fuseArticles() : Fuse<Article> | undefined {
             return this.store.fuseArticles;
         },
@@ -143,6 +164,9 @@ export default defineComponent({
         },
         fuseAuthors(): Fuse<Contributor> | undefined{
             return this.store.fuseAuthors;
+        },
+        fuseOrigins(): Fuse<Origin> | undefined{
+            return this.store.fuseOrigins;
         },
     },
     methods: {
@@ -160,11 +184,19 @@ export default defineComponent({
 
                 this.$emit('themes:themeHits', this.onlySearchForArticles ? [] : this.themeHits);
 
-                this.authorHits = this.allAuthors.filter((x: { name: string | any[]; subtitle: any; biography: any; }) => 
-                    (x.name.includes(searchWord) || (x.subtitle ?? "").includes(searchWord) || (x.biography ?? "").includes(searchWord))
-                );
+                if (this.fuseAuthors !== undefined){
+                    const result = this.fuseAuthors.search(searchWord);
+                    this.authorHits = result.map((x: { item: any; }) => x.item);
+                }
 
                 this.$emit('authors:authorHits', this.onlySearchForArticles ? [] : this.authorHits);
+
+                if (this.fuseOrigins !== undefined){
+                    const result = this.fuseOrigins.search(searchWord);
+                    this.originHits = result.map((x: { item: any; }) => x.item);
+                }
+
+                this.$emit('origins:originHits', this.onlySearchForArticles ? [] : this.originHits);
 
                 let  query: Fuse.Expression = {
                     $and: []
@@ -222,6 +254,13 @@ export default defineComponent({
                     this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.store.authorIdSearchFilter.includes(x.authorId));
                 }
 
+                if (this.initialOriginFilter.length > 0){
+                    this.articleHits = this.articleHits.filter((x: Article) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
+                }
+                else if (this.store.originIdSearchFilter.length > 0){
+                    this.articleHits = this.articleHits.filter((x: Article) => this.store.originIdSearchFilter.includes(x.sourceId || "⛄"));
+                }
+
                 this.articleHits = this.articleHits.slice(0,this.maxNumberOfArticlesDisplayed);
 
                 this.$emit('articles:articleHits', this.articleHits);
@@ -234,6 +273,7 @@ export default defineComponent({
         resetAllFilter(){
             this.store.publicationIdSearchFilter = [];
             this.store.authorIdSearchFilter = [];
+            this.store.originIdSearchFilter = [];
             this.store.onlyFavoriteSearchFilter = false; 
             this.syncFilter();
             this.search();

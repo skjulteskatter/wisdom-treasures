@@ -1,6 +1,7 @@
 import { openDB } from 'idb';
 import type { DBSchema, IDBPDatabase  } from 'idb';
 import type { Article, Contributor, Publication } from 'hiddentreasures-js';
+import type { Origin } from '@/classes/Origin';
 
 interface WTDBSchema extends DBSchema {
   'articles': {
@@ -15,6 +16,10 @@ interface WTDBSchema extends DBSchema {
     key: string;
     value: Contributor;
   };
+  'origins': {
+    key: string;
+    value: Origin;
+  };
 }
 
 export const dbPromise : Promise<IDBPDatabase<WTDBSchema>> = openDB<WTDBSchema>("WTDB", 1, {
@@ -22,6 +27,7 @@ export const dbPromise : Promise<IDBPDatabase<WTDBSchema>> = openDB<WTDBSchema>(
     db.createObjectStore('articles');
     db.createObjectStore('publications');
     db.createObjectStore('authors');
+    db.createObjectStore('origins');
   },
 });
 
@@ -59,12 +65,30 @@ export async function putPublications(publications: Publication[], expirySeconds
     }, expirySeconds * 1000)
 }
 
+export async function putOrigins(sources: Origin[], expirySeconds: number = 7200) {
+  const storeName = 'origins';
+  const tx = (await dbPromise).transaction(storeName, 'readwrite');
+
+  const promises: Promise<string>[] = []
+  for (const source of sources) {
+      tx.store.put(source, source.id);
+  }
+
+  await Promise.all(promises);
+
+  setTimeout(() => {
+      clearStoreCache(storeName);
+      console.log("Cleared cache for store: " + storeName);
+  }, expirySeconds * 1000)
+}
+
 export async function putAuthors(authors: Contributor[], expirySeconds: number = 7200) {
     const storeName = 'authors';
     const tx = (await dbPromise).transaction(storeName, 'readwrite');
 
     const promises: Promise<string>[] = []
     for (const author of authors) {
+      console.log("Author: ",author)
         tx.store.put(author, author.id);
     }
 
@@ -82,6 +106,6 @@ export async function clearCache() {
     }
 }
 
-export async function clearStoreCache(storeName: "articles" | "publications" | "authors") {
+export async function clearStoreCache(storeName: "articles" | "publications" | "authors" | "origins") {
     (await dbPromise).clear(storeName);
 }

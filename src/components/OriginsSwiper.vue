@@ -11,21 +11,10 @@
     :modules="modules"
     class="originSwiper"
   >
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
-    <swiper-slide class="max-w-min mb-8"><Origin/></swiper-slide>
+  
+  <swiper-slide v-for="origin in origins" :key="origin.id" class="max-w-min mb-8">
+    <Origin :origin="origin"/>
+  </swiper-slide>
 
   </swiper>
 </template>
@@ -41,12 +30,25 @@ import 'swiper/css/pagination';
 // import required modules
 import { Mousewheel, Pagination } from 'swiper';
 import Origin from './Origin.vue';
+import { useSessionStore } from '@/stores/session';
+import type { Origin as OriginDto } from '@/classes/Origin';
 
 export default {
+  name: "WWShowCard",
+  data() {
+    return {
+      store: useSessionStore(),
+    }
+  },
   components: {
     Swiper,
     SwiperSlide,
     Origin
+  },
+  computed:{
+    origins(): OriginDto[] {
+      return Array.from(this.store.origins.values());
+    }
   },
   setup() {
     return {
@@ -60,4 +62,4 @@ export default {
 .swiper-pagination-bullet-active {
      background-color: var(--wt-color-primary) !important;
 }
-</style>
+</style>@/classes/Origin

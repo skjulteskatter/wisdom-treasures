@@ -120,7 +120,7 @@ import type { Article, Publication } from 'hiddentreasures-js';
 import { defineComponent } from 'vue';
 import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
-import { Notification } from '@/classes/notification';
+import { InlineNotification } from '@/classes/notification';
 import router from '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
@@ -232,8 +232,9 @@ export default defineComponent({
     }
 
     this.fillRandomArticles(20);
-
     window.addEventListener('scroll', this.onScroll);
+    
+    Notification.requestPermission();
   },
   methods: {
     async onScroll() {
@@ -269,7 +270,7 @@ export default defineComponent({
     },
     articleNotFound(num: number): void {
       //Should probably navigate back 🤷‍♂️
-      this.store.notifications.push(new Notification(this.$t('home.couldNotFindArticleNumber') + num.toString(), "error"));
+      this.store.notifications.push(new InlineNotification(this.$t('home.couldNotFindArticleNumber') + num.toString(), "error"));
       router.push({ name: "dashboard" });
     },
     checkArticleNumberPath() {
@@ -326,7 +327,7 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style scoped>
 .tracking-075 {
   letter-spacing: 0.075em
 }

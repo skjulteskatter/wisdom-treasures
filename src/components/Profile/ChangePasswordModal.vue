@@ -32,7 +32,7 @@ import { XIcon } from "@heroicons/vue/solid";
 import BaseButton from "../BaseButton.vue";
 import { resetPassword } from "@/services/auth";
 import { useSessionStore } from "@/stores/session";
-import { Notification } from "@/classes/notification";
+import { InlineNotification } from "@/classes/notification";
 
 export default defineComponent({
     name: "change-password-modal",
@@ -53,17 +53,17 @@ export default defineComponent({
     methods: {
         async changePassword(){
             if (this.firstPassword != this.secondPassword){
-                this.store.notifications.push(new Notification("Passwords are not identical", "error", true));
+                this.store.notifications.push(new InlineNotification("Passwords are not identical", "error", true));
                 return;
             } 
             if (this.firstPassword.length < 1 || this.secondPassword.length < 1){
-                this.store.notifications.push(new Notification("Password fields must be filled", "error", true));
+                this.store.notifications.push(new InlineNotification("Password fields must be filled", "error", true));
                 return;
             } 
             if (await resetPassword(this.oldPassword, this.firstPassword)) {
-                this.store.notifications.push(new Notification("Password updated!", "default", true));
+                this.store.notifications.push(new InlineNotification("Password updated!", "default", true));
             } else {
-                this.store.notifications.push(new Notification("Failed to update password", "error", true));
+                this.store.notifications.push(new InlineNotification("Failed to update password", "error", true));
             }
             this.$emit('close');
         }

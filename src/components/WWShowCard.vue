@@ -28,8 +28,10 @@
             <div class="w-full flex flex-wrap self-center justify-center text-xs text-[color:var(--wt-color-text-grey)] py-2 opacity-70 tracking-wide">
                 {{$t('common.seeMore')}}&nbsp;
                 <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
-                &nbsp;             
-
+                <div v-if="originName.length > 0">
+                  ,&nbsp;or&nbsp;
+                  <ClickableLink v-if="originName.length > 0" class="inline-block text-secondary" v-on:link-clicked="navigateToOriginPage">{{originName}}</ClickableLink>
+                </div>
             </div>
         </template>
     </BaseCard>
@@ -98,6 +100,9 @@
         authorName(): string {
           return this.store.authors.get(this.article.authorId)?.name ?? "";
         },
+        originName(): string {
+          return this.store.origins.get(this.article.sourceId ?? "")?.name ?? "";
+        },
         articleContent() : string {
           return this.smartTrim(this.article.content?.content ?? "");
         },
@@ -116,7 +121,7 @@
         },
         getSignature(): string {
           let builder = " - ";
-          if (this.getAuthor) builder += this.getAuthor.name + " ";
+          if (this.getAuthor) builder += this.getAuthor.name + ", ";
           if (this.getArticleYearWritten) builder += this.getArticleYearWritten;
           return builder;
         }
@@ -155,6 +160,12 @@
           let path : string = this.$router.getRoutes().find(x => x.name == "themes")?.path ?? this.$route.path;
           path = path.endsWith("/") ? path : path + "/";
           path += this.article.publicationId;
+          this.$router.push({path: path});
+        },
+        navigateToOriginPage(){
+          let path : string = this.$router.getRoutes().find(x => x.name == "origins")?.path ?? this.$route.path;
+          path = path.endsWith("/") ? path : path + "/";
+          path += this.article.sourceId;
           this.$router.push({path: path});
         },
       },

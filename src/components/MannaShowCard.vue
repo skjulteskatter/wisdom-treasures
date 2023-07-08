@@ -33,7 +33,7 @@
   import BaseCard from './BaseCard.vue';
   import { useSessionStore } from '@/stores/session';
   import { uuid } from 'vue-uuid';
-  import PopUpMessage from './PopUpMessage.vue';
+  import PopUpMessage from './Notification/PopUpMessage.vue';
   import BaseButton from './BaseButton.vue';
   import { ClipboardCopyIcon } from '@heroicons/vue/outline';
   import type { Manna } from '@/classes/manna';

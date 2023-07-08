@@ -10,7 +10,7 @@
 import { useSessionStore } from '@/stores/session';
 import { defineComponent } from 'vue';
 import NotificationCard from './NotificationCard.vue';
-import type { Notification } from '@/classes/notification'
+import type { InlineNotification } from '@/classes/notification'
 
 export default defineComponent({
     name: "NotificationContainer",
@@ -20,16 +20,16 @@ export default defineComponent({
     data() {
        return {
          store: useSessionStore(),
-         notificationsOnDisplay: [] as Notification[],
+         notificationsOnDisplay: [] as InlineNotification[],
        }
     },
     computed: {
         notifications(){
-            return this.store.notifications.filter(x => x.onDisplay) as Notification[];
+            return this.store.notifications.filter(x => x.onDisplay) as InlineNotification[];
         }
     },
     watch:{
-        notifications(value : Notification[]){
+        notifications(value : InlineNotification[]){
             this.notificationsOnDisplay = value;
             setTimeout(() => {
                 this.garbageCollect();

@@ -5,10 +5,10 @@ import {
     getAuth, 
     GoogleAuthProvider, 
     OAuthProvider, 
-    onAuthStateChanged, 
     sendEmailVerification, 
     signInWithEmailAndPassword, 
     signInWithPopup, 
+    signInWithRedirect,
     updateProfile,
     browserLocalPersistence, 
     browserSessionPersistence,
@@ -21,7 +21,6 @@ import "firebase/compat/performance";
 import config from "@/config";
 import router from "@/router";
 import { useSessionStore } from "@/stores/session";
-import { favorites } from "./api";
 
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
@@ -39,7 +38,6 @@ export async function loginWithEmailAndPassword(email: string, password: string,
     await setPersistence(rememberMe);
 
     const userCredentials : UserCredential = await signInWithEmailAndPassword(auth, email, password);
-    console.log(userCredentials)
     if (!userCredentials.user.emailVerified){
         await sendEmailVerification(userCredentials.user);
         return false;
@@ -65,7 +63,12 @@ export async function loginWithProvider(providerName : string, rememberMe: boole
             return;
     }
 
-    const userCredentials : UserCredential = await signInWithPopup(auth, provider);
+    if (getDeviceType() == "desktop"){
+        const userCredentials : UserCredential = await signInWithPopup(auth, provider);
+    } else {
+        const userCredentials : UserCredential = await signInWithRedirect(auth, provider);
+    }
+    
     pushToDashboardOrRedirectLink();
 }
 
@@ -89,6 +92,7 @@ export async function signupWithEmailAndPassword(email: string, password: string
 let userLoaded: boolean = false || !!auth.currentUser;
 let storeInitialized = false;
 export function getCurrentUserPromise(): Promise<User | null> {
+  // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
      if (userLoaded) {
             resolve(auth.currentUser);
@@ -109,6 +113,20 @@ export function getCurrentUserPromise(): Promise<User | null> {
   });
 }
 
+export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
+    let deviceType = "unknown" as "mobile" | "desktop" | "tablet" | "unknown";
+    const platform = navigator.platform.toLowerCase();
+    if (/(android|webos|iphone|ipad|ipod|blackberry|windows phone)/.test(platform)) {
+        deviceType = 'mobile';
+    } else if (/mac|win|linux/i.test(platform)) {
+        deviceType = 'desktop';
+    } else if (/tablet|ipad/i.test(platform)) {
+        deviceType = 'tablet';
+    } 
+
+    return deviceType
+}
+
 //auth.onAuthStateChanged(async () => {
 //    if (!!auth.currentUser){
 //        await userLoggedInCallback();
@@ -121,7 +139,7 @@ export function getCurrentUserPromise(): Promise<User | null> {
 async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
     const store = useSessionStore();
-    let lang = await store.initializeLanguage();
+    const lang = await store.initializeLanguage();
 
     await store.initializeFavorites();
 
@@ -129,9 +147,11 @@ async function userLoggedInCallback(){
     const pubIds = Array.from(store.publications.keys());
 
     await store.initializeArticles(pubIds);
-    let authorIds = [...new Set(Array.from(store.articles.values()).map(x => x.authorId))];
+    const authorIds = [...new Set(Array.from(store.articles.values()).map(x => x.authorId))];
+    const sourceIds = [...new Set(Array.from(store.articles.values()).filter(x => x.sourceId != null).map(x => x.sourceId))] as string[];
 
     await store.initializeAuthors(authorIds);
+    await store.initializeSources(sourceIds);
     await store.intitializeArticleNumberLookup();
 
     await store.intitializeProducts();

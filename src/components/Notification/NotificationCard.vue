@@ -14,7 +14,7 @@
 import { defineComponent } from 'vue';
 import { XIcon } from '@heroicons/vue/outline';
 import BaseButton from '../BaseButton.vue';
-import { Notification } from '@/classes/notification';
+import { InlineNotification } from '@/classes/notification';
 
 export default defineComponent({
     name: "NotificationCard",
@@ -25,7 +25,7 @@ export default defineComponent({
     emits: ["close"],
     props: {
         notification: {
-            type: Notification,
+            type: InlineNotification,
             required: true,
         },
     },
