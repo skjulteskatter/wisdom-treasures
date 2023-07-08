@@ -44,7 +44,6 @@ export default defineComponent({
                         "menuButton",
                         "menuButtonSMWhite",
                         "magic",
-                        "noBg",
                         "filterXBtn"
                     ].includes(value)
                 );
@@ -128,7 +127,7 @@ export default defineComponent({
         background-color: #85A3AC;
     }
     &--threeDBtn{
-        @apply bg-primary text-white rounded-lg tracking-wide
+        @apply bg-primary text-white rounded-lg tracking-wide shadow-md
     }
     &--tertiary {
         @apply text-primary hover:bg-primary/20;
@@ -150,6 +149,9 @@ export default defineComponent({
             display: none;
         }
     }
+    &--settings{
+        @apply text-[color:var(--color-text)] tracking-wide py-3 bg-white hover:bg-black/10 shadow-md;
+    }
     &--wisdomMannaBtn {
         @apply text-white sm:text-[color:var(--color-text)] tracking-wide py-3 hover:bg-black/10;
 
@@ -160,9 +162,6 @@ export default defineComponent({
     }
     &--filterXBtn{
         @apply text-inherit tracking-wide py-1 hover:bg-black/10;
-    }
-    &--noBg {
-        @apply bg-transparent text-[color:var(--color-text)] opacity-80 border-b border-black/20 rounded-none py-2 pb-4 px-4;
     }
     &--menuButtonSMWhite{
         @apply text-white tracking-wide py-3;
@@ -217,6 +216,7 @@ export default defineComponent({
 
     &--error {
         background-color: var(--wt-color-error);
+        color:white
     }
 
     &--neutral {

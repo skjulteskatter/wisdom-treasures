@@ -1,16 +1,16 @@
 <template>
   <main>
-    <div id="topPart" class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none items-center justify-between py-4 sm:py-6">
+    <div id="topPart" class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none items-center justify-between py-4">
       <div class="flex">
         <BackButton/>
         <p id="justForLayout" class="hidden sm:block opacity-0 mr-2">{{$t('signIn.logOut')}}</p>
       </div>
       
-      <h1 class="text-base sm:text-3xl text-white sm:text-inherit tracking-wide font-bold">
+      <h1 class="text-base sm:text-xl text-white sm:text-inherit tracking-wide font-bold">
       {{$t('common.profile')}}
       </h1>
       <div class="place-self-center">
-        <BaseButton @click="async () => {await logout()}">
+        <BaseButton theme="threeDBtn" @click="async () => {await logout()}">
           <p class="hidden sm:block ">{{$t('signIn.logOut')}}</p>
           <template #icon>
             <LogoutIcon class="h-5"/>
@@ -19,60 +19,63 @@
       </div>
     </div>
 
-    <div>
-      
-        
-          <div class="flex flex-col place-items-center font-sans py-10">
-            <img :src="currentUser?.photoURL || '/img/user.svg'" class="h-28 rounded-full"/>
-            <div class="flex flex-col items-center">
-              <!-- <h1 class="text-2xl font-bold font-sans mt-3">
-                {{getFullName}}
-              </h1> -->
-              <div class="flex justify-center items-center">
-                <BaseInput :model-value="displayName" :placeholder="getFullName" :nameInput="true"></BaseInput>
-              </div>
-              <p class="text-sm font-sans ">
-                {{getEmail}}
-              </p>
-            </div>
-          </div>
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-2 px-10">
-            <GenerelDropDown :input-map="validLangs" :initial-value="validLangs.get(store.locale) ?? fallbackLang" @value-clicked:chosen-value="setSelectedLanguage" :profileLanguage="true"></GenerelDropDown>
-            <BaseButton theme="noBg" @click="()=>{$router.push({name: 'store'})}">
-              {{$t('profile.buySubscription')}}
-              <template #firstIcon>
-                <CreditCardIcon class="h-5 opacity-80"></CreditCardIcon>
-              </template>
-            </BaseButton>
-            <BaseButton theme="noBg" @click="goToManageSubscriptions()">
-              {{$t('profile.manageSubscription')}}
-              <template #firstIcon>
-                <CurrencyDollarIcon class="h-5 opacity-80"></CurrencyDollarIcon>
-              </template>
-            </BaseButton>
-            <BaseButton theme='noBg' @click="showPasswordModal = true">
-              {{$t('signIn.passwordChange')}}
-              <template #firstIcon>
-                <KeyIcon class="h-5 opacity-80"></KeyIcon>
-              </template>
-            </BaseButton>
-            <BaseButton @click="sendEmail" theme="noBg">
-              {{$t('profile.contactSupport')}}:&nbsp;<ClickableLink>{{ supportEmail }}</ClickableLink>
-            </BaseButton>
-          </div>
+    <div class="lg:w-4/5 mr-auto ml-auto">
 
-          <div class="flex mt-8 pb-5 pr-10 sm:pr-5 w-full place-content-end">
-            <BaseButton theme='primary' @click="async ()=> {await saveLocalSettings()}">
-              {{$t('profile.saveSetting')}}
-              <template #icon>
-                <SaveIcon class="h-5"></SaveIcon>
-              </template>
-            </BaseButton>
-          </div>
+      <div class="flex flex-col sm:flex-row justify-center items-center pt-14 pb-10 sm:py-10">
+        <div class="sm:w-1/2 pb-5 px-10 flex justify-end">
+          <img :src="currentUser?.photoURL || '/img/user.svg'" class="h-44 rounded-full"/>
+        </div>
+        <div class="flex flex-col justify-center sm:justify-start sm:w-1/2 pt-5 sm:px-10 border-t-2 sm:border-t-0 sm:border-l-2 border-[color:var(--wt-color-secondary-light)]">
+          <h1 class="text-4xl font-bold font-sans">
+            {{getFullName}}
+          </h1>
+          <!-- <div class="flex justify-center items-center">
+            <BaseInput :model-value="displayName" :placeholder="getFullName" :nameInput="true"></BaseInput>
+          </div> -->
+          <p class="text-sm font-sans opacity-70 mt-1">
+            {{getEmail}}
+          </p>
+        </div>
+      </div>
 
-          <div class="absolute bottom-0 left-1/2 -translate-x-1/2 bg-black/10 opacity-40 w-11/12 sm:w-full h-5/6 -z-10 rounded-t-5xl"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 px-10">
+        <GenerelDropDown :input-map="validLangs" :initial-value="validLangs.get(store.locale) ?? fallbackLang" @value-clicked:chosen-value="setSelectedLanguage" :profileLanguage="true"></GenerelDropDown>
+        <BaseButton theme="settings" @click="()=>{$router.push({name: 'store'})}">
+          {{$t('profile.buySubscription')}}
+          <template #firstIcon>
+            <CreditCardIcon class="h-5 opacity-80"></CreditCardIcon>
+          </template>
+        </BaseButton>
+        <BaseButton theme="settings" @click="goToManageSubscriptions()">
+          {{$t('profile.manageSubscription')}}
+          <template #firstIcon>
+            <CurrencyDollarIcon class="h-5 opacity-80"></CurrencyDollarIcon>
+          </template>
+        </BaseButton>
+        <BaseButton theme='settings' @click="showPasswordModal = true">
+          {{$t('signIn.passwordChange')}}
+          <template #firstIcon>
+            <KeyIcon class="h-5 opacity-80"></KeyIcon>
+          </template>
+        </BaseButton>
+        <BaseButton @click="sendEmail" theme="settings">
+          {{$t('profile.contactSupport')}}:&nbsp;<ClickableLink>{{ supportEmail }}</ClickableLink>
+        </BaseButton>
+      </div>
+
+      <div class="flex mt-8 pb-5 pr-10 sm:pr-5 w-full place-content-end">
+        <BaseButton theme='threeDBtn' @click="async ()=> {await saveLocalSettings()}">
+          {{$t('profile.saveSetting')}}
+          <template #icon>
+            <SaveIcon class="h-5"></SaveIcon>
+          </template>
+        </BaseButton>
+      </div>
+
+      <!-- <div class="absolute bottom-0 left-1/2 -translate-x-1/2 bg-[#eaeaea] opacity-60 w-11/12 sm:w-full h-5/6 -z-10 rounded-t-5xl"></div> -->
       <ChangePasswordModal :show="showPasswordModal" @close="()=> {showPasswordModal = false}"/>
     </div>
+    <img id="add-bg" class="sm:hidden fixed top-0 left-0 store-card-width -z-50" src="../../images/add-bg.png"/>
   </main>
 </template>
 

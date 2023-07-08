@@ -7,18 +7,18 @@
       </h1>
     </div>
 
-    <img id="check-mark" class="w-3/5 mt-16 mr-auto ml-auto" src="../../images/success-mark.png"/>
+    <img id="check-mark" class="w-3/5 max-w-sm mt-16 sm:mt-5 mr-auto ml-auto" src="../../images/success-mark.png"/>
     
     <div class="flex flex-col w-fit mr-auto ml-auto px-10 text-center">
       <div>
         <h2 class="mt-5 text-2xl sm:text-3xl font-bold">Thank you!</h2>
         <h3 class="mt-5 text-xl sm:text-2xl mb-5 font-semibold">You have just subscribed to WisdomTreasures</h3>
-        <p>You will be redirected to the <a>homepage</a> in 10 seconds...</p>
+        <p class="opacity-70">You will be redirected to the <a>homepage</a> in 10 seconds...</p>
       </div>
-      <p>To unsubscribe go to: <a>who would like to unsub?!</a></p>
+      <p class="opacity-70">To unsubscribe go to: <a>who would like to unsub?!</a></p>
     </div>
 
-    <img id="add-bg" class="sm:hidden fixed bottom-32 left-0 store-card-width -z-50 opacity-60" src="../../images/add-bg.png"/>
+    <img id="add-bg" class="sm:hidden fixed bottom-32 left-0 w-screen -z-50 opacity-60" src="../../images/add-bg.png"/>
   </main> 
 </template>
 

@@ -1,9 +1,10 @@
 <template>
-    <Menu as="div" class="z-40 opacity-80">
-        <MenuButton class="w-full h-full px-2 py-1 rounded-md border-black/20 border" :class="profileLanguage ? 'border-l-white/0 border-r-white/0 sm:border-t-white/0 py-3 rounded-none' : ''">
-            <div class="flex place-content-center gap-2 place-items-center">
-                {{ chosenValue ?? initialValue }}
-                <ChevronDownIcon class="h-5 opacity-80"></ChevronDownIcon>
+    <Menu as="div" class="z-40">
+        <MenuButton class="w-full h-full px-2 py-1 rounded-md border-black/20 border" :class="profileLanguage ? 'border-0 py-3 bg-white hover:bg-black/10 shadow-md' : ''">
+            <div class="flex place-content-center gap-2 place-items-center text-[color:var(--color-text)] tracking-wide">
+                <GlobeAltIcon v-if="profileLanguage" class="h-5 text-[color:var(--color-text)]"/>
+                <p :class="profileLanguage ?'font-semibold' : ''">{{ chosenValue ?? initialValue }}</p>
+                <ChevronDownIcon class="h-5 text-[color:var(--color-text)]"></ChevronDownIcon>
             </div>
         </MenuButton>
         <transition
@@ -29,7 +30,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
-import { ChevronDownIcon } from '@heroicons/vue/outline';
+import { ChevronDownIcon, GlobeAltIcon } from '@heroicons/vue/outline';
 import BaseButton from './BaseButton.vue';
 export default defineComponent({
     name: "GenerelDropDown",
@@ -39,6 +40,7 @@ export default defineComponent({
         MenuItems,
         MenuItem,
         ChevronDownIcon,
+        GlobeAltIcon,
         BaseButton,
     },
     data: () => ({

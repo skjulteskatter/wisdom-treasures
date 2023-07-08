@@ -107,6 +107,7 @@
           </ThreeDButton>
         </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
+        <div v-if="!randomArticle" class="w-full h-56 mt-5 flex items-center justify-center rounded-lg border border-[color:var(--wt-color-text-grey)] opacity-70 text-center"><p class="text-[color:var(--wt-color-text-grey)] opacity-80 w-3/5">Click on the button above to get a Wisdom Word</p></div>
         <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
       </div>
     </div>
