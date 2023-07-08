@@ -18,7 +18,7 @@
     </div>
     <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5 sm:px-0" :class="{'pr-5' : searchedWord}">
       <div class="w-full">
-        <div id="ThemeCards" class="flex flex-wrap sm:gap-10 gap-2 justify-between">
+        <div id="ThemeCards" class="flex flex-wrap sm:gap-10 gap-2 justify-around">
           <div v-for="(origin, index) in searchedOrigins" :key="origin.id" class="flex flex-col">
             <!--<ThemeCard :publication="publication" class="grow" 
               :strech-y="true"/>-->
@@ -104,13 +104,6 @@ import Origin from '@/components/Origin.vue';
           const result = this.fuseSources?.search(this.searchedWord);
           sources = result.map(x => x.item).sort((a: OriginDto,b : OriginDto) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), "no"));
         }
-
-        //Remove all of these! This is just for testing
-        sources = sources.concat(sources);
-        sources = sources.concat(sources);
-        sources = sources.concat(sources);
-        sources = sources.concat(sources);
-        sources = sources.concat(sources);
         
         return sources;
       },
