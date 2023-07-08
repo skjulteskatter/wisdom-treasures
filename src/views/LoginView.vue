@@ -1,10 +1,9 @@
 <template>
   <main class="bg-white col-span-2 min-h-full w-full lg:flex place-items-center flex-col">
     <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-black/20 flex justify-center">
-      <div class="cursor-pointer flex place-items-center max-h-20 mt-8 mb-5" @mouseover="()=>{hoverOverWTLogo = true}" @mouseleave="()=>{hoverOverWTLogo = false}" @click="() => {$router.push({name: 'dashboard'})}">
-        <img class="w-14 h-14 cursor-pointer mr-2" src="/img/logo.svg"/>
+      <div class="flex place-items-center max-h-20 mt-8 mb-5">
+        <img class="w-14 h-14 mr-2" src="/img/logo.svg"/>
         <span class="text-xl text-primary pb-2 font-bold tracking-wide">Wisdom<div class="text-[color:var(--wt-color-text-lm)] font-bold -mt-1">Treasures</div></span>
-        <ArrowRightIcon class="w-6 ml-1 opacity-0" :class="[{'arrowAppear': hoverOverWTLogo, 'arrowDisAppear' : hoverOverWTLogo === false}]"/>
       </div>
       <!-- <div id="thisIsJustForSpacing" class="grow"/> -->
     </span>
@@ -192,7 +191,6 @@ import TermsModal from '@/components/TermsModal.vue';
       agreeTerms: false,
       errors: {email: "", password: "", fullName: "", terms: ""} as {email: string, password: string, fullName: string, terms: string},
       keepErrorMessageWhileValidating: false,
-      hoverOverWTLogo: undefined as boolean | undefined,
 
       registerFormLoaded: false,
       forgotPasswordFormLoaded: false,

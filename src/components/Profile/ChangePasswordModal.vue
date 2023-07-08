@@ -3,7 +3,7 @@
         <template #title> 
             <div class="flex">
                 <div class="grow"></div>
-                <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8" @click="() => $emit('close')">
+                <BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8 m-2 -mb-4" @click="() => $emit('close')">
 					<XIcon class="h-8 opacity-50"/>
 				</BaseButton>
             </div>

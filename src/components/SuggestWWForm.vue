@@ -39,7 +39,7 @@
             </div>
           <button class="submit-button" type="submit">Submit suggestion</button>
           <div v-if="isSubmitted" class="success-message">
-            Thank you for suggesting content for Wisdom Words. We will handle all suggestions. You will receive no
+            Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any
             notification if this wisdom word is included in the app.
           </div>
         </form>
@@ -131,17 +131,19 @@ export default {
     position: fixed;
     bottom: 100px;
     right: -20px;
-    background-color: #ffffff;
+    background-color: #fdfdfd;
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    box-shadow: 1px 1px 9px #dedede;
+    // box-shadow: 1px 1px 9px #dedede;
+    --tw-shadow: -10px 5px 40px -12px rgba(0, 0, 0, 0.322);
+    box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
     transition: all 0.5s;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 100;
+    z-index: 40;
 
     &.moveLeft {
       right: 20px;

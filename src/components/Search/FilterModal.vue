@@ -33,8 +33,8 @@
                                     </label>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 absolute w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
-                                    <button class="py-1.5 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
-                                    <button class="py-1.5 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
+                                    <button @click="resetAuthorFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
+                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
                                 </div>
                             </div>
                         </transition>
@@ -57,10 +57,9 @@
                                     </label>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 absolute w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
-                                    <button class="py-1.5 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
-                                    <button class="py-1.5 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
+                                    <button @click="resetPublicationFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
+                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>                                </div>
                                 </div>
-                            </div>
                             
                         </transition>
                     </div>
@@ -180,6 +179,21 @@ export default defineComponent({
             this.showPublications = false;
             this.showAuthors = false
         },
+        resetAuthorFilters(){
+            this.authorCheckBoxArray = [];
+            this.store.authorIdSearchFilter = [];
+
+            this.syncFilter();
+        },
+        resetPublicationFilters(){
+            this.publicationCheckBoxArray = [];
+            this.store.publicationIdSearchFilter = [];
+
+            this.syncFilter();
+        },
+        syncFilter(){
+            this.store.syncSearchFilter++;
+        }
     },
 });
 </script>

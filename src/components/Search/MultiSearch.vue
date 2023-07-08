@@ -11,6 +11,7 @@
         </BaseButton>
         </div>
         <FilterModal
+                ref="filterModalRef"
                 :key="filterModalKey" 
                 :show="showFilterModal" 
                 @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search()}}"
@@ -234,7 +235,7 @@ export default defineComponent({
         resetAllFilter(){
             this.store.publicationIdSearchFilter = [];
             this.store.authorIdSearchFilter = [];
-            this.store.onlyFavoriteSearchFilter = false; 
+            this.store.onlyFavoriteSearchFilter = false;
             this.syncFilter();
             this.search();
         },
