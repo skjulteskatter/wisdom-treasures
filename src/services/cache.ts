@@ -1,7 +1,23 @@
-import { openDB } from 'idb';
+import { openDB, deleteDB } from 'idb';
 import type { DBSchema, IDBPDatabase  } from 'idb';
 import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import type { Origin } from '@/classes/Origin';
+import { dbVersion as dbv } from '../../package.json'
+const dbPrefix : string = "WTDB"
+
+//Clean up old databases async
+console.log("Running on dbVersion: " + dbv);
+const promise = indexedDB.databases();
+promise.then((databases) => {
+  for (const database of databases) {
+    const name = (database.name ?? "");
+    if (name.startsWith(dbPrefix) && name != dbPrefix + dbVersion().toString())
+    {
+      console.log("Deleting old database: " + name);
+      deleteDB(name);
+    }
+  }
+});
 
 interface WTDBSchema extends DBSchema {
   'articles': {
@@ -22,13 +38,14 @@ interface WTDBSchema extends DBSchema {
   };
 }
 
-export const dbPromise : Promise<IDBPDatabase<WTDBSchema>> = openDB<WTDBSchema>("WTDB", 1, {
+export const dbPromise : Promise<IDBPDatabase<WTDBSchema>> = openDB<WTDBSchema>(dbPrefix + dbVersion().toString(), dbVersion(), {
   upgrade(db : IDBPDatabase<WTDBSchema>) {
     db.createObjectStore('articles');
     db.createObjectStore('publications');
     db.createObjectStore('authors');
     db.createObjectStore('origins');
-  },
+    //TODO create indexes
+  }
 });
 
 export async function putArticles(articles: Article[], expirySeconds: number = 7200) {
@@ -46,6 +63,11 @@ export async function putArticles(articles: Article[], expirySeconds: number = 7
         clearStoreCache(storeName);
         console.log("Cleared cache for store: " + storeName);
     }, expirySeconds * 1000)
+}
+
+function dbVersion(): number
+{
+  return dbv;
 }
 
 export async function putPublications(publications: Publication[], expirySeconds: number = 7200) {

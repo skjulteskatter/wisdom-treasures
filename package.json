@@ -1,6 +1,7 @@
 {
   "name": "wisdom-treasures",
-  "version": "0.0.0",
+  "version": "0.0.9",
+  "dbVersion": 9,
   "scripts": {
     "dev": "vite --port 5173",
     "build": "run-p type-check build-only",
@@ -9,7 +10,7 @@
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "test": "vitest --globals",
-    "deploy": "firebase-win deploy --only hosting:wisdomtreasures",
+    "deploy": "firebase deploy --only hosting:wisdomtreasures",
     "buildAndDeploy": "npm run build-only && npm run deploy"
   },
   "dependencies": {

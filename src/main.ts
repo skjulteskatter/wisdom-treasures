@@ -6,6 +6,7 @@ import 'tailwindcss/tailwind.css';
 import './style/tailwind.css';
 import './style/main.scss';
 import 'vue-plyr/dist/vue-plyr.css';
+import {version} from '../package.json'
 /* import the fontawesome core */
 import { library } from '@fortawesome/fontawesome-svg-core'
 
@@ -25,6 +26,11 @@ import router from './router';
 
 import './assets/main.css';
 // import '@fortawesome/fontawesome-free/css/all.css';
+
+import { registerSW } from 'virtual:pwa-register' //Don't know if this does anything
+registerSW({ immediate: true });
+
+console.log("Running version: " + version);
 
 const app = createApp(App);
 
