@@ -88,6 +88,11 @@
 										:clicked="shouldBeHighlighted('history')" @click="navigate('history')">
 										{{ $t('common.history') }}</BaseButton>
 									</MenuItem>
+									<MenuItem>
+									<BaseButton theme="menuButtonSMDark" :center-text="false"
+										:clicked="shouldBeHighlighted('origins')" @click="navigate('origins')">
+										{{ $t('common.origin') }}</BaseButton>
+									</MenuItem>
 								</div>
 								<div v-if="currentUser === null" class="p-1">
 									<MenuItem>

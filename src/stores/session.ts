@@ -70,6 +70,8 @@ export const useSessionStore = defineStore('session', {
 
             searchWord: "" as string,
             serachEvent: false as boolean,
+
+            userHasSubscription: false as boolean,
         }
     },
     actions: {
@@ -117,6 +119,9 @@ export const useSessionStore = defineStore('session', {
             }
                 
             for (const publication of publicationArray) {
+
+                /*This is the point where we know the user have a subscription*/ userHasSubscription = true; 
+
                 this.publications.set(publication.id, publication);
             }
 
@@ -233,6 +238,11 @@ export const useSessionStore = defineStore('session', {
                 threshold: 0.3
             };
             this.fuseArticles = new Fuse(articlesArray, option, Fuse.createIndex(option.keys, articlesArray));
+
+
+            //OK TEST TEST TEST
+            const langs: (string | undefined)[] = [];
+            console.log(articlesArray.filter(x => x.number == 5549)[0]);
         },
         async initializeFavorites() {
             try {
