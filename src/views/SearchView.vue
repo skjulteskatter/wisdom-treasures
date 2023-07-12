@@ -19,7 +19,9 @@
     </MultiSearch>
 
     <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-6 mx-10 sm:ml-auto sm:mr-auto" v-model="showAudioFiles" />
-    
+    <div v-if="searchedWord && themeHits.length+articleHitsPagination.length === 0" class=" ml-5 mt-5 sm:ml-0 text-[color:var(--wt-color-text-grey)] opacity-80">
+        Looks like we don't have what you're looking for...
+    </div>
     <div class="mx-5 sm:mx-0">
         <div v-if="searchLoading" class="absolute h-full w-full z-40 glass">
             <div class="h-40">

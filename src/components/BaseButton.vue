@@ -176,7 +176,7 @@ export default defineComponent({
         }
     }
     &--menuButtonSMDark{
-        @apply text-[color:var(--wt-color-text-grey)] tracking-wide py-3 font-bold;
+        @apply text-[color:var(--wt-color-text-grey)] tracking-wide font-bold px-0 sm:px-5 py-3;
 
         @screen sm {
             @apply text-[color:var(--color-text)] font-bold;

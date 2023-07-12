@@ -65,7 +65,7 @@
                   <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
                 </div>
               </div>
-              <div v-else class="h-full grid place-content-center">Looks like you have no favorites yet 😢</div>
+              <div v-else class="h-full grid place-content-center bg-white/50">Looks like you have no favorites yet 😢</div>
             </div>
             
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
@@ -81,7 +81,7 @@
                   <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
                 </div>
               </div>
-              <div v-else class="h-full grid place-content-center">Looks like you have no history yet 😢</div>
+              <div v-else class="h-full grid place-content-center bg-white/50">Looks like you have no history yet 😢</div>
             </div>
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
             </div>

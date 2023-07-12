@@ -1,6 +1,6 @@
 <template>
-  <div class="scroll-top" :class="{ active: isThemeDrawerActive, moveLeft: isHovered }">
-    <div class="drawer-button" :class="{ active: isThemeDrawerActive, hover: isHovered }" @click="toggleForm"
+  <div class="scroll-top" :class="{ active: isThemeDrawerActive, moveLeft: isHovered}">
+    <div class="drawer-button" :class="{ active: isThemeDrawerActive, hover: isHovered}" @click="toggleForm"
       @mousedown="handleMouseDown" @mouseover="handleMouseOver" @mouseout="handleMouseOut">
       <img class="profile-img" src="/img/logo.svg" style="height: 35px; width: 35px" alt="Profile Image" />
     </div>
@@ -8,7 +8,7 @@
 
 
     <div v-if="isFormOpen" @click="closeForm" class="form-overlay h-screen">
-      <div class="form-card p-10">
+      <div class="form-card">
         <span class="close-icon" @click="closeForm">&#10005;</span>
         <div class="form-title">Suggest a Wisdom Word</div>
         <form @click.stop @submit.prevent="submitForm" method="POST"
@@ -71,6 +71,12 @@ export default {
       },
     };
   },
+  // props:{
+  //   logInView:{
+  //     type: Boolean,
+  //     default: false,
+  //   }
+  // },
   methods: {
     handleOutsideClick(event: MouseEvent) {
       if (!(this.$refs.formCard as HTMLElement).contains(event.target as Node)) {
@@ -185,10 +191,14 @@ export default {
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 25rem;
   max-width: 100%;
+  max-height: 90vh;
   margin: 0 auto;
+  padding: 1.25rem;
+  padding-top: 2.5rem;
   position: relative;
+  overflow-y: auto
 }
 
 .form-title {
@@ -243,8 +253,8 @@ export default {
 
 .close-icon {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 12px;
   font-size: 24px;
   cursor: pointer;
 }

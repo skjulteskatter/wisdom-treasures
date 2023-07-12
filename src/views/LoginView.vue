@@ -3,7 +3,7 @@
     <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-black/20 flex justify-center">
       <div class="flex place-items-center max-h-20 mt-8 mb-5">
         <img class="w-14 h-14 mr-2" src="/img/logo.svg"/>
-        <span class="text-xl text-primary pb-2 font-bold tracking-wide">Wisdom<div class="text-[color:var(--wt-color-text-lm)] font-bold -mt-1">Treasures</div></span>
+        <span class="text-base pl-2 pt-1 text-primary font-bold tracking-wide">Wisdom<div class="text-[color:var(--wt-color-text-lm)] font-bold -mt-1">Treasures</div></span>
       </div>
       <!-- <div id="thisIsJustForSpacing" class="grow"/> -->
     </span>
@@ -78,7 +78,7 @@
             <BaseButton 
             :loading="actionLoading"
             @click="action()"  
-            theme="primary">
+            theme="threeDBtn">
               <div v-if="include([forms.login]) && !actionLoading">{{ $t('signIn.logIn') }}</div>
               <div v-else-if="include([forms.login])">{{ $t('signIn.signingIn') }}.</div>
               <div v-else-if="include([forms.register]) && !actionLoading">{{ $t('signIn.createAccount') }}</div>

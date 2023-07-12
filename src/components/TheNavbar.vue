@@ -65,9 +65,10 @@
 							leave-to-class="transform scale-95 opacity-0">
 							<!--			LOOK HERE - SIDE-MENU			 -->
 							<MenuItems
-								class="h-screen px-5 sm:px-0 py-20 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-1/2 sm:w-1/2 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right max-w-sm sm:rounded-md glassDropDown shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
-								<img class="w-14 h-14 cursor-pointer mr-2" src="/img/logo.svg"/>
-								<div class="flex flex-col sm:hidden p-1">
+								class="h-screen px-8 sm:px-0 py-20 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-2/3 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right sm:w-40 sm:rounded-md 
+								glassDropDown opacity-90 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
+								
+								<div class="flex flex-col sm:hidden">
 									<MenuItem>
 									<BaseButton theme="menuButtonSMDark" :center-text="false"
 										:clicked="shouldBeHighlighted('dashboard')" @click="navigate('dashboard')">
@@ -89,7 +90,7 @@
 										{{ $t('common.history') }}</BaseButton>
 									</MenuItem>
 								</div>
-								<div v-if="currentUser === null" class="p-1">
+								<div v-if="currentUser === null" class="">
 									<MenuItem>
 									<div class="flex gap-2 max-h-8">
 										<BaseButton theme="tertiary" @click="navigate('login')"
@@ -100,34 +101,35 @@
 									</div>
 									</MenuItem>
 								</div>
-								<div v-else class="p-1 border-t border-white/30 sm:border-black/30">
+								<div v-else class=" border-t border-white/30 sm:border-black/30">
 									<MenuItem>
-									<div class="flex gap-2 max-h-8">
+									<div class="flex">
 										<BaseButton class="w-full" theme="menuButtonSMDark" :center-text="false"
 											:clicked="shouldBeHighlighted('search')" @click="navigate('search')">
 											{{ $t('common.search') }}</BaseButton>
 									</div>
 									</MenuItem>
 									<MenuItem>
-									<div class="flex gap-2 max-h-8">
+									<div class="flex">
 										<BaseButton class="w-full" theme="menuButtonSMDark" :center-text="false"
 											:clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">
 											{{ $t('common.profile') }}</BaseButton>
 									</div>
 									</MenuItem>
 									<MenuItem>
-									<div class="flex gap-2 max-h-8">
+									<div class="flex">
 										<BaseButton class="w-full" theme="menuButtonSMDark" :center-text="false"
 											@click="{ }">{{ $t('common.notifications') }}</BaseButton>
 									</div>
 									</MenuItem>
 									<MenuItem>
-									<div class="flex gap-2 max-h-8">
+									<div class="flex">
 										<BaseButton class="w-full" theme="menuButtonSMDark" :center-text="false"
 											@click="{ }">{{ $t('common.help') }}</BaseButton>
 									</div>
 									</MenuItem>
 								</div>
+								<img class="w-10 fixed left-8 buttom-5 mt-16 cursor-pointer" src="/img/logo.svg"/>
 							</MenuItems>
 
 						</transition>
