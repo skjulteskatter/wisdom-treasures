@@ -21,11 +21,58 @@ export default defineConfig({
         globPatterns: ['**/*.{js,css,html,ico,png,svg,vue}'],
       },
       manifest: {
-        name: 'WisdomTreasures',
-        short_name: 'WT',
-        description: 'Write a description here yo',
-        theme_color: '#ffffff',
-      },
+        name: "WisdomTreasures",
+        short_name: "WisdomTreasures",
+        start_url: "https://wisdomtreasures.web.app/",
+        display: "standalone",
+        background_color: "#fff",
+        theme_color: "#3D6E7C",
+        description: "Everyday wisdom words",
+        icons: [
+          {
+            src: "https://wisdomtreasures.web.app/img/logo48.png",
+            sizes: "48x48",
+            type: "image/png",
+            purpose: "any maskable"
+          },
+          {
+            src: "https://wisdomtreasures.web.app/img/logo72.png",
+            sizes: "72x72",
+            type: "image/png",
+            purpose: "any maskable"
+          },
+          {
+            src: "https://wisdomtreasures.web.app/img/logo96.png",
+            sizes: "96x96",
+            type: "image/png",
+            purpose: "any maskable"
+          },
+          {
+            src: "https://wisdomtreasures.web.app/img/logo144.png",
+            sizes: "144x144",
+            type: "image/png",
+            purpose: "any maskable"
+          },
+          {
+            src: "https://wisdomtreasures.web.app/img/logo168.png",
+            sizes: "168x168",
+            type: "image/png",
+            purpose: "any maskable"
+          },
+          {
+            src: "https://wisdomtreasures.web.app/img/logo192.png",
+            sizes: "192x192",
+            type: "image/png",
+            purpose: "any maskable"
+          },
+          {
+            src: "https://wisdomtreasures.web.app/img/logo512.png",
+            sizes: "512x512",
+            type: "image/png",
+            purpose: "any maskable"
+          }
+        ]
+      }
     })
   ],
   resolve: {
@@ -41,5 +88,6 @@ export default defineConfig({
   },
   build: {
     target: 'esnext',
-  }
+    outDir: 'dist'
+  },
 })

@@ -244,6 +244,7 @@ export const useSessionStore = defineStore('session', {
             }
             catch 
             {
+                console.log("Failed to get favorites");
                 for (const key of favorites.getAll().keys()) {
                     this.favorites.push(key);
                 }
@@ -255,13 +256,23 @@ export const useSessionStore = defineStore('session', {
             }
         },
         async intitializeProducts(){
-            this.apiProducts = await stripe.getProducts();
+            try {
+                this.apiProducts = await stripe.getProducts();
+            } catch
+            {
+                console.log("Failed to get products");
+            }
+            
         },
         async intitializeStripeService(){
-            this.stripeService = new StripeService((await stripe.setup()).key);
+            try {
+                this.stripeService = new StripeService((await stripe.setup()).key);
+            } catch {
+                console.log("Failed to set up stripe service");
+            }
         },
         async initializeLanguage(): Promise<string>{
-            let lang = language.get();
+            const lang = language.get();
             return await this.setLocale(lang ?? undefined);
         }
     },

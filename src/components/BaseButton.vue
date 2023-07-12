@@ -64,7 +64,6 @@ export default defineComponent({
         size: {
             type: String,
             default: "medium",
-            validator: (v: string) => ["small", "medium", "large"].includes(v),
         },
         clicked: { //This is just for styling purposes
             type: Boolean,

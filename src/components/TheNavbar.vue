@@ -40,7 +40,7 @@
 						<BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8">
 							<BellIcon class="h-6 opacity-50" @click="addNotification()" />
 						</BaseButton>
-						<img :src="currentUser?.photoURL || '/public/img/user.svg'"
+						<img :src="currentUser?.photoURL || '/img/user.svg'"
 							class="w-8 h-8 rounded-full border-primary border cursor-pointer"
 							@click="navigate('profile')" alt="YourPicture"/>
 					</div>

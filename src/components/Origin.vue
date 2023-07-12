@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-col justify-between items-center text-center cursor-pointer" @click="()=>{$router.push({path: `${originsOrCurrentPath}${origin.id}`})}">
         <div class="w-24 h-24 flex justify-center items-center rounded-xl overflow-hidden border-black/30 border-2 border-hidden hover:shadow-xl hover:border-solid ">
-            <img :src="origin.image || '/public/img/originPlaceholder.svg'" :alt="origin.name">
+            <img :src="origin.image || '/img/originPlaceholder.svg'" :alt="origin.name">
         </div>
         <h2 class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
             {{ origin.name }}
@@ -25,7 +25,6 @@ import { defineComponent, type PropType } from "vue"
         originsOrCurrentPath(){
           let path : string = this.$router.getRoutes().find((x: any) => x.name == "origins")?.path ?? this.$route.path;
           path = path.endsWith("/") ? path : path + "/";
-          console.log("Hey!", path)
           return path;
         },
     }
