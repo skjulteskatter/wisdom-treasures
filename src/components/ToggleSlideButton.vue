@@ -48,7 +48,6 @@ export default defineComponent({
     emits: ["update:modelValue"],
     methods: {
         onChange() {
-            console.log(this.modelValue)
             this.$emit('update:modelValue', !this.modelValue);
             this.chosen = this.modelValue ? 'Words' : 'Audio'
         }

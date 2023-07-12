@@ -110,7 +110,6 @@ export async function putAuthors(authors: Contributor[], expirySeconds: number =
 
     const promises: Promise<string>[] = []
     for (const author of authors) {
-      console.log("Author: ",author)
         tx.store.put(author, author.id);
     }
 

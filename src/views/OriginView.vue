@@ -12,7 +12,7 @@
       <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
         {{ source?.name }}
       </h1>
-      <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId != null /**TODO make this a source filter instead of not null filter */).map(x => x.id)"></MannaButton>
+      <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.sourceId == $route.params.originId).map(x => x.id)"></MannaButton>
     </div>
     
     <MultiSearch theme="white" :initial-origin-filter="[$route.params.originId]"
