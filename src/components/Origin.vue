@@ -1,6 +1,6 @@
 <template>
     <div class="flex flex-col justify-between items-center text-center cursor-pointer" @click="()=>{$router.push({path: `${originsOrCurrentPath}${origin.id}`})}">
-        <div class="w-24 h-24 flex justify-center items-center rounded-xl overflow-hidden border-black/30 border-2 border-hidden hover:shadow-xl hover:border-solid ">
+        <div class="w-24 h-24 flex justify-center items-center rounded-xl overflow-hidden shadow-lg">
             <img :src="origin.image || '/img/originPlaceholder.svg'" :alt="origin.name">
         </div>
         <h2 class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">

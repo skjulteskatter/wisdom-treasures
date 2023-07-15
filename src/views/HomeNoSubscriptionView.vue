@@ -53,52 +53,44 @@
           </div>
 
 
-          <WWShowCard v-if="wordOfTheDay && displayWordOfTheDay" :article="wordOfTheDay"
-            class="w-11/12 sm:w-full" :WWCardHomeView="true" />
+          <div v-if="wordOfTheDay && displayWordOfTheDay" 
+            class="w-11/12 sm:w-full h-custom fav-his flex flex-col overflow-y-auto rounded-lg relative bg-white shadow-xl">
+            <div id="fakeHeader" class="flex p-4 border-b">
+              <div class="grow"/>
+              <ClipboardCopyIcon class="h-8 opacity-50 pop"/>
+              <HeartIcon class="h-8 mx-3 text-[color:var(--wt-color-secondary-light)] pop"/> 
+            </div>
+            <div class="grow"/>
+            <div id="fakeContent" class="flex flex-col items-center text-center">
+              <p class="w-2/3 font-serif sm:grow m-5 leading-6 text-sm">Dåpen i Den Hellige Ånd tar ikke bort lidelsen ved å fornekte seg selv, men den gjør meg i stand til å stå fast og lide ut synden i kjødet.</p>
+              <p class="italic text-xs ml-5 sm:ml-0 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">- Sigurd Bratlie, 1997</p>
+            </div>
+            <div class="grow"/>
+            <div id="fakeFooter" class="flex items-center justify-center p-4 border-t text-xs text-[color:var(--wt-color-text-grey)] opacity-70 tracking-wide">
+              <p class="h-8 flex items-center">See more from&nbsp;<span class="text-secondary">Den Hellige Ånd</span></p>
+            </div>
+            <div class="w-full h-full absolute top-0 left-0 bg-black/10 backdrop-blur-sm"></div>
+          </div>
 
           <!-- DIV for favourites -->
           <div v-if="displayFavorites" id="WWCards"
-            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
-            <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
-              <div v-if="favoriteArticles.length > 0">
-                <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
-                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
-                </div>
-              </div>
-              <div v-else class="h-full grid place-content-center bg-white/50">Looks like you have no favorites yet 😢</div>
-            </div>
-            
-            <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
-            </div>
-          </div>
+            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative bg-red-300"></div>
 
           <!-- DIV for History -->
           <div v-if="displayHistory" id="WWCards"
-            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
-            <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
-              <div v-if="historyArticles.length > 0">
-                <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
-                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
-                </div>
-              </div>
-              <div v-else class="h-full grid place-content-center bg-white/50">Looks like you have no history yet 😢</div>
-            </div>
-            <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
-            </div>
-          </div>
+            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative bg-blue-300"></div>
 
         </div>
-        <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
       </div>
 
 
       <div class="ml-5 sm:ml-0">
         <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">
           {{ $t('common.origin').toUpperCase() }}</h1>
-        <OriginsSwiper class="z-0" />
+        <OriginsSwiperFake class="z-0" />
       </div>
 
-      <div class="mx-5 sm:mx-0 mb-5 ">
+      <!-- <div class="mx-5 sm:mx-0 mb-5 ">
         <h1 class="text-base font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{
           $t('common.wisdomManna').toUpperCase() }}</h1>
         <div class="md:w-1/2 mx-auto justify-center">
@@ -109,7 +101,7 @@
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
         <div v-if="!randomArticle" class="w-full h-56 mt-5 flex items-center justify-center rounded-lg border border-[color:var(--wt-color-text-grey)] opacity-70 text-center"><p class="text-[color:var(--wt-color-text-grey)] opacity-80 w-3/5">Click on the button above to get a Wisdom Word</p></div>
         <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
-      </div>
+      </div> -->
     </div>
   </main>
 </template>
@@ -125,11 +117,12 @@ import { InlineNotification } from '@/classes/notification';
 import router from '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
-import OriginsSwiper from '@/components/OriginsSwiper.vue';
+import OriginsSwiperFake from '@/components/OriginsSwiperFake.vue';
 import { mannaHistory, history } from '@/services/localStorage';
+import { HeartIcon, ClipboardCopyIcon } from '@heroicons/vue/outline';
 
 export default defineComponent({
-  name: "HomeView",
+  name: "HomeNoSubscriptionView",
   data() {
     return {
       publications: [] as Publication[],
@@ -151,7 +144,9 @@ export default defineComponent({
     WWCard,
     WWShowCard,
     ThreeDButton,
-    OriginsSwiper,
+    OriginsSwiperFake,
+    HeartIcon,
+    ClipboardCopyIcon,
   },
   computed: {
     historyArticles(): Article[] {
