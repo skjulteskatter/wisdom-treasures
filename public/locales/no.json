@@ -38,7 +38,9 @@
     "thisWeek": "Denne uken",
     "thisMonth": "Denne måneden",
     "thisYear": "Dette året",
-    "earlier": "Tidligere"
+    "earlier": "Tidligere",
+    "noHistory": "Du har ingen historie enda 😢",
+    "dailyword": "Dagens ord"
   },
   "signIn": {
     "logIn": "Logg inn",
