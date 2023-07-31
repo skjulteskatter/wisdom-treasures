@@ -9,12 +9,15 @@
     </span>
     <BaseCard class="mx-auto rounded-none lg:rounded-md lg:max-w-sm lg:w-96 shadow-none">
       <template #header>
-        <div class="font-sans flex justify-center">
+        <div class="font-sans flex justify-center items-center">
           <div>
             <div v-if="include([forms.login])">
               <p class="font-bold" v-if="store.redirectAfterLoginName == 'profile'">{{$t('signIn.logInMsg')}}</p>
               <p class="font-bold" v-else-if="store.redirectAfterLoginName == 'store'">{{$t('signIn.logInStoreMsg')}}</p>
-              <p class="font-bold" v-else>{{ $t('signIn.logIn') }}</p>
+              <div v-else class="flex flex-col items-center">
+              <p class="font-bold" >{{ $t('signIn.logIn') }}</p>
+              <p class="text-xs">  {{ $t('signIn.logInInfo') }}</p>
+            </div>
             </div>
             <p class="font-bold" v-else-if="include([forms.register])">{{$t('signIn.createAccountMsg')}}</p>
             <p class="font-bold" v-else>{{$t('signIn.resetPasswordMsg')}}</p>
