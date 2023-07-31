@@ -6,8 +6,9 @@
     </div>
 
 
+    <BaseModal :show=isFormOpen class="fixed pw-full h-full left-0 top-0 z-40" @close="() => $emit('close')" :useBaseCard="false">
 
-    <div v-if="isFormOpen" @click="closeForm" class="form-overlay h-screen">
+    <!-- <div v-if="isFormOpen" @click="closeForm" class="form-overlay h-screen"> -->
       <div class="form-card p-10">
         <span class="close-icon" @click="closeForm">&#10005;</span>
         <div class="form-title">{{ $t('form.suggest') }}</div>
@@ -42,13 +43,14 @@
             {{ $t('form.thankYou') }} </div>
         </form>
       </div>
-    </div>
+    <!-- </div> -->
+  </BaseModal>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import BaseModal from "./BaseModal.vue"
 export default {
   name: "form-suggestion",
   data() {
@@ -68,6 +70,9 @@ export default {
         nameSender: ''
       },
     };
+  },
+  components: {
+    BaseModal
   },
   methods: {
     handleOutsideClick(event: MouseEvent) {
@@ -134,7 +139,7 @@ export default {
     width: 50px;
     height: 50px;
     // box-shadow: 1px 1px 9px #dedede;
-    --tw-shadow: -10px 5px 40px -12px rgba(0, 0, 0, 0.322);
+    --tw-shadow: -10px 5px 40px -12px rgba(186, 50, 50, 0.322);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
     transition: all 0.5s;
     cursor: pointer;
@@ -163,19 +168,6 @@ export default {
     }
   }
 
-  .form-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 100;
-    padding: 10px
-  }
 
 }
 
