@@ -1,7 +1,6 @@
 <template>
   <div class="scroll-top" :class="{ active: isThemeDrawerActive, moveLeft: isHovered }">
-    <div class="drawer-button" :class="{ active: isThemeDrawerActive, hover: isHovered }" @click="toggleForm"
-      @mousedown="handleMouseDown" @mouseover="handleMouseOver" @mouseout="handleMouseOut">
+    <div class="drawer-button" :class="{ active: isThemeDrawerActive, hover: isHovered }" @click="toggleForm">
       <img class="profile-img" src="/img/logo.svg" style="height: 35px; width: 35px" alt="Profile Image" />
     </div>
 
@@ -49,7 +48,6 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
 import BaseModal from "./BaseModal.vue"
 export default {
   name: "form-suggestion",
