@@ -10,38 +10,36 @@
     <div v-if="isFormOpen" @click="closeForm" class="form-overlay h-screen">
       <div class="form-card p-10">
         <span class="close-icon" @click="closeForm">&#10005;</span>
-        <div class="form-title">Suggest a Wisdom Word</div>
+        <div class="form-title">{{ $t('form.suggest') }}</div>
         <form @click.stop @submit.prevent="submitForm" method="POST"
           :action=appScriptsLink>
           <div class="form-field">
-            <label class="label" for="wisdom-word">What is the wisdom word?</label>
+            <label class="label" for="wisdom-word">{{ $t('form.what') }}</label>
             <input name="WisdomWord" required type="text" id="wisdom-word" v-model="formData.wisdomWord"  />
           </div>
           <div class="form-field">
-            <label class="label" for="author">Who said this?</label>
+            <label class="label" for="author">{{ $t('form.who') }}</label>
             <input name=Author required type="text" id="author" v-model="formData.author"  />
           </div>
           <div class="form-field">
-            <label class="label" for="date">When was this said?</label>
+            <label class="label" for="date">{{ $t('form.when') }}</label>
             <input name=Time required type="text" id="date" v-model="formData.date"  />
           </div>
           <div class="form-field">
-            <label class="label" for="context">In what context was this said?</label>
+            <label class="label" for="context">{{ $t('form.context') }}</label>
             <input Name="Source" required type="text" id="context" v-model="formData.context"  />
           </div>
             <div class="form-field">
-              <label class="label" for="Email">Your Email</label>
+              <label class="label" for="Email">{{ $t('form.email') }}</label>
               <input name="Email" required type="email" id="email" v-model="formData.email" />
             </div>
             <div class="form-field">
-              <label class="label" for="namesender">Your Name</label>
+              <label class="label" for="namesender">{{ $t('form.name') }}</label>
               <input name="NameSender" required type="text" id="namesender" v-model="formData.nameSender" />
             </div>
-          <button class="submit-button" type="submit">Submit suggestion</button>
+          <button class="submit-button" type="submit">{{ $t('form.submit') }}</button>
           <div v-if="isSubmitted" class="success-message">
-            Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any
-            notification if this wisdom word is included in the app.
-          </div>
+            {{ $t('form.thankYou') }} </div>
         </form>
       </div>
     </div>

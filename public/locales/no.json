@@ -70,7 +70,9 @@
     "passwordRequiredMsg": "Passord er obligatorisk",
     "passwordDontMatchMsg": "Passordene stemmer ikke overens",
     "change": "Endre passord",
-    "passwordChange": "Endre Passord"
+    "passwordChange": "Endre Passord",
+    "loginST": "Dette er samme login som SongTreasures",
+    "logInInfo": "Dette er samme login som SongTreasures"
   },
   "home": {
     "welcometo": "Velkommen til",
@@ -111,5 +113,16 @@
   },
   "notifications": {
     "placeholderMsg": "Hei, dette er en placeholder for en notification"
+  },
+  "form": {
+    "suggest": "Foreslå et visdomsord",
+    "what": "Hva er visdomsordet?",
+    "who": "Hvem sa dette?",
+    "when": "Når var dette sagt/skrevet?",
+    "email": "Hva er din mail?",
+    "context": "I hvilken forbindelse/setting ble dette sagt/skrevet?",
+    "name": "Hva er ditt navn?",
+    "submit": "Send inn",
+    "thankYou": "Tusen takk for at du foreslår innhold til WisdomWords. Vi vurderer alle forslag som blir sendt inn, du vil ikke bli kontaktet dersom ditt forslag blir inkludert i appen."
   }
 }

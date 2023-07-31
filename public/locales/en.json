@@ -71,7 +71,9 @@
     "tosMsg": "Terms of Services and Conditions",
     "passwordRequiredMsg": "Password is required",
     "passwordDontMatchMsg": "The passwords does not match",
-    "passwordChange": "Change password"
+    "passwordChange": "Change password",
+    "loginST": "This is the same login as SongTreasures",
+    "logInInfo": "This is the same login as SongTreasures"
   },
   "home": {
     "welcometo": "Welcome to",
@@ -113,5 +115,16 @@
     "searchTheme": "Search theme...",
     "restWWTheme": "Rest of the Wisdom Words in the theme:",
     "getWisdomMannaThisTheme": "Get a wisdom manna from this theme"
+  },
+  "form": {
+    "suggest": "Suggest a Wisdom Word",
+    "what": "What is the wisdom word?",
+    "who": "Who said this?",
+    "when": "When was this said/written?",
+    "context": "In what context was this said?",
+    "email": "What is your email",
+    "name": "What is your name?",
+    "submit": "Submit suggestion",
+    "thankYou": "Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any notification if this wisdom word is included in the app."
   }
 }
