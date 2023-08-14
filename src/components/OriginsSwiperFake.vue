@@ -16,7 +16,7 @@
       <div class="w-24 h-24 flex justify-center items-center rounded-xl overflow-hidden shadow-lg">
           <img :src="origin.image || '/img/originPlaceholder.svg'" :alt="origin.name">
       </div>
-      <h2 class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
+      <h2 class="text-center mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
           {{ origin.name }}
       </h2>
     </swiper-slide>

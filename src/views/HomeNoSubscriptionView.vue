@@ -1,5 +1,15 @@
 <template>
   <main>
+    <BaseModal :show="true" class="fixed w-20 h-full left-0 top-0 z-40" @close="() => $emit('close')">
+      <p class="max-w-[calc(100vw*0.5)] text-center">Psst! You do not currently have any active subscriptions, so the app is very limited. 
+        Buy a subscription to unlock the app and get access to all the amazing features!</p>
+        <template #footer> 
+            <div class="flex">
+                <button class="w-1/2 border-r border-gray-400" @click="$emit('close')">Close</button>
+                <button class="w-1/2">To the Store</button>
+            </div>
+        </template>
+    </BaseModal>
     <div class="lg:w-4/5 justify-center mx-auto">
       <div
         class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0 ">
@@ -80,6 +90,11 @@
           <div v-if="displayHistory" id="WWCards"
             class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative bg-blue-300"></div>
 
+          <div class="absolute -bottom-5 -left-16 bg-black/30 p-5 rounded-sm">
+            <h2 class="text-white text-2xl font-bold mb-2">Get daily wisdom word</h2>
+            <h3 class="text-white text-lg">See “Today's wisdom word” every day in the Wisdom Treasures app</h3>
+            <button class="pt-1 text-white" @click="navigate('store')">Go to the store -></button>
+          </div>
         </div>
       </div>
 
@@ -88,20 +103,45 @@
         <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">
           {{ $t('common.origin').toUpperCase() }}</h1>
         <OriginsSwiperFake class="z-0" />
+        <div class="z-10 absolute top-4 -right-16 bg-black/30 p-5 rounded-sm max-w-xl">
+          <h2 class="text-white text-2xl font-bold mb-2">Catch up on latest events</h2>
+          <h3 class="text-white text-lg">Wisdom Treasures is continuously updated with wisdom words from the last BCC events</h3>
+          <button class="pt-1 text-white" @click="navigate('store')">Go to the store -></button>
+        </div>
       </div>
 
-      <!-- <div class="mx-5 sm:mx-0 mb-5 ">
+      <div class="mx-5 sm:mx-0 mb-5 ">
         <h1 class="text-base font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{
           $t('common.wisdomManna').toUpperCase() }}</h1>
-        <div class="md:w-1/2 mx-auto justify-center">
-          <ThreeDButton size="large" :three-d="true" @clicked="getAndSetRandomArticle" class="self-end flex-shrink-0">
+        <div class="md:w-1/2 mx-auto justify-center mb-5">
+          <ThreeDButton size="large" :three-d="true" class="self-end flex-shrink-0">
             <p class="text-base font-bold tracking-wide px-5">{{ $t('home.getWisdomManna') }}</p>
           </ThreeDButton>
         </div>
-        <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
-        <div v-if="!randomArticle" class="w-full h-56 mt-5 flex items-center justify-center rounded-lg border border-[color:var(--wt-color-text-grey)] opacity-70 text-center"><p class="text-[color:var(--wt-color-text-grey)] opacity-80 w-3/5">Click on the button above to get a Wisdom Word</p></div>
-        <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
-      </div> -->
+        <div 
+            class="w-11/12 sm:w-full h-custom fav-his flex flex-col overflow-y-auto rounded-lg relative bg-white shadow-xl">
+            <div id="fakeHeader" class="flex p-4 border-b">
+              <div class="grow"/>
+              <ClipboardCopyIcon class="h-8 opacity-50 pop"/>
+              <HeartIcon class="h-8 mx-3 text-[color:var(--wt-color-secondary-light)] pop"/> 
+            </div>
+            <div class="grow"/>
+            <div id="fakeContent" class="flex flex-col items-center text-center">
+              <p class="w-2/3 font-serif sm:grow m-5 leading-6 text-sm">Dåpen i Den Hellige Ånd tar ikke bort lidelsen ved å fornekte seg selv, men den gjør meg i stand til å stå fast og lide ut synden i kjødet.</p>
+              <p class="italic text-xs ml-5 sm:ml-0 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">- Sigurd Bratlie, 1997</p>
+            </div>
+            <div class="grow"/>
+            <div id="fakeFooter" class="flex items-center justify-center p-4 border-t text-xs text-[color:var(--wt-color-text-grey)] opacity-70 tracking-wide">
+              <p class="h-8 flex items-center">See more from&nbsp;<span class="text-secondary">Den Hellige Ånd</span></p>
+            </div>
+            <div class="w-full h-full absolute top-0 left-0 bg-black/10 backdrop-blur-sm"></div>
+          </div>
+          <div class="z-10 max-w-xl absolute bottom-10  left-0 md:-left-16 bg-black/30 p-5 rounded-sm ">
+            <h2 class="text-white text-2xl font-bold mb-2">Get wisdom manna</h2>
+            <h3 class="text-white text-lg">Wisdom treasures lets you generate a random wisdom word!</h3>
+            <button class="pt-1 text-white" @click="navigate('store')">Go to the store -></button>
+          </div>
+        </div>
     </div>
   </main>
 </template>
@@ -120,6 +160,7 @@ import ThreeDButton from '@/components/ThreeDButton.vue';
 import OriginsSwiperFake from '@/components/OriginsSwiperFake.vue';
 import { mannaHistory, history } from '@/services/localStorage';
 import { HeartIcon, ClipboardCopyIcon } from '@heroicons/vue/outline';
+import BaseModal from '@/components/BaseModal.vue';
 
 export default defineComponent({
   name: "HomeNoSubscriptionView",
@@ -147,7 +188,9 @@ export default defineComponent({
     OriginsSwiperFake,
     HeartIcon,
     ClipboardCopyIcon,
+    BaseModal
   },
+  emits: ["close"],
   computed: {
     historyArticles(): Article[] {
       let historyArticlesIds: string[] = [];
@@ -210,6 +253,10 @@ export default defineComponent({
       }
       return favoriteArticles;
     },
+    navigate(name: string) {
+      router.push({ name: name });
+      console.log("it worked")
+    },  
   },
   watch: {
     sessionInitialized(initialized) {
