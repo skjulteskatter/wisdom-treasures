@@ -144,9 +144,7 @@
         copyToClipBoard() {
             this.copyToClipBoardKey = uuid.v4();
             if (!this.article.content?.content) return;
-            navigator.clipboard.writeText(`${this.article.content?.content.replace(/<.+?>/g, "").trim()}
-            ${(this.authorName != '' ? ' - ' + this.authorName : '')}
-            ${(this.getArticleYearWritten) > 1000 ? " " + this.getArticleYearWritten.toString() : ""}`);
+            navigator.clipboard.writeText(`${this.article.content?.content.replace(/<.+?>/g, "").trim()}\n${(this.authorName != '' ? ' - ' + this.authorName : '')}${(this.getArticleYearWritten) > 1000 ? ", " + this.getArticleYearWritten.toString() : ""}${this.originName.length > 0 ? ", " + this.originName : ""}`);
 
             this.openCopyToClipBoardPopUpSemaphore++;
             setTimeout(() => {
@@ -171,7 +169,8 @@
       },
     });
   </script>
-<style>
+
+<style scoped>
 .min-h-custom{
   min-height: max(28rem, 64vh)
 }
