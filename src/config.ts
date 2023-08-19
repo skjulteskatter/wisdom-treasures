@@ -9,7 +9,7 @@ const firebaseConfigDevelopment = {
 
 const firebaseConfigProduction = {    
     apiKey: "AIzaSyDTZsQJxCT3w7cIQzYJ6T3YxNLIF-2LEpk",
-    authDomain: "songtreasures.app",
+    authDomain: "wisdomtreasures.web.app/",
     projectId: "songtreasures",
     storageBucket: "songtreasures.appspot.com",
     messagingSenderId: "721098499416",

@@ -66,7 +66,12 @@ export async function loginWithProvider(providerName : string, rememberMe: boole
     if (getDeviceType() == "desktop"){
         const userCredentials : UserCredential = await signInWithPopup(auth, provider);
     } else {
-        const userCredentials : UserCredential = await signInWithRedirect(auth, provider);
+        try{    
+            const userCredentials : UserCredential = await signInWithRedirect(auth, provider);
+        } catch (e){
+            console.log("Failed to log in with redirect. Trying popup.\nError: " + e);
+            const userCredentials : UserCredential = await signInWithPopup(auth, provider);
+        }
     }
     
     pushToDashboardOrRedirectLink();
