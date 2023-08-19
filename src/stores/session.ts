@@ -120,7 +120,7 @@ export const useSessionStore = defineStore('session', {
                 
             for (const publication of publicationArray) {
 
-                /*This is the point where we know the user have a subscription*/ userHasSubscription = true; 
+                /*This is the point where we know the user have a subscription*/ this.userHasSubscription = true; 
 
                 this.publications.set(publication.id, publication);
             }
