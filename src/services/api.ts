@@ -1,4 +1,4 @@
-import type { IUser, ISettings } from "hiddentreasures-js";
+import type { IUser, ISettings, Article } from "hiddentreasures-js";
 import http from "./http";
 import type { HTUser } from "@/classes/HTUser";
 import type { RedirectToCheckoutOptions } from "@stripe/stripe-js";
@@ -57,6 +57,27 @@ export const favorites = {
         return http.delete<void>("api/favorites/items", ids);
     },
 };
+
+type ArticleInputBody = {
+    itemIds: string[] //GUIDS
+    limit: number,
+    skip: number,
+    orderBy: string,
+    orderByDirection: string,
+    lastUpdated: Date, //"2023-08-19T10:36:50.594Z",
+    collectionIds: string[] //GUIDS
+    parentIds: string[] //GUIDS
+    withContent: boolean
+}
+
+export const articles = {
+    get(language: string) {
+        return http.get<string[]>(`api/Articles?language=${language}&X-Api-Version=4`);
+    },
+    post(language: string, updatedAt: Date, articleInputBody: ArticleInputBody){
+        return http.post<Article>(`api/Articles?language=${language}&X-Api-Version=4`)
+    }
+}
 
 export default {
     session

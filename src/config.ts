@@ -7,14 +7,24 @@ const firebaseConfigDevelopment = {
     appId: "1:208120429940:web:62c2a510128a829de90021"
   };
 
-const firebaseConfigProduction = {    
-    apiKey: "AIzaSyDTZsQJxCT3w7cIQzYJ6T3YxNLIF-2LEpk",
-    authDomain: "wisdomtreasures.web.app/",
+//const firebaseConfigProduction = {    
+//    apiKey: "AIzaSyDTZsQJxCT3w7cIQzYJ6T3YxNLIF-2LEpk",
+//    authDomain: "songtreasures.app",
+//    projectId: "songtreasures",
+//    storageBucket: "songtreasures.appspot.com",
+//    messagingSenderId: "721098499416",
+//    appId: "1:721098499416:web:fc3d22660728b82e82f12d",
+//    measurementId: "G-YWMEW6TKB8",
+//  };
+
+const firebaseConfigProduction = {
+    apiKey: "AIzaSyDtIzd8JT1DYcvLFUCD8Z4XiJYPG_usGcU",
+    authDomain: "songtreasures.firebaseapp.com",
     projectId: "songtreasures",
     storageBucket: "songtreasures.appspot.com",
     messagingSenderId: "721098499416",
-    appId: "1:721098499416:web:fc3d22660728b82e82f12d",
-    measurementId: "G-YWMEW6TKB8",
+    appId: "1:721098499416:web:d21b47b5afc7dbbb82f12d",
+    measurementId: "G-SWDNE8V474"
   };
 
 const firebaseConfig = 
