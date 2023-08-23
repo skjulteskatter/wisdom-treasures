@@ -5,10 +5,10 @@
       <img class="profile-img" src="/img/logo.svg" style="height: 35px; width: 35px" alt="Profile Image" />
     </div>
 
-
-
-    <div v-if="isFormOpen" @click="closeForm" class="form-overlay h-screen">
-      <div class="form-card">
+    <!-- <div v-if="isFormOpen" @click="closeForm" class="form-overlay h-screen"> -->
+      <BaseModal :show="isFormOpen" @click=closeForm class="fixed w-full h-full left-0 top-0 z-40" @close="(e: any) => {$emit('close', e)}" :useBaseCard="false">
+      <template #default >
+        <div class="form-card">
         <span class="close-icon" @click="closeForm">&#10005;</span>
         <div class="form-title">Suggest a Wisdom Word</div>
         <form @click.stop @submit.prevent="submitForm" method="POST"
@@ -43,13 +43,14 @@
           </div>
         </form>
       </div>
-    </div>
+    </template>
+    </BaseModal>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-
+import BaseModal from "../components/BaseModal.vue"
 export default {
   name: "form-suggestion",
   data() {
@@ -70,6 +71,9 @@ export default {
       },
     };
   },
+  components:{
+    BaseModal
+  },
   methods: {
     handleOutsideClick(event: MouseEvent) {
       if (!(this.$refs.formCard as HTMLElement).contains(event.target as Node)) {
@@ -80,6 +84,7 @@ export default {
     toggleForm() {
       console.log('appScriptsLink', this.appScriptsLink)
       this.isFormOpen = !this.isFormOpen;
+      console.log(this.isFormOpen)
     },
     closeForm() {
       this.isFormOpen = false;
