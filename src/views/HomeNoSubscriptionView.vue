@@ -1,6 +1,8 @@
 <template>
+  <img id="background-img" src="../../images/backgroundlogo.svg"
+    class="hidden sm:block fixed -top-10 -right-44 2xl:-right-5 w-custom-45rem -z-20 transition-all duration-300 ease-in-out blur-sm" />
   <main>
-    <div class="lg:w-4/5 justify-center mx-auto">
+    <div class="lg:w-full justify-center mx-auto">
       <div
         class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0 ">
         <h1 class="text-base font-bold text-[color:var(--wt-color-text-grey)] opacity-80">
@@ -20,118 +22,45 @@
         </h1>
       </div>
 
-      <div id="wordOfTheDayCotainer"
-        class="flex flex-col justify-between mt-8 sm:mt-0 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
-
-        <div class="flex sm:flex-row-reverse">
-
-          <div class="flex flex-col sm:w-1/6 justify-between py-16 sm:py-0 -ml-4 sm:ml-6 sm:pl-6 sm:my-10 sm:border-l-2 sm:border-[#dcdcdc]">
-            <div class="flex flex-col items-center sm:items-start">
-              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
-                  @click="changeDisplayWOTD()">
-                <span class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
-                  :class="{ 'highlighted': displayWordOfTheDay }">{{ $t('common.dailyword') }}</span>
-                <div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
-              </div>
-            </div>
-            <div class="flex flex-col items-center sm:items-start">
-              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
-                  @click="changeDisplayFavorites()">
-                <span class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
-                  :class="{ 'highlighted': displayFavorites }">{{ $t('common.favorites') }}</span>
-                <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
-              </div>
-            </div>
-            <div class="flex flex-col items-center sm:items-start">
-              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
-                  @click="changeDisplayHistory()">
-                <span class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
-                  :class="{ 'highlighted': displayHistory }">{{ $t('common.history') }}</span>
-                <div v-if="displayHistory" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
-              </div>
-            </div>
-          </div>
-
-
-          <div v-if="wordOfTheDay && displayWordOfTheDay" 
-            class="w-11/12 sm:w-full h-custom fav-his flex flex-col overflow-y-auto rounded-lg relative bg-white shadow-xl">
-            <div id="fakeHeader" class="flex p-4 border-b">
-              <div class="grow"/>
-              <ClipboardCopyIcon class="h-8 opacity-50 pop"/>
-              <HeartIcon class="h-8 mx-3 text-[color:var(--wt-color-secondary-light)] pop"/> 
-            </div>
-            <div class="grow"/>
-            <div id="fakeContent" class="flex flex-col items-center text-center">
-              <p class="w-2/3 font-serif sm:grow m-5 leading-6 text-sm">Dåpen i Den Hellige Ånd tar ikke bort lidelsen ved å fornekte seg selv, men den gjør meg i stand til å stå fast og lide ut synden i kjødet.</p>
-              <p class="italic text-xs ml-5 sm:ml-0 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">- Sigurd Bratlie, 1997</p>
-            </div>
-            <div class="grow"/>
-            <div id="fakeFooter" class="flex items-center justify-center p-4 border-t text-xs text-[color:var(--wt-color-text-grey)] opacity-70 tracking-wide">
-              <p class="h-8 flex items-center">See more from&nbsp;<span class="text-secondary">Den Hellige Ånd</span></p>
-            </div>
-            <div class="w-full h-full absolute top-0 left-0 bg-black/10 backdrop-blur-sm"></div>
-          </div>
-
-          <!-- DIV for favourites -->
-          <div v-if="displayFavorites" id="WWCards"
-            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative bg-red-300"></div>
-
-          <!-- DIV for History -->
-          <div v-if="displayHistory" id="WWCards"
-            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative bg-blue-300"></div>
-
-          <div class="absolute -bottom-5 -left-16 bg-black/30 p-5 rounded-sm">
-            <h2 class="text-white text-2xl font-bold mb-2">Get daily wisdom word</h2>
-            <h3 class="text-white text-lg">See “Today's wisdom word” every day in the Wisdom Treasures app</h3>
-            <button class="pt-1 text-white" @click="navigate('store')">Go to the store -></button>
-          </div>
+      <div class="flex mx-auto justify-center items-center mt-45">
+        <div class="w-1/2 mx-5 space-y-5">
+          <h1 class=" sm:text-3xl font-bold  text-3xl sm:text-inherit tracking-wide">
+            Buy subscription to use Wisdom Treasures
+          </h1>
+          <p>
+            You do not currently have any active subscriptions. With a subscription for Wisdom Treasures you will always
+            have a wisdom word right at your hand, at any time.
+          </p>
+          <BaseButton class="rounded-full" theme="wisdomMannaBtn">
+            Buy subscription
+          </BaseButton>
+        </div>
+        <div class="w-1/2 ">
+          <swiper :modules="modules" :slides-per-view="1" :pagination="true" class="">
+            <swiper-slide class="flex justify-center items-center">
+              <div class="w-full h-24 flex justify-center items-center rounded-xl bg-primary/80"></div>
+              <h2
+                class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
+                {{ $t('common.origin') }}
+              </h2>
+            </swiper-slide>
+            <swiper-slide class="flex mx-auto items-center justify-center">
+              <div class="w-full h-24 flex justify-center items-center rounded-xl bg-primary/50"></div>
+              <h2
+                class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
+                {{ $t('common.origin') }}
+              </h2>
+            </swiper-slide>
+            <swiper-slide class="flex mx-auto items-center justify-center">
+              <div class="w-full h-24 flex justify-center items-center rounded-xl bg-primary/30"></div>
+              <h2
+                class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
+                {{ $t('common.origin') }}
+              </h2>
+            </swiper-slide>
+          </swiper>
         </div>
       </div>
-
-
-      <div class="ml-5 sm:ml-0">
-        <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">
-          {{ $t('common.origin').toUpperCase() }}</h1>
-        <OriginsSwiperFake class="z-0" />
-        <div class="z-10 absolute top-4 -right-16 bg-black/30 p-5 rounded-sm max-w-xl">
-          <h2 class="text-white text-2xl font-bold mb-2">Catch up on latest events</h2>
-          <h3 class="text-white text-lg">Wisdom Treasures is continuously updated with wisdom words from the last BCC events</h3>
-          <button class="pt-1 text-white" @click="navigate('store')">Go to the store -></button>
-        </div>
-      </div>
-
-      <div class="mx-5 sm:mx-0 mb-5 ">
-        <h1 class="text-base font-bold my-5 sm:mt-0 tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{
-          $t('common.wisdomManna').toUpperCase() }}</h1>
-        <div class="md:w-1/2 mx-auto justify-center mb-5">
-          <ThreeDButton size="large" :three-d="true" class="self-end flex-shrink-0">
-            <p class="text-base font-bold tracking-wide px-5">{{ $t('home.getWisdomManna') }}</p>
-          </ThreeDButton>
-        </div>
-        <div 
-            class="w-11/12 sm:w-full h-custom fav-his flex flex-col overflow-y-auto rounded-lg relative bg-white shadow-xl">
-            <div id="fakeHeader" class="flex p-4 border-b">
-              <div class="grow"/>
-              <ClipboardCopyIcon class="h-8 opacity-50 pop"/>
-              <HeartIcon class="h-8 mx-3 text-[color:var(--wt-color-secondary-light)] pop"/> 
-            </div>
-            <div class="grow"/>
-            <div id="fakeContent" class="flex flex-col items-center text-center">
-              <p class="w-2/3 font-serif sm:grow m-5 leading-6 text-sm">Dåpen i Den Hellige Ånd tar ikke bort lidelsen ved å fornekte seg selv, men den gjør meg i stand til å stå fast og lide ut synden i kjødet.</p>
-              <p class="italic text-xs ml-5 sm:ml-0 mb-2 text-[color:var(--wt-color-text-grey)] opacity-70">- Sigurd Bratlie, 1997</p>
-            </div>
-            <div class="grow"/>
-            <div id="fakeFooter" class="flex items-center justify-center p-4 border-t text-xs text-[color:var(--wt-color-text-grey)] opacity-70 tracking-wide">
-              <p class="h-8 flex items-center">See more from&nbsp;<span class="text-secondary">Den Hellige Ånd</span></p>
-            </div>
-            <div class="w-full h-full absolute top-0 left-0 bg-black/10 backdrop-blur-sm"></div>
-          </div>
-          <div class="z-10 max-w-xl absolute bottom-10  left-0 md:-left-16 bg-black/30 p-5 rounded-sm ">
-            <h2 class="text-white text-2xl font-bold mb-2">Get wisdom manna</h2>
-            <h3 class="text-white text-lg">Wisdom treasures lets you generate a random wisdom word!</h3>
-            <button class="pt-1 text-white" @click="navigate('store')">Go to the store -></button>
-          </div>
-        </div>
     </div>
   </main>
 </template>
@@ -147,13 +76,16 @@ import { InlineNotification } from '@/classes/notification';
 import router from '@/router';
 import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
-import OriginsSwiperFake from '@/components/OriginsSwiperFake.vue';
+import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
-import { HeartIcon, ClipboardCopyIcon } from '@heroicons/vue/outline';
-import BaseModal from '@/components/BaseModal.vue';
+import BaseButton from '@/components/BaseButton.vue'
+import { Swiper, SwiperSlide } from "swiper/vue";
+  import { Pagination } from 'swiper';
+  // define your modules list here
+  const modules = [Pagination]
 
 export default defineComponent({
-  name: "HomeNoSubscriptionView",
+  name: "HomeView",
   data() {
     return {
       publications: [] as Publication[],
@@ -175,12 +107,11 @@ export default defineComponent({
     WWCard,
     WWShowCard,
     ThreeDButton,
-    OriginsSwiperFake,
-    HeartIcon,
-    ClipboardCopyIcon,
-    BaseModal
+    OriginsSwiper,
+    BaseButton,
+    Swiper,
+    SwiperSlide,
   },
-  emits: ["close"],
   computed: {
     historyArticles(): Article[] {
       let historyArticlesIds: string[] = [];
@@ -243,10 +174,18 @@ export default defineComponent({
       }
       return favoriteArticles;
     },
-    navigate(name: string) {
-      router.push({ name: name });
-      console.log("it worked")
-    },  
+  },
+  setup() {
+    const onSwiper = (swiper) => {
+      console.log(swiper);
+    };
+    const onSlideChange = () => {
+      console.log('slide change');
+    };
+    return {
+      onSwiper,
+      onSlideChange
+    };
   },
   watch: {
     sessionInitialized(initialized) {
@@ -266,7 +205,7 @@ export default defineComponent({
 
     this.fillRandomArticles(20);
     window.addEventListener('scroll', this.onScroll);
-    
+
     Notification.requestPermission();
   },
   methods: {
@@ -364,19 +303,22 @@ export default defineComponent({
 .tracking-075 {
   letter-spacing: 0.075em
 }
+
 .rounded-t-4xl {
   border-top-left-radius: 2.5rem;
   /* 40px */
   border-top-right-radius: 2.5rem;
   /* 40px */
 }
-.h-custom{
+
+.h-custom {
   height: max(28rem, 64vh)
 }
-.highlighted{
+
+.highlighted {
   font-size: 1.15rem;
   color: var(--wt-color-primary);
-  opacity:0.9;
+  opacity: 0.9;
   scale: 1.3;
 }
 
@@ -384,8 +326,8 @@ export default defineComponent({
   .h-custom {
     height: auto;
   }
-  .h-custom.fav-his{
+
+  .h-custom.fav-his {
     height: 18rem
   }
-}
-</style>
+}</style>
