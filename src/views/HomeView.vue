@@ -25,36 +25,40 @@
 
         <div class="flex sm:flex-row-reverse">
 
-          <div class="flex flex-col sm:w-1/6 justify-between py-16 sm:py-0 -ml-4 sm:ml-6 sm:pl-6 sm:my-10 sm:border-l-2 sm:border-[#dcdcdc]">
+          <div
+            class="flex flex-col sm:w-1/6 justify-between py-16 sm:py-0 -ml-4 sm:ml-6 sm:pl-6 sm:my-10 sm:border-l-2 sm:border-[#dcdcdc]">
             <div class="flex flex-col items-center sm:items-start">
-              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
-                  @click="changeDisplayWOTD()">
-                <span class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
+              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayWOTD()">
+                <span
+                  class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
                   :class="{ 'highlighted': displayWordOfTheDay }">{{ $t('common.dailyword') }}</span>
-                <div v-if="displayWordOfTheDay" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
+                <div v-if="displayWordOfTheDay"
+                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
               </div>
             </div>
             <div class="flex flex-col items-center sm:items-start">
-              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
-                  @click="changeDisplayFavorites()">
-                <span class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
+              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayFavorites()">
+                <span
+                  class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
                   :class="{ 'highlighted': displayFavorites }">{{ $t('common.favorites') }}</span>
-                <div v-if="displayFavorites" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
+                <div v-if="displayFavorites"
+                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
               </div>
             </div>
             <div class="flex flex-col items-center sm:items-start">
-              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer"
-                  @click="changeDisplayHistory()">
-                <span class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
+              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayHistory()">
+                <span
+                  class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
                   :class="{ 'highlighted': displayHistory }">{{ $t('common.history') }}</span>
-                <div v-if="displayHistory" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
+                <div v-if="displayHistory" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
+                </div>
               </div>
             </div>
           </div>
 
 
-          <WWShowCard v-if="wordOfTheDay && displayWordOfTheDay" :article="wordOfTheDay"
-            class="w-11/12 sm:w-full" :WWCardHomeView="true" />
+          <WWShowCard v-if="wordOfTheDay && displayWordOfTheDay" :article="wordOfTheDay" class="w-11/12 sm:w-full"
+            :WWCardHomeView="true" />
 
           <!-- DIV for favourites -->
           <div v-if="displayFavorites" id="WWCards"
@@ -62,27 +66,32 @@
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
               <div v-if="favoriteArticles.length > 0">
                 <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
-                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
+                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites"
+                    class="mb-2" />
                 </div>
               </div>
-              <div v-else class="h-full grid place-content-center bg-white/50">Looks like you have no favorites yet 😢</div>
+              <div v-else class="h-full grid place-content-center bg-white/50">{{ $t('common.noFavories') }}
+              </div>
             </div>
-            
+
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
             </div>
           </div>
 
           <!-- DIV for History -->
           <div v-if="displayHistory" id="WWCards"
-            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+          class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative custom-scrollbar">
             <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
               <div v-if="historyArticles.length > 0">
                 <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
-                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites" class="mb-2"/>
+                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites"
+                    class="mb-2" />
                 </div>
               </div>
               <div v-else class="h-full grid place-content-center bg-white/50">{{ $t('common.noHistory') }}</div>
             </div>
+
+            
             <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
             </div>
           </div>
@@ -95,9 +104,9 @@
       <div class="ml-5 sm:ml-0 justify-center">
         <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">
           {{ $t('common.origin').toUpperCase() }}</h1>
-          <div class=" rounded-lg shadow-md bg-white/80 my-5">
-        <OriginsSwiper class="z-0  px-5" />
-      </div>
+        <div class=" rounded-lg shadow-md bg-white/80 my-5">
+          <OriginsSwiper class="z-0  px-5" />
+        </div>
       </div>
 
       <div class="mx-5 sm:mx-0 mb-5 ">
@@ -109,10 +118,11 @@
           </ThreeDButton>
         </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
-        <div v-if="!randomArticle" class="w-full h-56 mt-5 flex items-center justify-center rounded-lg shadow-md bg-white/80 text-center">
+        <div v-if="!randomArticle"
+          class="w-full h-56 mt-5 flex items-center justify-center rounded-lg shadow-md bg-white/80 text-center">
           <p class="text-[color:var(--wt-color-text-grey)] opacity-80 w-3/5">{{ $t('home.clickSeeWisdomManna') }}</p>
         </div>
-        <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="show"/>
+        <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="show" />
       </div>
     </div>
   </main>
@@ -131,6 +141,8 @@ import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
+
+
 
 export default defineComponent({
   name: "HomeView",
@@ -238,7 +250,7 @@ export default defineComponent({
 
     this.fillRandomArticles(20);
     window.addEventListener('scroll', this.onScroll);
-    
+
     Notification.requestPermission();
   },
   methods: {
@@ -333,22 +345,26 @@ export default defineComponent({
 });
 </script>
 <style scoped>
+
 .tracking-075 {
   letter-spacing: 0.075em
 }
+
 .rounded-t-4xl {
   border-top-left-radius: 2.5rem;
   /* 40px */
   border-top-right-radius: 2.5rem;
   /* 40px */
 }
-.h-custom{
+
+.h-custom {
   height: max(28rem, 64vh)
 }
-.highlighted{
+
+.highlighted {
   font-size: 1.15rem;
   color: var(--wt-color-primary);
-  opacity:0.9;
+  opacity: 0.9;
   scale: 1.3;
 }
 
@@ -356,8 +372,8 @@ export default defineComponent({
   .h-custom {
     height: auto;
   }
-  .h-custom.fav-his{
+
+  .h-custom.fav-his {
     height: 18rem
   }
-}
-</style>
+}</style>
