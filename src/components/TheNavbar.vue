@@ -14,16 +14,16 @@
 					</div>
 				</div>
 				<div id="middleNav" class="sm:flex self-center hidden grow place-content-left gap-x-3 max-h-8 pl-6">
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')"
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" 
 						@click="(e: Event | undefined) => navigate('dashboard', e)">{{ $t('common.home') }}</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')"
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" disabled="!store.userHasSubscription"
 						@click="(e: Event | undefined) => navigate('favorites', e)">{{ $t('common.favorites') }}
 					</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')"
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" disabled="!store.userHasSubscription"
 						@click="navigate('themes')">{{ $t('common.themes') }}</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')">
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')" disabled="!store.userHasSubscription">
 						{{ $t('common.history') }}</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('origins')" @click="navigate('origins')">
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('origins')" @click="navigate('origins')" disabled="!store.userHasSubscription">
 						Origins
 					</BaseButton>
 				</div>
@@ -63,34 +63,34 @@
 							leave-active-class="transition duration-75 ease-in"
 							leave-from-class="transform scale-100 opacity-100"
 							leave-to-class="transform scale-95 opacity-0">
-							<!--			LOOK HERE - SIDE-MENU			 -->
+							<!--			MOBILE MENU			 -->
 							<MenuItems
 								class="h-screen px-8 sm:px-0 py-20 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-2/3 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right sm:w-40 sm:rounded-md 
 								glassDropDown opacity-90 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
 								
 								<div class="flex flex-col sm:hidden">
 									<MenuItem>
-									<BaseButton theme="menuButtonSMDark" :center-text="false"
+									<BaseButton theme="menuButton" :center-text="false"
 										:clicked="shouldBeHighlighted('dashboard')" @click="navigate('dashboard')">
 										{{ $t('common.home') }}</BaseButton>
 									</MenuItem>
 									<MenuItem>
-									<BaseButton theme="menuButtonSMDark" :center-text="false"
+									<BaseButton theme="menuButton" :center-text="false"
 										:clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">
 										{{ $t('common.favorites') }}</BaseButton>
 									</MenuItem>
 									<MenuItem>
-									<BaseButton theme="menuButtonSMDark" :center-text="false"
+									<BaseButton theme="menuButton" :center-text="false"
 										:clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">
 										{{ $t('common.themes') }}</BaseButton>
 									</MenuItem>
 									<MenuItem>
-									<BaseButton theme="menuButtonSMDark" :center-text="false"
+									<BaseButton theme="menuButton" :center-text="false"
 										:clicked="shouldBeHighlighted('history')" @click="navigate('history')">
 										{{ $t('common.history') }}</BaseButton>
 									</MenuItem>
 									<MenuItem>
-									<BaseButton theme="menuButtonSMDark" :center-text="false"
+									<BaseButton theme="menuButton" :center-text="false"
 										:clicked="shouldBeHighlighted('origins')" @click="navigate('origins')">
 										{{ $t('common.origin') }}</BaseButton>
 									</MenuItem>
@@ -109,27 +109,27 @@
 								<div v-else class=" border-t border-white/30 sm:border-black/30">
 									<MenuItem>
 									<div class="flex">
-										<BaseButton class="w-full" theme="menuButtonSMDark" :center-text="false"
+										<BaseButton class="w-full" theme="menuButton" :center-text="false"
 											:clicked="shouldBeHighlighted('search')" @click="navigate('search')">
 											{{ $t('common.search') }}</BaseButton>
 									</div>
 									</MenuItem>
 									<MenuItem>
 									<div class="flex">
-										<BaseButton class="w-full" theme="menuButtonSMDark" :center-text="false"
+										<BaseButton class="w-full" theme="menuButton" :center-text="false"
 											:clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">
 											{{ $t('common.profile') }}</BaseButton>
 									</div>
 									</MenuItem>
 									<MenuItem>
 									<div class="flex">
-										<BaseButton class="w-full" theme="menuButtonSMDark" :center-text="false"
+										<BaseButton class="w-full" theme="menuButton" :center-text="false"
 											@click="{ }">{{ $t('common.notifications') }}</BaseButton>
 									</div>
 									</MenuItem>
 									<MenuItem>
 									<div class="flex">
-										<BaseButton class="w-full" theme="menuButtonSMDark" :center-text="false"
+										<BaseButton class="w-full" theme="menuButton" :center-text="false"
 											@click="{ }">{{ $t('common.help') }}</BaseButton>
 									</div>
 									</MenuItem>
