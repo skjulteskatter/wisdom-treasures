@@ -121,13 +121,14 @@
   },
   "form": {
     "suggest": "Suggest a Wisdom Word",
-    "what": "What is the wisdom word?",
-    "who": "Who said this?",
+    "what": "Write the wisdom word you would like to submit",
+    "who": "Who said or wrote this?",
     "when": "When was this said/written?",
     "context": "In what context was this said?",
-    "email": "What is your email",
-    "name": "What is your name?",
-    "submit": "Submit suggestion",
-    "thankYou": "Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any notification if this wisdom word is included in the app."
+    "email": "Your Email",
+    "name": "Full Name",
+    "submit": "Submit",
+    "thankYou": "Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any notification if this wisdom word is included in the app.",
+    "success": "Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any notification if this wisdom word is included in the app."
   }
 }
