@@ -181,7 +181,7 @@ export default defineComponent({
       } else if (timeDiff < 24 * 60 * 60 * 1000) {
         const time = (timeDiff / 1000 / 60 / 60).toFixed().toString();
         const timeHorizon = this.$t('common.hoursAgo');
-        return time + timeHorizon;
+        return time + ' ' + timeHorizon;
       } else if (Date.now() - date.getTime() < 24 * 6) {
         return days[date.getDay()];
       } else
