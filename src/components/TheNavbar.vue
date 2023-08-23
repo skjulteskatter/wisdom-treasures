@@ -16,14 +16,14 @@
 				<div id="middleNav" class="sm:flex self-center hidden grow place-content-left gap-x-3 max-h-8 pl-6">
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('dashboard')" 
 						@click="(e: Event | undefined) => navigate('dashboard', e)">{{ $t('common.home') }}</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" disabled="!store.userHasSubscription"
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('favorites')" :disabled="!store.userHasSubscription"
 						@click="(e: Event | undefined) => navigate('favorites', e)">{{ $t('common.favorites') }}
 					</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" disabled="!store.userHasSubscription"
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('themesIndex')" :disabled="!store.userHasSubscription"
 						@click="navigate('themes')">{{ $t('common.themes') }}</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')" disabled="!store.userHasSubscription">
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')" :disabled="!store.userHasSubscription">
 						{{ $t('common.history') }}</BaseButton>
-					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('origins')" @click="navigate('origins')" disabled="!store.userHasSubscription">
+					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('origins')" @click="navigate('origins')" :disabled="!store.userHasSubscription">
 						Origins
 					</BaseButton>
 				</div>
