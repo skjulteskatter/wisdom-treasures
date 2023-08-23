@@ -29,7 +29,7 @@
     "notifications": "Varsler",
     "help": "Hjelp",
     "justNow": "Akkurat nå",
-    "minutesAgo": "minutter siden ago",
+    "minutesAgo": "minutter siden ",
     "hoursAgo": "timer ago",
     "Email": "Email",
     "password": "Passord",
@@ -40,7 +40,8 @@
     "thisYear": "Dette året",
     "earlier": "Tidligere",
     "noHistory": "Du har ingen historie enda 😢",
-    "dailyword": "Dagens ord"
+    "dailyword": "Dagens ord",
+    "noFavories": "Du har ikke lagret noen favoritter enda 😢"
   },
   "signIn": {
     "logIn": "Logg inn",

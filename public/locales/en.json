@@ -41,7 +41,8 @@
     "earlier": "Earlier",
     "dailyword": "Daily Word",
     "getWisdomMannaFromTheme": "Get a wisdom manna from this theme",
-    "noHistory": "Looks like you have no history yet 😢"
+    "noHistory": "Looks like you have no history yet 😢",
+    "noFavories": "Looks like you have no favorites yet 😢"
   },
   "signIn": {
     "logIn": "Sign in",
