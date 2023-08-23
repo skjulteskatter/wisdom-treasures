@@ -14,7 +14,7 @@
       <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" :whiteText="true" class="my-4 px-5 sm:hidden"/>
       <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" class="hidden sm:block"/>
     </div>
-    <div v-if="searchedWord" class="font-bold ml-5 mt-4 sm:ml-0 text-[color:var(--wt-color-text-grey)] opacity-80">
+    <div v-if="searchedWord" class=" ml-5 mt-4 sm:ml-0 text-[color:var(--wt-color-text-grey)] opacity-80">
         {{ $t('themes.showing') }} {{numberOfResults}} {{ $t('themes.resultsFor') }} "{{searchedWord}}"
     </div>
     <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5 sm:px-0" :class="{'pr-5' : searchedWord}">

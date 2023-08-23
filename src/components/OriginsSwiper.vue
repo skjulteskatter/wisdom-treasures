@@ -17,6 +17,19 @@
     <Origin :origin="origin"/>
   </swiper-slide>
 
+  <swiper-slide class="max-w-min mb-8">
+    <div class="w-24 h-24 flex justify-center items-center rounded-xl shadow-md bg-primary/60"></div>
+  </swiper-slide>
+  <swiper-slide class="max-w-min mb-8">
+    <div class="w-24 h-24 flex justify-center items-center rounded-xl shadow-sm bg-primary/40"></div>
+  </swiper-slide>
+  <swiper-slide class="max-w-min mb-8">
+    <div class="w-24 h-24 flex justify-center items-center rounded-xl bg-primary/20"></div>
+  </swiper-slide>
+  <swiper-slide class="max-w-min mb-8">
+    <div class="w-24 h-24 flex justify-center items-center rounded-xl bg-primary/10"></div>
+  </swiper-slide>
+
   </swiper>
 </template>
   <script lang="ts">
@@ -35,7 +48,7 @@ import { useSessionStore } from '@/stores/session';
 import type { Origin as OriginDto } from '@/classes/Origin';
 
 export default {
-  name: "WWShowCard",
+  name: "OriginsSwiper",
   data() {
     return {
       store: useSessionStore(),

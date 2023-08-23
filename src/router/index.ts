@@ -69,6 +69,19 @@ export const routes = [
         }
       },
       {
+        path: '/noSub',
+        name: 'dashboardNoSub',
+        component: () => import('../views/HomeNoSubscriptionView.vue'),
+        children: [
+          WWCard,
+          Manna,
+        ],
+        meta:{
+          requiresAuth: true,
+          scrollUp: true,
+        }
+      },
+      {
         path: '/search',
         name: 'search',
         component: () => import('../views/SearchView.vue'),

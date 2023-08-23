@@ -1,54 +1,56 @@
 <template>
-  <div class="scroll-top" :class="{ active: isThemeDrawerActive, moveLeft: isHovered }">
-    <div class="drawer-button" :class="{ active: isThemeDrawerActive, hover: isHovered }" @click="toggleForm">
+  <div class="scroll-top" :class="{ active: isThemeDrawerActive, moveLeft: isHovered}">
+    <div class="drawer-button" :class="{ active: isThemeDrawerActive, hover: isHovered}" @click="toggleForm"
+      @mousedown="handleMouseDown" @mouseover="handleMouseOver" @mouseout="handleMouseOut">
       <img class="profile-img" src="/img/logo.svg" style="height: 35px; width: 35px" alt="Profile Image" />
     </div>
 
 
-    <BaseModal :show=isFormOpen class="fixed pw-full h-full left-0 top-0 z-40" @close="() => $emit('close')" :useBaseCard="false">
 
-    <!-- <div v-if="isFormOpen" @click="closeForm" class="form-overlay h-screen"> -->
-      <div class="form-card p-10">
+    <div v-if="isFormOpen" @click="closeForm" class="form-overlay h-screen">
+      <div class="form-card">
         <span class="close-icon" @click="closeForm">&#10005;</span>
-        <div class="form-title">{{ $t('form.suggest') }}</div>
+        <div class="form-title">Suggest a Wisdom Word</div>
         <form @click.stop @submit.prevent="submitForm" method="POST"
           :action=appScriptsLink>
           <div class="form-field">
-            <label class="label" for="wisdom-word">{{ $t('form.what') }}</label>
+            <label class="label" for="wisdom-word">What is the wisdom word?</label>
             <input name="WisdomWord" required type="text" id="wisdom-word" v-model="formData.wisdomWord"  />
           </div>
           <div class="form-field">
-            <label class="label" for="author">{{ $t('form.who') }}</label>
+            <label class="label" for="author">Who said this?</label>
             <input name=Author required type="text" id="author" v-model="formData.author"  />
           </div>
           <div class="form-field">
-            <label class="label" for="date">{{ $t('form.when') }}</label>
+            <label class="label" for="date">When was this said?</label>
             <input name=Time required type="text" id="date" v-model="formData.date"  />
           </div>
           <div class="form-field">
-            <label class="label" for="context">{{ $t('form.context') }}</label>
+            <label class="label" for="context">In what context was this said?</label>
             <input Name="Source" required type="text" id="context" v-model="formData.context"  />
           </div>
             <div class="form-field">
-              <label class="label" for="Email">{{ $t('form.email') }}</label>
+              <label class="label" for="Email">Your Email</label>
               <input name="Email" required type="email" id="email" v-model="formData.email" />
             </div>
             <div class="form-field">
-              <label class="label" for="namesender">{{ $t('form.name') }}</label>
+              <label class="label" for="namesender">Your Name</label>
               <input name="NameSender" required type="text" id="namesender" v-model="formData.nameSender" />
             </div>
-          <button class="submit-button" type="submit">{{ $t('form.submit') }}</button>
+          <button class="submit-button" type="submit">Submit suggestion</button>
           <div v-if="isSubmitted" class="success-message">
-            {{ $t('form.thankYou') }} </div>
+            Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any
+            notification if this wisdom word is included in the app.
+          </div>
         </form>
       </div>
-    <!-- </div> -->
-  </BaseModal>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
-import BaseModal from "./BaseModal.vue"
+import { defineComponent } from "vue";
+
 export default {
   name: "form-suggestion",
   data() {
@@ -69,9 +71,12 @@ export default {
       },
     };
   },
-  components: {
-    BaseModal
-  },
+  // props:{
+  //   logInView:{
+  //     type: Boolean,
+  //     default: false,
+  //   }
+  // },
   methods: {
     handleOutsideClick(event: MouseEvent) {
       if (!(this.$refs.formCard as HTMLElement).contains(event.target as Node)) {
@@ -137,7 +142,7 @@ export default {
     width: 50px;
     height: 50px;
     // box-shadow: 1px 1px 9px #dedede;
-    --tw-shadow: -10px 5px 40px -12px rgba(186, 50, 50, 0.322);
+    --tw-shadow: -10px 5px 40px -12px rgba(0, 0, 0, 0.322);
     box-shadow: var(--tw-ring-offset-shadow, 0 0 #0000), var(--tw-ring-shadow, 0 0 #0000), var(--tw-shadow);
     transition: all 0.5s;
     cursor: pointer;
@@ -166,6 +171,19 @@ export default {
     }
   }
 
+  .form-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 100;
+    padding: 10px
+  }
 
 }
 
@@ -173,10 +191,14 @@ export default {
   background-color: #fff;
   border-radius: 4px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  width: 400px;
+  width: 25rem;
   max-width: 100%;
+  max-height: 90vh;
   margin: 0 auto;
+  padding: 1.25rem;
+  padding-top: 2.5rem;
   position: relative;
+  overflow-y: auto
 }
 
 .form-title {
@@ -231,8 +253,8 @@ export default {
 
 .close-icon {
   position: absolute;
-  top: 8px;
-  right: 8px;
+  top: 6px;
+  right: 12px;
   font-size: 24px;
   cursor: pointer;
 }
