@@ -175,9 +175,13 @@ export default defineComponent({
       if (timeDiff < 60 * 1000) {
         return this.$t('common.justNow');
       } else if (timeDiff < 60 * 60 * 1000) {
-        return `${(timeDiff / 1000 / 60).toFixed()} {this.$t('common.minutesAgo')}`;
+        const time = (timeDiff / 1000 / 60).toFixed().toString();
+        const timeHorizon = this.$t('common.minutesAgo');
+        return time + ' ' + timeHorizon;
       } else if (timeDiff < 24 * 60 * 60 * 1000) {
-        return `${(timeDiff / 1000 / 60 / 60).toFixed()} this.$t('common.hoursAgo')`;
+        const time = (timeDiff / 1000 / 60 / 60).toFixed().toString();
+        const timeHorizon = this.$t('common.hoursAgo');
+        return time + timeHorizon;
       } else if (Date.now() - date.getTime() < 24 * 6) {
         return days[date.getDay()];
       } else
