@@ -44,7 +44,8 @@ export default defineComponent({
                         "menuButton",
                         "menuButtonSMWhite",
                         "magic",
-                        "filterXBtn"
+                        "filterXBtn",
+                        "disabled",
                     ].includes(value)
                 );
             },
@@ -84,7 +85,8 @@ export default defineComponent({
         whiteText:{
             type: Boolean,
             default: false
-        }
+        },
+        
     },
     computed: {
         isLoading() {
@@ -240,7 +242,7 @@ export default defineComponent({
     }
 
     &--disabled {
-        @apply cursor-not-allowed bg-black/10 text-gray-400;
+        @apply cursor-not-allowed text-black/10;
 
         &:hover:after {
             content: "";
