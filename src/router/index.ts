@@ -3,7 +3,7 @@ import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
 
 const WWCard = {
-  path:':wwNumber(\\d{1,5}$)',
+  path: ':wwNumber(\\d{1,5}$)',
   children: [],
   meta: {
     scrollUp: false,
@@ -11,7 +11,7 @@ const WWCard = {
 } as RouteRecordRaw;
 
 const Manna = {
-  path:':mannaPath(\\manna)',
+  path: ':mannaPath(\\manna)',
   children: [],
   meta: {
     scrollUp: false,
@@ -19,7 +19,7 @@ const Manna = {
 } as RouteRecordRaw;
 
 const AutoSlug = {
-  path:':autoSlug([^/]+)',
+  path: ':autoSlug([^/]+)',
   children: [
     WWCard,
     Manna
@@ -31,7 +31,7 @@ const AutoSlug = {
 
 const Theme = {
   name: 'themeUUID',
-  path:':themeId([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})',
+  path: ':themeId([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})',
   children: [AutoSlug],
   meta: {
     scrollUp: true,
@@ -41,7 +41,7 @@ const Theme = {
 
 const Origin = {
   name: 'originUUID',
-  path:':originId([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})', //TODO a lot here
+  path: ':originId([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})', //TODO a lot here
   children: [AutoSlug],
   meta: {
     scrollUp: true,
@@ -63,9 +63,10 @@ export const routes = [
           WWCard,
           Manna,
         ],
-        meta:{
+        meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: false,
         }
       },
       {
@@ -76,9 +77,10 @@ export const routes = [
           WWCard,
           Manna,
         ],
-        meta:{
+        meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: true,
         }
       },
       {
@@ -89,9 +91,10 @@ export const routes = [
           WWCard,
           Manna,
         ],
-        meta:{
+        meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: false,
         }
       },
       {
@@ -101,6 +104,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: true,
         },
       },
       {
@@ -109,6 +113,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: false,
         },
         children: [
           {
@@ -118,6 +123,7 @@ export const routes = [
             meta: {
               requiresAuth: true,
               scrollUp: true,
+              noSubView: false,
             },
           },
           Theme
@@ -129,6 +135,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: false,
         },
         children: [
           {
@@ -138,6 +145,7 @@ export const routes = [
             meta: {
               requiresAuth: true,
               scrollUp: true,
+              noSubView: false,
             },
           },
           Origin
@@ -150,6 +158,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: false,
         },
         children: [
           WWCard,
@@ -163,6 +172,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: true,
         },
         children: [
           WWCard,
@@ -176,6 +186,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: true,
         },
       },
       {
@@ -185,6 +196,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
+          noSubView: false,
         },
         children: [
           WWCard,
@@ -200,8 +212,9 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
+      noSubView: true,
     },
-    children: [ ]
+    children: []
   },
   {
     path: '/contact',
@@ -210,6 +223,7 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
+      noSubView: true,
     },
   },
   {
@@ -219,6 +233,7 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
+      noSubView: true,
     },
   },
   {
@@ -228,6 +243,7 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
+      noSubView: true,
     },
   },
   {
@@ -237,6 +253,7 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
+      noSubView: true,
     },
   },
   {
@@ -244,7 +261,8 @@ export const routes = [
     name: 'login',
     component: () => import('../views/LoginView.vue'),
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      noSubView: true,
     }
   },
   {
@@ -252,7 +270,8 @@ export const routes = [
     name: 'notfound',
     component: () => import('../views/NotFoundView.vue'),
     meta: {
-      requiresAuth: false
+      requiresAuth: false,
+      noSubView: true,
     }
   }
 ]
@@ -264,28 +283,42 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-  if (to.meta.scrollUp === true && from.meta.scrollUp === true){
+  if (to.meta.scrollUp === true && from.meta.scrollUp === true) {
     setTimeout(() => {
-      window.scrollTo(0,0);
+      window.scrollTo(0, 0);
     }, 150);
   }
 
-  const requiresAuth : true | false | undefined = to.matched.every(x => x.meta.requiresAuth === undefined) ? undefined : to.matched.some(x => x.meta.requiresAuth);
+  const requiresAuth: true | false | undefined = to.matched.every(x => x.meta.requiresAuth === undefined) ? undefined : to.matched.some(x => x.meta.requiresAuth);
+  const noSubView: true | false | undefined = to.matched.every(x => x.meta.noSubView === undefined) ? undefined : to.matched.some(x => x.meta.noSubView);
+  console.log('noSubView: ', noSubView)
+  console.log('userHassubscription: ', useSessionStore().userHasSubscription)
+
   let loggedIn = undefined;
+  let userHasSubscription = undefined;
 
   if (requiresAuth !== undefined)
     loggedIn = !!(await getCurrentUserPromise());
 
+    await useSessionStore().initializePublications()
+
+    userHasSubscription = useSessionStore().userHasSubscription
+    console.log('syltagurk should be true', userHasSubscription)
+
   //If the site requires auth and the user is not logged in: redirect to login
   if (requiresAuth && loggedIn === false) {
     useSessionStore().$state.redirectAfterLoginName = to.name?.toString() ?? "";
-    next({ name: "login"});
+    next({ name: "login" });
   }
-
   //If the site requires the user to be logged off and the user is logged in: redirect to dashboard
-  else if (requiresAuth === false && loggedIn === true) 
-    next({ name : "dashboard"}); 
-
+  else if (requiresAuth === false && loggedIn === true) {
+    next({ name: "dashboard" });
+  }
+  // If user has no subscription and the site requires a subscription
+  else if (useSessionStore().userHasSubscription === true  && noSubView === false) {
+    console.log('i am heeere')
+    next({ name: "dashboardNoSub" });
+  }
   else next();
 });
 

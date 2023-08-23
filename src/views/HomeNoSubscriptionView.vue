@@ -1,15 +1,5 @@
 <template>
   <main>
-    <BaseModal :show="true" class="fixed w-20 h-full left-0 top-0 z-40" @close="() => $emit('close')">
-      <p class="max-w-[calc(100vw*0.5)] text-center">Psst! You do not currently have any active subscriptions, so the app is very limited. 
-        Buy a subscription to unlock the app and get access to all the amazing features!</p>
-        <template #footer> 
-            <div class="flex">
-                <button class="w-1/2 border-r border-gray-400" @click="$emit('close')">Close</button>
-                <button class="w-1/2">To the Store</button>
-            </div>
-        </template>
-    </BaseModal>
     <div class="lg:w-4/5 justify-center mx-auto">
       <div
         class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0 ">
