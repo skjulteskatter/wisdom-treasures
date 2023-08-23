@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div class="lg:w-4/5 justify-center mx-auto">
+    <div class="lg:w-full justify-center mx-auto">
       <div
         class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0 ">
         <h1 class="text-base font-bold text-[color:var(--wt-color-text-grey)] opacity-80">
@@ -92,10 +92,12 @@
       </div>
 
 
-      <div class="ml-5 sm:ml-0">
+      <div class="ml-5 sm:ml-0 justify-center">
         <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">
           {{ $t('common.origin').toUpperCase() }}</h1>
-        <OriginsSwiper class="z-0" />
+          <div class=" rounded-lg shadow-md bg-white/80 my-5">
+        <OriginsSwiper class="z-0  px-5" />
+      </div>
       </div>
 
       <div class="mx-5 sm:mx-0 mb-5 ">
@@ -107,8 +109,10 @@
           </ThreeDButton>
         </div>
         <WWShowCard v-if="randomArticle" :article="randomArticle" class="w-full mt-5" :WWCardHomeView="false" />
-        <div v-if="!randomArticle" class="w-full h-56 mt-5 flex items-center justify-center rounded-lg border border-[color:var(--wt-color-text-grey)] opacity-70 text-center"><p class="text-[color:var(--wt-color-text-grey)] opacity-80 w-3/5">Click on the button above to get a Wisdom Word</p></div>
-        <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
+        <div v-if="!randomArticle" class="w-full h-56 mt-5 flex items-center justify-center rounded-lg shadow-md bg-white/80 text-center">
+          <p class="text-[color:var(--wt-color-text-grey)] opacity-80 w-3/5">{{ $t('home.clickSeeWisdomManna') }}</p>
+        </div>
+        <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="show"/>
       </div>
     </div>
   </main>

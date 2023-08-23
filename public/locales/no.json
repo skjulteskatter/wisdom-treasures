@@ -81,7 +81,8 @@
     "getWisdomManna": "Trekk et visdoms-mannakorn",
     "otherWisdomWords": "Andre visdomsord",
     "dailyWord": "Dagens ord",
-    "couldNotFindArticleNumber": "Finner ikke visdomsord med id nummer: "
+    "couldNotFindArticleNumber": "Finner ikke visdomsord med id nummer: ",
+    "clickSeeWisdomManna": "Klikk på knappen over for å trekke et visdoms-manna"
   },
   "custom": {
     "notificationMsg": "Hei, dette er bare en melding. Ikke bry deg om meg!"

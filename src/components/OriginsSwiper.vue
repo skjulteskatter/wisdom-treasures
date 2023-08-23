@@ -1,5 +1,6 @@
 <template>
   <swiper
+  
     :slidesPerView="'auto'"
     :spaceBetween="25"
     :mousewheel="{
@@ -9,10 +10,10 @@
       clickable: true,
     }"
     :modules="modules"
-    class="originSwiper"
+    class="originSwiper "
   >
   
-  <swiper-slide v-for="origin in origins" :key="origin.id" class="max-w-min mb-8">
+  <swiper-slide v-for="origin in origins" :key="origin.id" class="max-w-min mb-8 flex items-center justify-center pt-5 px-5">
     <Origin :origin="origin"/>
   </swiper-slide>
 

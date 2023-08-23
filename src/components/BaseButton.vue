@@ -152,7 +152,7 @@ export default defineComponent({
         @apply text-[color:var(--color-text)] tracking-wide py-3 bg-white hover:bg-black/10 shadow-md;
     }
     &--wisdomMannaBtn {
-        @apply text-white sm:text-[color:var(--color-text)] tracking-wide py-3 hover:bg-black/10;
+        @apply bg-primary text-white rounded-lg tracking-wide shadow-md text-white hover:text-[color:var(--color-primary)] tracking-wide py-3 hover:bg-secondary/60;
 
         &:hover:after {
             content: "";

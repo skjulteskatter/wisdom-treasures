@@ -81,7 +81,8 @@
     "getWisdomManna": "Get wisdom manna",
     "otherWisdomWords": "Other wisdom words",
     "dailyWord": "Todays Word",
-    "couldNotFindArticleNumber": "Could not find article number: "
+    "couldNotFindArticleNumber": "Could not find article number: ",
+    "clickSeeWisdomManna": "Click on the button above to get a Wisdom Word"
   },
   "custom": {
     "notificationMsg": "Hello, this is just a notification. Don't mind me!"

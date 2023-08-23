@@ -1,8 +1,8 @@
 <template>
 	<SuggestionForm />
 	<div class="flex flex-col h-full">
-		<img id="background-img" src="../../images/bg-soft-2.png" class="hidden sm:block fixed -top-10 left-0 w-custom-45rem -z-20"/>
-		<img id="background-img" src="../../images/bg-soft-1.png" class="hidden sm:block fixed -top-10 -right-44 2xl:-right-5 w-custom-45rem -z-20"/>
+		<!-- <img id="background-img" src="../../images/bg-soft-2.png" class="hidden sm:block fixed -top-10 left-0 w-custom-45rem -z-20"/> -->
+		<!-- <img id="background-img" src="../../images/bg-soft-1.png" class="hidden sm:block fixed -top-10 -right-44 2xl:-right-5 w-custom-45rem -z-20"/> -->
 		<main class="flex-grow pb-16 sm:pb-0 sm:pt-16">
 			<div class="h-full max-w-7xl mx-auto flex flex-col sm:px-8">
 				<!-- Route transitions -->
