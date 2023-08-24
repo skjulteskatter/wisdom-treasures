@@ -300,7 +300,8 @@ router.beforeEach(async (to, from, next) => {
 
     userHasSubscription = useSessionStore().userHasSubscription
   if (loggedIn){
-    await useSessionStore().initializePublications()
+    // await useSessionStore().initializePublications()
+    // await useSessionStore().initializeArticles()
   }
   console.log('Should people without a subscription see this view? ', noSubView)
   console.log('Does user have a subscription? ', useSessionStore().userHasSubscription)

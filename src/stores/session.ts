@@ -71,7 +71,7 @@ export const useSessionStore = defineStore('session', {
             searchWord: "" as string,
             serachEvent: false as boolean,
 
-            userHasSubscription: false as boolean,
+            userHasSubscription: true as boolean,
         }
     },
     actions: {
