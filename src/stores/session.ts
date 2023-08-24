@@ -119,9 +119,6 @@ export const useSessionStore = defineStore('session', {
             }
                 
             for (const publication of publicationArray) {
-
-                /*This is the point where we know the user have a subscription*/ this.userHasSubscription = true; 
-
                 this.publications.set(publication.id, publication);
             }
 
@@ -225,6 +222,7 @@ export const useSessionStore = defineStore('session', {
             }
                             
             for (const article of articlesArray) {
+                /*This is the point where we know the user have a subscription*/ this.userHasSubscription = true; 
                 this.articles.set(article.id, article);
             }
 
@@ -239,10 +237,9 @@ export const useSessionStore = defineStore('session', {
             };
             this.fuseArticles = new Fuse(articlesArray, option, Fuse.createIndex(option.keys, articlesArray));
 
-
             //OK TEST TEST TEST
-            const langs: (string | undefined)[] = [];
-            console.log(articlesArray.filter(x => x.number == 5549)[0]);
+            //const langs: (string | undefined)[] = [];
+            //console.log(articlesArray.filter(x => x.number == 5549)[0]);
         },
         async initializeFavorites() {
             try {
