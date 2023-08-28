@@ -36,29 +36,8 @@
           </BaseButton>
         </div>
         <div class="w-1/2 ">
-          <swiper :modules="modules" :slides-per-view="1" :pagination="true" class="">
-            <swiper-slide class="flex justify-center items-center">
-              <div class="w-full h-24 flex justify-center items-center rounded-xl bg-primary/80"></div>
-              <h2
-                class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
-                {{ $t('common.origin') }}
-              </h2>
-            </swiper-slide>
-            <swiper-slide class="flex mx-auto items-center justify-center">
-              <div class="w-full h-24 flex justify-center items-center rounded-xl bg-primary/50"></div>
-              <h2
-                class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
-                {{ $t('common.origin') }}
-              </h2>
-            </swiper-slide>
-            <swiper-slide class="flex mx-auto items-center justify-center">
-              <div class="w-full h-24 flex justify-center items-center rounded-xl bg-primary/30"></div>
-              <h2
-                class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
-                {{ $t('common.origin') }}
-              </h2>
-            </swiper-slide>
-          </swiper>
+
+        <NoSubscriptionSlider/>
         </div>
       </div>
     </div>
@@ -79,10 +58,7 @@ import ThreeDButton from '@/components/ThreeDButton.vue';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
 import BaseButton from '@/components/BaseButton.vue'
-import { Swiper, SwiperSlide } from "swiper/vue";
-  import { Pagination } from 'swiper';
-  // define your modules list here
-  const modules = [Pagination]
+import NoSubscriptionSlider from '@/components/NoSubscriptionSlider.vue'
 
 export default defineComponent({
   name: "HomeView",
@@ -109,8 +85,7 @@ export default defineComponent({
     ThreeDButton,
     OriginsSwiper,
     BaseButton,
-    Swiper,
-    SwiperSlide,
+    NoSubscriptionSlider,
   },
   computed: {
     historyArticles(): Article[] {
@@ -175,18 +150,6 @@ export default defineComponent({
       return favoriteArticles;
     },
   },
-  setup() {
-    const onSwiper = (swiper) => {
-      console.log(swiper);
-    };
-    const onSlideChange = () => {
-      console.log('slide change');
-    };
-    return {
-      onSwiper,
-      onSlideChange
-    };
-  },
   watch: {
     sessionInitialized(initialized) {
       if (initialized) {
@@ -220,17 +183,7 @@ export default defineComponent({
         this.loadingMoreArticles = false;
       }, 200);
     },
-    fillRandomArticles(paginationCount: number) {
-      let shuffeledArticleKeysMax = this.shuffeledArticleKeys.length;
-      for (let i = 0; i < Math.min(paginationCount, shuffeledArticleKeysMax); i++) {
-        let randomIndex = Math.floor(Math.random() * this.shuffeledArticleKeys.length);
-        let randomArticle = (this.store.articles.get(this.shuffeledArticleKeys[randomIndex]))
-        if (randomArticle != undefined) {
-          this.randomArticleList.push(randomArticle);
-          this.shuffeledArticleKeys.splice(randomIndex, 1);
-        }
-      }
-    },
+    
     navigate(name: string, e?: Event) {
 
       if (name === "register") {
