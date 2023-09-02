@@ -1,8 +1,8 @@
 <template>
     <swiper :modules="modules" :pagination="pagination" :autoplay="autoplay" class="">
-        <swiper-slide class="flex justify-center items-center">
-            <div class="max-h-70%">
-                <img src="\img\NoSub\NoSub_TodaysWord.svg" alt="Today's Word" class="h-auto mb-2" />
+        <swiper-slide style="height: 36rem !important;" class=" justify-center items-center">
+            <div>
+                <img src="\img\NoSub\NoSub_TodaysWord.png" class="h-full w-full" />
             </div>
             <hr class="my-1" />
             <h2 class="mb-5 mt-2 leading-4 font-bold text-center text-xl">
@@ -11,9 +11,9 @@
             <h3 class="text-[color:var(--wt-color-text-grey)] text-center">
                 Get "Todays word of wisdom" every day in the WisdomTreasures app</h3>
         </swiper-slide>
-        <swiper-slide class="flex mx-auto items-center justify-center">
+        <swiper-slide style="height: 36rem !important;" class=" justify-center items-center">
             <div>
-                <img src="\img\NoSub\NoSub_Events.svg" height="450" />
+                <img src="\img\NoSub\NoSub_Events.png" class="h-full w-full" />
             </div>
             <hr class="my-1" />
             <h2 class="mb-5 mt-2 leading-4 font-bold  text-center text-xl">
@@ -22,9 +22,9 @@
             <h3 class="text-[color:var(--wt-color-text-grey)] text-center">
                 Wisdom Treasures is continuously updated with wisdom words from recent events globally!</h3>
         </swiper-slide>
-        <swiper-slide class="flex mx-auto items-center justify-center">
+        <swiper-slide style="height: 36rem !important;" class=" justify-center items-center">
             <div>
-                <img src="\img\NoSub\NoSub_Manna.svg" height="450" />
+                <img src="\img\NoSub\NoSub_Manna.png" class="h-full w-full" />
             </div>
             <hr class="my-1" />
             <h2 class="mb-5 mt-2 leading-4 font-bold  text-center text-xl">
@@ -34,9 +34,9 @@
                 Wisdom treasures lets you draw wisdom words from our large collection of over 8000 wisdom words!
             </h3>
         </swiper-slide>
-        <swiper-slide class="flex mx-auto items-center justify-center">
+        <swiper-slide style="height: 36rem !important;" class=" justify-center items-center">
             <div>
-                <img src="\img\NoSub\NoSub_Favorites.svg" height="450" />
+                <img src="\img\NoSub\NoSub_Favorites.png" class="h-full w-full"/>
             </div>
             <hr class="my-1" />
             <h2 class="mb-5 mt-2 leading-4 font-bold  text-center text-xl">
@@ -45,9 +45,9 @@
             <h3 class="text-[color:var(--wt-color-text-grey)] text-center">
                 Save and collect your favourite wisdom words! </h3>
         </swiper-slide>
-        <swiper-slide class="flex mx-auto items-center justify-center">
+        <swiper-slide style="height: 36rem !important; width: max-content;" class=" justify-center items-center">
             <div>
-                <img src="\img\NoSub\NoSub_Themes.svg" height="450" />
+                <img src="\img\NoSub\NoSub_Themes.png" class="h-full w-full" />
             </div>
             <hr class="my-1" />
             <h2 class="mb-5 mt-2 leading-4 font-bold  text-center text-xl">

@@ -37,7 +37,7 @@
         </div>
         <div class="w-1/2 ">
 
-        <NoSubscriptionSlider/>
+          <NoSubscriptionSlider />
         </div>
       </div>
     </div>
@@ -183,7 +183,7 @@ export default defineComponent({
         this.loadingMoreArticles = false;
       }, 200);
     },
-    
+
     navigate(name: string, e?: Event) {
 
       if (name === "register") {
@@ -283,4 +283,5 @@ export default defineComponent({
   .h-custom.fav-his {
     height: 18rem
   }
-}</style>
+}
+</style>
