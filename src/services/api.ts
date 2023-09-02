@@ -1,9 +1,11 @@
-import type { IUser, ISettings, Article } from "hiddentreasures-js";
+import type { IUser, ISettings, Article, Publication, Contributor } from "hiddentreasures-js";
 import http from "./http";
 import type { HTUser } from "@/classes/HTUser";
 import type { RedirectToCheckoutOptions } from "@stripe/stripe-js";
 import type { IApiProduct } from "@/Interfaces/IApiProduct";
 import type { SessionRequest, SetupResponse } from "songtreasures-api/checkout";
+import { WISDOM_WORDS_ID } from "@/stores/session";
+import type { Origin } from "@/classes/Origin";
 
 export const session = {
     async getCurrentUser() {
@@ -59,23 +61,138 @@ export const favorites = {
 };
 
 type ArticleInputBody = {
-    itemIds: string[] //GUIDS
-    limit: number,
+    //itemIds: string[] //GUIDS
+    limit?: number,
     skip: number,
     orderBy: string,
-    orderByDirection: string,
-    lastUpdated: Date, //"2023-08-19T10:36:50.594Z",
+    //orderByDirection: string,
+    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
     collectionIds: string[] //GUIDS
-    parentIds: string[] //GUIDS
+    //parentIds: string[] //GUIDS
     withContent: boolean
 }
 
 export const articles = {
-    get(language: string) {
-        return http.get<string[]>(`api/Articles?language=${language}&X-Api-Version=4`);
-    },
-    post(language: string, updatedAt: Date, articleInputBody: ArticleInputBody){
-        return http.post<Article>(`api/Articles?language=${language}&X-Api-Version=4`)
+    post(language: string, updatedAt: Date, skip: number, limit?: number): Promise<Article[]> {
+
+        return http.post<Article[]>(`api/Articles?language=${language}&updatedAt=${updatedAt.toISOString()}`, 
+            {
+                lastUpdated: updatedAt.toISOString(),
+                collectionIds: [WISDOM_WORDS_ID],
+                withContent: true,
+                skip: skip,
+                limit: limit,
+                orderBy: "id"
+            } as ArticleInputBody,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+            false,
+            true,
+            "4"
+        )
+    }
+}
+
+type PublicationInputBody = {
+    //itemIds: string[] //GUIDS
+    limit?: number,
+    skip: number,
+    orderBy: string,
+    //orderByDirection: string,
+    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
+    collectionIds: string[] //GUIDS
+    //parentIds: string[] //GUIDS
+    withContent: boolean
+}
+
+export const publications = {
+    post(language: string, updatedAt: Date, skip: number, limit?: number): Promise<Publication[]> {
+
+        return http.post<Publication[]>(`api/Publications?language=${language}&updatedAt=${updatedAt.toISOString()}`, 
+            {
+                lastUpdated: updatedAt.toISOString(),
+                collectionIds: [WISDOM_WORDS_ID],
+                withContent: true,
+                skip: skip,
+                limit: limit,
+                orderBy: "id"
+            } as PublicationInputBody,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+            false,
+            true,
+            "4"
+        )
+    }
+}
+
+type OriginInputBody = {
+    //itemIds: string[] //GUIDS
+    limit?: number,
+    skip: number,
+    orderBy: string,
+    //orderByDirection: string,
+    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
+    //parentIds: string[] //GUIDS
+}
+
+export const origins = {
+    post(language: string, updatedAt: Date, skip: number, limit?: number): Promise<Origin[]> {
+
+        return http.post<Origin[]>(`api/Sources?language=${language}&updatedAt=${updatedAt.toISOString()}`, 
+            {
+                lastUpdated: updatedAt.toISOString(),
+                skip: skip,
+                limit: limit,
+                orderBy: "id"
+            } as OriginInputBody,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+            false,
+            true,
+            "4"
+        )
+    }
+}
+
+type AuthorInputBody = {
+    //itemIds: string[] //GUIDS
+    limit?: number,
+    skip: number,
+    orderBy: string,
+    //orderByDirection: string,
+    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
+    //parentIds: string[] //GUIDS
+}
+
+export const authors = {
+    post(language: string, updatedAt: Date, skip: number, limit?: number): Promise<Contributor[]> {
+
+        return http.post<Contributor[]>(`api/Contributors?language=${language}&updatedAt=${updatedAt.toISOString()}`, 
+            {
+                lastUpdated: updatedAt.toISOString(),
+                skip: skip,
+                limit: limit,
+                orderBy: "id"
+            } as AuthorInputBody,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+            false,
+            true,
+            "4"
+        )
     }
 }
 

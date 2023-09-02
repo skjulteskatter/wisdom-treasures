@@ -2,21 +2,19 @@ import { defineStore } from 'pinia'
 import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { InlineNotification } from '@/classes/notification'
-import { favorites as favoritesApi, stripe} from '@/services/api'
-import type {Article, Contributor, Publication, Source } from 'hiddentreasures-js'
-import { articleService, publicationService, authorService } from '@/services/publications';
+import { articles, authors, favorites as favoritesApi, origins, publications, stripe} from '@/services/api'
+import type {Article, Contributor, Publication } from 'hiddentreasures-js'
 import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
 import { dbPromise, putArticles, putAuthors, putPublications, putOrigins } from '@/services/cache'
 import type { HTUser } from '@/classes/HTUser'
-import { language, favorites } from '@/services/localStorage'
+import { language, favorites, lastUpdated } from '@/services/localStorage'
 import Fuse from 'fuse.js'
 import type { IApiProduct } from '@/Interfaces/IApiProduct'
 import StripeService from '@/services/stripe'
-import sourceService from '@/services/publications/sourceService'
-import { Origin } from '@/classes/Origin'
+import type { Origin } from '@/classes/Origin'
 
-const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
+export const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
 export const useSessionStore = defineStore('session', {
     state: ()=> {
@@ -72,6 +70,11 @@ export const useSessionStore = defineStore('session', {
             serachEvent: false as boolean,
 
             userHasSubscription: true as boolean,
+
+            latestUpdatedArticle: 0 as number,
+            latestUpdatedAuthor: 0 as number,
+            latestUpdatedPublication: 0 as number,
+            latestUpdatedOrigin: 0 as number,
         }
     },
     actions: {
@@ -106,66 +109,71 @@ export const useSessionStore = defineStore('session', {
             }
         },
         async initializePublications(fromIndexDb: boolean = true){
-            let publicationArray: Publication[] = [];
-            let retrievedFromIndexDb = true;
+            let oldPublicationArray: Publication[] = [];
 
             if (fromIndexDb) {
-                publicationArray = await (await dbPromise).getAll('publications');
+                oldPublicationArray = await (await dbPromise).getAll('publications');
             }
 
-            if (publicationArray.length <= 0) {
-                publicationArray = await publicationService.retrieve({parentIds: [WISDOM_WORDS_ID]});
-                retrievedFromIndexDb = false;
-            }
-                
-            for (const publication of publicationArray) {
+            for (const publication of oldPublicationArray) {
                 this.publications.set(publication.id, publication);
             }
 
-            if (!retrievedFromIndexDb){
-                await putPublications(publicationArray);
+            //Get latest date
+            this.latestUpdatedPublication = +(lastUpdated.get("publications") || "0");
+
+            const newPublicationArray: Publication[] = await publications.post(this.locale, new Date(this.latestUpdatedPublication), 0);
+            
+            for (const publication of newPublicationArray) {
+                this.publications.set(publication.id, publication);
             }
 
-            this.collectionId = publicationArray[0]?.collectionId ?? "";
+            await putPublications(newPublicationArray);
+
+            lastUpdated.setOrReplace(Date.now(), "publications");
 
             const option = {
                 keys: ['title', 'id', 'description'],
                 includeScore: true,
                 threshold: 0.3
             }
-            this.fusePublications = new Fuse(publicationArray, option, Fuse.createIndex(option.keys, publicationArray));
+
+            this.fusePublications = new Fuse(oldPublicationArray.concat(newPublicationArray), option, Fuse.createIndex(option.keys, oldPublicationArray.concat(newPublicationArray)));
 
         },
         async initializeAuthors(ids : string[], fromIndexDb: boolean = true) {
 
             if (ids.length <= 0) return;
 
-            let authorArray: Contributor[] = [];
-            let retrievedFromIndexDb = true;
+            let oldAuthorArray: Contributor[] = [];
 
             if (fromIndexDb){
-                authorArray = await (await dbPromise).getAll('authors');
+                oldAuthorArray = await (await dbPromise).getAll('authors');
             }
             
-            if (authorArray.length <= 0) {
-                authorArray = (await authorService.retrieve({itemIds: ids}));
-                retrievedFromIndexDb = false;
-            }
-
-            for (const author of authorArray) {
+            for (const author of oldAuthorArray) {
                 this.authors.set(author.id, author);
             }
 
-            if (!retrievedFromIndexDb) {
-                await putAuthors(authorArray);
+            //Get latest date
+            this.latestUpdatedAuthor = +(lastUpdated.get("authors") || "0");
+
+            const newAuthorsArray: Contributor[] = await authors.post(this.locale, new Date(this.latestUpdatedAuthor), 0);
+            
+            for (const author of newAuthorsArray) {
+                this.authors.set(author.id, author);
             }
+
+            await putAuthors(newAuthorsArray);
+
+            lastUpdated.setOrReplace(Date.now(), "authors");
 
             const option = {
                 keys: ['name', 'id', 'subtitle', 'biography'],
                 includeScore: true,
                 threshold: 0.3,
             }
-            this.fuseAuthors = new Fuse(authorArray, option, Fuse.createIndex(option.keys, authorArray));
+            this.fuseAuthors = new Fuse(oldAuthorArray.concat(newAuthorsArray), option, Fuse.createIndex(option.keys, oldAuthorArray.concat(newAuthorsArray)));
 
         },
         async initializeSources(ids : string[], fromIndexDb: boolean = true) {
@@ -173,73 +181,73 @@ export const useSessionStore = defineStore('session', {
             //Add a check to make sure you're not getting the same 
             if (ids.length <= 0) return;
 
-            let originArray: Origin[] = [];
-            let retrievedFromIndexDb = true;
+            let oldOriginArray: Origin[] = [];
 
             if (fromIndexDb){
-                originArray = await (await dbPromise).getAll('origins');
+                oldOriginArray = await (await dbPromise).getAll('origins');
             }
             
-            if (originArray.length <= 0) {
-                originArray = (await sourceService.retrieve({itemIds: ids})).map(x => new Origin(x));
-                retrievedFromIndexDb = false;
-            }
-
-            for (const origin of originArray) {
+            for (const origin of oldOriginArray) {
                 this.origins.set(origin.id, origin);
             }
 
-            if (!retrievedFromIndexDb) {
-                await putOrigins(originArray); //Try to not await this
+            //Get latest date
+            this.latestUpdatedOrigin = +(lastUpdated.get("origins") || "0");
+
+            const newOriginssArray: Origin[] = await origins.post(this.locale, new Date(this.latestUpdatedOrigin), 0);
+            
+            for (const origin of newOriginssArray) {
+                this.origins.set(origin.id, origin);
             }
+
+            await putOrigins(newOriginssArray);
+
+            lastUpdated.setOrReplace(Date.now(), "origins");
 
             const option = {
                 keys: ['name', 'id' ],
                 includeScore: true,
                 threshold: 0.3,
             }
-            this.fuseOrigins = new Fuse(originArray, option, Fuse.createIndex(option.keys, originArray));
+            this.fuseOrigins = new Fuse(oldOriginArray.concat(newOriginssArray), option, Fuse.createIndex(option.keys, oldOriginArray.concat(newOriginssArray)));
         },
         async initializeArticles(ids : string[], fromIndexDb: boolean = true) {
 
             if (ids.length <= 0) return;
             
-            let articlesArray: Article[] = [];
-            let retrievedFromIndexDb = true;
+            let oldArticlesArray: Article[] = [];
 
             if (fromIndexDb){
-                articlesArray = await (await dbPromise).getAll('articles');
+                oldArticlesArray = await (await dbPromise).getAll('articles');
             }
 
-            const options = {
-                withContent: true,
-                parentIds: ids,
-            };
-
-            if (articlesArray.length <= 0){
-                articlesArray = (await articleService.retrieve(options));
-                retrievedFromIndexDb = false;
-            }
-                            
-            for (const article of articlesArray) {
-                /*This is the point where we know the user have a subscription*/ this.userHasSubscription = true; 
+            for (const article of oldArticlesArray) {
                 this.articles.set(article.id, article);
             }
 
-            if (!retrievedFromIndexDb){
-                await putArticles(articlesArray);
+            //Get latest date
+            this.latestUpdatedArticle = +(lastUpdated.get("articles") || "0");
+            this.latestUpdatedArticle = this.latestUpdatedArticle > 0
+                ? this.latestUpdatedArticle
+                : (oldArticlesArray.reduce((oa, u) => Math.max(oa, Date.parse(u.dateWritten)), 0)) + 1;
+
+            const newArticlesArray: Article[] = await articles.post(this.locale, new Date(this.latestUpdatedArticle), 0);
+            this.userHasSubscription = true;
+            
+            for (const article of newArticlesArray) {
+                this.articles.set(article.id, article);
             }
+
+            await putArticles(newArticlesArray);
+
+            lastUpdated.setOrReplace(Date.now(), "articles");
 
             const option = {
                 keys: ['content.content', 'dateWritten', 'number', 'id', 'publicationId', 'authorId'],
                 includeScore: true,
                 threshold: 0.3
             };
-            this.fuseArticles = new Fuse(articlesArray, option, Fuse.createIndex(option.keys, articlesArray));
-
-            //OK TEST TEST TEST
-            //const langs: (string | undefined)[] = [];
-            //console.log(articlesArray.filter(x => x.number == 5549)[0]);
+            this.fuseArticles = new Fuse(oldArticlesArray.concat(newArticlesArray), option, Fuse.createIndex(option.keys, oldArticlesArray.concat(newArticlesArray)));
         },
         async initializeFavorites() {
             try {

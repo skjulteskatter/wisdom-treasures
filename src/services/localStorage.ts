@@ -153,3 +153,15 @@ export const language = {
         return localStorage.getItem(this.languagePrefix);
     }
 };
+
+export const lastUpdated = {
+
+    languagePrefix: "lastUpdated:",
+
+    setOrReplace(lastUpdatedUTC: number, objectsName: "articles" | "authors" | "origins" | "publications") {
+        localStorage.setItem(`${objectsName}_${this.languagePrefix}`, lastUpdatedUTC.toString());
+    },
+    get(objectsName: "articles" | "authors" | "origins" | "publications"){
+        return localStorage.getItem(`${objectsName}_${this.languagePrefix}`);
+    }
+};

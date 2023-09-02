@@ -132,12 +132,6 @@ export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
     return deviceType
 }
 
-//auth.onAuthStateChanged(async () => {
-//    if (!!auth.currentUser){
-//        await userLoggedInCallback();
-//    }
-//})
-
 /**
  * Things you do when the user logs in, no matter which method
  */

@@ -72,7 +72,7 @@ class Http {
             apiVersion,
         ) as Result<T> | T;
 
-        return apiVersion == "4.0" ? result as T : (result as Result<T>).result;
+        return apiVersion?.includes("4") ? result as T : (result as Result<T>).result;
     }
 
     public async getWithResult<T>(path: string): Promise<Result<T>> {
@@ -99,7 +99,12 @@ class Http {
         path: string,
         content?: Y,
         options?: object,
+        bypassAuth? :boolean, 
+        json? :boolean, 
+        apiVersion?: string,
+
     ): Promise<T> {
+
         const result = await this.apifetch(
             path,
             Object.assign(
@@ -112,8 +117,12 @@ class Http {
                 },
                 options || {},
             ),
-        ) as Result<T>;
-        return result.result;
+            bypassAuth,
+            json,
+            apiVersion,
+        ) as Result<T> | T;
+
+        return apiVersion?.includes("4") ? result as T : (result as Result<T>).result;
     }
 
     /**
