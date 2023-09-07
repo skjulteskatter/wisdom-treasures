@@ -165,7 +165,6 @@ import ClickableLink from '../components/ClickableLink.vue'
 import api from '../services/api'
 import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import { useSessionStore } from '@/stores/session';
-import { ArrowRightIcon } from '@heroicons/vue/outline';
 import FooterComponent from '@/components/FooterComponent.vue';
 import TermsModal from '@/components/TermsModal.vue';
 
@@ -179,7 +178,6 @@ import TermsModal from '@/components/TermsModal.vue';
     BaseInput,
     ClickableLink,
     BaseCheckbox,
-    ArrowRightIcon,
     FooterComponent,
     TermsModal
 },

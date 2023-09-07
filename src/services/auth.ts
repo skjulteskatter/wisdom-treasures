@@ -140,6 +140,9 @@ async function userLoggedInCallback(){
     const store = useSessionStore();
     const lang = await store.initializeLanguage();
 
+    await store.initializeProducts();
+    await store.initializeSubscriptions();
+
     await store.initializeFavorites();
 
     await store.initializePublications();
@@ -153,7 +156,6 @@ async function userLoggedInCallback(){
     await store.initializeSources(sourceIds);
     await store.intitializeArticleNumberLookup();
 
-    await store.intitializeProducts();
     await store.intitializeStripeService();
 
     store.sessionInitialized = true;

@@ -69,7 +69,7 @@ export const useSessionStore = defineStore('session', {
             searchWord: "" as string,
             serachEvent: false as boolean,
 
-            userHasSubscription: true as boolean,
+            userHasSubscription: false as boolean,
 
             latestUpdatedArticle: 0 as number,
             latestUpdatedAuthor: 0 as number,
@@ -158,7 +158,7 @@ export const useSessionStore = defineStore('session', {
             //Get latest date
             this.latestUpdatedAuthor = +(lastUpdated.get("authors") || "0");
 
-            const newAuthorsArray: Contributor[] = await authors.post(this.locale, new Date(this.latestUpdatedAuthor), 0);
+            const newAuthorsArray: Contributor[] = await authors.post(this.locale, new Date(this.latestUpdatedAuthor), 0, [""]); //TODO add ids
             
             for (const author of newAuthorsArray) {
                 this.authors.set(author.id, author);
@@ -232,7 +232,6 @@ export const useSessionStore = defineStore('session', {
                 : (oldArticlesArray.reduce((oa, u) => Math.max(oa, Date.parse(u.dateWritten)), 0)) + 1;
 
             const newArticlesArray: Article[] = await articles.post(this.locale, new Date(this.latestUpdatedArticle), 0);
-            this.userHasSubscription = true;
             
             for (const article of newArticlesArray) {
                 this.articles.set(article.id, article);
@@ -270,7 +269,7 @@ export const useSessionStore = defineStore('session', {
                 this.articleNumberLookup.set(value.number, key);
             }
         },
-        async intitializeProducts(){
+        async initializeProducts(){
             try {
                 this.apiProducts = await stripe.getProducts();
             } catch
@@ -278,6 +277,17 @@ export const useSessionStore = defineStore('session', {
                 console.log("Failed to get products");
             }
             
+        },
+        async initializeSubscriptions(){
+            try {
+                this.userHasSubscription = (await stripe.getSubscriptions()).some(x => x.productIds.includes("prod_NnqNtVfJjpCCOy")); //TODO find a better way than hardcode product id
+                if (!this.userHasSubscription){
+                    this.userHasSubscription = (await articles.postOneRandom()).length > 0;
+                }
+            } catch
+            {
+                console.log("Failed to get subscriptions");
+            } 
         },
         async intitializeStripeService(){
             try {

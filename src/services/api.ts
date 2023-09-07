@@ -1,4 +1,4 @@
-import type { IUser, ISettings, Article, Publication, Contributor } from "hiddentreasures-js";
+import type { IUser, ISettings, Article, Publication, Contributor, Subscription } from "hiddentreasures-js";
 import http from "./http";
 import type { HTUser } from "@/classes/HTUser";
 import type { RedirectToCheckoutOptions } from "@stripe/stripe-js";
@@ -93,6 +93,23 @@ export const articles = {
             true,
             "4"
         )
+    },
+    postOneRandom(): Promise<Article[]> {
+
+        return http.post<Article[]>(`api/Articles`, 
+            {
+                collectionIds: [WISDOM_WORDS_ID],
+                limit: 1
+            } as ArticleInputBody,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+            false,
+            true,
+            "4"
+        )
     }
 }
 
@@ -165,7 +182,7 @@ export const origins = {
 }
 
 type AuthorInputBody = {
-    //itemIds: string[] //GUIDS
+    itemIds: string[] //GUIDS
     limit?: number,
     skip: number,
     orderBy: string,
@@ -175,10 +192,11 @@ type AuthorInputBody = {
 }
 
 export const authors = {
-    post(language: string, updatedAt: Date, skip: number, limit?: number): Promise<Contributor[]> {
+    post(language: string, updatedAt: Date, skip: number, ids: string[], limit?: number): Promise<Contributor[]> {
 
         return http.post<Contributor[]>(`api/Contributors?language=${language}&updatedAt=${updatedAt.toISOString()}`, 
             {
+                itemIds: ids,
                 lastUpdated: updatedAt.toISOString(),
                 skip: skip,
                 limit: limit,
@@ -209,6 +227,10 @@ export const stripe = {
     },
     getSession(sessionId: string) {
         return http.get<RedirectToCheckoutOptions>(`api/Store/Session/${sessionId}`);
+    },
+    getSubscriptions(): Promise<Subscription[]>
+    {
+        return http.get<Subscription[]>(`api/Session/Subscriptions`, false, true, "4.0");
     },
     getPortalSession() {
         return http.post("api/Store/Portal", {
