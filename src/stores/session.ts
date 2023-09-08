@@ -158,7 +158,9 @@ export const useSessionStore = defineStore('session', {
             //Get latest date
             this.latestUpdatedAuthor = +(lastUpdated.get("authors") || "0");
 
-            const newAuthorsArray: Contributor[] = await authors.post(this.locale, new Date(this.latestUpdatedAuthor), 0, [""]); //TODO add ids
+            const authorIdsFromArticles = Array.from(this.articles.values()).map(x => x.authorId);
+
+            const newAuthorsArray: Contributor[] = await authors.post(this.locale, new Date(this.latestUpdatedAuthor), 0, authorIdsFromArticles);
             
             for (const author of newAuthorsArray) {
                 this.authors.set(author.id, author);

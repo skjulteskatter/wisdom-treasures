@@ -293,12 +293,15 @@ router.beforeEach(async (to, from, next) => {
   const noSubView: true | false | undefined = to.matched.every(x => x.meta.noSubView === undefined) ? undefined : to.matched.some(x => x.meta.noSubView);
 
   let loggedIn = undefined;
+  let userHasSubscription = undefined;
 
   if (requiresAuth !== undefined)
     loggedIn = !!(await getCurrentUserPromise());
 
+  userHasSubscription = useSessionStore().userHasSubscription
+
   console.log('Should people without a subscription see this view? ', noSubView)
-  //console.log('Does user have a subscription? ', userHasSubscription)
+  console.log('Does user have a subscription? ', userHasSubscription)
   console.log('Is user logged in?', loggedIn)
   //If the site requires auth and the user is not logged in: redirect to login
   if (requiresAuth && loggedIn === false) {
@@ -310,10 +313,10 @@ router.beforeEach(async (to, from, next) => {
     next({ name: "dashboard" });
   }
   // If user has no subscription and the site requires a subscription
-  //else if (loggedIn === true && userHasSubscription === false && noSubView === false) {
-  //  console.log('User does not have subscription therefore they are sent here')
-  //  next({ name: "dashboardNoSub" });
-  //}
+  else if (loggedIn === true && useSessionStore().userHasSubscription === false && noSubView === false) {
+    console.log('User does not have subscription therefore they are sent here')
+    next({ name: "dashboardNoSub" });
+  }
   else next();
 });
 

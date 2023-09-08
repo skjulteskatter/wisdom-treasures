@@ -1,5 +1,5 @@
 <template>
-  <main class="bg-white col-span-2 min-h-full w-full lg:flex place-items-center flex-col">
+  <main class="col-span-2 min-h-full w-full lg:flex place-items-center flex-col" :class="{'bg-green-500' : currentUser != null, 'bg-red-500' : currentUser == null }">
     <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-black/20 flex justify-center">
       <div class="flex place-items-center max-h-20 mt-8 mb-5">
         <img class="w-14 h-14 mr-2" src="/img/logo.svg"/>
@@ -157,7 +157,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { loginWithEmailAndPassword, signupWithEmailAndPassword, loginWithProvider} from '@/services/auth';
+import { loginWithEmailAndPassword, signupWithEmailAndPassword, loginWithProvider, auth} from '@/services/auth';
 import BaseCard from '../components/BaseCard.vue'
 import BaseButton from '../components/BaseButton.vue'
 import BaseInput from '../components/BaseInput.vue'
@@ -167,6 +167,7 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import { useSessionStore } from '@/stores/session';
 import FooterComponent from '@/components/FooterComponent.vue';
 import TermsModal from '@/components/TermsModal.vue';
+import type { User } from 'firebase/auth';
 
   export default defineComponent({
     name: "LoginView",
@@ -224,6 +225,9 @@ import TermsModal from '@/components/TermsModal.vue';
 
         return "";
       },
+      currentUser() : User | null {
+        return auth.currentUser
+      }
     },
     watch: {
       successMessage(newValue : string) {
