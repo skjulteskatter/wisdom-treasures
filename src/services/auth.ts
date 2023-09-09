@@ -95,8 +95,8 @@ export async function signupWithEmailAndPassword(email: string, password: string
     await sendEmailVerification(userCredentials.user);
 }
 
-let userLoaded: boolean = false || !!auth.currentUser;
 let storeInitialized = false;
+let userLoaded: boolean = false || !!auth.currentUser;
 export function getCurrentUserPromise(): Promise<User | null> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
@@ -138,6 +138,7 @@ export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
  */
 async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
+    storeInitialized = true;
     const store = useSessionStore();
     const lang = await store.initializeLanguage();
 
@@ -160,7 +161,6 @@ async function userLoggedInCallback(){
     await store.intitializeStripeService();
 
     store.sessionInitialized = true;
-    storeInitialized = true;
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? ""): Promise<boolean> {
