@@ -1,5 +1,5 @@
 <template>
-  <main class="col-span-2 min-h-full w-full lg:flex place-items-center flex-col" :class="{'bg-green-500' : currentUser != null, 'bg-red-500' : currentUser == null }">
+  <main class="bg-white col-span-2 min-h-full w-full lg:flex place-items-center flex-col">
     <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-black/20 flex justify-center">
       <div class="flex place-items-center max-h-20 mt-8 mb-5">
         <img class="w-14 h-14 mr-2" src="/img/logo.svg"/>
