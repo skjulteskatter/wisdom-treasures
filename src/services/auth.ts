@@ -21,6 +21,7 @@ import "firebase/compat/performance";
 import config from "@/config";
 import router from "@/router";
 import { useSessionStore } from "@/stores/session";
+import { getActivePinia } from "pinia"
 
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
@@ -177,6 +178,8 @@ export async function updateUser(displayName : string = auth.currentUser?.displa
 }
 
 export async function logOut(){
+    const store = useSessionStore();
+    store.$reset();
     await signOut(auth);
 }
 
