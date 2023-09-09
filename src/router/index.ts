@@ -66,7 +66,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: false,
+          requiresSubscription: true,
         }
       },
       {
@@ -80,7 +80,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: true,
+          requiresSubscription: false,
         }
       },
       {
@@ -94,7 +94,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: false,
+          requiresSubscription: true,
         }
       },
       {
@@ -104,7 +104,6 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: true,
         },
       },
       {
@@ -113,7 +112,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: false,
+          requiresSubscription: true,
         },
         children: [
           {
@@ -123,7 +122,7 @@ export const routes = [
             meta: {
               requiresAuth: true,
               scrollUp: true,
-              noSubView: false,
+              requiresSubscription: true,
             },
           },
           Theme
@@ -135,7 +134,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: false,
+          requiresSubscription: true,
         },
         children: [
           {
@@ -145,7 +144,7 @@ export const routes = [
             meta: {
               requiresAuth: true,
               scrollUp: true,
-              noSubView: false,
+              requiresSubscription: true,
             },
           },
           Origin
@@ -158,7 +157,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: false,
+          requiresSubscription: true,
         },
         children: [
           WWCard,
@@ -172,7 +171,6 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: true,
         },
         children: [
           WWCard,
@@ -186,7 +184,6 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: true,
         },
       },
       {
@@ -196,7 +193,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
-          noSubView: false,
+          requiresSubscription: true,
         },
         children: [
           WWCard,
@@ -212,7 +209,6 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
-      noSubView: true,
     },
     children: []
   },
@@ -223,7 +219,6 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
-      noSubView: true,
     },
   },
   {
@@ -233,7 +228,6 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
-      noSubView: true,
     },
   },
   {
@@ -243,7 +237,6 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
-      noSubView: true,
     },
   },
   {
@@ -253,7 +246,6 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
-      noSubView: true,
     },
   },
   {
@@ -262,7 +254,6 @@ export const routes = [
     component: () => import('../views/LoginView.vue'),
     meta: {
       requiresAuth: false,
-      noSubView: true,
     }
   },
   {
@@ -270,8 +261,6 @@ export const routes = [
     name: 'notfound',
     component: () => import('../views/NotFoundView.vue'),
     meta: {
-      requiresAuth: false,
-      noSubView: true,
     }
   }
 ]
@@ -290,18 +279,20 @@ router.beforeEach(async (to, from, next) => {
   }
 
   const requiresAuth: true | false | undefined = to.matched.every(x => x.meta.requiresAuth === undefined) ? undefined : to.matched.some(x => x.meta.requiresAuth);
-  const noSubView: true | false | undefined = to.matched.every(x => x.meta.noSubView === undefined) ? undefined : to.matched.some(x => x.meta.noSubView);
+  const requiresSubscription: true | false | undefined = to.matched.every(x => x.meta.requiresSubscription === undefined) ? undefined : to.matched.some(x => x.meta.requiresSubscription);
 
   let loggedIn = undefined;
-  let userHasSubscription = undefined;
+  let hasSubscription = undefined;
 
-  if (requiresAuth !== undefined)
+  if (requiresAuth !== undefined || requiresSubscription !== undefined)
     loggedIn = !!(await getCurrentUserPromise());
 
-  userHasSubscription = useSessionStore().userHasSubscription
+  if (requiresSubscription !== undefined)
+    hasSubscription = await useSessionStore().userHasSubscriptionPromise();
 
-  console.log('Should people without a subscription see this view? ', noSubView)
-  console.log('Does user have a subscription? ', userHasSubscription)
+  console.log('Should people with a subscription see this view? ', requiresSubscription)
+  console.log('Should people with a user see this view? ', requiresAuth)
+  console.log('Does user have a subscription? ', hasSubscription)
   console.log('Is user logged in?', loggedIn)
   //If the site requires auth and the user is not logged in: redirect to login
   if (requiresAuth && loggedIn === false) {
@@ -313,11 +304,15 @@ router.beforeEach(async (to, from, next) => {
     next({ name: "dashboard" });
   }
   // If user has no subscription and the site requires a subscription
-  else if (loggedIn === true && useSessionStore().userHasSubscription === false && noSubView === false) {
-    console.log('User does not have subscription therefore they are sent here')
+  else if (loggedIn && hasSubscription === false && requiresSubscription) {
     next({ name: "dashboardNoSub" });
   }
+  // If the site requires the user to not have a subscription
+  else if (loggedIn && hasSubscription && requiresSubscription === false){
+    next({ name: "dashboard" });
+  }
   else next();
+
 });
 
 export default router

@@ -142,7 +142,7 @@ async function userLoggedInCallback(){
     const lang = await store.initializeLanguage();
 
     await store.initializeProducts();
-    await store.initializeSubscriptions();
+    await store.userHasSubscriptionPromise();
 
     await store.initializeFavorites();
 

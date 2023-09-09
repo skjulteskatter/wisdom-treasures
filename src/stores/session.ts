@@ -13,6 +13,7 @@ import Fuse from 'fuse.js'
 import type { IApiProduct } from '@/Interfaces/IApiProduct'
 import StripeService from '@/services/stripe'
 import type { Origin } from '@/classes/Origin'
+import { getCurrentUserPromise } from '@/services/auth'
 
 export const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
@@ -69,7 +70,7 @@ export const useSessionStore = defineStore('session', {
             searchWord: "" as string,
             serachEvent: false as boolean,
 
-            userHasSubscription: false as boolean,
+            userHasSubscription: undefined as boolean | undefined,
 
             latestUpdatedArticle: 0 as number,
             latestUpdatedAuthor: 0 as number,
@@ -280,16 +281,25 @@ export const useSessionStore = defineStore('session', {
             }
             
         },
-        async initializeSubscriptions(){
+        async userHasSubscriptionPromise() : Promise<boolean>{
+            await getCurrentUserPromise();
+            if (this.userHasSubscription !== undefined) return this.userHasSubscription;
+
             try {
                 this.userHasSubscription = (await stripe.getSubscriptions()).some(x => x.productIds.includes("prod_NnqNtVfJjpCCOy")); //TODO find a better way than hardcode product id
-                if (!this.userHasSubscription){
+                if (this.userHasSubscription === undefined || this.userHasSubscription === false){
+                    console.log("Product doesn't macth up. let's get an article!")
                     this.userHasSubscription = (await articles.postOneRandom()).length > 0;
-                }
+                    if (this.userHasSubscription) console.log("Ahh your the admin");
+                    else console.log("Article didn't appear. Sorry m8")
+                } else console.log("product checks out")
             } catch
             {
                 console.log("Failed to get subscriptions");
+                this.userHasSubscription = false;
             } 
+
+            return this.userHasSubscription;
         },
         async intitializeStripeService(){
             try {
