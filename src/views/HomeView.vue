@@ -142,8 +142,6 @@ import ThreeDButton from '@/components/ThreeDButton.vue';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
 
-
-
 export default defineComponent({
   name: "HomeView",
   data() {

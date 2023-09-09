@@ -29,4 +29,4 @@ import { defineComponent, type PropType } from "vue"
         },
     }
  })
-</script>@/classes/Origin
+</script>

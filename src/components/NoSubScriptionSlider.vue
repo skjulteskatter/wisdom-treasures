@@ -58,17 +58,15 @@
         </swiper-slide>
     </swiper>
 </template>
-<script>
+<script lang='ts'>
 import { Swiper, SwiperSlide } from 'swiper/vue';
-import SwiperCore, { Pagination, Autoplay } from 'swiper/core';
-
-SwiperCore.use([Pagination, Autoplay]);
+import { Autoplay, Pagination } from 'swiper';
 
 export default {
-    name: 'NoSubscriptionSviper',
+    name: 'NoSubscriptionSlider',
     components: {
         Swiper,
-        SwiperSlide   // Make sure to use this in your template, otherwise remove this line.
+        SwiperSlide  
     },
     data() {
         return {

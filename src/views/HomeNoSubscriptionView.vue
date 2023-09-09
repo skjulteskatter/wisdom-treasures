@@ -49,16 +49,12 @@ import { getCurrentUserPromise } from '@/services/auth';
 import type { User } from '@firebase/auth';
 import type { Article, Publication } from 'hiddentreasures-js';
 import { defineComponent } from 'vue';
-import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
 import { InlineNotification } from '@/classes/notification';
 import router from '@/router';
-import WWShowCard from '@/components/WWShowCard.vue';
-import ThreeDButton from '@/components/ThreeDButton.vue';
-import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
-import BaseButton from '@/components/BaseButton.vue'
-import NoSubscriptionSlider from '@/components/NoSubscriptionSlider.vue'
+import BaseButton from '@/components/BaseButton.vue';
+import NoSubscriptionSlider from '@/components/NoSubScriptionSlider.vue'
 
 export default defineComponent({
   name: "HomeView",
@@ -80,12 +76,8 @@ export default defineComponent({
     }
   },
   components: {
-    WWCard,
-    WWShowCard,
-    ThreeDButton,
-    OriginsSwiper,
     BaseButton,
-    NoSubscriptionSlider,
+    NoSubscriptionSlider
   },
   computed: {
     historyArticles(): Article[] {
@@ -166,24 +158,9 @@ export default defineComponent({
       this.shuffeledArticleKeys.push(key);
     }
 
-    this.fillRandomArticles(20);
-    window.addEventListener('scroll', this.onScroll);
-
     Notification.requestPermission();
   },
   methods: {
-    async onScroll() {
-      let bottom = window.innerHeight + window.pageYOffset == document.body.scrollHeight;
-      if (!bottom) return;
-      this.loadingMoreArticles = true;
-      setTimeout(() => {
-        this.fillRandomArticles(20);
-      }, 1);
-      setTimeout(() => {
-        this.loadingMoreArticles = false;
-      }, 200);
-    },
-
     navigate(name: string, e?: Event) {
 
       if (name === "register") {
