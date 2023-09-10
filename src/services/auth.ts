@@ -100,19 +100,24 @@ let userLoaded: boolean = false || !!auth.currentUser;
 export function getCurrentUserPromise(): Promise<User | null> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
+    console.log("Inside promise");
      if (userLoaded) {
             resolve(auth.currentUser);
             if (!storeInitialized){
                 await userLoggedInCallback();
+            } else {
+                console.log("Store alreday init");
             }
             return;
      }
      const unsubscribe = auth.onAuthStateChanged(async (user : User | null) => {
+        console.log("Inside another promise");
         userLoaded = true;
         unsubscribe();
         resolve(user);
 
         if (user != null) { // Fires only when user logs in
+            console.log("Lets init store");
             await userLoggedInCallback();
         }
      }, reject);
@@ -138,12 +143,13 @@ export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
  */
 async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
-    storeInitialized = true;
     const store = useSessionStore();
     const lang = await store.initializeLanguage();
 
+    console.log("Getting ready to initialize! What is user status: ", auth.currentUser);
+    if (auth.currentUser == null) return;
+
     await store.initializeProducts();
-    await store.userHasSubscriptionPromise();
 
     await store.initializeFavorites();
 
@@ -154,12 +160,12 @@ async function userLoggedInCallback(){
     const authorIds = [...new Set(Array.from(store.articles.values()).map(x => x.authorId))];
     const sourceIds = [...new Set(Array.from(store.articles.values()).filter(x => x.sourceId != null).map(x => x.sourceId))] as string[];
 
-    await store.initializeAuthors(authorIds);
+    await store.initializeAuthors(authorIds); // TODO use these ids!
     await store.initializeSources(sourceIds);
     await store.intitializeArticleNumberLookup();
 
     await store.intitializeStripeService();
-
+    storeInitialized = true;
     store.sessionInitialized = true;
 }
 

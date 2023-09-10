@@ -272,6 +272,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
+  console.log("Before each route change initiated!");
+
   if (to.meta.scrollUp === true && from.meta.scrollUp === true) {
     setTimeout(() => {
       window.scrollTo(0, 0);
@@ -285,10 +287,12 @@ router.beforeEach(async (to, from, next) => {
   let hasSubscription = undefined;
 
   if (requiresAuth !== undefined || requiresSubscription !== undefined)
-    loggedIn = !!(await getCurrentUserPromise());
+    console.log("Getting current user!"); loggedIn = !!(await getCurrentUserPromise());
+
+  console.log("moving on");
 
   if (requiresSubscription !== undefined)
-    hasSubscription = await useSessionStore().userHasSubscriptionPromise();
+    console.log("Getting subscriptions for that user"); hasSubscription = await useSessionStore().userHasSubscriptionPromise();
 
   console.log('Should people with a subscription see this view? ', requiresSubscription)
   console.log('Should people with a user see this view? ', requiresAuth)

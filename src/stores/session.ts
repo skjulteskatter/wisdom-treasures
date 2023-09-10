@@ -216,6 +216,7 @@ export const useSessionStore = defineStore('session', {
         },
         async initializeArticles(ids : string[], fromIndexDb: boolean = true) {
 
+            console.log("getting articles");
             if (ids.length <= 0) return;
             
             let oldArticlesArray: Article[] = [];

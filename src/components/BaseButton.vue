@@ -46,6 +46,7 @@ export default defineComponent({
                         "magic",
                         "filterXBtn",
                         "disabled",
+                        "threeDBtn"
                     ].includes(value)
                 );
             },
