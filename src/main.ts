@@ -25,6 +25,9 @@ import App from './App.vue';
 import router from './router';
 
 import './assets/main.css';
+// Import Swiper styles
+import 'swiper/css';
+import 'swiper/css/pagination';
 // import '@fortawesome/fontawesome-free/css/all.css';
 
 import { registerSW } from 'virtual:pwa-register' //Don't know if this does anything

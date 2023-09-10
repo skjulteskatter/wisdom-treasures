@@ -149,6 +149,9 @@ async function userLoggedInCallback(){
     console.log("Getting ready to initialize! What is user status: ", auth.currentUser);
     if (auth.currentUser == null) return;
 
+    //TODO add a check for subscription here. Don't get and set articles without subscription
+    // Also test if the API is 429
+
     await store.initializeProducts();
 
     await store.initializeFavorites();
