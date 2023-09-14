@@ -13,7 +13,7 @@ import Fuse from 'fuse.js'
 import type { IApiProduct } from '@/Interfaces/IApiProduct'
 import StripeService from '@/services/stripe'
 import type { Origin } from '@/classes/Origin'
-import { getCurrentUserPromise } from '@/services/auth'
+import { auth } from '@/services/auth'
 
 export const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 
@@ -142,9 +142,7 @@ export const useSessionStore = defineStore('session', {
             this.fusePublications = new Fuse(oldPublicationArray.concat(newPublicationArray), option, Fuse.createIndex(option.keys, oldPublicationArray.concat(newPublicationArray)));
 
         },
-        async initializeAuthors(ids : string[], fromIndexDb: boolean = true) {
-
-            if (ids.length <= 0) return;
+        async initializeAuthors(fromIndexDb: boolean = true) {
 
             let oldAuthorArray: Contributor[] = [];
 
@@ -179,10 +177,7 @@ export const useSessionStore = defineStore('session', {
             this.fuseAuthors = new Fuse(oldAuthorArray.concat(newAuthorsArray), option, Fuse.createIndex(option.keys, oldAuthorArray.concat(newAuthorsArray)));
 
         },
-        async initializeSources(ids : string[], fromIndexDb: boolean = true) {
-
-            //Add a check to make sure you're not getting the same 
-            if (ids.length <= 0) return;
+        async initializeSources(fromIndexDb: boolean = true) {
 
             let oldOriginArray: Origin[] = [];
 
@@ -214,10 +209,7 @@ export const useSessionStore = defineStore('session', {
             }
             this.fuseOrigins = new Fuse(oldOriginArray.concat(newOriginssArray), option, Fuse.createIndex(option.keys, oldOriginArray.concat(newOriginssArray)));
         },
-        async initializeArticles(ids : string[], fromIndexDb: boolean = true) {
-
-            console.log("getting articles");
-            if (ids.length <= 0) return;
+        async initializeArticles(fromIndexDb: boolean = true) {
             
             let oldArticlesArray: Article[] = [];
 
@@ -283,8 +275,12 @@ export const useSessionStore = defineStore('session', {
             
         },
         async userHasSubscriptionPromise() : Promise<boolean>{
-            await getCurrentUserPromise();
             if (this.userHasSubscription !== undefined) return this.userHasSubscription;
+            if (auth.currentUser == null) 
+            {
+                console.log("Can't get subs if you're not logged in 😅");
+                return false;
+            }
 
             try {
                 this.userHasSubscription = (await stripe.getSubscriptions()).some(x => x.productIds.includes("prod_NnqNtVfJjpCCOy")); //TODO find a better way than hardcode product id

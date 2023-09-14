@@ -104,6 +104,7 @@ export function getCurrentUserPromise(): Promise<User | null> {
      if (userLoaded) {
             resolve(auth.currentUser);
             if (!storeInitialized){
+                console.log("Initializing store");
                 await userLoggedInCallback();
             } else {
                 console.log("Store alreday init");
@@ -144,31 +145,26 @@ export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
 async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
     const store = useSessionStore();
-    const lang = await store.initializeLanguage();
+    await store.initializeLanguage();
 
     console.log("Getting ready to initialize! What is user status: ", auth.currentUser);
     if (auth.currentUser == null) return;
 
+    if (await store.userHasSubscriptionPromise() == false) return;
     //TODO add a check for subscription here. Don't get and set articles without subscription
-    // Also test if the API is 429
-
-    await store.initializeProducts();
-
-    await store.initializeFavorites();
-
-    await store.initializePublications();
-    const pubIds = Array.from(store.publications.keys());
-
-    await store.initializeArticles(pubIds);
-    const authorIds = [...new Set(Array.from(store.articles.values()).map(x => x.authorId))];
-    const sourceIds = [...new Set(Array.from(store.articles.values()).filter(x => x.sourceId != null).map(x => x.sourceId))] as string[];
-
-    await store.initializeAuthors(authorIds); // TODO use these ids!
-    await store.initializeSources(sourceIds);
-    await store.intitializeArticleNumberLookup();
-
-    await store.intitializeStripeService();
     storeInitialized = true;
+
+    await Promise.all([
+        store.initializeProducts(),
+        store.initializeFavorites(),
+        store.initializePublications(),
+        store.initializeArticles(),
+        store.initializeSources(),
+        store.intitializeArticleNumberLookup(),
+        store.intitializeStripeService()
+    ]);
+
+    await store.initializeAuthors();
     store.sessionInitialized = true;
 }
 
