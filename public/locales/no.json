@@ -129,5 +129,30 @@
     "submit": "Send inn",
     "thankYou": "Tusen takk for at du foreslår innhold til WisdomWords. Vi vurderer alle forslag som blir sendt inn, du vil ikke bli kontaktet dersom ditt forslag blir inkludert i appen.",
     "success": "Takk for ditt bidrag. Dersom visdomsordet blir inkludert i appen, vil du ikke bli informert."
+  },
+  "nosub": {
+    "todaysword": {
+      "title": "Få daglig visdomsord",
+      "description": "Få 'Dagens visdomsord' hver dag i WisdomTreasures-appen"
+    },
+    "events": {
+      "title": "Følg med på de siste hendelsene",
+      "description": "Wisdom Treasures oppdateres kontinuerlig med visdomsord fra nylige hendelser globalt!"
+    },
+    "manna": {
+      "title": "Hent visdomsmanna",
+      "description": "Wisdom Treasures lar deg hente visdomsord fra vår store samling av over 8000 visdomsord!"
+    },
+    "favorites": {
+      "title": "Favoritter",
+      "description": "Lagre og samle dine favorittvisdomsord!"
+    },
+    "themes": {
+      "title": "Bla gjennom temaer",
+      "description": "Bla gjennom vår samling av mer enn 250 temaer med visdomsord!"
+    },
+    "title": "Kjøp abonnement for å bruke Wisdom Treasures",
+    "subtitle": "Du har for øyeblikket ingen aktive abonnementer. Med et abonnement på Wisdom Treasures vil du alltid ha et visdomsord rett ved hånden, når som helst.",
+    "buy": "Kjøp abonnement"
   }
 }

@@ -1,79 +1,76 @@
+<style>
+.swiper-wrapper .swiper-slide {
+  height: unset;
+}
+</style>
 <template>
-    <swiper :modules="modules" :pagination="pagination" :autoplay="autoplay" class="">
-        <swiper-slide style="height: 36rem !important;" class=" justify-center items-center">
-            <div>
-                <img src="\img\NoSub\NoSub_TodaysWord.png" class="h-full w-full" />
-            </div>
-            <hr class="my-1" />
-            <h2 class="mb-5 mt-2 leading-4 font-bold text-center text-xl">
-                Get Daily Word of Wisdom
-            </h2>
-            <h3 class="text-[color:var(--wt-color-text-grey)] text-center">
-                Get "Todays word of wisdom" every day in the WisdomTreasures app</h3>
-        </swiper-slide>
-        <swiper-slide style="height: 36rem !important;" class=" justify-center items-center">
-            <div>
-                <img src="\img\NoSub\NoSub_Events.png" class="h-full w-full" />
-            </div>
-            <hr class="my-1" />
-            <h2 class="mb-5 mt-2 leading-4 font-bold  text-center text-xl">
-                Catch up on latest events
-            </h2>
-            <h3 class="text-[color:var(--wt-color-text-grey)] text-center">
-                Wisdom Treasures is continuously updated with wisdom words from recent events globally!</h3>
-        </swiper-slide>
-        <swiper-slide style="height: 36rem !important;" class=" justify-center items-center">
-            <div>
-                <img src="\img\NoSub\NoSub_Manna.png" class="h-full w-full" />
-            </div>
-            <hr class="my-1" />
-            <h2 class="mb-5 mt-2 leading-4 font-bold  text-center text-xl">
-                Draw wisdom manna
-            </h2>
-            <h3 class="text-[color:var(--wt-color-text-grey)] text-center">
-                Wisdom treasures lets you draw wisdom words from our large collection of over 8000 wisdom words!
-            </h3>
-        </swiper-slide>
-        <swiper-slide style="height: 36rem !important;" class=" justify-center items-center">
-            <div>
-                <img src="\img\NoSub\NoSub_Favorites.png" class="h-full w-full"/>
-            </div>
-            <hr class="my-1" />
-            <h2 class="mb-5 mt-2 leading-4 font-bold  text-center text-xl">
-                Favorites
-            </h2>
-            <h3 class="text-[color:var(--wt-color-text-grey)] text-center">
-                Save and collect your favourite wisdom words! </h3>
-        </swiper-slide>
-        <swiper-slide style="height: 36rem !important; width: max-content;" class=" justify-center items-center">
-            <div>
-                <img src="\img\NoSub\NoSub_Themes.png" class="h-full w-full" />
-            </div>
-            <hr class="my-1" />
-            <h2 class="mb-5 mt-2 leading-4 font-bold  text-center text-xl">
-                Browse themes
-            </h2>
-            <h3 class="text-[color:var(--wt-color-text-grey)] text-center">
-                Browse through our library of more than 250 themes of wisdoms words! </h3>
-        </swiper-slide>
-    </swiper>
+  <swiper
+    :spaceBetween="30"
+    :effect="'fade'"
+    :autoplay="autoplay"
+    :navigation="true"
+    :pagination="{
+      clickable: true,
+    }"
+    :modules="modules"
+    class="mySwiper"
+  >
+    <swiper-slide v-for="slide in slides" class="py-11 px-2">
+      <div class="h-5/6 pt-10 flex flex-col items-center">
+        <img :src="slide.image" class="h-full w-auto object-cover" />
+      </div>
+      <h2 class="mb-2 font-bold text-center text-xl">
+        {{ slide.title }}
+      </h2>
+      <h3 class="text-center mb-10">
+        {{ slide.description }}
+      </h3>
+    </swiper-slide>
+  </swiper>
 </template>
-<script lang='ts'>
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import { Autoplay, Pagination } from 'swiper';
+<script lang="ts">
+import { Swiper, SwiperSlide } from "swiper/vue";
+import { Autoplay, Pagination } from "swiper";
 
 export default {
-    name: 'NoSubscriptionSlider',
-    components: {
-        Swiper,
-        SwiperSlide  
-    },
-    data() {
-        return {
-            modules: [Pagination, Autoplay],
-            pagination: { clickable: true },
-            autoplay: { delay: 5000 }
-        };
-    },
+  name: "NoSubscriptionSlider",
+  components: {
+    Swiper,
+    SwiperSlide,
+  },
+  data() {
+    return {
+      modules: [Pagination, Autoplay],
+      pagination: { clickable: true },
+      autoplay: { delay: 5000 },
+      slides: [
+        {
+          title: this.$t("nosub.todaysword.title"),
+          description: this.$t("nosub.todaysword.description"),
+          image: "/img/NoSub/NoSub_TodaysWord.jpg",
+        },
+        {
+          title: this.$t("nosub.favorites.title"),
+          description: this.$t("nosub.favorites.description"),
+          image: "/img/NoSub/NoSub_Favorites.jpg",
+        },
+        {
+          title: this.$t("nosub.manna.title"),
+          description: this.$t("nosub.manna.description"),
+          image: "/img/NoSub/NoSub_Manna.jpg",
+        },
+        {
+          title: this.$t("nosub.events.title"),
+          description: this.$t("nosub.events.description"),
+          image: "/img/NoSub/NoSub_Events.jpg",
+        },
+        {
+          title: this.$t("nosub.themes.title"),
+          description: this.$t("nosub.themes.description"),
+          image: "/img/NoSub/NoSub_Themes.png",
+        },
+      ],
+    };
+  },
 };
 </script>

@@ -103,6 +103,7 @@ export const routes = [
         component: () => import('../views/ProfileView.vue'),
         meta: {
           requiresAuth: true,
+          requiresSubscription: false,
           scrollUp: true,
         },
       },
@@ -171,6 +172,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
+          requiresSubscription: false,
         },
         children: [
           WWCard,
@@ -184,6 +186,7 @@ export const routes = [
         meta: {
           requiresAuth: true,
           scrollUp: true,
+          requiresSubscription: false
         },
       },
       {
@@ -207,8 +210,9 @@ export const routes = [
     name: 'landing',
     component: () => import('../views/LandingView.vue'),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       scrollUp: true,
+      requiresSubscription: false
     },
     children: []
   },
@@ -219,6 +223,7 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
+      requiresSubscription: false
     },
   },
   {
@@ -226,8 +231,9 @@ export const routes = [
     name: 'insight',
     component: () => import('../views/InsightView.vue'),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       scrollUp: true,
+      requiresSubscription: false
     },
   },
   {
@@ -235,8 +241,9 @@ export const routes = [
     name: 'privacy-policy',
     component: () => import('../views/PrivacyPolicyView.vue'),
     meta: {
-      requiresAuth: true,
+      requiresAuth: false,
       scrollUp: true,
+      requiresSubscription: false
     },
   },
   {
@@ -246,6 +253,7 @@ export const routes = [
     meta: {
       requiresAuth: true,
       scrollUp: true,
+      requiresSubscription: false
     },
   },
   {
@@ -254,6 +262,7 @@ export const routes = [
     component: () => import('../views/LoginView.vue'),
     meta: {
       requiresAuth: false,
+      requiresSubscription: false
     }
   },
   {

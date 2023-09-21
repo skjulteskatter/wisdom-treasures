@@ -130,5 +130,30 @@
     "submit": "Submit",
     "thankYou": "Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any notification if this wisdom word is included in the app.",
     "success": "Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any notification if this wisdom word is included in the app."
+  },
+  "nosub": {
+    "todaysword": {
+      "title": "Get a daily word of wisdom",
+      "description": " Get \"Todays word of wisdom\" every day in the WisdomTreasures app"
+    },
+    "events": {
+      "title": "Catch up on latest events",
+      "description": "Wisdom Treasures is continuously updated with wisdom words from recent         events globally! "
+    },
+    "manna": {
+      "title": "Draw wisdom manna",
+      "description": "Wisdom treasures lets you draw wisdom words from our large collection           of over 8000 wisdom words!  "
+    },
+    "favorites": {
+      "title": "Favorites",
+      "description": "Save and collect your favourite wisdom words! "
+    },
+    "themes": {
+      "title": "Browse themes",
+      "description": "Browse through our library of more than 250 themes of wisdoms words!"
+    },
+    "title": "Buy subscription to use Wisdom Treasures",
+    "subtitle": "You do not currently have any active subscriptions. With a             subscription for Wisdom Treasures you will always have a wisdom word             right at your hand, at any time.",
+    "buy": "Buy subscription"
   }
 }
