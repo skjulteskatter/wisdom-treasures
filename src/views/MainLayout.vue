@@ -59,6 +59,7 @@ export default defineComponent({
 	},
 	computed: {
 		isIntitialized(): boolean {
+			console.log('IN MAINVIEW: ', this.store.sessionInitialized)
 			return this.store.sessionInitialized;
 		}
 	}

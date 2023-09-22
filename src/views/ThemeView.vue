@@ -1,6 +1,6 @@
 <template>
   <main>
-
+    <div>
     <div id="scrollToTopButtonDiv" class="flex fixed top-4 sm:top-20 left-0 z-40 w-full h-0">
       <div id="spacerDiv1" class="grow pointer-events-none h-0 -z-50" />
       <ScrollToTopButton class="fixed top-0 h-max" />
@@ -48,7 +48,7 @@
       </div>
     </div>
     <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
-
+  </div>
   </main>
 </template>
 

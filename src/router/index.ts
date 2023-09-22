@@ -281,7 +281,7 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-  console.log("Before each route change initiated!");
+  console.log("NAVIGATING TO ", to.name);
 
   if (to.meta.scrollUp === true && from.meta.scrollUp === true) {
     setTimeout(() => {
@@ -296,35 +296,37 @@ router.beforeEach(async (to, from, next) => {
   let hasSubscription = undefined;
 
   if (requiresAuth !== undefined || requiresSubscription !== undefined)
-    console.log("Getting current user!"); loggedIn = !!(await getCurrentUserPromise());
-
-  console.log("moving on");
+    loggedIn = !!(await getCurrentUserPromise());
 
   if (requiresSubscription !== undefined)
-    console.log("Getting subscriptions for that user"); hasSubscription = await useSessionStore().userHasSubscriptionPromise();
+    hasSubscription = await useSessionStore().userHasSubscriptionPromise();
 
-  console.log('Should people with a subscription see this view? ', requiresSubscription)
-  console.log('Should people with a user see this view? ', requiresAuth)
+  console.log('Are only people with a subscription allowed to see ', to.name, ' ', requiresSubscription)
   console.log('Does user have a subscription? ', hasSubscription)
+
+  console.log('Do you need to be logged in to see ', to.name, ' ', requiresAuth)
   console.log('Is user logged in?', loggedIn)
   //If the site requires auth and the user is not logged in: redirect to login
   if (requiresAuth && loggedIn === false) {
     useSessionStore().$state.redirectAfterLoginName = to.name?.toString() ?? "";
+    console.log('INDEX: This side requires auth, and you are not logged in - sending you to login')
     next({ name: "login" });
   }
   //If the site requires the user to be logged off and the user is logged in: redirect to dashboard
   else if (requiresAuth === false && loggedIn === true) {
+    console.log('INDEX: This side requires NO auth, and you are logged in - sending you to dashboard')
     next({ name: "dashboard" });
   }
   // If user has no subscription and the site requires a subscription
   else if (loggedIn && hasSubscription === false && requiresSubscription) {
+    console.log('INDEX: This side requires subscription, and you are logged in - sending you to buy subscription')
     next({ name: "dashboardNoSub" });
   }
-  // If the site requires the user to not have a subscription
-  else if (loggedIn && hasSubscription && requiresSubscription === false){
-    next({ name: "dashboard" });
+  
+  else {
+    console.log('INDEX: All good, passing you by')
+    next();
   }
-  else next();
 
 });
 

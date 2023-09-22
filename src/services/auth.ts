@@ -100,19 +100,18 @@ let userLoaded: boolean = false || !!auth.currentUser;
 export function getCurrentUserPromise(): Promise<User | null> {
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
-    console.log("Inside promise");
      if (userLoaded) {
             resolve(auth.currentUser);
             if (!storeInitialized){
-                console.log("Initializing store");
+                console.log("getCurrentUserPromise: Initializing store");
                 await userLoggedInCallback();
             } else {
-                console.log("Store alreday init");
+                console.log("getCurrentUserPromise: Store alreday init");
             }
             return;
      }
      const unsubscribe = auth.onAuthStateChanged(async (user : User | null) => {
-        console.log("Inside another promise");
+        console.log("Inside onAuthStateChanges promise");
         userLoaded = true;
         unsubscribe();
         resolve(user);
@@ -147,13 +146,16 @@ async function userLoggedInCallback(){
     const store = useSessionStore();
     await store.initializeLanguage();
 
-    console.log("Getting ready to initialize! What is user status: ", auth.currentUser);
+    console.log("UserLoggedInCallback: Getting ready to initialize! What is user status: ", auth.currentUser);
     if (auth.currentUser == null) return;
 
-    if (await store.userHasSubscriptionPromise() == false) return;
+    if (await store.userHasSubscriptionPromise() == false){
+        store.sessionInitialized = true;
+        console.log('UserLoggedInCallback: Store initialized, no subscription')
+        return
+    }
     //TODO add a check for subscription here. Don't get and set articles without subscription
     storeInitialized = true;
-
     await Promise.all([
         store.initializeProducts(),
         store.initializeFavorites(),
@@ -166,6 +168,7 @@ async function userLoggedInCallback(){
 
     await store.initializeAuthors();
     store.sessionInitialized = true;
+    console.log('UserLoggedInCallback: Store initialized, subscription')
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? ""): Promise<boolean> {
@@ -184,7 +187,7 @@ export async function updateUser(displayName : string = auth.currentUser?.displa
 
 export async function logOut(){
     const store = useSessionStore();
-    store.$reset();
+    store.logout()
     await signOut(auth);
 }
 

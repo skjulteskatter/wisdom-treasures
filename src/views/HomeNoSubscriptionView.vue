@@ -1,34 +1,38 @@
 <template>
-  <img
-    id="background-img"
-    src="../../images/backgroundlogo.svg"
-    class="hidden sm:block fixed -top-10 -right-44 2xl:-right-5 w-custom-45rem -z-20 transition-all duration-300 ease-in-out blur-sm"
-  />
-  <main class="">
-    <div
-      class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0"
-    >
-      <h1
-        class="text-base font-bold text-[color:var(--wt-color-text-grey)] opacity-80"
+  <main>
+    <div>
+      <img
+        id="background-img"
+        src="../../images/backgroundlogo.svg"
+        class="hidden sm:block fixed -top-10 -right-44 2xl:-right-5 w-custom-45rem -z-20 transition-all duration-300 ease-in-out blur-sm"
+      />
+      <div
+        class="flex py-10 bg-[color:var(--wt-c-white-soft)] sm:bg-transparent items-center shadow-md sm:shadow-none z-40 max-h-10 sm:h-auto w-full top-0 left-0 sm:static px-6 sm:px-0"
       >
-        <span v-if="currentUser" class="sm:font-bold text-lg tracking-075">
-          {{ $t("common.welcome") }},
+        <h1
+          class="text-base font-bold text-[color:var(--wt-color-text-grey)] opacity-80"
+        >
+          <span v-if="currentUser" class="sm:font-bold text-lg tracking-075">
+            {{ $t("common.welcome") }},
 
-          <span
-            class="animated-gradient font-bold cursor-pointer"
-            @click="$router.push({ name: 'profile' })"
-          >
-            {{ currentUser.displayName }}
+            <span
+              class="animated-gradient font-bold cursor-pointer"
+              @click="$router.push({ name: 'profile' })"
+            >
+              {{ currentUser.displayName }}
+            </span>
           </span>
-        </span>
-        <span v-else class="sm:font-bold text-lg tracking-075">
-          {{ $t("home.welcometo") }}
-          <span class="animated-gradient font-bold"> WisdomTreasures </span>
-        </span>
-      </h1>
-    </div>
+          <span v-else class="sm:font-bold text-lg tracking-075">
+            {{ $t("home.welcometo") }}
+            <span class="animated-gradient font-bold"> WisdomTreasures </span>
+          </span>
+        </h1>
+      </div>
 
-    <div class="lg:flex items-center justify-center pt-10 md:pt-0" id="showcase">
+      <div
+        class="lg:flex items-center justify-center pt-10 md:pt-0"
+        id="showcase"
+      >
         <div class="md:w-1/2 mx-5 space-y-5 md:-translate-y-20 md:pb-40">
           <h1
             class="sm:text-3xl font-bold text-3xl sm:text-inherit tracking-wide"
@@ -38,15 +42,20 @@
           <p>
             {{ $t("nosub.subtitle") }}
           </p>
-          <BaseButton class="rounded-full" @click="$router.push({ name: 'store' })" theme="wisdomMannaBtn">
+          <BaseButton
+            class="rounded-full"
+            @click="$router.push({ name: 'store' })"
+            theme="wisdomMannaBtn"
+          >
             {{ $t("nosub.buy") }}
           </BaseButton>
         </div>
 
-        <div class="h-screen md:w-1/2 px-5 ">
+        <div class="h-screen md:w-1/2 px-5">
           <NoSubscriptionSlider class="h-2/3" />
         </div>
       </div>
+    </div>
   </main>
 </template>
 
