@@ -103,13 +103,13 @@
         },
         favoriteButton(): void
         {
-          if (this.favorite){
-            console.log("before:", this.store.favorites)
-            this.store.favorites = this.store.favorites.filter(x => x != this.article.id);
-            console.log("after:", this.store.favorites)
-          } else {
-            this.store.favorites.push(this.article.id);
-          }
+          if (!this.favorite){
+                console.log("Adding to favorites");
+                this.store.addFavorite([this.article.id]);
+            } else {
+                console.log("Removing from favorites");
+                this.store.removeFavorite([this.article.id]);
+            }
         },
         navigateBack(e?: Event){
 

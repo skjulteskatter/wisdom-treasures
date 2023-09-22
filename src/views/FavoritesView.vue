@@ -13,7 +13,7 @@
     </div>
     <div v-if="favoriteArticles.length > 0" id="WWCards" class="px-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
       <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
-        <WWCard :article="article" class="grow" :strech-y="true" @close-modal="refreshDataFavorites" @click="refreshDataFavorites"/>
+        <WWCard :article="article" class="grow" :strech-y="true" @close-modal="sync()"/>
       </div>
     </div>
     <div v-else class="grow flex flex-col">
@@ -39,7 +39,7 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
       return {
         publications : [] as Publication[],
         store: useSessionStore(),
-        dataFavorites : undefined as string[] | undefined,
+        temporaryFavorites : [] as string[],
       }
     },
     components: {
@@ -52,22 +52,30 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
         return this.store.favorites;
       },
       favorites() : string[]{
-        return this.dataFavorites === undefined ? this.storeFavorites : this.dataFavorites;
+        return [... new Set(this.temporaryFavorites.concat(this.storeFavorites))];
       },
       favoriteArticles() : Article[] {
-        const favoriteArticles = [];
+        let list: Article[] = [];
         for (const favorite of this.favorites) {
           const article = this.store.articles.get(favorite);
-          if (article === null || article === undefined) continue;
-          favoriteArticles.push(article);
+          if (article === undefined) continue
+          list.push(article);
         }
-        return favoriteArticles;
+
+        return list.sort((a,b) => (a.content?.content ?? "⛄").localeCompare(b.content?.content ?? "⛄"));
       },
     },
+
     methods: {
-      refreshDataFavorites(){
-        this.dataFavorites = [...this.storeFavorites];
+      sync(){
+        this.temporaryFavorites = [];
+        for (const id of this.store.favorites) {
+          this.temporaryFavorites.push(id);
+        }
       }
+    },
+    mounted(){
+      this.sync();
     }
   });
 </script>
