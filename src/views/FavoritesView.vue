@@ -32,6 +32,7 @@ import WWCard from '@/components/WWCard.vue';
 import { useSessionStore } from '@/stores/session';
 import BackButton from '@/components/BackButton.vue';
 import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
+import { InlineNotification } from '@/classes/notification';
 
   export default defineComponent({
     name: "FavoriteView",
@@ -64,6 +65,30 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
 
         return list.sort((a,b) => (a.content?.content ?? "⛄").localeCompare(b.content?.content ?? "⛄"));
       },
+      currentPath(): string {
+        return !this.$route.path.endsWith("/") ? this.$route.path : this.$route.path.slice(0, this.$route.path.length - 1);
+      },
+      homePath(): string {
+        let route = (this.$router.getRoutes().find(x => x.name == 'favorites')?.path || "⛄");
+        return !route.endsWith("/") ? route : route.slice(0, route.length - 1);
+      },
+      currentPathNumber(): number | null {
+        let match = (this.currentPath.match(/[0-9]+$/) ?? [null])[0];
+        if (match == null) return null;
+        return parseInt(match);
+      },
+      sessionInitialized(): boolean {
+        return this.store.sessionInitialized;
+      },
+    },
+
+    watch: {
+      sessionInitialized(initialized) {
+        console.log("in here");
+        if (initialized) {
+          this.checkArticleNumberPath();
+        }
+      }
     },
 
     methods: {
@@ -72,10 +97,29 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
         for (const id of this.store.favorites) {
           this.temporaryFavorites.push(id);
         }
-      }
+      },
+      articleNotFound(num: number): void {
+        this.store.notifications.push(new InlineNotification(this.$t('home.couldNotFindArticleNumber') + num.toString(), "error"));
+        this.$router.push({ name: "favorites" });
+      },
+      checkArticleNumberPath() {
+        console.log("checking")
+        if (this.homePath === this.currentPath) return;
+      
+        const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
+        if (articleId === undefined) {
+          this.articleNotFound(this.currentPathNumber || NaN);
+          return;
+        }
+
+        if ((this.favoriteArticles.some(x => x.id == articleId))) return;
+
+        this.articleNotFound(NaN);
+      },
     },
     mounted(){
       this.sync();
+      if (this.sessionInitialized) this.checkArticleNumberPath();
     }
   });
 </script>

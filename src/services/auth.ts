@@ -162,10 +162,10 @@ async function userLoggedInCallback(){
         store.initializePublications(),
         store.initializeArticles(),
         store.initializeSources(),
-        store.intitializeArticleNumberLookup(),
         store.intitializeStripeService()
     ]);
 
+    await store.intitializeArticleNumberLookup(),
     await store.initializeAuthors();
     store.sessionInitialized = true;
     console.log('UserLoggedInCallback: Store initialized, subscription')

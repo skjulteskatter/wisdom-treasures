@@ -240,7 +240,10 @@ export default defineComponent({
   },
   async mounted() {
     this.currentUser = await getCurrentUserPromise() as User;
-    if (this.sessionInitialized) this.getAndSetWordOfTheDayArticle();
+    if (this.sessionInitialized) {
+      this.getAndSetWordOfTheDayArticle();
+      this.checkArticleNumberPath();
+    }
 
     for (const key of this.store.articles.keys()) {
       this.shuffeledArticleKeys.push(key);
@@ -284,22 +287,22 @@ export default defineComponent({
       router.push({ name: name });
     },
     articleNotFound(num: number): void {
-      //Should probably navigate back 🤷‍♂️
-      this.store.notifications.push(new InlineNotification(this.$t('home.couldNotFindArticleNumber') + num.toString(), "error"));
+      this.store.notifications.push(new InlineNotification(`Couldn't find favorite: ${num.toString()}`, "error"));
       router.push({ name: "dashboard" });
     },
     checkArticleNumberPath() {
       if (this.homePath === this.currentPath) return;
 
       const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
+      console.log("LOOKUP: ", this.store.articleNumberLookup);
       if (articleId === undefined) {
         this.articleNotFound(this.currentPathNumber || NaN);
         return;
       }
 
-      if ((this.articles.some(x => x.id == articleId))) return null;
+      if ((this.articles.some(x => x.id == articleId))) return;
 
-      if (this.linkedArticle === null) this.articleNotFound(2);
+      if (this.linkedArticle === null) this.articleNotFound(NaN);
     },
     getAndSetRandomArticle(): void {
       this.randomArticle = this.articles[Math.floor(Math.random() * this.articles.length)] || null;
