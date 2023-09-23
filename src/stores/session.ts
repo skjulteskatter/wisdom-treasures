@@ -115,7 +115,7 @@ export const useSessionStore = defineStore('session', {
             }
         },
         async initializePublications(fromIndexDb: boolean = true){
-            let start = Date.now()
+            const start = Date.now()
             let oldPublicationArray: Publication[] = [];
 
             if (fromIndexDb) {
@@ -127,7 +127,7 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedPublication = +(lastUpdated.get("publications") || "0");
+            this.latestUpdatedPublication = oldPublicationArray.length > 0 ? +(lastUpdated.get("publications") || "0") : 0;
 
             const newPublicationArray: Publication[] = await publications.post(this.locale, new Date(this.latestUpdatedPublication), 0);
             
@@ -146,11 +146,11 @@ export const useSessionStore = defineStore('session', {
             }
 
             this.fusePublications = new Fuse(oldPublicationArray.concat(newPublicationArray), option, Fuse.createIndex(option.keys, oldPublicationArray.concat(newPublicationArray)));
-            let timeTaken = Date.now() - start;
+            const timeTaken = Date.now() - start;
             console.log("Initialized Publications, Total time taken : " + timeTaken/1000 + " seconds");
         },
         async initializeAuthors(fromIndexDb: boolean = true) {
-            let start = Date.now()
+            const start = Date.now()
             let oldAuthorArray: Contributor[] = [];
 
             if (fromIndexDb){
@@ -162,7 +162,7 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedAuthor = +(lastUpdated.get("authors") || "0");
+            this.latestUpdatedAuthor = oldAuthorArray.length > 0 ? +(lastUpdated.get("authors") || "0") : 0;
 
             const authorIdsFromArticles = Array.from(this.articles.values()).map(x => x.authorId);
 
@@ -182,7 +182,7 @@ export const useSessionStore = defineStore('session', {
                 threshold: 0.3,
             }
             this.fuseAuthors = new Fuse(oldAuthorArray.concat(newAuthorsArray), option, Fuse.createIndex(option.keys, oldAuthorArray.concat(newAuthorsArray)));
-            let timeTaken = Date.now() - start;
+            const timeTaken = Date.now() - start;
             console.log("Initialized Authors, Total time taken : " + timeTaken/1000 + " seconds");
         },
         async initializeSources(fromIndexDb: boolean = true) {
@@ -198,7 +198,7 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedOrigin = +(lastUpdated.get("origins") || "0");
+            this.latestUpdatedOrigin = oldOriginArray.length > 0 ? +(lastUpdated.get("origins") || "0") : 0;
 
             const newOriginssArray: Origin[] = await origins.post(this.locale, new Date(this.latestUpdatedOrigin), 0);
             
@@ -218,7 +218,7 @@ export const useSessionStore = defineStore('session', {
             this.fuseOrigins = new Fuse(oldOriginArray.concat(newOriginssArray), option, Fuse.createIndex(option.keys, oldOriginArray.concat(newOriginssArray)));
         },
         async initializeArticles(fromIndexDb: boolean = true) {
-            let start = Date.now();
+            const start = Date.now();
             let oldArticlesArray: Article[] = [];
 
             if (fromIndexDb){
@@ -230,10 +230,10 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedArticle = +(lastUpdated.get("articles") || "0");
+            this.latestUpdatedArticle = oldArticlesArray.length > 0 ? +(lastUpdated.get("articles") || "0") : 0;
             this.latestUpdatedArticle = this.latestUpdatedArticle > 0
                 ? this.latestUpdatedArticle
-                : (oldArticlesArray.reduce((oa, u) => Math.max(oa, Date.parse(u.dateWritten)), 0)) + 1;
+                : (oldArticlesArray.reduce((oa, u) => Math.max(oa, Date.parse(u.dateWritten)), 0)) + 1; // Get latest date 
 
             const newArticlesArray: Article[] = await articles.post(this.locale, new Date(this.latestUpdatedArticle), 0);
             
@@ -251,19 +251,19 @@ export const useSessionStore = defineStore('session', {
                 threshold: 0.3
             };
             this.fuseArticles = new Fuse(oldArticlesArray.concat(newArticlesArray), option, Fuse.createIndex(option.keys, oldArticlesArray.concat(newArticlesArray)));
-            let timeTaken = Date.now() - start;
+            const timeTaken = Date.now() - start;
             console.log("Initialized Articles, Total time taken : " + timeTaken/1000 + " seconds");
 
         },
         async initializeFavorites() {
             try {
-                let start = Date.now();
+                const start = Date.now();
                 this.favorites = await favoritesApi.get();
                 favorites.deleteAll();
                 for (const key of this.favorites) {
                     favorites.addOrReplace(key);
                 }
-                let timeTaken = Date.now() - start;
+                const timeTaken = Date.now() - start;
                 console.log("Initialized Favorites, Total time taken : " + timeTaken/1000 + " seconds");
             }
             catch 
@@ -275,18 +275,18 @@ export const useSessionStore = defineStore('session', {
             }
         },
         async intitializeArticleNumberLookup(){
-            let start = Date.now()
+            const start = Date.now()
             for (const [key,value] of this.articles){
                 this.articleNumberLookup.set(value.number, key);
             }
-            let timeTaken = Date.now() - start;
+            const timeTaken = Date.now() - start;
             console.log("Initialized Articlenumberlookup, Total time taken : " + timeTaken/1000 + " seconds");
         },
         async initializeProducts(){
             try {
-                let start = Date.now()
+                const start = Date.now()
                 this.apiProducts = await stripe.getProducts();
-                let timeTaken = Date.now() - start;
+                const timeTaken = Date.now() - start;
                 console.log("Initialized Products, Total time taken : " + timeTaken/1000 + " seconds");
             } catch
             {
@@ -320,9 +320,9 @@ export const useSessionStore = defineStore('session', {
         },
         async intitializeStripeService(){
             try {
-                let start = Date.now()
+                const start = Date.now()
                 this.stripeService = new StripeService((await stripe.setup()).key);
-                let timeTaken = Date.now() - start;
+                const timeTaken = Date.now() - start;
                 console.log("Initialized Stripe service, Total time taken : " + timeTaken/1000 + " seconds");
             } catch {
                 console.log("Failed to set up stripe service");
