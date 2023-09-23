@@ -25,14 +25,14 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showAuthors" id="authors" class="w-half-screen absolute top-8 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideAuthors}">
+                            <div v-if="showAuthors" id="authorsInner" class="w-half-screen absolute top-8 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideAuthors}">
                                 <div v-for="(author, index) in allAuthors" :key="index" class="flex">
                                     <label class="w-full flex gap-2 mx-2 py-3 border-y border-grey-300 items-center text-black cursor-pointer select-none">
                                         <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="setInitialAuthorValue(author.id, index)"/>
                                         <p :class="{'font-bold tracking-wide opacity-80' : authorCheckBoxArray[index] }" class="max-w-80-percent truncate text-inherit text-xs">{{ author.name }}</p>
                                     </label>
                                 </div>
-                                <div class="grid grid-cols-2 gap-2 absolute w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
+                                <div class="grid grid-cols-2 gap-2 sticky w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
                                     <button @click="resetAuthorFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
                                     <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
                                 </div>
@@ -49,17 +49,18 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showPublications" id="publications" class="w-half-screen absolute top-8 right-0 sm:left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hidePublications}">
+                            <div v-if="showPublications" id="publicationsInner" class="w-half-screen absolute top-8 right-0 sm:left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hidePublications}">
                                 <div v-for="(publication, index) in allPublications" :key="index" class="flex">
                                     <label class="w-full flex gap-2 ml-2 py-3 border-y border-grey-300 items-center cursor-pointer select-none">
                                         <BaseCheckbox v-model="publicationCheckBoxArray[index]" @vnode-mounted="setInitialPublicationValue(publication.id, index)"/>
                                         <p :class="{'font-bold tracking-wide opacity-80' : publicationCheckBoxArray[index] }" class="max-w-80-percent truncate text-inherit text-xs">{{ publication.title }}</p>
                                     </label>
                                 </div>
-                                <div class="grid grid-cols-2 gap-2 absolute w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
+                                <div class="grid grid-cols-2 gap-2 sticky w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
                                     <button @click="resetPublicationFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
-                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>                                </div>
+                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
                                 </div>
+                            </div>
                             
                         </transition>
                     </div>
@@ -73,12 +74,16 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showOrigins" id="origins" class="w-half-screen absolute top-7 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hidePublications}">
+                            <div v-if="showOrigins" id="originsInner" class="w-half-screen absolute top-7 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideOrigins}">
                                 <div v-for="(origin, index) in allOrigins" :key="index" class="flex z-50">
                                     <label class="w-full flex gap-2 ml-2 my-2 items-center cursor-pointer select-none">
                                         <BaseCheckbox v-model="originCheckBoxArray[index]" @vnode-mounted="setInitialOriginValue(origin.id, index)"/>
                                         <p :class="{'font-bold' : originCheckBoxArray[index] }" class="max-w-80-percent truncate text-inherit text-xs">{{ origin.name }}</p>
                                     </label>
+                                </div>
+                                <div class="grid grid-cols-2 gap-2 sticky w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
+                                    <button @click="resetOriginFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
+                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
                                 </div>
                             </div>
                         </transition>
@@ -139,7 +144,10 @@ export default defineComponent({
             return Array.from(this.store.authors.values()).sort((a: Contributor, b: Contributor) => a.name.localeCompare(b.name, "no"));
         },
         allOrigins() : Origin[]{
-            return Array.from(this.store.origins.values()).sort((a: Origin, b: Origin) => a.name.localeCompare(b.name, "no"));
+            console.log("Getting all origins!");
+            let i = Array.from(this.store.origins.values()).sort((a: Origin, b: Origin) => a.name.localeCompare(b.name, "no"));
+            console.log(i);
+            return i;
         },
         globalCloseModalEvent() {
           return this.store.globalCloseModal;
@@ -247,6 +255,12 @@ export default defineComponent({
         resetPublicationFilters(){
             this.publicationCheckBoxArray = [];
             this.store.publicationIdSearchFilter = [];
+
+            this.syncFilter();
+        },
+        resetOriginFilters(){
+            this.originCheckBoxArray = [];
+            this.store.originIdSearchFilter = [];
 
             this.syncFilter();
         },
