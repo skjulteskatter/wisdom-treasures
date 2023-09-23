@@ -144,10 +144,7 @@ export default defineComponent({
             return Array.from(this.store.authors.values()).sort((a: Contributor, b: Contributor) => a.name.localeCompare(b.name, "no"));
         },
         allOrigins() : Origin[]{
-            console.log("Getting all origins!");
-            let i = Array.from(this.store.origins.values()).sort((a: Origin, b: Origin) => a.name.localeCompare(b.name, "no"));
-            console.log(i);
-            return i;
+            return Array.from(this.store.origins.values()).sort((a: Origin, b: Origin) => a.name.localeCompare(b.name, "no"));
         },
         globalCloseModalEvent() {
           return this.store.globalCloseModal;
