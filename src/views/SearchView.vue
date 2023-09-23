@@ -31,7 +31,7 @@
         <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection" class="mt-4">
             <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">THEMES</h1>
             <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-                <div v-for="(theme, index) in themeHits" :key="index" class="flex flex-col">
+                <div v-for="(theme, index) in themeHits" :key="index.toString() + forLoopKey.toString()" class="flex flex-col">
                     <ThemeCard :publication="theme" class="grow" :strech-y="true"/>
                 </div>
             </div>
@@ -39,7 +39,7 @@
         <div v-show="!showAudioFiles" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
             <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">WORDS</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-                <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
+                <div v-for="(article, index) in articleHitsPagination" :key="index.toString() + forLoopKey.toString()" class="flex flex-col">
                     <WWCard :article="article" class="grow" :strech-y="true"/>
                 </div>
             </div>
@@ -47,7 +47,7 @@
         <div v-show="showAudioFiles" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
             <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">AUDIOFILES</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-                <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
+                <div v-for="(article, index) in articleHitsPagination" :key="index.toString() + forLoopKey.toString()" class="flex flex-col">
                     <WWAudioCard :article="article" class="grow" :strech-y="true"/>
                 </div>
             </div>
@@ -86,6 +86,7 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
             loadingMoreArticles: false as boolean,
             articleHitsPagination: [] as Article[],
             showAudioFiles: false as boolean,
+            forLoopKey: 0 as number,
         }
     },
     props: {
@@ -104,16 +105,23 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
         window.addEventListener('scroll', this.onScroll);
     },
     methods: {
+        refreshForLoopKey()
+        {
+            this.forLoopKey = this.forLoopKey > 10 ? 0 : this.forLoopKey + 1;
+        },
         setArticles(value : Article[]){
             this.articleHits = value;
             this.articleHitsPagination = [];
             this.fillRandomArticles(20);
+            this.refreshForLoopKey();
         },
         setThemes(value : Publication[]){
             this.themeHits = value;
+            this.refreshForLoopKey();
         },
         setAuthors(value : Contributor[]){
             this.authorHits = value;
+            this.refreshForLoopKey();
         },
         setSearchedWord(value : string){
             this.searchedWord = value;
@@ -128,21 +136,21 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
             if (!bottom) return;
             this.loadingMoreArticles = true;
             setTimeout(() => {
-              this.fillRandomArticles(20);
+                this.fillRandomArticles(20);
             }, 1);
             setTimeout(() => {
-              this.loadingMoreArticles = false;
+                this.loadingMoreArticles = false;
             }, 200);
         },
         fillRandomArticles(paginationCount : number){
             let articleHitsMax = this.articleHits.length;
-          for (let i = 0; i < Math.min(paginationCount, articleHitsMax); i++) {
-            let nextArticle = this.articleHits[i]
-            if (nextArticle != undefined){
-              this.articleHitsPagination.push(nextArticle);
-              this.articleHits.splice(i, 1);
+            for (let i = 0; i < Math.min(paginationCount, articleHitsMax); i++) {
+                let nextArticle = this.articleHits[i]
+                if (nextArticle != undefined){
+                    this.articleHitsPagination.push(nextArticle);
+                    this.articleHits.splice(i, 1);
+                }
             }
-          }
         },
     }
   });
