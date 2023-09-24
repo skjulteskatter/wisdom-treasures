@@ -92,17 +92,18 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
     props: {
     },
     components: {
-    BackButton,
-    WWCard,
-    MultiSearch,
-    ThemeCard,
-    Loader,
-    ScrollToTopButton,
-    ToggleSlideButton,
-    WWAudioCard,
-},
+        BackButton,
+        WWCard,
+        MultiSearch,
+        ThemeCard,
+        Loader,
+        ScrollToTopButton,
+        ToggleSlideButton,
+        WWAudioCard,
+    },
     mounted() {
         window.addEventListener('scroll', this.onScroll);
+        if (this.homePath !== this.currentPath) this.$router.push({ name: "search" });
     },
     methods: {
         refreshForLoopKey()
@@ -151,6 +152,15 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
                     this.articleHits.splice(i, 1);
                 }
             }
+        },
+    },
+    computed: {
+        currentPath(): string {
+            return !this.$route.path.endsWith("/") ? this.$route.path : this.$route.path.slice(0, this.$route.path.length - 1);
+        },
+        homePath(): string {
+          let route = (this.$router.getRoutes().find(x => x.name == 'search')?.path || "⛄");
+          return !route.endsWith("/") ? route : route.slice(0, route.length - 1);
         },
     }
   });

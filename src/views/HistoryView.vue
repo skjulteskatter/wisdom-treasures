@@ -69,6 +69,7 @@ import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import { ChevronUpIcon } from '@heroicons/vue/outline';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
+import { InlineNotification } from '@/classes/notification';
 
 export default defineComponent({
   name: "HistoryView",
@@ -120,9 +121,23 @@ export default defineComponent({
     translatedEarlier() {
       return this.$t('common.earlier');
     },
+
+    currentPath(): string {
+      return !this.$route.path.endsWith("/") ? this.$route.path : this.$route.path.slice(0, this.$route.path.length - 1);
+    },
+    homePath(): string {
+      let route = (this.$router.getRoutes().find((x : any) => x.name == 'favorites')?.path || "⛄");
+      return !route.endsWith("/") ? route : route.slice(0, route.length - 1);
+    },
+    currentPathNumber(): number | null {
+      let match = (this.currentPath.match(/[0-9]+$/) ?? [null])[0];
+      if (match == null) return null;
+      return parseInt(match);
+    },
   },
   mounted() {
     this.setHistoryIds();
+    if (this.homePath !== this.currentPath) this.$router.push({ name: "history" });
   },
   methods: {
     addOrRemoveHiddenPeriod(key: string) {

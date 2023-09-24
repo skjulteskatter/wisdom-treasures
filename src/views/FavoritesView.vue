@@ -84,7 +84,6 @@ import { InlineNotification } from '@/classes/notification';
 
     watch: {
       sessionInitialized(initialized) {
-        console.log("in here");
         if (initialized) {
           this.checkArticleNumberPath();
         }
@@ -106,7 +105,7 @@ import { InlineNotification } from '@/classes/notification';
         console.log("checking")
         if (this.homePath === this.currentPath) return;
       
-        const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
+        const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || NaN);
         if (articleId === undefined) {
           this.articleNotFound(this.currentPathNumber || NaN);
           return;
@@ -114,7 +113,7 @@ import { InlineNotification } from '@/classes/notification';
 
         if ((this.favoriteArticles.some(x => x.id == articleId))) return;
 
-        this.articleNotFound(NaN);
+        this.articleNotFound(this.currentPathNumber || NaN);
       },
     },
     mounted(){
