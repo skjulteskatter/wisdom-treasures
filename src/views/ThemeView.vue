@@ -155,6 +155,10 @@ export default defineComponent({
       this.getAndSetPublication();
       this.assureCorrectSlug();
       this.assureCorrectArticleNumber();
+    },
+    currentPath() {
+      this.assureCorrectSlug();
+      this.assureCorrectArticleNumber();
     }
   },
   methods: {
@@ -199,17 +203,17 @@ export default defineComponent({
       this.publication = this.store.publications.get(this.$route.params.themeId.toString());
     },
     assureCorrectSlug() {
-      if (this.publication !== undefined) {
-        const fullPath = this.$route.fullPath;
-        let urlSlug: string = this.$route.params.autoSlug?.toString() ?? "";
-        let newPath: string = "";
-        if (urlSlug.length > 0)
-          newPath = fullPath.replace(this.$route.params.autoSlug.toString(), this.getFakeSlug(this.publication.title));
-        else
-          newPath = `${fullPath}${fullPath.endsWith("/") ? "" : "/"}${this.getFakeSlug(this.publication.title)}`;
+      const fullPath = this.$route.fullPath;
+      if (this.publication === undefined || !fullPath.includes(this.publication.id)) return;
+      
+      let urlSlug: string = this.$route.params.autoSlug?.toString() ?? "";
+      let newPath: string = "";
+      if (urlSlug.length > 0)
+        newPath = fullPath.replace(this.$route.params.autoSlug.toString(), this.getFakeSlug(this.publication.title));
+      else
+        newPath = `${fullPath}${fullPath.endsWith("/") ? "" : "/"}${this.getFakeSlug(this.publication.title)}`;
 
-        this.$router.replace({ path: newPath })
-      }
+      this.$router.replace({ path: newPath })
     },
     assureCorrectArticleNumber() {
       this.setArticles();

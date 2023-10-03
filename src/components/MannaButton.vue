@@ -18,7 +18,6 @@ import { defineComponent, type PropType } from 'vue';
 import WWCardModal from './WWCardModal.vue';
 import { useSessionStore } from '@/stores/session';
 import { SparklesIcon } from '@heroicons/vue/solid';
-import { ArrowLeftIcon } from '@heroicons/vue/solid';
 import BaseButton from './BaseButton.vue';
 
 export default defineComponent({

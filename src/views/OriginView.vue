@@ -158,6 +158,10 @@ export default defineComponent({
       this.getAndSetSource();
       this.assureCorrectSlug();
       this.assureCorrectArticleNumber();
+    },
+    currentPath() {
+      this.assureCorrectSlug();
+      this.assureCorrectArticleNumber();
     }
   },
   methods: {
@@ -202,17 +206,18 @@ export default defineComponent({
       this.source = this.store.origins.get(this.$route.params.originId.toString());
     },
     assureCorrectSlug() {
-      if (this.source !== undefined) {
-        const fullPath = this.$route.fullPath;
-        let urlSlug: string = this.$route.params.autoSlug?.toString() ?? "";
-        let newPath: string = "";
-        if (urlSlug.length > 0)
-          newPath = fullPath.replace(this.$route.params.autoSlug.toString(), this.getFakeSlug(this.source.name));
-        else
-          newPath = `${fullPath}${fullPath.endsWith("/") ? "" : "/"}${this.getFakeSlug(this.source.name)}`;
+      const fullPath = this.$route.fullPath;
+      if (this.source === undefined || !fullPath.includes(this.source.id)) return;
 
-        this.$router.replace({ path: newPath })
-      }
+      let urlSlug: string = this.$route.params.autoSlug?.toString() ?? "";
+      let newPath: string = "";
+      if (urlSlug.length > 0)
+        newPath = fullPath.replace(this.$route.params.autoSlug.toString(), this.getFakeSlug(this.source.name));
+      else
+        newPath = `${fullPath}${fullPath.endsWith("/") ? "" : "/"}${this.getFakeSlug(this.source.name)}`;
+
+      this.$router.replace({ path: newPath })
+      
     },
     assureCorrectArticleNumber() {
       this.setArticles();
