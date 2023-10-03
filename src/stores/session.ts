@@ -16,6 +16,7 @@ import type { Origin } from '@/classes/Origin'
 import { auth } from '@/services/auth'
 
 export const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
+export const WT_PRODUCT_ID : string = "prod_NnqNtVfJjpCCOy";
 
 export const useSessionStore = defineStore('session', {
     state: ()=> {
@@ -295,7 +296,10 @@ export const useSessionStore = defineStore('session', {
             
         },
         async userHasSubscriptionPromise() : Promise<boolean>{
-            if (this.userHasSubscription !== undefined) return this.userHasSubscription;
+            if (this.userHasSubscription !== undefined) {
+                return this.userHasSubscription;
+            }
+            
             if (auth.currentUser == null) 
             {
                 console.log("Can't get subs if you're not logged in 😅");
@@ -303,7 +307,8 @@ export const useSessionStore = defineStore('session', {
             }
 
             try {
-                this.userHasSubscription = (await stripe.getSubscriptions()).some(x => x.productIds.includes("prod_NnqNtVfJjpCCOy")); //TODO find a better way than hardcode product id
+                this.userHasSubscription = (await stripe.getSubscriptions()).some(x => x.productIds.includes(WT_PRODUCT_ID) && x.expired === false); //TODO find a better way than hardcode product id
+                console.log("Got subscription from stripe: ", this.userHasSubscription);
                 if (this.userHasSubscription === undefined || this.userHasSubscription === false){
                     console.log("Product doesn't macth up. let's get an article!")
                     this.userHasSubscription = (await articles.postOneRandom()).length > 0;
