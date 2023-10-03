@@ -281,8 +281,10 @@ import type { User } from 'firebase/auth';
             try {
               await api.session.resetPassword(this.email);
             } catch (e: any){
+              console.log("Didn't go as planned: ", e);
               throw new Error(e.error);
             }
+            console.log("Went as planned");
             this.successMessage = this.$t('signIn.passwordResetMsg') + this.email;
             this.changeForm(this.forms.login);
           }

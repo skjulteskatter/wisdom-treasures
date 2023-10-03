@@ -43,7 +43,8 @@ export const session = {
         return http.get("api/Session/VerifyEmail");
     },
     resetPassword(email: string) {
-        return http.get("api/Session/ResetPassword/" + email, true);
+        email = encodeURIComponent(email);
+        return http.get("api/Session/ResetPassword/" + email, true, undefined, undefined, true);
     },
 };
 

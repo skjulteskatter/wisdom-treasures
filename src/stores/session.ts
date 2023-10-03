@@ -17,6 +17,7 @@ import { auth } from '@/services/auth'
 
 export const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 export const WT_PRODUCT_ID : string = "prod_NnqNtVfJjpCCOy";
+export const STRIPE_MANAGE_LINK : string = "https://billing.stripe.com/p/login/aEUaG25ag6bybEA3cc";
 
 export const useSessionStore = defineStore('session', {
     state: ()=> {
@@ -80,7 +81,7 @@ export const useSessionStore = defineStore('session', {
         }
     },
     actions: {
-        logout() {
+        reset() {
             // call reset to reset the store state
             this.$reset();
             console.log('Session status', this.sessionInitialized)

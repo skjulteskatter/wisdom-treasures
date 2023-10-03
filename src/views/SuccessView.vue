@@ -13,9 +13,8 @@
       <div>
         <h2 class="mt-5 text-2xl sm:text-3xl font-bold">Thank you!</h2>
         <h3 class="mt-5 text-xl sm:text-2xl mb-5 font-semibold">You have just subscribed to WisdomTreasures</h3>
-        <p class="opacity-70">You will be redirected to the <a>homepage</a> in 10 seconds...</p>
       </div>
-      <p class="opacity-70">To unsubscribe go to: <a>who would like to unsub?!</a></p>
+      <p class="opacity-70">To manage subscriptions, go to: <a>{{ stripeManageLink }}</a></p>
     </div>
 
     <img id="add-bg" class="sm:hidden fixed bottom-32 left-0 w-screen -z-50 opacity-60" src="../../images/add-bg.png"/>
@@ -26,6 +25,7 @@
 import { defineComponent } from 'vue';
 import { useSessionStore } from '@/stores/session';
 import BackButton from '@/components/BackButton.vue';
+import { STRIPE_MANAGE_LINK } from '@/stores/session';
 
   export default defineComponent({
     name: "SuccessView",
@@ -39,10 +39,15 @@ import BackButton from '@/components/BackButton.vue';
       BackButton,
     },
     computed: {
-
+      stripeManageLink(): string{
+        return STRIPE_MANAGE_LINK;
+      }
     },
     methods: {
 
+    },
+    mounted(){
+      this.store.reset(); //Find a better way for this
     }
   });
 </script>

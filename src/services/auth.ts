@@ -187,7 +187,7 @@ export async function updateUser(displayName : string = auth.currentUser?.displa
 
 export async function logOut(){
     const store = useSessionStore();
-    store.logout()
+    store.reset()
     await signOut(auth);
 }
 

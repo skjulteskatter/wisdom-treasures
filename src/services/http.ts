@@ -61,11 +61,14 @@ class Http {
      * @param  {String} path
      * @return {Promise}
      */
-    public async get<T>(path: string, bypassAuth?: boolean, json? :boolean, apiVersion?: string): Promise<T> {
+    public async get<T>(path: string, bypassAuth?: boolean, json? :boolean, apiVersion?: string, noCors: boolean = false): Promise<T> {
         const result = await this.apifetch(
             path,
             {
                 method: "GET",
+                headers: {
+                },
+                mode: noCors ? "no-cors" : "cors"
             }, 
             bypassAuth,
             json,

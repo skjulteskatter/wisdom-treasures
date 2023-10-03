@@ -84,7 +84,6 @@ import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
 import { defineComponent } from 'vue';
 import type { User } from "firebase/auth";
-import BaseInput from '@/components/BaseInput.vue';
 import BaseButton from '@/components/BaseButton.vue';
 import BackButton from '@/components/BackButton.vue';
 import { KeyIcon, SaveIcon, LogoutIcon, CreditCardIcon, CurrencyDollarIcon } from '@heroicons/vue/outline';
@@ -94,6 +93,7 @@ import ChangePasswordModal from '@/components/Profile/ChangePasswordModal.vue';
 import { InlineNotification } from "@/classes/notification";
 import ClickableLink from '@/components/ClickableLink.vue';
 import { logOut } from "@/services/auth";
+import { STRIPE_MANAGE_LINK } from '@/stores/session';
 
   export default defineComponent({
     name: "ProfileView",
@@ -106,14 +106,12 @@ import { logOut } from "@/services/auth";
         displayName: "" as string,
         showPasswordModal: false,
         selectedLanguage: "" as string,
-
         supportEmail: "support@wisdomtreasures.no" as string,
       }
     },
     props: {
     },
       components: {
-      BaseInput,
       BaseButton,
       KeyIcon,
       GenerelDropDown,
@@ -148,7 +146,7 @@ import { logOut } from "@/services/auth";
         this.currentUser = await getCurrentUserPromise();
       },
       goToManageSubscriptions(){
-        window.location.href = 'https://billing.stripe.com/p/login/aEUaG25ag6bybEA3cc';
+        window.location.href = STRIPE_MANAGE_LINK;
       },
       changeLanguage(newLanguage : string){
         if (this.store.locale == newLanguage) return;
