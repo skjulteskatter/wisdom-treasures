@@ -62,20 +62,25 @@ class Http {
      * @return {Promise}
      */
     public async get<T>(path: string, bypassAuth?: boolean, json? :boolean, apiVersion?: string, noCors: boolean = false): Promise<T> {
-        const result = await this.apifetch(
-            path,
-            {
-                method: "GET",
-                headers: {
-                },
-                mode: noCors ? "no-cors" : "cors"
-            }, 
-            bypassAuth,
-            json,
-            apiVersion,
-        ) as Result<T> | T;
+        try {
+            const result = await this.apifetch(
+                path,
+                {
+                    method: "GET",
+                    headers: {
+                    },
+                    mode: noCors ? "no-cors" : "cors"
+                }, 
+                bypassAuth,
+                json,
+                apiVersion,
+            ) as Result<T> | T;
 
-        return apiVersion?.includes("4") ? result as T : (result as Result<T>).result;
+            return apiVersion?.includes("4") ? result as T : (result as Result<T>).result;
+        } catch (e) {
+            if (noCors) return undefined as T;
+            throw e;
+        }
     }
 
     public async getWithResult<T>(path: string): Promise<Result<T>> {

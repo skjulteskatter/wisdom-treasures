@@ -1,11 +1,11 @@
 {
   "name": "wisdom-treasures",
-  "version": "0.0.11",
-  "dbVersion": 11,
+  "version": "0.0.12",
+  "dbVersion": 12,
   "scripts": {
-    "dev": "vite --port 5173",
+    "dev": "vite --port 8080",
     "build": "run-p type-check build-only",
-    "preview": "vite preview --port 5173",
+    "preview": "vite preview --port 8080",
     "build-only": "vite build",
     "type-check": "vue-tsc --noEmit",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
