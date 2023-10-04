@@ -78,7 +78,7 @@ class Http {
 
             return apiVersion?.includes("4") ? result as T : (result as Result<T>).result;
         } catch (e) {
-            if (noCors) return undefined as T;
+            if (noCors && e instanceof ResultError) return undefined as T;
             throw e;
         }
     }
