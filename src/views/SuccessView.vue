@@ -14,7 +14,7 @@
         <h2 class="mt-5 text-2xl sm:text-3xl font-bold">Thank you!</h2>
         <h3 class="mt-5 text-xl sm:text-2xl mb-5 font-semibold">You have just subscribed to WisdomTreasures</h3>
       </div>
-      <p class="opacity-70">To manage subscriptions, go to: <a>{{ stripeManageLink }}</a></p>
+      <p class="opacity-70 flex self-center">To manage subscriptions, go to&nbsp;<ClickableLink @click="goToManageSubscriptions">this site</ClickableLink></p>
     </div>
 
     <img id="add-bg" class="sm:hidden fixed bottom-32 left-0 w-screen -z-50 opacity-60" src="../../images/add-bg.png"/>
@@ -26,6 +26,8 @@ import { defineComponent } from 'vue';
 import { useSessionStore } from '@/stores/session';
 import BackButton from '@/components/BackButton.vue';
 import { STRIPE_MANAGE_LINK } from '@/stores/session';
+import { userLoggedInCallback } from '@/services/auth';
+import ClickableLink from '@/components/ClickableLink.vue';
 
   export default defineComponent({
     name: "SuccessView",
@@ -37,6 +39,7 @@ import { STRIPE_MANAGE_LINK } from '@/stores/session';
     },
     components: {
       BackButton,
+      ClickableLink,
     },
     computed: {
       stripeManageLink(): string{
@@ -44,10 +47,13 @@ import { STRIPE_MANAGE_LINK } from '@/stores/session';
       }
     },
     methods: {
-
+      goToManageSubscriptions(){
+        window.location.href = STRIPE_MANAGE_LINK;
+      },
     },
-    mounted(){
-      this.store.reset(); //Find a better way for this
+    async mounted(){
+      //this.store.reset(); //Find a better way for this
+      await userLoggedInCallback();
     }
   });
 </script>

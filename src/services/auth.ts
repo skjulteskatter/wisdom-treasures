@@ -141,7 +141,7 @@ export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
 /**
  * Things you do when the user logs in, no matter which method
  */
-async function userLoggedInCallback(){
+export async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
     const store = useSessionStore();
     await store.initializeLanguage();
@@ -154,7 +154,7 @@ async function userLoggedInCallback(){
         console.log('UserLoggedInCallback: Store initialized, no subscription')
         return
     }
-    //TODO add a check for subscription here. Don't get and set articles without subscription
+    
     storeInitialized = true;
     await Promise.all([
         store.initializeProducts(),
