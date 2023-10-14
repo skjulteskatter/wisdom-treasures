@@ -1,9 +1,12 @@
 <template>
   <div class="h-full flex items-center justify-between">
-      <vue-plyr>
-        <audio controls crossorigin playsinline>
+      <vue-plyr ref="plyr">
+        <audio controls crossorigin playsinline 
+        :on-play="registerPlay"
+        @play="store.currentAudioPlayingId = uniqueId; registerPlay()"
+        >
           <source
-              src="../assets/example.mp3"
+              :src="audioUrl"
               type="audio/mp3"
           />
         </audio>
@@ -12,24 +15,53 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
-import router from '@/router';
+import { defineComponent, type PropType } from 'vue';
+import type { AudioClip } from '@/classes/AudioClip';
+import { history } from '@/services/localStorage';
+import { useSessionStore } from '@/stores/session';
 
 export default defineComponent({
     name: "audio-player",
-    methods: {
-        navigateBack(){
-            if (router.options.history.state.back == null){
-                router.push({name: "dashboard"});
-            } else {
-                router.back();
-            }
+    data() {
+        return {
+          uniqueId: crypto.randomUUID(),
+          store: useSessionStore(),
         }
+      },
+    methods: {
+        registerPlay(){
+          console.log("Now playing");
+          history.addOrReplace(this.audioClip.id, Date.now());
+        }
+    },
+    props: {
+        audioClip: {
+            type: Object as PropType<AudioClip>,
+            required: true
+        },
+      },
+    computed: 
+    {
+      audioUrl(): string {
+        return this.audioClip.audioFile;
+      },
+      storeCurrentAudioPlayingId() : string{
+        return this.store.currentAudioPlayingId;
+      }
+    },
+    watch:{
+      storeCurrentAudioPlayingId(newId: string) {
+        if (newId != this.uniqueId){
+          console.log("Pausing");
+          this.$refs.plyr.player.pause();
+        }
+      }
     }
 });
 </script>
 
-<style>
+<!--This Stryle block can not be scoped-->
+<style> 
 .plyr--full-ui input[type=range] {
   color: var(--wt-color-secondary);
 }

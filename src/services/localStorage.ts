@@ -158,10 +158,10 @@ export const lastUpdated = {
 
     languagePrefix: "lastUpdated:",
 
-    setOrReplace(lastUpdatedUTC: number, objectsName: "articles" | "authors" | "origins" | "publications") {
+    setOrReplace(lastUpdatedUTC: number, objectsName: "articles" | "authors" | "origins" | "publications" | "audioclips") {
         localStorage.setItem(`${objectsName}_${this.languagePrefix}`, lastUpdatedUTC.toString());
     },
-    get(objectsName: "articles" | "authors" | "origins" | "publications"){
+    get(objectsName: "articles" | "authors" | "origins" | "publications" | "audioclips"){
         return localStorage.getItem(`${objectsName}_${this.languagePrefix}`);
     }
 };

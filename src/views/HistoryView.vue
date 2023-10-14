@@ -12,13 +12,14 @@
           {{ $t('common.history')}}
         </h1>
       </div>
-      <div class="flex mx-5 sm:mx-0 mt-5 sm:mt-0">
+
+      <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-6 mx-10 sm:ml-auto sm:mr-auto" v-model="showAudioClips"/>
+
+      <div class="flex mx-5 sm:mx-0 mt-5 sm:mt-0 ">
         <div class="grow" />
         <div class="flex flex-col min-w-50">
-          <ToggleSlideButton :label="$t('history.onlyManna')" v-model="showOnlyMannaHistory" />
-          <div v-for="(value, key) in periods" :key="key + showOnlyMannaHistory.toString()">
-
-            <div id="wrapperDiv" class="mt-5" :class="{ 'hidden': loadPeriodName[key] !== true }">
+          <div v-for="(value, key) in periods" :key="key + showAudioClips.toString()">
+            <div id="wrapperDiv" class="mt-5"  :class="{ 'hidden': loadPeriodName[key] !== true }">
               <div class="text-base font-bold opacity-80 flex cursor-pointer whitespace-nowrap w-min"
                 @click="addOrRemoveHiddenPeriod(key.toString())">
                 {{ key }}
@@ -27,8 +28,9 @@
               </div>
               <div class="border-l-2 pl-4 ml-2 my-6 border-[color:var(--wt-color-secondary-light)]"
                 :class="{ 'hidden': hiddenPeridos.includes(key.toString()) }">
-                <div class="" v-for="article in getArticlesFromDays(value, key.toString())"
-                  :key="article.id + showOnlyMannaHistory.toString()">
+
+                <div v-if="!showAudioClips" v-for="article in getArticlesFromDays(value, key.toString())"
+                  :key="article.id + showAudioClips.toString()">
                   <WWCard :article="article" class="my-2 sm:max-w-lg">
                     <template #footer>
                       <div class="flex">
@@ -43,6 +45,24 @@
                     </template>
                   </WWCard>
                 </div>
+
+                <div v-if="showAudioClips" v-for="audioClip in getAudioClipsFromDays(value, key.toString())"
+                  :key="audioClip.id + showAudioClips.toString()">
+                  <AudioCard :audio-clip="audioClip" class="my-2 sm:max-w-lg">
+                    <template #footer>
+                      <div class="flex">
+                        <div class="self-center mr-2">
+                          <ClockIcon class="h-5 opacity-40" />
+                        </div>
+                        <div class="self-center opacity-50 text-xs">{{ getStringFromDate(historyIds.find(x => x.id ==
+                          audioClip.id)?.lastViewed ?? new Date) }}</div>
+                        <div class="justify-end">
+                        </div>
+                      </div>
+                    </template>
+                  </AudioCard>
+                </div>
+
               </div>
             </div>
           </div>
@@ -50,10 +70,10 @@
         <div class="grow" />
       </div>
     </div>
-    <div class="grow flex flex-col" :class="{ 'hidden': !historyIsEmpty }">
+    <div class="grow flex flex-col mt-6" :class="{ 'hidden': !historyIsEmpty }">
       <div class="grow" />
       <QuestionMarkCircleIcon class="w-20 grayscale opacity-80 place-self-center" />
-      <div class="place-self-center">{{ $t('history.noWW') }}</div>
+      <div class="place-self-center">No history found</div>
       <div class="grow" />
     </div>
   </main>
@@ -63,19 +83,21 @@ import { defineComponent } from 'vue';
 import BackButton from '@/components/BackButton.vue';
 import { useSessionStore } from '@/stores/session';
 import WWCard from '@/components/WWCard.vue';
-import { mannaHistory, history } from '@/services/localStorage';
+import { history } from '@/services/localStorage';
 import type { Article } from 'hiddentreasures-js';
 import { ClockIcon, QuestionMarkCircleIcon } from '@heroicons/vue/outline';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import { ChevronUpIcon } from '@heroicons/vue/outline';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
+import type { AudioClip } from '@/classes/AudioClip';
+import AudioCard from '@/components/AudioCard.vue';
 
 export default defineComponent({
   name: "HistoryView",
   data() {
     return {
       store: useSessionStore(),
-      showOnlyMannaHistory: true,
+      showAudioClips: false,
       periods: {
         "Today": [-1, 1],
         "This Week": [1, 7],
@@ -83,13 +105,12 @@ export default defineComponent({
         "This Year": [30, 365],
         "Earlier": [365, 1000],
       } as { [key: string]: [number, number] },
-      historyIds: [] as { id: string, lastViewed: Date, manna: boolean }[],
+      historyIds: [] as { id: string, lastViewed: Date}[],
       loadPeriodName: {} as { [key: string]: boolean },
       displayedPeriodKeys: [] as string[],
       historyArticles: [] as Article[],
-      mannaHistoryArticles: [] as Article[],
+      historyAudioClips: [] as AudioClip[],
       hiddenPeridos: [] as string[],
-      
     }
   },
   components: {
@@ -99,14 +120,24 @@ export default defineComponent({
     QuestionMarkCircleIcon,
     ToggleSlideButton,
     ChevronUpIcon,
-    ScrollToTopButton
+    ScrollToTopButton,
+    AudioCard
   },
   computed: {
-    historyIsEmpty() {
-      for (let _ in this.loadPeriodName) { return false } return true;
+    historyIsEmpty(): boolean{
+      for (let name in this.loadPeriodName) 
+      { 
+        if (this.loadPeriodName[name]){
+          return false
+        }
+      }
+      return true;
     },
     articles(): Article[] {
       return Array.from(this.store.articles.values());
+    },
+    audioClips(): AudioClip[] {
+      return Array.from(this.store.audioClips.values());
     },
     translatedThisWeek() {
       return this.$t('common.thisWeek');
@@ -146,22 +177,7 @@ export default defineComponent({
       }
     },
     getArticlesFromDays(days: [number, number], key: string): Article[] {
-      let IDs: string[] = this.historyIds.filter(x => {
-
-        if (this.showOnlyMannaHistory && !x.manna) {
-          return false;
-        }
-
-        //Create date without hours, minutes...
-        let y = new Date(x.lastViewed.getTime());
-        y.setHours(0, 0, 0, 0);
-
-        //Create date without hours, minutes...
-        let dateNow = new Date();
-        dateNow.setHours(0, 0, 0, 0);
-
-        return y.getTime() <= (dateNow.getTime() - (days[0] * 24 * 60 * 60 * 1000)) && y.getTime() > (dateNow.getTime() - (days[1] * 24 * 60 * 60 * 1000))
-      }).map(x => x.id);
+      let IDs: string[] = this.getIdsFromDays(days);
 
       let articles = this.articles.filter(x => IDs.includes(x.id)).sort((a, b) => {
         if ((this.historyIds.find(x => x.id == a.id)?.lastViewed ?? new Date()) < (this.historyIds.find(x => x.id == b.id)?.lastViewed ?? new Date())) return 1;
@@ -172,13 +188,36 @@ export default defineComponent({
 
       return articles;
     },
+    getAudioClipsFromDays(days: [number, number], key: string): AudioClip[] {
+      let IDs: string[] = this.getIdsFromDays(days);
+
+      let audioClips = this.audioClips.filter(x => IDs.includes(x.id)).sort((a, b) => {
+        if ((this.historyIds.find(x => x.id == a.id)?.lastViewed ?? new Date()) < (this.historyIds.find(x => x.id == b.id)?.lastViewed ?? new Date())) return 1;
+        return -1;
+      });
+
+      this.loadPeriodName[key] = audioClips.length > 0;
+
+      return audioClips;
+    },
     setHistoryIds() {
       for (let [key, value] of history.getAll()) {
-        this.historyIds.push({ id: key, lastViewed: new Date(+(value ?? Date.now())), manna: false });
+        this.historyIds.push({ id: key, lastViewed: new Date(+(value ?? Date.now()))});
       }
-      for (let [key, value] of mannaHistory.getAll()) {
-        this.historyIds.push({ id: key, lastViewed: new Date(+(value ?? Date.now())), manna: true });
-      }
+    },
+    getIdsFromDays(days: [number, number]){
+      return this.historyIds.filter(x => {
+
+      //Create date without hours, minutes...
+      let y = new Date(x.lastViewed.getTime());
+      y.setHours(0, 0, 0, 0);
+
+      //Create date without hours, minutes...
+      let dateNow = new Date();
+      dateNow.setHours(0, 0, 0, 0);
+
+      return y.getTime() <= (dateNow.getTime() - (days[0] * 24 * 60 * 60 * 1000)) && y.getTime() > (dateNow.getTime() - (days[1] * 24 * 60 * 60 * 1000))
+      }).map(x => x.id);
     },
     getStringFromDate(date: Date): string {
       let days: string[] = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -203,8 +242,9 @@ export default defineComponent({
   }
 });
 </script>
-<style>
-.min-w-50{
-  min-width: 44%
-}
+
+<style scoped>
+  .min-w-50{
+    min-width: 44%
+  }
 </style>

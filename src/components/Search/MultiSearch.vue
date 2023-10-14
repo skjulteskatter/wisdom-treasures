@@ -77,6 +77,7 @@ import { AdjustmentsIcon, XIcon } from '@heroicons/vue/outline';
 import FilterModal from './FilterModal.vue';
 import type Fuse from 'fuse.js';
 import type { Origin } from '@/classes/Origin';
+import type { AudioClip } from '@/classes/AudioClip';
 
 export default defineComponent({
     name: "multi-search",
@@ -92,13 +93,14 @@ export default defineComponent({
             store: useSessionStore(),
 
             articleHits: [] as Article[],
+            audioClipHits: [] as AudioClip[],
             authorHits: [] as Contributor[],
             themeHits: [] as Publication[],
             originHits: [] as Origin[],
 
             showFilterModal: false as boolean,
 
-            maxNumberOfArticlesDisplayed: 100000 as number,
+            maxNumberOfArticlesOrAudioClipsDisplayed: 100000 as number,
 
             filterModalKey: 0 as number,
         }
@@ -125,7 +127,7 @@ export default defineComponent({
             default: false
         },
     },
-    emits: ["authors:authorHits", "themes:themeHits", "origin:originHits", "articles:articleHits", "origins:originHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],
+    emits: ["authors:authorHits", "themes:themeHits", "origin:originHits", "articles:articleHits", "audioClips:audioClipHits", "origins:originHits", "searchedWord:searchedWord", "searchLoading:searchLoading"],
     computed: {
         atLeastOneFilterIsActive(): boolean{
             return this.store.authorIdSearchFilter.length + this.store.publicationIdSearchFilter.length + this.store.originIdSearchFilter.length > 0 || this.store.onlyFavoriteSearchFilter; 
@@ -142,10 +144,13 @@ export default defineComponent({
         allOrigins() : Origin[] {
             return Array.from(this.store.origins.values());
         },
-        numberOfResults() : number {
-            return this.articleHits.length + (!this.onlySearchForArticles ? this.authorHits.length + this.themeHits.length + this.originHits.length : 0);
+        allAudioClips() : AudioClip[] {
+            return Array.from(this.store.audioClips.values());
         },
-        onlySearchForArticles(): boolean {
+        numberOfResults() : number {
+            return this.articleHits.length + (!this.onlySearchForArticlesAndAudioClips ? this.authorHits.length + this.themeHits.length + this.originHits.length : 0);
+        },
+        onlySearchForArticlesAndAudioClips(): boolean {
             return this.atLeastOneFilterIsActive;
         },
         publicationIdFilterPublications(): Publication[] {
@@ -159,6 +164,9 @@ export default defineComponent({
         },
         fuseArticles() : Fuse<Article> | undefined {
             return this.store.fuseArticles;
+        },
+        fuseAudioClips() : Fuse<AudioClip> | undefined {
+            return this.store.fuseAudioClips;
         },
         fusePublications() : Fuse<Publication> | undefined{
             return this.store.fusePublications;
@@ -183,21 +191,21 @@ export default defineComponent({
                     this.themeHits = result.map((x: { item: any; }) => x.item);
                 }
 
-                this.$emit('themes:themeHits', this.onlySearchForArticles ? [] : this.themeHits);
+                this.$emit('themes:themeHits', this.onlySearchForArticlesAndAudioClips ? [] : this.themeHits);
 
                 if (this.fuseAuthors !== undefined){
                     const result = this.fuseAuthors.search(searchWord);
                     this.authorHits = result.map((x: { item: any; }) => x.item);
                 }
 
-                this.$emit('authors:authorHits', this.onlySearchForArticles ? [] : this.authorHits);
+                this.$emit('authors:authorHits', this.onlySearchForArticlesAndAudioClips ? [] : this.authorHits);
 
                 if (this.fuseOrigins !== undefined){
                     const result = this.fuseOrigins.search(searchWord);
                     this.originHits = result.map((x: { item: any; }) => x.item);
                 }
 
-                this.$emit('origins:originHits', this.onlySearchForArticles ? [] : this.originHits);
+                this.$emit('origins:originHits', this.onlySearchForArticlesAndAudioClips ? [] : this.originHits);
 
                 let  query: Fuse.Expression = {
                     $and: []
@@ -232,39 +240,60 @@ export default defineComponent({
                     this.articleHits = (result.length ? result.map(x => x.item) : this.allArticles);
                 }
 
+                console.log(JSON.stringify(query, null, 2));
+                if (this.fuseAudioClips !== undefined){
+                    
+                    let result: Fuse.FuseResult<AudioClip>[] = [];
+                    if ('$and' in query && query.$and?.length){ result = this.fuseAudioClips.search(query) }
+                    else if ('$or' in query && query.$or?.length){ result = this.fuseAudioClips.search(query) }
+
+                    this.audioClipHits = (result.length ? result.map(x => x.item) : this.allAudioClips);
+                }
+
                 if (this.returnAllIfNoHits && this.articleHits.length <= 0){
                     this.articleHits = Array.from(this.store.articles.values());
+                    this.audioClipHits = Array.from(this.store.audioClips.values());
                 }
 
                 if (this.store.onlyFavoriteSearchFilter)
                 {
                     this.articleHits = this.articleHits.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
+                    this.audioClipHits = this.audioClipHits.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
                 }
 
                 if (this.initialThemeFilter.length > 0){
                     this.articleHits = this.articleHits.filter((x: { publicationId: any; }) => this.initialThemeFilter.includes(x.publicationId));
+                    this.audioClipHits = this.audioClipHits.filter((x: { publicationId: any; }) => this.initialThemeFilter.includes(x.publicationId));
                 }
                 else if (this.store.publicationIdSearchFilter.length > 0){
                     this.articleHits = this.articleHits.filter((x: { publicationId: any; }) => this.store.publicationIdSearchFilter.includes(x.publicationId));
+                    this.audioClipHits = this.audioClipHits.filter((x: { publicationId: any; }) => this.store.publicationIdSearchFilter.includes(x.publicationId));
                 }
 
                 if (this.initialAuthorFilter.length > 0){
                     this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
+                    this.audioClipHits = this.audioClipHits.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
                 }
                 else if (this.store.authorIdSearchFilter.length > 0){
                     this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.store.authorIdSearchFilter.includes(x.authorId));
+                    this.audioClipHits = this.audioClipHits.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
                 }
 
                 if (this.initialOriginFilter.length > 0){
                     this.articleHits = this.articleHits.filter((x: Article) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
+                    this.audioClipHits = this.audioClipHits.filter((x: AudioClip) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
                 }
                 else if (this.store.originIdSearchFilter.length > 0){
                     this.articleHits = this.articleHits.filter((x: Article) => this.store.originIdSearchFilter.includes(x.sourceId || "⛄"));
+                    this.audioClipHits = this.audioClipHits.filter((x: AudioClip) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
                 }
 
-                this.articleHits = this.articleHits.slice(0,this.maxNumberOfArticlesDisplayed);
+                this.articleHits = this.articleHits.slice(0,this.maxNumberOfArticlesOrAudioClipsDisplayed);
+                this.audioClipHits = this.audioClipHits.slice(0,this.maxNumberOfArticlesOrAudioClipsDisplayed);
 
                 this.$emit('articles:articleHits', this.articleHits);
+
+                this.$emit('audioClips:audioClipHits', this.audioClipHits);
 
                 this.$emit('searchedWord:searchedWord', searchWord);
                 
@@ -273,6 +302,7 @@ export default defineComponent({
         },
         resetAllFilter(){
             this.store.publicationIdSearchFilter = [];
+            this.store.audioClipIdSearchFilter = [];
             this.store.authorIdSearchFilter = [];
             this.store.originIdSearchFilter = [];
             this.store.onlyFavoriteSearchFilter = false; 

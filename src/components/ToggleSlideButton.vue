@@ -8,10 +8,10 @@
                         id="toggleThree" />
                     <div class="h-8 py-1 flex rounded-full bg-[#ACC0C5] shadow-lg items-center">
                         <p class="z-10 text-sm text-white font-semibold w-1/2 text-center" :class="{ 'text-white': modelValue }">
-                            wisdom words
+                            Wisdom words
                         </p>
                         <p class="z-10 text-sm font-semibold w-1/2 text-white text-center" :class="{ 'text-white': modelValue }">
-                            audiofiles
+                            Audio clips
                         </p>
                     </div>
 
@@ -45,10 +45,11 @@ export default defineComponent({
             type: Boolean,
         },
     },
-    emits: ["update:modelValue"],
+    emits: ["update:modelValue", "change"],
     methods: {
         onChange() {
             this.$emit('update:modelValue', !this.modelValue);
+            this.$emit('change');
             this.chosen = this.modelValue ? 'Words' : 'Audio'
         }
     },

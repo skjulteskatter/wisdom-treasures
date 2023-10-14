@@ -21,8 +21,6 @@ import "firebase/compat/performance";
 import config from "@/config";
 import router from "@/router";
 import { useSessionStore } from "@/stores/session";
-import { getActivePinia } from "pinia"
-
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
 export const auth = getAuth(firebaseApp);
@@ -161,6 +159,7 @@ export async function userLoggedInCallback(){
         store.initializeFavorites(),
         store.initializePublications(),
         store.initializeArticles(),
+        store.initializeAudioClips(),
         store.initializeSources(),
         store.intitializeStripeService()
     ]);

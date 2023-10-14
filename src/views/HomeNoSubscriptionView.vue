@@ -213,12 +213,6 @@ export default defineComponent({
 
       if (this.linkedArticle === null) this.articleNotFound(2);
     },
-    getAndSetRandomArticle(): void {
-      this.randomArticle =
-        this.articles[Math.floor(Math.random() * this.articles.length)] || null;
-      mannaHistory.addOrReplace(this.randomArticle.id);
-      this.showWordOfTheDay = false;
-    },
     getAndSetWordOfTheDayArticle(): void {
       let date: Date = new Date();
       let dateNumber: number =

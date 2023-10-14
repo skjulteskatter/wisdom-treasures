@@ -3,6 +3,7 @@ import type { DBSchema, IDBPDatabase  } from 'idb';
 import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import type { Origin } from '@/classes/Origin';
 import { dbVersion as dbv } from '../../package.json'
+import type { AudioClip } from '@/classes/AudioClip';
 const dbPrefix : string = "WTDB"
 
 //Clean up old databases async
@@ -36,6 +37,10 @@ interface WTDBSchema extends DBSchema {
     key: string;
     value: Origin;
   };
+  'audioclips': {
+    key: string;
+    value: AudioClip;
+  };
 }
 
 export const dbPromise : Promise<IDBPDatabase<WTDBSchema>> = openDB<WTDBSchema>(dbPrefix + dbVersion().toString(), dbVersion(), {
@@ -44,11 +49,11 @@ export const dbPromise : Promise<IDBPDatabase<WTDBSchema>> = openDB<WTDBSchema>(
     db.createObjectStore('publications');
     db.createObjectStore('authors');
     db.createObjectStore('origins');
-    //TODO create indexes
+    db.createObjectStore('audioclips');
   }
 });
 
-export async function putArticles(articles: Article[], expirySeconds: number = 7200) {
+export async function putArticles(articles: Article[]) {
     const storeName = 'articles';
     const tx = (await dbPromise).transaction(storeName, 'readwrite');
 
@@ -58,11 +63,6 @@ export async function putArticles(articles: Article[], expirySeconds: number = 7
     }
 
     await Promise.all(promises);
-
-    setTimeout(() => {
-        clearStoreCache(storeName);
-        console.log("Cleared cache for store: " + storeName);
-    }, expirySeconds * 1000)
 }
 
 function dbVersion(): number
@@ -70,7 +70,7 @@ function dbVersion(): number
   return dbv;
 }
 
-export async function putPublications(publications: Publication[], expirySeconds: number = 7200) {
+export async function putPublications(publications: Publication[]) {
     const storeName = 'publications';
     const tx = (await dbPromise).transaction(storeName, 'readwrite');
 
@@ -80,11 +80,6 @@ export async function putPublications(publications: Publication[], expirySeconds
     }
 
     await Promise.all(promises);
-
-    setTimeout(() => {
-        clearStoreCache(storeName);
-        console.log("Cleared cache for store: " + storeName);
-    }, expirySeconds * 1000)
 }
 
 export async function putOrigins(sources: Origin[], expirySeconds: number = 7200) {
@@ -101,10 +96,23 @@ export async function putOrigins(sources: Origin[], expirySeconds: number = 7200
   setTimeout(() => {
       clearStoreCache(storeName);
       console.log("Cleared cache for store: " + storeName);
-  }, expirySeconds * 1000)
+  }, expirySeconds * 1000 * 1000)
 }
 
-export async function putAuthors(authors: Contributor[], expirySeconds: number = 7200) {
+export async function putAudioClips(audioClips: AudioClip[]) {
+  const storeName = 'audioclips';
+  const tx = (await dbPromise).transaction(storeName, 'readwrite');
+
+  const promises: Promise<string>[] = []
+  for (const audioClip of audioClips) {
+      tx.store.put(audioClip, audioClip.id);
+  }
+
+  await Promise.all(promises);
+}
+
+
+export async function putAuthors(authors: Contributor[]) {
     const storeName = 'authors';
     const tx = (await dbPromise).transaction(storeName, 'readwrite');
 
@@ -114,11 +122,6 @@ export async function putAuthors(authors: Contributor[], expirySeconds: number =
     }
 
     await Promise.all(promises);
-
-    setTimeout(() => {
-        clearStoreCache(storeName);
-        console.log("Cleared cache for store: " + storeName);
-    }, expirySeconds * 1000)
 }
 
 export async function clearCache() {
@@ -127,6 +130,6 @@ export async function clearCache() {
     }
 }
 
-export async function clearStoreCache(storeName: "articles" | "publications" | "authors" | "origins") {
+export async function clearStoreCache(storeName: "articles" | "publications" | "authors" | "origins" | "audioclips") {
     (await dbPromise).clear(storeName);
 }

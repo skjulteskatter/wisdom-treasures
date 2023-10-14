@@ -16,33 +16,6 @@
   <swiper-slide v-for="origin in origins" :key="origin.id" class="max-w-min mb-8 flex items-center justify-center pt-5 px-5">
     <Origin :origin="origin"/>
   </swiper-slide>
-
-  <swiper-slide class="max-w-min pt-5  mb-8">
-    <div class="w-24 h-24 flex justify-center items-center rounded-xl shadow-md bg-primary/60"></div>
-     <h2 class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
-      {{ $t('common.origin')}}
-        </h2>
-  </swiper-slide>
-  <swiper-slide class="max-w-min pt-5  mb-8">
-    <div class="w-24 h-24 flex justify-center items-center rounded-xl shadow-sm bg-primary/40"></div>
-    <h2 class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
-      {{ $t('common.origin')}}
-        </h2>
-  </swiper-slide>
-  <swiper-slide class="max-w-min pt-5 mb-8">
-    <div class="w-24 h-24 flex justify-center items-center rounded-xl bg-primary/20"></div>
-    <h2 class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
-      {{ $t('common.origin')}}
-        </h2>
-  </swiper-slide>
-  <swiper-slide class="max-w-min justify-center pt-5 mb-8">
-    <div class="w-24 h-24 flex justify-center items-center rounded-xl bg-primary/10"></div>
-    <h2 class="mb-5 mt-2 leading-4 font-bold text-sm text-[color:var(--wt-color-text-grey)] opacity-80 tracking-075">
-      {{ $t('common.origin')}}
-        </h2>
-  </swiper-slide>
- 
-
   </swiper>
 </template>
   <script lang="ts">

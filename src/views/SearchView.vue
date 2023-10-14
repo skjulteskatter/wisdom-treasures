@@ -11,6 +11,7 @@
     </div>
     <MultiSearch 
         @articles:article-hits="setArticles"
+        @audioClips:audioClipHits="setAudioClips"
         @searched-word:searched-word="setSearchedWord"
         @authors:author-hits="setAuthors"
         @themes:theme-hits="setThemes"
@@ -18,7 +19,7 @@
         :search-on-load="true">
     </MultiSearch>
 
-    <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-6 mx-10 sm:ml-auto sm:mr-auto" v-model="showAudioFiles" />
+    <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-6 mx-10 sm:ml-auto sm:mr-auto" v-model="showAudioClips" @change="resetPagination()" />
     <div v-if="searchedWord && themeHits.length+articleHitsPagination.length === 0" class=" ml-5 mt-5 sm:ml-0 text-[color:var(--wt-color-text-grey)] opacity-80">
         Looks like we don't have what you're looking for...
     </div>
@@ -36,7 +37,7 @@
                 </div>
             </div>
         </div>
-        <div v-show="!showAudioFiles" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
+        <div v-show="!showAudioClips" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
             <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">WORDS</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(article, index) in articleHitsPagination" :key="index.toString() + forLoopKey.toString()" class="flex flex-col">
@@ -44,16 +45,16 @@
                 </div>
             </div>
         </div>
-        <div v-show="showAudioFiles" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
-            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">AUDIOFILES</h1>
+        <div v-show="showAudioClips" v-if="audioClipHitsPagination.length > 0" id="WordSection" class="mt-4">
+            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">AUDIOCLIPS</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
-                <div v-for="(article, index) in articleHitsPagination" :key="index.toString() + forLoopKey.toString()" class="flex flex-col">
-                    <WWAudioCard :article="article" class="grow" :strech-y="true"/>
+                <div v-for="(audioClip, index) in audioClipHitsPagination" :key="index.toString() + forLoopKey.toString()" class="flex flex-col">
+                    <AudioCard :audio-clip="audioClip" class="grow" :strech-y="true"/>
                 </div>
             </div>
         </div>
         <div id="loaderDiv">
-            <Loader :loading="loadingMoreArticles" class="mt-2"/>
+            <Loader :loading="loadingMore" class="mt-2"/>
         </div>
     </div>
     
@@ -71,7 +72,8 @@ import ThemeCard from '@/components/ThemeCard.vue';
 import Loader from '@/components/Loader.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
-import WWAudioCard from '@/components/WWAudioCard.vue';
+import AudioCard from '@/components/AudioCard.vue';
+import type { AudioClip } from '@/classes/AudioClip';
 
   export default defineComponent({
     name: "SearchView",
@@ -80,12 +82,14 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
             searchedWord: "" as string,
             store: useSessionStore(),
             articleHits: [] as Article[],
+            audioClipHits: [] as AudioClip[],
             authorHits: [] as Contributor[],
             themeHits: [] as Publication[],
             searchLoading: false as boolean,
-            loadingMoreArticles: false as boolean,
+            loadingMore: false as boolean,
             articleHitsPagination: [] as Article[],
-            showAudioFiles: false as boolean,
+            audioClipHitsPagination: [] as AudioClip[],
+            showAudioClips: false as boolean,
             forLoopKey: 0 as number,
         }
     },
@@ -99,13 +103,17 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
         Loader,
         ScrollToTopButton,
         ToggleSlideButton,
-        WWAudioCard,
+        AudioCard,
     },
     mounted() {
         window.addEventListener('scroll', this.onScroll);
         if (this.homePath !== this.currentPath) this.$router.push({ name: "search" });
     },
     methods: {
+        resetPagination(){
+            this.setArticles(this.articleHits.concat(this.articleHitsPagination));
+            this.setAudioClips(this.audioClipHits.concat(this.audioClipHitsPagination));
+        },
         refreshForLoopKey()
         {
             this.forLoopKey = this.forLoopKey > 10 ? 0 : this.forLoopKey + 1;
@@ -114,6 +122,12 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
             this.articleHits = value;
             this.articleHitsPagination = [];
             this.fillRandomArticles(20);
+            this.refreshForLoopKey();
+        },
+        setAudioClips(value : AudioClip[]){
+            this.audioClipHits = value;
+            this.audioClipHitsPagination = [];
+            this.fillRandomAudioClips(20);
             this.refreshForLoopKey();
         },
         setThemes(value : Publication[]){
@@ -131,16 +145,20 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
             this.searchLoading = value;
         },
         async onScroll(){
-            if (this.articleHits.length <= 0) return;
+            if (!this.showAudioClips && this.articleHits.length <= 0) return;
+            if (this.showAudioClips && this.audioClipHits.length <= 0) return;
 
             let bottom = window.innerHeight + window.pageYOffset == document.body.scrollHeight;
             if (!bottom) return;
-            this.loadingMoreArticles = true;
+            this.loadingMore = true;
             setTimeout(() => {
-                this.fillRandomArticles(20);
+                if (this.showAudioClips)
+                    this.fillRandomAudioClips(20);
+                else
+                    this.fillRandomArticles(20);
             }, 1);
             setTimeout(() => {
-                this.loadingMoreArticles = false;
+                this.loadingMore = false;
             }, 200);
         },
         fillRandomArticles(paginationCount : number){
@@ -150,6 +168,16 @@ import WWAudioCard from '@/components/WWAudioCard.vue';
                 if (nextArticle != undefined){
                     this.articleHitsPagination.push(nextArticle);
                     this.articleHits.splice(i, 1);
+                }
+            }
+        },
+        fillRandomAudioClips(paginationCount : number){
+            let audioClipHitsMax = this.audioClipHits.length;
+            for (let i = 0; i < Math.min(paginationCount, audioClipHitsMax); i++) {
+                let nextAudioClip = this.audioClipHits[i]
+                if (nextAudioClip != undefined){
+                    this.audioClipHitsPagination.push(nextAudioClip);
+                    this.audioClipHits.splice(i, 1);
                 }
             }
         },

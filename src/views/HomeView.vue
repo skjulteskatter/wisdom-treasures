@@ -31,9 +31,10 @@
               <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayWOTD()">
                 <span
                   class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
-                  :class="{ 'highlighted': displayWordOfTheDay }">{{ $t('common.dailyword') }}</span>
+                  :class="{ 'highlighted': displayWordOfTheDay }">{{ $t('common.dailyword')}}</span>
                 <div v-if="displayWordOfTheDay"
-                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
+                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
+                </div>
               </div>
             </div>
             <div class="flex flex-col items-center sm:items-start">
@@ -42,7 +43,8 @@
                   class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
                   :class="{ 'highlighted': displayFavorites }">{{ $t('common.favorites') }}</span>
                 <div v-if="displayFavorites"
-                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5"></div>
+                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
+                </div>
               </div>
             </div>
             <div class="flex flex-col items-center sm:items-start">
@@ -50,7 +52,8 @@
                 <span
                   class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
                   :class="{ 'highlighted': displayHistory }">{{ $t('common.history') }}</span>
-                <div v-if="displayHistory" class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
+                <div v-if="displayHistory" 
+                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
                 </div>
               </div>
             </div>
@@ -74,7 +77,7 @@
               </div>
             </div>
 
-            <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
+            <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent z-10">
             </div>
           </div>
 
@@ -92,7 +95,7 @@
             </div>
 
             
-            <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent">
+            <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent z-10">
             </div>
           </div>
 
@@ -184,16 +187,21 @@ export default defineComponent({
     },
     linkedArticle(): null | Article {
 
+      let currentPathNumberOrNegative = this.currentPathNumber ?? -1;
+
+      if(this.displayFavorites && this.favoriteArticles.some(x => x.number == currentPathNumberOrNegative)) return null;
+      if(this.displayHistory && this.historyArticles.some(x => x.number == currentPathNumberOrNegative)) return null;
+
       if (this.homePath === this.currentPath) return null;
-      const articleId = this.store.articleNumberLookup.get(this.currentPathNumber ?? -1);
+      const articleId = this.store.articleNumberLookup.get(currentPathNumberOrNegative);
       if (articleId === undefined) {
-        this.articleNotFound(this.currentPathNumber ?? -1);
+        this.articleNotFound(currentPathNumberOrNegative);
         return null;
       }
 
       const article = this.store.articles.get(articleId || "");
       if (article === undefined) {
-        this.articleNotFound(this.currentPathNumber ?? -1);
+        this.articleNotFound(currentPathNumberOrNegative);
         return null;
       }
 
@@ -306,7 +314,6 @@ export default defineComponent({
     },
     getAndSetRandomArticle(): void {
       this.randomArticle = this.articles[Math.floor(Math.random() * this.articles.length)] || null;
-      mannaHistory.addOrReplace(this.randomArticle.id);
       this.showWordOfTheDay = false;
     },
     getAndSetWordOfTheDayArticle(): void {
@@ -377,4 +384,5 @@ export default defineComponent({
   .h-custom.fav-his {
     height: 18rem
   }
-}</style>
+}
+</style>

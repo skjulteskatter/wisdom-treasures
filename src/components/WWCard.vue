@@ -1,6 +1,6 @@
 <template>
     <main>
-        <BaseCard :WWCard="true" class="border-2 border-black/0 cursor-pointer" @click="()=>{$router.push({path: `${currentPath}${article.number}`})}"
+        <BaseCard :WWCard="true" class="border-2 border-black/0 cursor-pointer" @click="()=>{clickOnArticle()}"
           :class="[{'h-full': strechY}, {'hover:border-black/30' : !hoverOverFavorite}]">
           <template #default>
             <slot name="default" v-if="$slots.default" />
@@ -38,6 +38,7 @@
   import { useSessionStore } from '@/stores/session';
   import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
   import BaseButton from './BaseButton.vue';
+import { history } from '@/services/localStorage';
   
     export default defineComponent({
       name: "WWCard",
@@ -95,6 +96,10 @@
         },
       },
       methods:{
+        clickOnArticle(){
+          this.$router.push({path: `${this.currentPath}${this.article.number}`});
+          history.addOrReplace(this.article.id, Date.now());
+        },
         checkRouteToModal(){
           let wwNumber = this.$route.params.wwNumber;
           if (wwNumber !== undefined && +wwNumber === this.article.number){

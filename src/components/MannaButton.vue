@@ -1,15 +1,15 @@
 <template>
   <main>
     <SparklesIcon class="h-4 text-white sm:text-inherit" />
-    <BaseButton class="z-50" @click="() => { $router.push({ path: `${currentPath}manna` }) }" theme="wisdomMannaBtn">
+    <BaseButton class="z-50" @click="() => { buttonClick() }" theme="wisdomMannaBtn">
       <template #firstIcon>
         <SparklesIcon class="h-4 text-white sm:text-inherit" />
       </template>
       Get Manna
     </BaseButton>
     <WWCardModal :show="showMannaModal" @close="(e: Event | undefined) => { navigateBack(e); $emit('closeModal', e) }"
-      :mannaArticleIdList="mannaArticleIdList"
-      :article="store.articles.get(mannaArticleIdList[Math.floor(Math.random() * mannaArticleIdList.length)])!" />
+      :mannaArticleIdList="shuffeledMannaArticleIdList"
+      :article="store.articles.get(shuffeledMannaArticleIdList[0])!" />
   </main>
 </template>
     
@@ -17,8 +17,8 @@
 import { defineComponent, type PropType } from 'vue';
 import WWCardModal from './WWCardModal.vue';
 import { useSessionStore } from '@/stores/session';
-import { SparklesIcon } from '@heroicons/vue/solid';
 import BaseButton from './BaseButton.vue';
+import { history } from '@/services/localStorage';
 
 export default defineComponent({
   name: "MannaButton",
@@ -26,6 +26,7 @@ export default defineComponent({
     return {
       showMannaModal: false,
       store: useSessionStore(),
+      shuffeledMannaArticleIdList: this.shuffle(this.mannaArticleIdList) as string[]
     }
   },
   props: {
@@ -57,11 +58,18 @@ export default defineComponent({
     },
   },
   methods: {
+    buttonClick(){
+      this.$router.push({ path: `${this.currentPath}manna` });
+      history.addOrReplace(this.shuffeledMannaArticleIdList[0], Date.now());
+    },
     checkRouteToModal() {
       let manna = this.$route.params.mannaPath;
       if (manna != undefined && manna != null && manna != "") {
         this.showMannaModal = true;
       } else this.showMannaModal = false;
+    },
+    shuffle(array: string[]){
+      return array.sort(() => Math.random() - 0.5); 
     },
     navigateBack(e?: Event) {
 

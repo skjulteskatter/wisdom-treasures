@@ -34,12 +34,15 @@
 					<BaseInput v-model="store.searchWord" :placeholder="$t('common.search')" style-type="search"
 						class="self-center" @search-action="search($event)" />
 					<div v-if="currentUser !== null" class="flex gap-x-3 ml-2">
+						<!--
+						We don't need notifications yet
 						<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
 							<QuestionMarkCircleIcon class="h-6 opacity-50" />
 						</BaseButton>
 						<BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8">
 							<BellIcon class="h-6 opacity-50" @click="addNotification()" />
 						</BaseButton>
+						-->
 						<img :src="currentUser?.photoURL || '/img/user.svg'"
 							class="w-8 h-8 rounded-full border-primary border cursor-pointer"
 							@click="navigate('profile')" alt="YourPicture"/>
@@ -121,6 +124,8 @@
 											{{ $t('common.profile') }}</BaseButton>
 									</div>
 									</MenuItem>
+									<!--
+										We don't need notifications yet
 									<MenuItem>
 									<div class="flex">
 										<BaseButton class="w-full" theme="menuButton" :center-text="false"
@@ -133,6 +138,7 @@
 											@click="{ }">{{ $t('common.help') }}</BaseButton>
 									</div>
 									</MenuItem>
+									-->
 								</div>
 								<img class="w-10 fixed left-8 buttom-5 mt-16 cursor-pointer" src="/img/logo.svg"/>
 							</MenuItems>
@@ -152,21 +158,18 @@ import BaseInput from "./BaseInput.vue";
 import BaseButton from "./BaseButton.vue";
 import router from "@/router";
 import { useSessionStore } from "@/stores/session";
-import { BellIcon, QuestionMarkCircleIcon, MenuIcon, HomeIcon, SearchIcon } from "@heroicons/vue/outline";
+import { MenuIcon, HomeIcon, SearchIcon } from "@heroicons/vue/outline";
 import { getCurrentUserPromise } from "@/services/auth";
 import type { User } from "firebase/auth";
 import breakpoints from "@/style/breakpoints";
 import { Menu as HUMenu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import SearchModal from "./Search/SearchModal.vue";
-import { InlineNotification } from '@/classes/notification';
 
 export default defineComponent({
 	name: "the-navbar",
 	components: {
 		BaseInput,
 		BaseButton,
-		BellIcon,
-		QuestionMarkCircleIcon,
 		HUMenu,
 		MenuButton,
 		MenuItems,
@@ -182,8 +185,6 @@ export default defineComponent({
 		store: useSessionStore(),
 		breakpoints: breakpoints,
 		showSearchModal: false,
-
-		removeThis: 0
 	}),
 	async beforeMount() {
 		this.currentUser = await getCurrentUserPromise();
@@ -204,10 +205,6 @@ export default defineComponent({
 				name = "login";
 			}
 			router.push({ name: name });
-		},
-		addNotification() {
-			this.store.notifications.push(new InlineNotification(this.$t('notifications.placeholderMsg') + this.removeThis.toString()));
-			this.removeThis++;
 		},
 		shouldBeHighlighted(requiredName: string): boolean {
 			return this.$route.matched.some((x: { name: string; }) => x.name === requiredName);

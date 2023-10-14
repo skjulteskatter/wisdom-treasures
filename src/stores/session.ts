@@ -2,11 +2,11 @@ import { defineStore } from 'pinia'
 import {setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { InlineNotification } from '@/classes/notification'
-import { articles, authors, favorites as favoritesApi, origins, publications, stripe} from '@/services/api'
+import { articles, audioClips, authors, favorites as favoritesApi, origins, publications, stripe} from '@/services/api'
 import type {Article, Contributor, Publication } from 'hiddentreasures-js'
 import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
-import { dbPromise, putArticles, putAuthors, putPublications, putOrigins } from '@/services/cache'
+import { dbPromise, putArticles, putAuthors, putPublications, putOrigins, putAudioClips } from '@/services/cache'
 import type { HTUser } from '@/classes/HTUser'
 import { language, favorites, lastUpdated } from '@/services/localStorage'
 import Fuse from 'fuse.js'
@@ -14,6 +14,7 @@ import type { IApiProduct } from '@/Interfaces/IApiProduct'
 import StripeService from '@/services/stripe'
 import type { Origin } from '@/classes/Origin'
 import { auth } from '@/services/auth'
+import type { AudioClip } from '@/classes/AudioClip'
 
 export const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 export const WT_PRODUCT_ID : string = "prod_NnqNtVfJjpCCOy";
@@ -47,6 +48,9 @@ export const useSessionStore = defineStore('session', {
             origins: shallowRef(new Map) as unknown as Map<string, Origin>,
             fuseOrigins: undefined as Fuse<Origin> | undefined,
 
+            audioClips: shallowRef(new Map) as unknown as Map<string, AudioClip>,
+            fuseAudioClips: undefined as Fuse<AudioClip> | undefined,
+
             collectionId: "" as string,
 
             apiProducts: [] as IApiProduct[],
@@ -66,6 +70,7 @@ export const useSessionStore = defineStore('session', {
             onlyFavoriteSearchFilter: false as boolean,
             authorIdSearchFilter: [] as string[],
             originIdSearchFilter: [] as string[],
+            audioClipIdSearchFilter: [] as string[],
 
             syncSearchFilter: 0 as number,
 
@@ -78,6 +83,9 @@ export const useSessionStore = defineStore('session', {
             latestUpdatedAuthor: 0 as number,
             latestUpdatedPublication: 0 as number,
             latestUpdatedOrigin: 0 as number,
+            latestUpdatedAudioClip: 0 as number,
+
+            currentAudioPlayingId: "" as string,
         }
     },
     actions: {
@@ -257,6 +265,45 @@ export const useSessionStore = defineStore('session', {
             console.log("Initialized Articles, Total time taken : " + timeTaken/1000 + " seconds");
 
         },
+        async initializeAudioClips(fromIndexDb: boolean = true) {
+            const start = Date.now();
+            let oldAudioClipsArray: AudioClip[] = [];
+
+            if (fromIndexDb){
+                oldAudioClipsArray = await (await dbPromise).getAll('audioclips');
+            }
+
+            for (const audioClip of oldAudioClipsArray) {
+                this.audioClips.set(audioClip.id, audioClip);
+            }
+
+            //Get latest date
+            this.latestUpdatedAudioClip = oldAudioClipsArray.length > 0 ? +(lastUpdated.get("audioclips") || "0") : 0;
+            this.latestUpdatedAudioClip = this.latestUpdatedAudioClip > 0
+                ? this.latestUpdatedAudioClip
+                : (oldAudioClipsArray.reduce((oa, u) => Math.max(oa, Date.parse(u.date)), 0)) + 1; // Get latest date 
+
+            const newAudioClipsArray: AudioClip[] = await audioClips.post(this.locale, new Date(this.latestUpdatedAudioClip), 0);
+            
+            for (const audioClip of newAudioClipsArray) {
+                if (audioClip.audioFile == undefined || audioClip.audioFile == null || audioClip.audioFile == "") continue;
+                this.audioClips.set(audioClip.id, audioClip);
+            }
+
+            await putAudioClips(newAudioClipsArray);
+
+            lastUpdated.setOrReplace(Date.now(), "audioclips");
+
+            const option = {
+                keys: ['introduction', 'date', 'title'],
+                includeScore: true,
+                threshold: 0.3
+            };
+            this.fuseAudioClips = new Fuse(oldAudioClipsArray.concat(newAudioClipsArray), option, Fuse.createIndex(option.keys, oldAudioClipsArray.concat(newAudioClipsArray)));
+            const timeTaken = Date.now() - start;
+            console.log("Initialized AudioClips, Total time taken : " + timeTaken/1000 + " seconds");
+
+        },
         async initializeFavorites() {
             try {
                 const start = Date.now();
@@ -270,7 +317,7 @@ export const useSessionStore = defineStore('session', {
             }
             catch 
             {
-                console.log("Failed to get favorites");
+                console.log("Failed to get favorites online");
                 for (const key of favorites.getAll().keys()) {
                     this.favorites.push(key);
                 }

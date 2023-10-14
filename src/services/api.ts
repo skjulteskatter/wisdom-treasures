@@ -6,6 +6,7 @@ import type { IApiProduct } from "@/Interfaces/IApiProduct";
 import type { SessionRequest, SetupResponse } from "songtreasures-api/checkout";
 import { WISDOM_WORDS_ID } from "@/stores/session";
 import type { Origin } from "@/classes/Origin";
+import type { AudioClip } from "@/classes/AudioClip";
 
 export const session = {
     async getCurrentUser() {
@@ -102,6 +103,39 @@ export const articles = {
                 collectionIds: [WISDOM_WORDS_ID],
                 limit: 1
             } as ArticleInputBody,
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                },
+            },
+            false,
+            true,
+            "4"
+        )
+    }
+}
+
+type AudioClipInputBody = {
+    limit?: number,
+    skip: number,
+    orderBy: string,
+    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
+    collectionIds: string[] //GUIDS
+    withContent: boolean
+}
+
+export const audioClips = {
+    post(language: string, updatedAt: Date, skip: number, limit?: number): Promise<AudioClip[]> {
+
+        return http.post<AudioClip[]>(`api/AudioClip?language=${language}&updatedAt=${updatedAt.toISOString()}`, 
+            {
+                lastUpdated: updatedAt.toISOString(),
+                collectionIds: [WISDOM_WORDS_ID],
+                withContent: true,
+                skip: skip,
+                limit: limit,
+                orderBy: "id"
+            } as AudioClipInputBody,
             {
                 headers: {
                     "Content-Type": "application/json",

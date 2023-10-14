@@ -39,6 +39,7 @@ export default defineComponent({
         copyToClipBoardKey: uuid.v4(),
         openCopyToClipBoardPopUpSemaphore: 0 as number,
         currentArticle: {} as Article,
+        index: 1 as number, // Set to 1 because the initial article is set to 0
     }),
     emits: ["close"],
     props: {
@@ -91,20 +92,28 @@ export default defineComponent({
                 this.openCopyToClipBoardPopUpSemaphore--;
             }, 2000);
         },
+        //changeManna(){
+        //    
+        //    //Return if there's only similar id's in mannaArticleIdList
+        //    if (this.mannaArticleIdList.filter(x => this.currentArticle.id != x).length <= 0) return;
+        //    let newId = this.currentArticle.id;
+        //    while (newId == this.currentArticle.id){
+        //        newId = this.mannaArticleIdList[Math.floor(Math.random() * this.mannaArticleIdList.length)];
+        //    }
+        //    let newArticle = this.store.articles.get(newId);
+        //    if (newArticle !== undefined){
+        //        this.currentArticle = newArticle;
+        //        history.addOrReplace(newId, Date.now());
+        //    }
+        //}
         changeManna(){
-            
-            //Return if there's only similar id's in mannaArticleIdList
-            if (this.mannaArticleIdList.filter(x => this.currentArticle.id != x).length <= 0) return;
-
-            let newId = this.currentArticle.id;
-            while (newId == this.currentArticle.id){
-                newId = this.mannaArticleIdList[Math.floor(Math.random() * this.mannaArticleIdList.length)];
-            }
+            if (this.index >= this.mannaArticleIdList.length) this.index = 0;
+            let newId = this.mannaArticleIdList[this.index];
             let newArticle = this.store.articles.get(newId);
-            if (newArticle !== undefined){
-                this.currentArticle = newArticle;
-                history.addOrReplace(newId, Date.now());
-            }
+            if (newArticle === undefined) return;
+            this.currentArticle = newArticle;
+            this.index++;
+            history.addOrReplace(newId, Date.now());
         }
     },
     

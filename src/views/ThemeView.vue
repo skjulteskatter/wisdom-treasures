@@ -17,11 +17,12 @@
     <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"
       :return-all-if-no-hits="true"
       :search-on-load="true"
+      @audioClips:audioClipHits="setSearchAudioClips"
       @articles:article-hits="setSearchArticles" @search-loading:search-loading="setSearchLoading"
       class="mx-5 sm:mx-10 text-white">
     </MultiSearch>
 
-    <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-6 mx-10 sm:ml-auto sm:mr-auto" v-model="showAudioFiles"/>
+    <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-6 mx-10 sm:ml-auto sm:mr-auto" v-model="showAudioClips" @change="resetPagination()"/>
 
     <WWShowCard v-if="randomArticle" :article="randomArticle" class="mx-5 my-5 sm:mx-0" :forThemeView="true" />
 
@@ -31,20 +32,20 @@
           <Loader :loading="true" class="overflow-hidden" />
         </div>
       </div>
-      <div v-show="!showAudioFiles" id="WWCards"
+      <div v-show="!showAudioClips" id="WWCards"
         class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
         <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
           <WWCard :article="article" class="grow" :strech-y="true" />
         </div>
       </div>
-      <div v-show="showAudioFiles" id="WWAudioCards"
+      <div v-show="showAudioClips" id="AudioCards"
         class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-        <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
-          <WWAudioCard :article="article" class="grow" :strech-y="true" />
+        <div v-for="(audioClip, index) in audioClipHitsPagination" :key="index" class="flex flex-col">
+          <AudioCard :audio-clip="audioClip" class="grow" :strech-y="true" />
         </div>
       </div>
       <div id="loaderDiv">
-        <Loader :loading="loadingMoreArticles" class="mt-2" />
+        <Loader :loading="loadingMore" class="mt-2" />
       </div>
     </div>
     <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
@@ -65,9 +66,10 @@ import { mannaHistory } from '@/services/localStorage';
 import MultiSearch from '@/components/Search/MultiSearch.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
-import WWAudioCard from '@/components/WWAudioCard.vue';
+import AudioCard from '@/components/AudioCard.vue';
 import Loader from '@/components/Loader.vue';
 import MannaButton from '@/components/MannaButton.vue';
+import type { AudioClip } from '@/classes/AudioClip';
 
 export default defineComponent({
   name: "ThemeView",
@@ -75,15 +77,18 @@ export default defineComponent({
     return {
       store: useSessionStore(),
       articles: [] as Article[], 
+      audioClips: [] as AudioClip[], 
       dataFavorites: undefined as string[] | undefined,
       publication: undefined as Publication | undefined,
       randomArticle: null as Article | null,
       showWordOfTheDay: false as boolean,
       searchArticles: [] as Article[],
-      showAudioFiles: false as boolean,
+      searchAudioClips: [] as AudioClip[],
+      showAudioClips: false as boolean,
       articleHitsPagination: [] as Article[],
+      audioClipHitsPagination: [] as AudioClip[],
       searchingLoading: false as boolean,
-      loadingMoreArticles: false as boolean,
+      loadingMore: false as boolean,
       showSearchBar: false as boolean,
     }
   },
@@ -94,7 +99,7 @@ export default defineComponent({
     MultiSearch,
     ScrollToTopButton,
     ToggleSlideButton,
-    WWAudioCard,
+    AudioCard,
     Loader,
     MannaButton,
   },
@@ -123,8 +128,13 @@ export default defineComponent({
     },
     searchOrAllArticles(): Article[] {
       if (this.searchArticles.length > 0) return this.searchArticles;
-      console.log("Couldn't find any articles!!");
+      console.log("Couldn't find any articles!");
       return this.articles;
+    },
+    searchOrAllAudioClips(): AudioClip[] {
+      if (this.searchAudioClips.length > 0) return this.searchAudioClips;
+      console.log("Couldn't find any audioClips!");
+      return this.audioClips;
     },
     storeFavorites(): string[] {
       return this.store.favorites;
@@ -147,6 +157,9 @@ export default defineComponent({
     articleIds(): string[] {
       return this.articles.map(x => x.id);
     },
+    audioClipIds(): string[] {
+      return this.audioClips.map(x => x.id);
+    },
   },
   watch: {
     sessionInitialized(oldVal, newVal) {
@@ -162,6 +175,10 @@ export default defineComponent({
     }
   },
   methods: {
+    resetPagination(){
+      this.setSearchArticles(this.searchArticles.concat(this.articleHitsPagination));
+      this.setSearchAudioClips(this.searchAudioClips.concat(this.audioClipHitsPagination));
+    },
     toggleSearchBar() {
       this.showSearchBar = !this.showSearchBar
     },
@@ -169,16 +186,20 @@ export default defineComponent({
       this.searchingLoading = value;
     },
     async onScroll() {
-      if (this.searchArticles.length <= 0) return;
+      if (this.showAudioClips == false && this.searchArticles.length <= 0) return;
+      if (this.showAudioClips && this.searchAudioClips.length <= 0) return;
 
       let bottom = window.innerHeight + window.pageYOffset == document.body.scrollHeight;
       if (!bottom) return;
-      this.loadingMoreArticles = true;
+      this.loadingMore = true;
       setTimeout(() => {
-        this.fillRandomArticles(20);
+        if (this.showAudioClips)
+            this.fillRandomAudioClips(20);
+        else
+            this.fillRandomArticles(20);
       }, 1);
       setTimeout(() => {
-        this.loadingMoreArticles = false;
+        this.loadingMore = false;
       }, 200);
     },
     fillRandomArticles(paginationCount: number) {
@@ -191,10 +212,25 @@ export default defineComponent({
         }
       }
     },
+    fillRandomAudioClips(paginationCount: number) {
+      let audioClipHitsMax = this.searchAudioClips.length;
+      for (let i = 0; i < Math.min(paginationCount, audioClipHitsMax); i++) {
+        let nextAudioClip = this.searchAudioClips[i]
+        if (nextAudioClip != undefined) {
+          this.audioClipHitsPagination.push(nextAudioClip);
+          this.searchAudioClips.splice(i, 1);
+        }
+      }
+    },
     setSearchArticles(value: Article[]) {
       this.searchArticles = value;
       this.articleHitsPagination = [];
       this.fillRandomArticles(20);
+    },
+    setSearchAudioClips(value: AudioClip[]) {
+      this.searchAudioClips = value;
+      this.audioClipHitsPagination = [];
+      this.fillRandomAudioClips(20);
     },
     refreshDataFavorites() {
       this.dataFavorites = [...this.storeFavorites];
@@ -249,11 +285,6 @@ export default defineComponent({
       let message = Number.isNaN(num) ? "Couldn't find article" : "Couldn't find article number: " + num.toString();
       this.store.notifications.push(new InlineNotification(message, "error"));
       router.replace({ path: this.$route.fullPath.replace(this.$route.params.wwNumber?.toString() ?? "", "") });
-    },
-    getAndSetRandomArticle(): void {
-      this.randomArticle = this.articles[Math.floor(Math.random() * this.articles.length)] || null;
-      mannaHistory.addOrReplace(this.randomArticle.id);
-      this.showWordOfTheDay = false;
     },
     setArticles(): void {
       if (this.articles.length <= 0){
