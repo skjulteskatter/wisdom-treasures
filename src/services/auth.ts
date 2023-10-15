@@ -82,8 +82,10 @@ function pushToDashboardOrRedirectLink(){
     let name = store.$state.redirectAfterLoginName;
     store.$state.redirectAfterLoginName = "";
 
+
+    name = "" //REMOVE THIS
     if (name.length <= 0)
-      name = "dashboard";
+      name = "emptyDashboard";
 
     router.push({name: name});
 }

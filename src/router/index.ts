@@ -266,6 +266,15 @@ export const routes = [
     }
   },
   {
+    path: '/emptyDashboard',
+    name: 'emptyDashboard',
+    component: () => import('../views/EmptyHomeView.vue'),
+    meta: {
+      requiresAuth: true,
+      scrollUp: true,
+    }
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'notfound',
     component: () => import('../views/NotFoundView.vue'),
@@ -280,6 +289,8 @@ const router = createRouter({
 })
 
 router.beforeEach(async (to, from, next) => {
+
+  next(); //REMOVE THIS
 
   console.log("NAVIGATING TO ", to.name);
 

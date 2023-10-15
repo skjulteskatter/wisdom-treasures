@@ -1,4 +1,7 @@
 <template>
+
+  <div>Version {{ versionNumber }}</div>
+
   <main class="bg-white col-span-2 min-h-full w-full lg:flex place-items-center flex-col">
     <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-black/20 flex justify-center">
       <div class="flex place-items-center max-h-20 mt-8 mb-5">
@@ -168,6 +171,7 @@ import { useSessionStore } from '@/stores/session';
 import FooterComponent from '@/components/FooterComponent.vue';
 import TermsModal from '@/components/TermsModal.vue';
 import type { User } from 'firebase/auth';
+import {version} from '../../package.json'
 
   export default defineComponent({
     name: "LoginView",
@@ -227,6 +231,9 @@ import type { User } from 'firebase/auth';
       },
       currentUser() : User | null {
         return auth.currentUser
+      },
+      versionNumber(){
+        return version;
       }
     },
     watch: {
