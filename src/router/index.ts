@@ -290,10 +290,6 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
-  next(); //REMOVE THIS
-
-  if ("".toString() == "dd"){
-
   console.log("NAVIGATING TO ", to.name);
 
   if (to.meta.scrollUp === true && from.meta.scrollUp === true) {
@@ -338,8 +334,7 @@ router.beforeEach(async (to, from, next) => {
   
   else {
     console.log('INDEX: All good, passing you by')
-    next(to);
-  }
+    next();
   }
 
 });
