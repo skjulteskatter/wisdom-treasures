@@ -8,7 +8,6 @@ import {
     sendEmailVerification, 
     signInWithEmailAndPassword, 
     signInWithPopup, 
-    signInWithRedirect,
     updateProfile,
     browserLocalPersistence, 
     browserSessionPersistence,
@@ -85,7 +84,7 @@ function pushToDashboardOrRedirectLink(){
     store.$state.redirectAfterLoginName = "";
 
     if (name.length <= 0)
-      name = "emptyDashboard";
+      name = "dashboard";
 
     router.push({name: name});
 }
@@ -152,22 +151,28 @@ export async function userLoggedInCallback(){
     console.log("UserLoggedInCallback: Getting ready to initialize! What is user status: ", auth.currentUser);
     if (auth.currentUser == null) return;
 
-    if (await store.userHasSubscriptionPromise() == false){
-        store.sessionInitialized = true;
-        console.log('UserLoggedInCallback: Store initialized, no subscription')
-        return
-    }
-    
-    storeInitialized = true;
-    await Promise.all([
-        store.initializeProducts(),
+    const withoutSubscription = [
+        store.intitializeStripeService(),
+        store.initializeProducts()
+    ];
+
+    const withSubscription = [
         store.initializeFavorites(),
         store.initializePublications(),
         store.initializeArticles(),
         store.initializeAudioClips(),
         store.initializeSources(),
-        store.intitializeStripeService()
-    ]);
+    ];
+
+    if (await store.userHasSubscriptionPromise() == false){
+        store.sessionInitialized = true;
+        console.log('UserLoggedInCallback: Store initialized, no subscription')
+        await Promise.all(withoutSubscription);
+        return;
+    }
+    
+    storeInitialized = true;
+    await Promise.all(withoutSubscription.concat(withSubscription));
 
     await store.intitializeArticleNumberLookup(),
     await store.initializeAuthors();

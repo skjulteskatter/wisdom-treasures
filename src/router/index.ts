@@ -266,15 +266,6 @@ export const routes = [
     }
   },
   {
-    path: '/emptyDashboard',
-    name: 'emptyDashboard',
-    component: () => import('../views/EmptyHomeView.vue'),
-    meta: {
-      requiresAuth: true,
-      scrollUp: true,
-    }
-  },
-  {
     path: '/:pathMatch(.*)*',
     name: 'notfound',
     component: () => import('../views/NotFoundView.vue'),
