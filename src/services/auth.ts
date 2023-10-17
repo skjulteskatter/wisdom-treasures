@@ -48,28 +48,43 @@ export async function loginWithEmailAndPassword(email: string, password: string,
 
 export async function loginWithProvider(providerName : string, rememberMe: boolean) {
 
+    console.log("trace A");
     await setPersistence(rememberMe);
-
+    console.log("trace B");
     let provider = undefined;
     switch (providerName) {
         case "google":
+            console.log("trace C");
             provider = googleAuthProvider;
             break;
         case "apple":
+            console.log("trace D");
             provider = appleAuthProvider;
             break;
         default:
+            console.log("trace E");
             return;
     }
 
+    console.log("trace F");
+
     if (getDeviceType() == "desktop"){
+        console.log("trace G");
         const userCredentials : UserCredential = await signInWithPopup(auth, provider);
+        console.log("trace H");
+        console.log("1: ", userCredentials);
     } else {
         try{    
-            const userCredentials : UserCredential = await signInWithRedirect(auth, provider);
+            console.log("trace I");
+            const userCredentials : UserCredential = await signInWithPopup(auth, provider);
+            console.log("trace J");
+            console.log("2: ", userCredentials);
         } catch (e){
+            console.log("trace K");
             console.log("Failed to log in with redirect. Trying popup.\nError: " + e);
             const userCredentials : UserCredential = await signInWithPopup(auth, provider);
+            console.log("trace L");
+            console.log("3: ", userCredentials);
         }
     }
     
@@ -98,6 +113,11 @@ export async function signupWithEmailAndPassword(email: string, password: string
 let storeInitialized = false;
 let userLoaded: boolean = false || !!auth.currentUser;
 export function getCurrentUserPromise(): Promise<User | null> {
+
+    return new Promise<User | null>((resolve, reject) => {
+        resolve(auth.currentUser);
+    })
+
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
      if (userLoaded) {
@@ -143,6 +163,8 @@ export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
  */
 export async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
+
+    return; //REMOVE THIS
     const store = useSessionStore();
     await store.initializeLanguage();
 
