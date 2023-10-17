@@ -114,10 +114,6 @@ let storeInitialized = false;
 let userLoaded: boolean = false || !!auth.currentUser;
 export function getCurrentUserPromise(): Promise<User | null> {
 
-    return new Promise<User | null>((resolve, reject) => {
-        resolve(auth.currentUser);
-    })
-
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
      if (userLoaded) {
