@@ -145,9 +145,9 @@ export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
 export async function userLoggedInCallback(){
     //Should be done without await maybe for asynchronous running
 
-    return; //REMOVE THIS
     const store = useSessionStore();
     await store.initializeLanguage();
+
 
     console.log("UserLoggedInCallback: Getting ready to initialize! What is user status: ", auth.currentUser);
     if (auth.currentUser == null) return;
