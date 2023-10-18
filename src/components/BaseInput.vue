@@ -146,7 +146,8 @@ export default defineComponent({
         },
         getSearchHistory() : string[]{
             const history : string[] = [];
-            for (const [key, value] of search.getAll()) {
+            const sortedMap = new Map([...search.getAll().entries()].sort((a, b) => +b[1] - +a[1]));
+            for (const [key, value] of sortedMap) {
                 if (this.modelValue == "" || ((key !== undefined && key.startsWith(this.modelValue ?? "⛄") && key != this.modelValue)))
                 history.push(key);
             }

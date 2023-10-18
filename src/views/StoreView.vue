@@ -13,14 +13,14 @@
       <div class="sm:w-1/2 flex flex-col justify-center">
 
         <div id="Cards" class="mt-5 sm:mt-10 w-full px-5 sm:p-0 text-center">
-          <StoreCard :loading="loadingCheckoutCard == 'year'" class="storeCard storeCardAnimation bg-primary-overwritten text-white/90 flex justify-center items-center store-card-width py-2 sm:py-0.5 rounded-none-overwritten" @click="() => { checkout('year') }">
+          <StoreCard :loading="loadingCheckoutCard == 'month'" class="storeCard storeCardAnimation bg-primary-overwritten text-white/90 flex justify-center items-center store-card-width py-2 sm:py-0.5 rounded-none-overwritten" @click="() => { checkout('month') }">
             <template #header>
               <div>
                 <div class="text-xl font-bold tracking-wide">Get subscription</div>
               </div>
             </template>
           </StoreCard>
-          <p class="text-[color:var(--wt-color-text-grey)] opacity-50">13NOK/month billed annually </p>
+          <p class="text-[color:var(--wt-color-text-grey)] opacity-50">13NOK/month <!--billed annually--> </p>
         </div>
 
         <div id="FAQ" class="text-center mx-5 py-8 mt-5 sm:ml-auto sm:mr-auto sm:w-3/4 max-w-2xl">

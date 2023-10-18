@@ -37,13 +37,13 @@
       </div>
       <div v-show="!showAudioClips" id="WWCards"
         class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-        <div v-for="(article, index) in articleHitsPagination" :key="index" class="flex flex-col">
+        <div v-for="(article, index) in articleHitsPagination" :key="index + forLoopKey.toString()" class="flex flex-col">
           <WWCard :article="article" class="grow" :strech-y="true" />
         </div>
       </div>
       <div v-show="showAudioClips" id="AudioCards"
         class="px-5 pt-5 sm:px-0 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2.5">
-        <div v-for="(audioClip, index) in audioClipHitsPagination" :key="index" class="flex flex-col">
+        <div v-for="(audioClip, index) in audioClipHitsPagination" :key="index + forLoopKey.toString()" class="flex flex-col">
           <AudioCard :audio-clip="audioClip" class="grow" :strech-y="true" />
         </div>
       </div>
@@ -93,6 +93,7 @@ export default defineComponent({
       loadingMore: false as boolean,
       showSearchBar: false as boolean,
       source: undefined as Origin | undefined,
+      forLoopKey: 0 as number,
     }
   },
   components: {
@@ -170,6 +171,10 @@ export default defineComponent({
     }
   },
   methods: {
+    refreshForLoopKey()
+    {
+      this.forLoopKey = this.forLoopKey > 10 ? 0 : this.forLoopKey + 1;
+    },
     resetPagination(){
       this.setSearchArticles(this.searchArticles.concat(this.articleHitsPagination));
       this.setSearchAudioClips(this.searchAudioClips.concat(this.audioClipHitsPagination));
@@ -179,6 +184,7 @@ export default defineComponent({
     },
     setSearchLoading(value: boolean) {
       this.searchingLoading = value;
+      this.refreshForLoopKey();
     },
     async onScroll() {
       if ( !this.showAudioClips && this.searchArticles.length <= 0) return;
@@ -221,11 +227,13 @@ export default defineComponent({
       this.searchArticles = value;
       this.articleHitsPagination = [];
       this.fillRandomArticles(20);
+      this.refreshForLoopKey();
     },
     setSearchAudioClips(value: AudioClip[]) {
       this.searchAudioClips = value;
       this.audioClipHitsPagination = [];
       this.fillRandomAudioClips(20);
+      this.refreshForLoopKey();
     },
     refreshDataFavorites() {
       this.dataFavorites = [...this.storeFavorites];
@@ -303,4 +311,3 @@ export default defineComponent({
   }
 });
 </script>
-@/classes/Origin

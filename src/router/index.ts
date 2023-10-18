@@ -95,6 +95,7 @@ export const routes = [
           requiresAuth: true,
           scrollUp: true,
           requiresSubscription: true,
+          clearSearchWord: false,
         }
       },
       {
@@ -281,6 +282,8 @@ const router = createRouter({
 
 router.beforeEach(async (to, from, next) => {
 
+  const store = useSessionStore();
+
   console.log("NAVIGATING TO ", to.name);
 
   if (to.meta.scrollUp === true && from.meta.scrollUp === true) {
@@ -291,6 +294,9 @@ router.beforeEach(async (to, from, next) => {
 
   const requiresAuth: true | false | undefined = to.matched.every(x => x.meta.requiresAuth === undefined) ? undefined : to.matched.some(x => x.meta.requiresAuth);
   const requiresSubscription: true | false | undefined = to.matched.every(x => x.meta.requiresSubscription === undefined) ? undefined : to.matched.some(x => x.meta.requiresSubscription);
+  const clearSearchWord: boolean = to.matched.every(x => x.meta.clearSearchWord === undefined) ? true : to.matched.some(x => x.meta.clearSearchWord);
+
+  if (clearSearchWord) store.searchWord = "";
 
   let loggedIn = undefined;
   let hasSubscription = undefined;
@@ -299,7 +305,7 @@ router.beforeEach(async (to, from, next) => {
     loggedIn = !!(await getCurrentUserPromise());
 
   if (requiresSubscription !== undefined)
-    hasSubscription = await useSessionStore().userHasSubscriptionPromise();
+    hasSubscription = await store.userHasSubscriptionPromise();
 
   console.log('Are only people with a subscription allowed to see ', to.name, ' ', requiresSubscription)
   console.log('Does user have a subscription? ', hasSubscription)
@@ -308,7 +314,7 @@ router.beforeEach(async (to, from, next) => {
   console.log('Is user logged in?', loggedIn)
   //If the site requires auth and the user is not logged in: redirect to login
   if (requiresAuth && loggedIn === false) {
-    useSessionStore().$state.redirectAfterLoginName = to.name?.toString() ?? "";
+    store.$state.redirectAfterLoginName = to.name?.toString() ?? "";
     console.log('INDEX: This side requires auth, and you are not logged in - sending you to login')
     next({ name: "login" });
   }
