@@ -1,5 +1,6 @@
 import config from "../config";
 import { auth } from "./auth";
+import { log } from '@/services/logger'
 
 export type Result<T> = {
     result: T;
@@ -243,7 +244,7 @@ class Http {
         }
         catch (e) {
             const error = e as ResultError;
-            console.log(error.value);
+            log && console.log(error.value);
         }
     }
 
@@ -267,7 +268,7 @@ class Http {
         }
         catch (e) {
             const error = e as ResultError;
-            console.log(error.value);
+            log && console.log(error.value);
             throw e;
         }
     }

@@ -37,6 +37,7 @@ import BaseCard from "@/components/BaseCard.vue";
 import NotificationCard from "@/components/Notification/NotificationCard.vue";
 import NotificationContainer from "@/components/Notification/NotificationContainer.vue";
 import { useSessionStore } from "@/stores/session";
+import { log } from '@/services/logger';
 
 export default defineComponent({
 	name: "main-layout",
@@ -59,7 +60,7 @@ export default defineComponent({
 	},
 	computed: {
 		isIntitialized(): boolean {
-			console.log('IN MAINVIEW: ', this.store.sessionInitialized)
+			log && console.log('IN MAINVIEW: ', this.store.sessionInitialized)
 			return this.store.sessionInitialized;
 		}
 	}

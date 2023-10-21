@@ -20,6 +20,8 @@ import "firebase/compat/performance";
 import config from "@/config";
 import router from "@/router";
 import { useSessionStore } from "@/stores/session";
+import { log } from '@/services/logger'
+
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
 export const auth = getAuth(firebaseApp);
@@ -62,15 +64,15 @@ export async function loginWithProvider(providerName : string, rememberMe: boole
 
     if (getDeviceType() == "desktop"){
         const userCredentials : UserCredential = await signInWithPopup(auth, provider);
-        console.log("1: ", userCredentials);
+        log && console.log("1: ", userCredentials);
     } else {
         try{    
             const userCredentials : UserCredential = await signInWithPopup(auth, provider);
-            console.log("2: ", userCredentials);
+            log && console.log("2: ", userCredentials);
         } catch (e){
-            console.log("Failed to log in with redirect. Trying popup.\nError: " + e);
+            log && console.log("Failed to log in with redirect. Trying popup.\nError: " + e);
             const userCredentials : UserCredential = await signInWithPopup(auth, provider);
-            console.log("3: ", userCredentials);
+            log && console.log("3: ", userCredentials);
         }
     }
     
@@ -103,21 +105,21 @@ export function getCurrentUserPromise(): Promise<User | null> {
      if (userLoaded) {
             resolve(auth.currentUser);
             if (!storeInitialized){
-                console.log("getCurrentUserPromise: Initializing store");
+                log && console.log("getCurrentUserPromise: Initializing store");
                 await userLoggedInCallback();
             } else {
-                console.log("getCurrentUserPromise: Store alreday init");
+                log && console.log("getCurrentUserPromise: Store alreday init");
             }
             return;
      }
      const unsubscribe = auth.onAuthStateChanged(async (user : User | null) => {
-        console.log("Inside onAuthStateChanges promise");
+        log && console.log("Inside onAuthStateChanges promise");
         userLoaded = true;
         unsubscribe();
         resolve(user);
 
         if (user != null) { // Fires only when user logs in
-            console.log("Lets init store");
+            log && console.log("Lets init store");
             await userLoggedInCallback();
         }
      }, reject);
@@ -148,7 +150,7 @@ export async function userLoggedInCallback(){
     await store.initializeLanguage();
 
 
-    console.log("UserLoggedInCallback: Getting ready to initialize! What is user status: ", auth.currentUser);
+    log && console.log("UserLoggedInCallback: Getting ready to initialize! What is user status: ", auth.currentUser);
     if (auth.currentUser == null) return;
 
     const withoutSubscription = [
@@ -166,7 +168,7 @@ export async function userLoggedInCallback(){
 
     if (await store.userHasSubscriptionPromise() == false){
         store.sessionInitialized = true;
-        console.log('UserLoggedInCallback: Store initialized, no subscription')
+        log && console.log('UserLoggedInCallback: Store initialized, no subscription')
         await Promise.all(withoutSubscription);
         return;
     }
@@ -177,7 +179,7 @@ export async function userLoggedInCallback(){
     await store.intitializeArticleNumberLookup(),
     await store.initializeAuthors();
     store.sessionInitialized = true;
-    console.log('UserLoggedInCallback: Store initialized, subscription')
+    log && console.log('UserLoggedInCallback: Store initialized, subscription')
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? ""): Promise<boolean> {
@@ -217,7 +219,7 @@ export async function resetPassword(oldPassword: string, password: string) : Pro
         return true;
     }
     catch (e) {
-        console.log(e);
+        log && console.log(e);
         return false;
     }
    

@@ -54,6 +54,7 @@ import BackButton from '@/components/BackButton.vue';
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 import type { Origin as OriginDto } from '@/classes/Origin';
 import Origin from '@/components/Origin.vue';
+import { log } from '@/services/logger';
 
   export default defineComponent({
     name: "ThemesView",
@@ -148,7 +149,7 @@ import Origin from '@/components/Origin.vue';
           if (element == null) return;
           element.scrollIntoView({behavior: "smooth"});
         } catch (e: any) {
-          console.log("Couldn't find letter: " + letter + ". Warning: " + e);
+          log && console.log("Couldn't find letter: " + letter + ". Warning: " + e);
         }
       },
       search(){

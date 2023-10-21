@@ -144,6 +144,7 @@ import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
+import { log } from '@/services/logger'
 
 export default defineComponent({
   name: "HomeView",
@@ -302,7 +303,7 @@ export default defineComponent({
       if (this.homePath === this.currentPath) return;
 
       const articleId = this.store.articleNumberLookup.get(this.currentPathNumber || -1);
-      console.log("LOOKUP: ", this.store.articleNumberLookup);
+      log && console.log("LOOKUP: ", this.store.articleNumberLookup);
       if (articleId === undefined) {
         this.articleNotFound(this.currentPathNumber || NaN);
         return;

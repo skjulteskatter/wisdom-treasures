@@ -8,7 +8,6 @@
     <div class="w-full bg-primary sm:bg-transparent shadow-md sm:shadow-none flex flex-col">
       <div class="w-full flex items-center mt-4 sm:my-4">
         <BackButton />
-        <WMannaButton/>
         <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">{{ $t('common.themes') }}</h1>
       </div>
       <BaseInput v-model="searchWord" style-type="search" size="lg" :placeholder="$t('themes.searchTheme')" @search-action="search($event)" :whiteText="true" class="my-4 px-5 sm:hidden"/>
@@ -54,6 +53,7 @@ import BaseInput from '@/components/BaseInput.vue';
 import type Fuse from 'fuse.js';
 import BackButton from '@/components/BackButton.vue';
 import WMannaButton from '@/components/WMannaButton.vue';
+import { log } from '@/services/logger';
 
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 
@@ -149,7 +149,7 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
           if (element == null) return;
           element.scrollIntoView({behavior: "smooth"});
         } catch (e: any) {
-          console.log("Couldn't find letter: " + letter + ". Warning: " + e);
+          log && console.log("Couldn't find letter: " + letter + ". Warning: " + e);
         }
       },
       search(event: Event){

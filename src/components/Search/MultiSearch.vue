@@ -4,67 +4,22 @@
         <div class="flex">
         <BaseInput v-model="store.searchWord" style-type="search" class="sm:hidden grow" size="" :whiteText="true" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
         <BaseInput v-model="store.searchWord" style-type="search" class="hidden sm:block grow" size="" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
-        <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="true">
+        <BaseButton theme="menuButton" class="flex h-min w-min " @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="true">
             <template #icon>
                 <AdjustmentsIcon class="w-4"/>
             </template>
         </BaseButton>
         </div>
         <FilterModal
-                ref="filterModalRef"
-                :key="filterModalKey" 
-                :show="showFilterModal" 
-                @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search()}}"
-                :hidePublications="initialThemeFilter.length > 0"
-                :hideAuthors="initialAuthorFilter.length > 0"
-                :hideOrigins="initialOriginFilter.length > 0"/>
+            ref="filterModalRef"
+            :show="showFilterModal" 
+            @close:with-search="(searchOnClose: any) => {if (searchOnClose) {search()}}"
+            :hidePublications="initialThemeFilter.length > 0"
+            :hideAuthors="initialAuthorFilter.length > 0"
+            :hideOrigins="initialOriginFilter.length > 0"/>
     </div>
 
-    <div class="flex px-5 sm:px-0" :class="atLeastOneFilterIsActive ? 'pt-4' : ''">
-        <div id="filterSection" class="flex flex-col max-h-24 overflow-auto">
-            <div id="filterButtons" class="flex gap-1 flex-wrap">
-
-                <div v-if="store.publicationIdSearchFilter.length > 0" v-for="publication in publicationIdFilterPublications" :key="publication.id" class="flex items-center rounded-md bg-transparent shadow-sm">
-                    <p class="max-w-xxs truncate pl-2 text-inherit text-xs">{{ publication.title }}</p> 
-                    <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.publicationIdSearchFilter = store.publicationIdSearchFilter.filter(x => x != publication.id); search(); syncFilter();}">
-                        <XIcon class="h-4 opacity-80"/>
-                    </BaseButton>
-                </div>
-
-                <div v-if="store.authorIdSearchFilter.length > 0" v-for="author in authorIdFilterAuthors" :key="author.id" class="flex items-center rounded-md bg-transparent shadow-sm">
-                    <p class="max-w-xxs truncate pl-2 text-inherit text-xs">{{ author.name }}</p> 
-                    <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.authorIdSearchFilter = store.authorIdSearchFilter.filter(x => x != author.id); search(); syncFilter();}">
-                        <XIcon class="h-4 opacity-80"/>
-                    </BaseButton>
-                </div>
-
-                <div v-if="store.originIdSearchFilter.length > 0" v-for="origin in originIdFilterOrigins" :key="origin.id" class="flex items-center rounded-md bg-transparent shadow-sm">
-                    <p class="max-w-xxs truncate pl-2 text-inherit text-xs">{{ origin.name }}</p> 
-                    <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.originIdSearchFilter = store.originIdSearchFilter.filter(x => x != origin.id); search(); syncFilter();}">
-                        <XIcon class="h-4 opacity-80"/>
-                    </BaseButton>
-                </div>
-
-                <div v-if="store.onlyFavoriteSearchFilter" class="flex items-center rounded-md bg-transparent shadow-sm">
-                    <p class="max-w-xxs text-inherit truncate pl-2 text-xs">Favorites Only</p>
-                    <BaseButton theme="filterXBtn" class="w-5 self-center max-h-7" @click="()=>{store.onlyFavoriteSearchFilter = false; search(); syncFilter();}">
-                        <XIcon class="h-4 opacity-80"/>
-                    </BaseButton>
-                </div>
-                
-
-                <div v-if="atLeastOneFilterIsActive" class="flex items-center rounded-md w-min bg-black/10 shadow-sm">
-                    <BaseButton theme="filterXBtn" class="self-center max-h-7" @click="resetAllFilter">
-                        <p class="w-max text-inherit text-xs">Reset all</p>
-                    </BaseButton>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div v-if="atLeastOneFilterIsActive" class="w-5/6 sm:w-2/5 h-[0.075rem] sm:h-[0.1rem] bg-[color:var(--wt-color-secondary-light)] opacity-50 mr-auto ml-auto mt-6"/>
-
+    <FilterButtonGroup @search="search"/>
 </template>
 
 <script lang="ts">
@@ -73,11 +28,13 @@ import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import { useSessionStore } from '@/stores/session';
 import BaseInput from '../BaseInput.vue';
 import BaseButton from '../BaseButton.vue';
-import { AdjustmentsIcon, XIcon } from '@heroicons/vue/outline';
+import { AdjustmentsIcon } from '@heroicons/vue/outline';
 import FilterModal from './FilterModal.vue';
 import type Fuse from 'fuse.js';
 import type { Origin } from '@/classes/Origin';
 import type { AudioClip } from '@/classes/AudioClip';
+import { log } from '@/services/logger'
+import FilterButtonGroup from './FilterButtonGroup.vue';
 
 export default defineComponent({
     name: "multi-search",
@@ -86,7 +43,7 @@ export default defineComponent({
     BaseButton,
     AdjustmentsIcon,
     FilterModal,
-    XIcon,
+    FilterButtonGroup
 },
     data() {
         return {
@@ -101,8 +58,6 @@ export default defineComponent({
             showFilterModal: false as boolean,
 
             maxNumberOfArticlesOrAudioClipsDisplayed: 100000 as number,
-
-            filterModalKey: 0 as number,
         }
     },
     props: {
@@ -230,7 +185,7 @@ export default defineComponent({
                     query = query.$and![0];
                 }
 
-                console.log(JSON.stringify(query, null, 2));
+                log && console.log(JSON.stringify(query, null, 2));
                 if (this.fuseArticles !== undefined){
                     
                     let result: Fuse.FuseResult<Article>[] = [];
@@ -240,7 +195,7 @@ export default defineComponent({
                     this.articleHits = (result.length ? result.map(x => x.item) : this.allArticles);
                 }
 
-                console.log(JSON.stringify(query, null, 2));
+                log && console.log(JSON.stringify(query, null, 2));
                 if (this.fuseAudioClips !== undefined){
                     
                     let result: Fuse.FuseResult<AudioClip>[] = [];

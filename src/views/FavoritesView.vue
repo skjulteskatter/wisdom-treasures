@@ -45,6 +45,7 @@ import { InlineNotification } from '@/classes/notification';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import type { AudioClip } from '@/classes/AudioClip';
 import AudioCard from '@/components/AudioCard.vue';
+import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 
   export default defineComponent({
     name: "FavoriteView",
@@ -61,7 +62,8 @@ import AudioCard from '@/components/AudioCard.vue';
       BackButton,
       QuestionMarkCircleIcon,
       ToggleSlideButton,
-      AudioCard
+      AudioCard,
+      ScrollToTopButton
     },
     computed: {
       storeFavorites() : string[]{

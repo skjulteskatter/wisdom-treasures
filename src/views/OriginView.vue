@@ -15,7 +15,7 @@
       <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.sourceId == $route.params.originId).map(x => x.id)"></MannaButton>
     </div>
     
-    <MultiSearch theme="white" :initial-origin-filter="[$route.params.originId]"
+    <MultiSearch :initial-origin-filter="[$route.params.originId]"
       :return-all-if-no-hits="true"
       :search-on-load="true"
       @articles:article-hits="setSearchArticles" 
@@ -73,6 +73,7 @@ import Loader from '@/components/Loader.vue';
 import MannaButton from '@/components/MannaButton.vue';
 import type { Origin } from '@/classes/Origin';
 import type { AudioClip } from '@/classes/AudioClip';
+import { log } from '@/services/logger';
 
 export default defineComponent({
   name: "ThemeView",
@@ -132,7 +133,7 @@ export default defineComponent({
     },
     searchOrAllArticles(): Article[] {
       if (this.searchArticles.length > 0) return this.searchArticles;
-      console.log("Couldn't find any articles!!");
+      log && console.log("Couldn't find any articles!!");
       return this.articles;
     },
     storeFavorites(): string[] {
@@ -160,7 +161,7 @@ export default defineComponent({
   watch: {
     sessionInitialized(oldVal, newVal) {
       if (!newVal) return;
-      console.log(this.$route.params.themeId.toString());
+      log && console.log(this.$route.params.themeId.toString());
       this.getAndSetSource();
       this.assureCorrectSlug();
       this.assureCorrectArticleNumber();

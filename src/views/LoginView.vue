@@ -1,6 +1,7 @@
 <template>
 
   <main class="bg-white col-span-2 min-h-full w-full lg:flex place-items-center flex-col">
+    <div>Version {{ versionNumber }}</div>
     <span id="LogoAndLetters" class="grow basis-0 w-auto lg:w-[26rem] p-4 lg:p-0 border-black/20 flex justify-center">
       <div class="flex place-items-center max-h-20 mt-8 mb-5">
         <img class="w-14 h-14 mr-2" src="/img/logo.svg"/>
@@ -62,17 +63,7 @@
             </span>
           </span>
           <TermsModal :show="showTermsModal" @close="showTermsModal = false"></TermsModal>
-
-          <!--
-          <span v-if="include([forms.register])" class="flex gap-2 mt-4 cursor-pointer select-none text-xs font-extrabold text-black/30 text-wrap lg:w-96">
-            <BaseCheckbox v-model="recievePromotionalEmails"/>
-            <span>
-              Get emails from WisdomTreasures about product updates, news, or events. If you change your mind, you can unsubscribe at any time.
-              <ClickableLink class="inline-block" @link-clicked="viewPrivacyPolicy" :disabled="actionLoading">View Privacy Policy</ClickableLink>
-            </span>
-          </span>
-          -->
-
+          
           <p class="text-[color:var(--wt-color-error)] opacity-0 max-h-0 text-wrap w-full rounded-md bg-red-100 px-2" 
             :class="{'text-[color:var(--wt-color-success)] bg-green-100' : successMessage, 'smoothOpenError' : errorMessage || successMessage || keepErrorMessageWhileValidating, 'smoothCloseError' : (!successMessage && !errorMessage && !keepErrorMessageWhileValidating) && errorSuccessMessageLoaded}">
             {{successMessage || errorMessage}}&nbsp;
@@ -169,7 +160,8 @@ import { useSessionStore } from '@/stores/session';
 import FooterComponent from '@/components/FooterComponent.vue';
 import TermsModal from '@/components/TermsModal.vue';
 import type { User } from 'firebase/auth';
-import {version} from '../../package.json'
+import {version} from '../../package.json';
+import { log } from '@/services/logger';
 
   export default defineComponent({
     name: "LoginView",
@@ -286,10 +278,10 @@ import {version} from '../../package.json'
             try {
               await api.session.resetPassword(this.email);
             } catch (e: any){
-              console.log("Didn't go as planned: ", e);
+              log && console.log("Didn't go as planned: ", e);
               throw new Error(e.error);
             }
-            console.log("Went as planned");
+            log && console.log("Went as planned");
             this.successMessage = this.$t('signIn.passwordResetMsg') + this.email;
             this.changeForm(this.forms.login);
           }

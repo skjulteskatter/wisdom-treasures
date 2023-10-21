@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
+import { log } from '@/services/logger'
 
 const WWCard = {
   path: ':wwNumber(\\d{1,5}$)',
@@ -284,7 +285,7 @@ router.beforeEach(async (to, from, next) => {
 
   const store = useSessionStore();
 
-  console.log("NAVIGATING TO ", to.name);
+  log && console.log("NAVIGATING TO ", to.name);
 
   if (to.meta.scrollUp === true && from.meta.scrollUp === true) {
     setTimeout(() => {
@@ -307,30 +308,30 @@ router.beforeEach(async (to, from, next) => {
   if (requiresSubscription !== undefined)
     hasSubscription = await store.userHasSubscriptionPromise();
 
-  console.log('Are only people with a subscription allowed to see ', to.name, ' ', requiresSubscription)
-  console.log('Does user have a subscription? ', hasSubscription)
+  log && console.log('Are only people with a subscription allowed to see ', to.name, ' ', requiresSubscription);
+  log && console.log('Does user have a subscription? ', hasSubscription);
 
-  console.log('Do you need to be logged in to see ', to.name, ' ', requiresAuth)
-  console.log('Is user logged in?', loggedIn)
+  log && console.log('Do you need to be logged in to see ', to.name, ' ', requiresAuth)
+  log && console.log('Is user logged in?', loggedIn)
   //If the site requires auth and the user is not logged in: redirect to login
   if (requiresAuth && loggedIn === false) {
     store.$state.redirectAfterLoginName = to.name?.toString() ?? "";
-    console.log('INDEX: This side requires auth, and you are not logged in - sending you to login')
+    log && console.log('INDEX: This side requires auth, and you are not logged in - sending you to login');
     next({ name: "login" });
   }
   //If the site requires the user to be logged off and the user is logged in: redirect to dashboard
   else if (requiresAuth === false && loggedIn === true) {
-    console.log('INDEX: This side requires NO auth, and you are logged in - sending you to dashboard')
+    log && console.log('INDEX: This side requires NO auth, and you are logged in - sending you to dashboard');
     next({ name: "dashboard" });
   }
   // If user has no subscription and the site requires a subscription
   else if (loggedIn && hasSubscription === false && requiresSubscription) {
-    console.log('INDEX: This side requires subscription, and you are logged in - sending you to buy subscription')
+    log && console.log('INDEX: This side requires subscription, and you are logged in - sending you to buy subscription');
     next({ name: "dashboardNoSub" });
   }
   
   else {
-    console.log('INDEX: All good, passing you by')
+    log && console.log('INDEX: All good, passing you by');
     next();
   }
 

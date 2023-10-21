@@ -9,9 +9,20 @@
 				</BaseButton>
             </div>
         </template>
-            <BaseInput v-model="store.searchWord" placeholder="Search..." :white-text="true" style-type="search" size="lg"
-            @search-action="(_event: any) => $emit('searchAction', modelValue)"
-            @input="(event: any) => $emit('update:modelValue', event.target?.value ?? '')"/>
+        <div class="flex justify-between items-center w-full h-full mt-4">
+            <BaseInput v-model="store.searchWord" style-type="search" class="sm:hidden grow" size="" :whiteText="true" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
+            <BaseInput v-model="store.searchWord" style-type="search" class="hidden sm:block grow" size="" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
+            <BaseButton theme="menuButton" class="flex h-min w-min" @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="true">
+                <template #icon>
+                    <AdjustmentsIcon class="w-4"/>
+                </template>
+            </BaseButton>
+        </div>
+        <FilterModal
+                class="text-black"
+                ref="filterModalRef"
+                :show="showFilterModal"/>
+        <FilterButtonGroup :for-search-modal="true"/>
     </BaseModal>
 </template>
 
@@ -21,9 +32,12 @@ import BaseModal from "../BaseModal.vue"
 import BaseInput from "../BaseInput.vue"
 import BackButton from '@/components/BackButton.vue';
 import { defineComponent } from "vue";
-import { XIcon } from "@heroicons/vue/solid";
+import { XIcon, AdjustmentsIcon } from "@heroicons/vue/outline";
 import BaseButton from "../BaseButton.vue";
 import { useSessionStore } from "@/stores/session";
+import FilterModal from "./FilterModal.vue";
+import FilterButtonGroup from "./FilterButtonGroup.vue";
+
 
 export default defineComponent({
     name: "search-modal",
@@ -32,16 +46,20 @@ export default defineComponent({
         BaseInput,
         XIcon,
         BaseButton,
-        BackButton
+        BackButton,
+        FilterModal,
+        AdjustmentsIcon,
+        FilterButtonGroup,
     },
     data: () => ({
-        store: useSessionStore()
+        store: useSessionStore(),
+        showFilterModal: false as boolean,
     }),
-    emits: ["update:modelValue", "searchAction", "close"],
-    props: {
-        modelValue: {
-            type: String,
-        },
+    methods:{
+        search(){
+            this.$emit('searchAction', this.store.searchWord);
+        }
     },
+    emits: ["searchAction", "close"],
 });
 </script>

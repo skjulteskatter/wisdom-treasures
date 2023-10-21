@@ -1,3 +1,5 @@
+import { log } from '@/services/logger'
+
 export function notify(message: string){
-    console.log(message);
+    log && console.log(message);
 }

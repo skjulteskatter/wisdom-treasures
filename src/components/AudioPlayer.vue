@@ -19,6 +19,7 @@ import { defineComponent, type PropType } from 'vue';
 import type { AudioClip } from '@/classes/AudioClip';
 import { history } from '@/services/localStorage';
 import { useSessionStore } from '@/stores/session';
+import { log } from '@/services/logger'
 
 export default defineComponent({
     name: "audio-player",
@@ -30,7 +31,7 @@ export default defineComponent({
       },
     methods: {
         registerPlay(){
-          console.log("Now playing");
+          log && console.log("Now playing");
           history.addOrReplace(this.audioClip.id, Date.now());
         }
     },
@@ -52,7 +53,7 @@ export default defineComponent({
     watch:{
       storeCurrentAudioPlayingId(newId: string) {
         if (newId != this.uniqueId){
-          console.log("Pausing");
+          log && console.log("Pausing");
           this.$refs.plyr.player.pause();
         }
       }

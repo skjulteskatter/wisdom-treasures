@@ -31,7 +31,7 @@
                             <ArrowLeftIcon class="h-8 grayscale brightness-[3.5]"/>
                         </BaseButton>
                     </div>
-                    <BaseCard v-if="useBaseCard" class="md:w-auto self-center z-30" :forBaseModal="true" :class="forSearchModal === true ? 'absolute top-0 left-0 w-full rounded-none bg-primary text-white ' : 'w-11/12'">
+                    <BaseCard v-if="useBaseCard" class="md:w-auto self-center z-30" :forBaseModal="true" :class="forSearchModal === true ? 'absolute top-0 left-0 w-full rounded-none bg-primary/100 text-white ' : 'w-11/12'">
                         <template #header v-if="$slots.title || $slots.description || $slots.icon">
                             <div class="flex flex-col sm:flex-row gap-4">
                                 <slot name="icon"/>
@@ -108,7 +108,11 @@ export default defineComponent({
         forSearchModal: {
             type: Boolean,
             default: false
-        }
+        },
+        theme: {
+            type: String,
+            default: "default"
+        },
     },
     emits: ["close"],
     computed: {

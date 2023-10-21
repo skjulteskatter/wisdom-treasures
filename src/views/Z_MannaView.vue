@@ -37,6 +37,7 @@
   import type { Manna } from '@/classes/manna';
   import Loader from '@/components/Loader.vue';
   import BackButton from '@/components/BackButton.vue';
+  import { log } from '@/services/logger';
   
     export default defineComponent({
       name: "MannaView",
@@ -69,14 +70,14 @@
       watch: {
         async sessionInitialized(initialized){
           if (initialized) {
-            console.log("Manna watch");
+            log && console.log("Manna watch");
             await this.getAndSetManna();
           }
         }
       },
       async mounted() {
         if (this.sessionInitialized && this.store.mannaHistory.length == 0) {
-          console.log("Manna mounted");
+          log && console.log("Manna mounted");
           await this.getAndSetManna();
         }
       },

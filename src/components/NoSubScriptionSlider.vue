@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 .swiper-wrapper .swiper-slide {
   height: unset;
 }
@@ -15,7 +15,7 @@
     :modules="modules"
     class="mySwiper"
   >
-    <swiper-slide v-for="slide in slides" class="py-11 px-2">
+    <swiper-slide v-for="slide in slides" :key="slide.title" class="py-11 px-2">
       <div class="h-5/6 pt-10 flex flex-col items-center">
         <img :src="slide.image" class="h-full w-auto object-cover" />
       </div>

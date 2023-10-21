@@ -44,6 +44,7 @@
   import ClickableLink from './ClickableLink.vue';
   import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
   import { HeartIcon, MicrophoneIcon } from '@heroicons/vue/outline';
+  import { log } from '@/services/logger'
   
     export default defineComponent({
       name: "AudioCard",
@@ -95,10 +96,10 @@
       methods:{
         favoriteButton(){
             if (!this.favorite){
-                console.log("Adding to favorites");
+                log && console.log("Adding to favorites");
                 this.store.addFavorite([this.audioClip.id]);
             } else {
-                console.log("Removing from favorites");
+                log && console.log("Removing from favorites");
                 this.store.removeFavorite([this.audioClip.id]);
             }
         },

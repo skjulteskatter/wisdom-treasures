@@ -25,7 +25,7 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showAuthors" id="authorsInner" class="w-half-screen absolute top-8 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideAuthors}">
+                            <div v-if="showAuthors" id="authorsInner" class="w-half-screen absolute top-8 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50 overflow-x-hidden" :class="{'hidden' : hideAuthors}">
                                 <div v-for="(author, index) in allAuthors" :key="index" class="flex">
                                     <label class="w-full flex gap-2 mx-2 py-3 border-y border-grey-300 items-center text-black cursor-pointer select-none">
                                         <BaseCheckbox v-model="authorCheckBoxArray[index]" @vnode-mounted="setInitialAuthorValue(author.id, index)"/>
@@ -49,7 +49,7 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showPublications" id="publicationsInner" class="w-half-screen absolute top-8 right-0 sm:left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hidePublications}">
+                            <div v-if="showPublications" id="publicationsInner" class="w-half-screen absolute top-8 right-0 sm:left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50 overflow-x-hidden" :class="{'hidden' : hidePublications}">
                                 <div v-for="(publication, index) in allPublications" :key="index" class="flex">
                                     <label class="w-full flex gap-2 ml-2 py-3 border-y border-grey-300 items-center cursor-pointer select-none">
                                         <BaseCheckbox v-model="publicationCheckBoxArray[index]" @vnode-mounted="setInitialPublicationValue(publication.id, index)"/>
@@ -74,7 +74,7 @@
                             leave-from-class="transform scale-100 opacity-100"
                             leave-to-class="transform scale-95 opacity-0"
                             >
-                            <div v-if="showOrigins" id="originsInner" class="w-half-screen absolute top-7 left-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50" :class="{'hidden' : hideOrigins}">
+                            <div v-if="showOrigins" id="originsInner" class="w-half-screen absolute top-7 right-0 bg-[color:var(--wt-c-white-soft)] shadow-md rounded-sm max-h-50-percent overflow-y-scroll z-50 overflow-x-hidden" :class="{'hidden' : hideOrigins}">
                                 <div v-for="(origin, index) in allOrigins" :key="index" class="flex z-50">
                                     <label class="w-full flex gap-2 ml-2 my-2 items-center cursor-pointer select-none">
                                         <BaseCheckbox v-model="originCheckBoxArray[index]" @vnode-mounted="setInitialOriginValue(origin.id, index)"/>
@@ -268,7 +268,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .max-h-50-percent{
     max-height: 50vh;
 }

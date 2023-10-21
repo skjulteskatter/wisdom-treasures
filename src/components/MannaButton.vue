@@ -1,6 +1,5 @@
 <template>
   <main>
-    <SparklesIcon class="h-4 text-white sm:text-inherit" />
     <BaseButton class="z-50" @click="() => { buttonClick() }" theme="wisdomMannaBtn">
       <template #firstIcon>
         <SparklesIcon class="h-4 text-white sm:text-inherit" />
@@ -19,6 +18,7 @@ import WWCardModal from './WWCardModal.vue';
 import { useSessionStore } from '@/stores/session';
 import BaseButton from './BaseButton.vue';
 import { history } from '@/services/localStorage';
+import { SparklesIcon } from '@heroicons/vue/solid';
 
 export default defineComponent({
   name: "MannaButton",
@@ -43,6 +43,7 @@ export default defineComponent({
   components: {
     WWCardModal,
     BaseButton,
+    SparklesIcon
   },
   computed: {
     currentPath() {

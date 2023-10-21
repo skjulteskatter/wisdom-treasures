@@ -10,7 +10,6 @@ self.addEventListener('install', async evt => {
 })
 
 self.addEventListener('fetch', async (evt) => {
-    //console.log('fetch event', evt);
     evt.respondWith(
         caches.match(evt.request).then(cacheRes => {
             return cacheRes || fetch(evt.request);

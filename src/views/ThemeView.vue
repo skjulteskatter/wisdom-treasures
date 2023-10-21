@@ -14,7 +14,7 @@
       </h1>
       <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId == $route.params.themeId).map(x => x.id)"></MannaButton>
     </div>
-    <MultiSearch theme="white" :initial-theme-filter="[$route.params.themeId]"
+    <MultiSearch :initial-theme-filter="[$route.params.themeId]"
       :return-all-if-no-hits="true"
       :search-on-load="true"
       @audioClips:audioClipHits="setSearchAudioClips"
@@ -70,6 +70,7 @@ import AudioCard from '@/components/AudioCard.vue';
 import Loader from '@/components/Loader.vue';
 import MannaButton from '@/components/MannaButton.vue';
 import type { AudioClip } from '@/classes/AudioClip';
+import { log } from '@/services/logger';
 
 export default defineComponent({
   name: "ThemeView",
@@ -129,12 +130,12 @@ export default defineComponent({
     },
     searchOrAllArticles(): Article[] {
       if (this.searchArticles.length > 0) return this.searchArticles;
-      console.log("Couldn't find any articles!");
+      log && console.log("Couldn't find any articles!");
       return this.articles;
     },
     searchOrAllAudioClips(): AudioClip[] {
       if (this.searchAudioClips.length > 0) return this.searchAudioClips;
-      console.log("Couldn't find any audioClips!");
+      log && console.log("Couldn't find any audioClips!");
       return this.audioClips;
     },
     storeFavorites(): string[] {
@@ -165,7 +166,7 @@ export default defineComponent({
   watch: {
     sessionInitialized(oldVal, newVal) {
       if (!newVal) return;
-      console.log(this.$route.params.themeId.toString());
+      log && console.log(this.$route.params.themeId.toString());
       this.getAndSetPublication();
       this.assureCorrectSlug();
       this.assureCorrectArticleNumber();

@@ -1,7 +1,6 @@
 <template>
   <div class="scroll-top" :class="{ active: isThemeDrawerActive, moveLeft: isHovered}">
-    <div class="drawer-button" :class="{ active: isThemeDrawerActive, hover: isHovered}" @click="toggleForm"
-      @mousedown="handleMouseDown" @mouseover="handleMouseOver" @mouseout="handleMouseOut">
+    <div class="drawer-button" :class="{ active: isThemeDrawerActive, hover: isHovered}" @click="toggleForm">
       <img class="profile-img" src="/img/logo.svg" style="height: 35px; width: 35px" alt="Profile Image" />
     </div>
 
@@ -49,8 +48,8 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from "vue";
 import BaseModal from "../components/BaseModal.vue"
+import { log } from '@/services/logger'
 export default {
   name: "form-suggestion",
   data() {
@@ -82,9 +81,9 @@ export default {
     },
 
     toggleForm() {
-      console.log('appScriptsLink', this.appScriptsLink)
+      log && console.log('appScriptsLink', this.appScriptsLink)
       this.isFormOpen = !this.isFormOpen;
-      console.log(this.isFormOpen)
+      log && console.log(this.isFormOpen)
     },
     closeForm() {
       this.isFormOpen = false;
@@ -103,7 +102,7 @@ export default {
         body: new FormData(form),
       })
         .then(response => {
-          console.log(response)
+          log && console.log(response)
           // Handle form submission logic here
           this.isSubmitted = true;
           setTimeout(() => {
@@ -119,7 +118,7 @@ export default {
           };
         })
         .catch(error => {
-          console.log(error)
+          log && console.log(error)
 
           // Handle any errors
           console.error('Error submitting form:', error);

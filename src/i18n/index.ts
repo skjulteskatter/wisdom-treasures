@@ -1,5 +1,6 @@
 import { createI18n } from "vue-i18n";
 import "isomorphic-fetch"
+import { log } from '@/services/logger'
 
 export const validLanguages = new Map<string, string>([
     ["no", "Norsk"],
@@ -19,7 +20,7 @@ async function fetchTranslations(language: string) : Promise<{ [key: string]: st
         }
         return translation;
     } catch (e) {
-        console.log("Couldn't fetch translation: " + language + "\nReturn test message");
+        log && console.log("Couldn't fetch translation: " + language + "\nReturn test message");
         return {
             "test": "This is a test (for vitest)",
         };

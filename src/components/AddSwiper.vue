@@ -69,7 +69,7 @@
   };
 </script>
     
-<style>
+<style scoped>
   .swiper-pagination-bullet-active {
        background-color: var(--wt-color-primary) !important;
   }

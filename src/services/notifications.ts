@@ -1,4 +1,5 @@
 import { AuthErrorCodes as aec } from "@firebase/auth";
+import { log } from '@/services/logger'
 
 export const AuthErrorCodesDict = new Map<string, string>([
     [aec.INVALID_PASSWORD,"Invalid password"],
@@ -15,10 +16,10 @@ export function notify(message: string, notificationType: "error" | "primary" | 
             console.warn(message);
             break;
         case "primary":
-            console.log(message);
+            log && console.log(message);
             break;
         default:
-            console.log(message);
+            log && console.log(message);
             break;
     }
 }

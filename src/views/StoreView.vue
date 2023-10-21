@@ -13,13 +13,13 @@
       <div class="sm:w-1/2 flex flex-col justify-center">
 
         <div id="Cards" class="mt-5 sm:mt-10 w-full px-5 sm:p-0 text-center">
-          <StoreCard :loading="loadingCheckoutCard == 'month'" class="storeCard storeCardAnimation bg-primary-overwritten text-white/90 flex justify-center items-center store-card-width py-2 sm:py-0.5 rounded-none-overwritten" @click="() => { checkout('month') }">
+          <BaseCard :loading="loadingCheckoutCard == 'month'" class="storeCard storeCardAnimation border-none border-black/0 cursor-pointer bg-primary-overwritten text-white/90 flex justify-center items-center store-card-width py-2 sm:py-0.5 rounded-none-overwritten" @click="() => { checkout('month') }">
             <template #header>
-              <div>
-                <div class="text-xl font-bold tracking-wide">Get subscription</div>
+              <div  class="font-sans">
+                <div name="header" class="text-xl font-bold tracking-wide">Get subscription</div>
               </div>
             </template>
-          </StoreCard>
+          </BaseCard>
           <p class="text-[color:var(--wt-color-text-grey)] opacity-50">13NOK/month <!--billed annually--> </p>
         </div>
 
@@ -50,9 +50,11 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 import { useSessionStore } from '@/stores/session';
-import StoreCard from '@/components/StoreCard.vue';
 import BackButton from '@/components/BackButton.vue';
 import AddSwiper from '@/components/AddSwiper.vue';
+import BaseCard from '@/components/BaseCard.vue'
+import { log } from '@/services/logger';
+import { WISDOM_WORDS_ID } from '@/stores/session'
 
   export default defineComponent({
     name: "FavoriteView",
@@ -63,19 +65,19 @@ import AddSwiper from '@/components/AddSwiper.vue';
       }
     },
     components: {
-      StoreCard,
       BackButton,
-      AddSwiper
+      AddSwiper,
+      BaseCard
     },
     computed: {
       wwProducts() : string[]{
-        return this.store.apiProducts.filter(x => x.collectionIds.includes("aa7d92e3-c92f-41f8-87a1-333375125a1c" /*Maybe not hardcode collection ID 🤷‍♂️*/)).map(x => x.id);
+        return this.store.apiProducts.filter(x => x.collectionIds.includes(WISDOM_WORDS_ID)).map(x => x.id);
       },
     },
     methods: {
       checkout( type: "month" | "year" ){
         this.loadingCheckoutCard = type;
-        console.log(type);
+        log && console.log(type);
         this.store.stripeService?.checkout([this.wwProducts[0]], type);
       },
     }
@@ -109,21 +111,21 @@ import AddSwiper from '@/components/AddSwiper.vue';
 }
 
 .storeCard {
-  transform: translate3d(-0px, -4px, 1px);
+  transform: translate3d(-0px, -4px, 0px);
   transition:
     transform
     600ms
     cubic-bezier(.3, .7, .4, 1);
 }
 .storeCardAnimation:hover {
-  transform: translate3d(-0px, -8px, 1px);
+  transform: translate3d(-0px, -8px, 0px);
   transition:
     transform
     250ms
     cubic-bezier(.3, .7, .4, 1.5);
 }
 .storeCardAnimation:active {
-  transform: translate3d(-0px, -2px, 1px);
+  transform: translate3d(-0px, -2px, 0px);
   transition: transform 34ms;
 }
 </style>

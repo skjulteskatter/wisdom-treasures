@@ -4,17 +4,18 @@ import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import type { Origin } from '@/classes/Origin';
 import { dbVersion as dbv } from '../../package.json'
 import type { AudioClip } from '@/classes/AudioClip';
+import { log } from '@/services/logger'
 const dbPrefix : string = "WTDB"
 
 //Clean up old databases async
-console.log("Running on dbVersion: " + dbv);
+log && console.log("Running on dbVersion: " + dbv);
 const promise = indexedDB.databases();
 promise.then((databases) => {
   for (const database of databases) {
     const name = (database.name ?? "");
     if (name.startsWith(dbPrefix) && name != dbPrefix + dbVersion().toString())
     {
-      console.log("Deleting old database: " + name);
+      log && console.log("Deleting old database: " + name);
       deleteDB(name);
     }
   }
@@ -95,7 +96,7 @@ export async function putOrigins(sources: Origin[], expirySeconds: number = 7200
 
   setTimeout(() => {
       clearStoreCache(storeName);
-      console.log("Cleared cache for store: " + storeName);
+      log && console.log("Cleared cache for store: " + storeName);
   }, expirySeconds * 1000 * 1000)
 }
 

@@ -38,7 +38,8 @@
   import { useSessionStore } from '@/stores/session';
   import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
   import BaseButton from './BaseButton.vue';
-import { history } from '@/services/localStorage';
+  import { history } from '@/services/localStorage';
+  import { log } from '@/services/logger'
   
     export default defineComponent({
       name: "WWCard",
@@ -109,10 +110,10 @@ import { history } from '@/services/localStorage';
         favoriteButton(): void
         {
           if (!this.favorite){
-                console.log("Adding to favorites");
+                log && console.log("Adding to favorites");
                 this.store.addFavorite([this.article.id]);
             } else {
-                console.log("Removing from favorites");
+                log && console.log("Removing from favorites");
                 this.store.removeFavorite([this.article.id]);
             }
         },

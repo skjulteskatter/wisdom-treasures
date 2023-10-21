@@ -15,6 +15,7 @@ import StripeService from '@/services/stripe'
 import type { Origin } from '@/classes/Origin'
 import { auth } from '@/services/auth'
 import type { AudioClip } from '@/classes/AudioClip'
+import { log } from '@/services/logger'
 
 export const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 export const WT_PRODUCT_ID : string = "prod_NnqNtVfJjpCCOy";
@@ -92,7 +93,7 @@ export const useSessionStore = defineStore('session', {
         reset() {
             // call reset to reset the store state
             this.$reset();
-            console.log('Session status', this.sessionInitialized)
+            log && console.log('Session status', this.sessionInitialized)
          },
         async setLocale(locale = "en") : Promise<string> {
             if (await setLocaleFromSessionStore(locale)) {
@@ -157,7 +158,7 @@ export const useSessionStore = defineStore('session', {
 
             this.fusePublications = new Fuse(oldPublicationArray.concat(newPublicationArray), option, Fuse.createIndex(option.keys, oldPublicationArray.concat(newPublicationArray)));
             const timeTaken = Date.now() - start;
-            console.log("Initialized Publications, Total time taken : " + timeTaken/1000 + " seconds");
+            log && console.log("Initialized Publications, Total time taken : " + timeTaken/1000 + " seconds");
         },
         async initializeAuthors(fromIndexDb: boolean = true) {
             const start = Date.now()
@@ -193,7 +194,7 @@ export const useSessionStore = defineStore('session', {
             }
             this.fuseAuthors = new Fuse(oldAuthorArray.concat(newAuthorsArray), option, Fuse.createIndex(option.keys, oldAuthorArray.concat(newAuthorsArray)));
             const timeTaken = Date.now() - start;
-            console.log("Initialized Authors, Total time taken : " + timeTaken/1000 + " seconds");
+            log && console.log("Initialized Authors, Total time taken : " + timeTaken/1000 + " seconds");
         },
         async initializeSources(fromIndexDb: boolean = true) {
 
@@ -262,7 +263,7 @@ export const useSessionStore = defineStore('session', {
             };
             this.fuseArticles = new Fuse(oldArticlesArray.concat(newArticlesArray), option, Fuse.createIndex(option.keys, oldArticlesArray.concat(newArticlesArray)));
             const timeTaken = Date.now() - start;
-            console.log("Initialized Articles, Total time taken : " + timeTaken/1000 + " seconds");
+            log && console.log("Initialized Articles, Total time taken : " + timeTaken/1000 + " seconds");
 
         },
         async initializeAudioClips(fromIndexDb: boolean = true) {
@@ -301,7 +302,7 @@ export const useSessionStore = defineStore('session', {
             };
             this.fuseAudioClips = new Fuse(oldAudioClipsArray.concat(newAudioClipsArray), option, Fuse.createIndex(option.keys, oldAudioClipsArray.concat(newAudioClipsArray)));
             const timeTaken = Date.now() - start;
-            console.log("Initialized AudioClips, Total time taken : " + timeTaken/1000 + " seconds");
+            log && console.log("Initialized AudioClips, Total time taken : " + timeTaken/1000 + " seconds");
 
         },
         async initializeFavorites() {
@@ -313,11 +314,11 @@ export const useSessionStore = defineStore('session', {
                     favorites.addOrReplace(key);
                 }
                 const timeTaken = Date.now() - start;
-                console.log("Initialized Favorites, Total time taken : " + timeTaken/1000 + " seconds");
+                log && console.log("Initialized Favorites, Total time taken : " + timeTaken/1000 + " seconds");
             }
             catch 
             {
-                console.log("Failed to get favorites online");
+                log && console.log("Failed to get favorites online");
                 for (const key of favorites.getAll().keys()) {
                     this.favorites.push(key);
                 }
@@ -329,17 +330,17 @@ export const useSessionStore = defineStore('session', {
                 this.articleNumberLookup.set(value.number, key);
             }
             const timeTaken = Date.now() - start;
-            console.log("Initialized Articlenumberlookup, Total time taken : " + timeTaken/1000 + " seconds");
+            log && console.log("Initialized Articlenumberlookup, Total time taken : " + timeTaken/1000 + " seconds");
         },
         async initializeProducts(){
             try {
                 const start = Date.now()
                 this.apiProducts = await stripe.getProducts();
                 const timeTaken = Date.now() - start;
-                console.log("Initialized Products, Total time taken : " + timeTaken/1000 + " seconds");
+                log && console.log("Initialized Products, Total time taken : " + timeTaken/1000 + " seconds");
             } catch
             {
-                console.log("Failed to get products");
+                log && console.log("Failed to get products");
             }
             
         },
@@ -350,22 +351,22 @@ export const useSessionStore = defineStore('session', {
             
             if (auth.currentUser == null) 
             {
-                console.log("Can't get subs if you're not logged in 😅");
+                log && console.log("Can't get subs if you're not logged in 😅");
                 return false;
             }
 
             try {
                 this.userHasSubscription = (await stripe.getSubscriptions()).some(x => x.productIds.includes(WT_PRODUCT_ID) && x.expired === false); //TODO find a better way than hardcode product id
-                console.log("Got subscription from stripe: ", this.userHasSubscription);
+                log && console.log("Got subscription from stripe: ", this.userHasSubscription);
                 if (this.userHasSubscription === undefined || this.userHasSubscription === false){
-                    console.log("Product doesn't macth up. let's get an article!")
+                    log && console.log("Product doesn't macth up. let's get an article!")
                     this.userHasSubscription = (await articles.postOneRandom()).length > 0;
-                    if (this.userHasSubscription) console.log("Ahh your the admin");
-                    else console.log("Article didn't appear. Sorry m8")
-                } else console.log("product checks out")
+                    if (this.userHasSubscription) log && console.log("Ahh your the admin");
+                    else log && console.log("Article didn't appear. Sorry m8")
+                } else log && console.log("product checks out")
             } catch
             {
-                console.log("Failed to get subscriptions");
+                log && console.log("Failed to get subscriptions");
                 this.userHasSubscription = false;
             } 
 
@@ -376,9 +377,9 @@ export const useSessionStore = defineStore('session', {
                 const start = Date.now()
                 this.stripeService = new StripeService((await stripe.setup()).key);
                 const timeTaken = Date.now() - start;
-                console.log("Initialized Stripe service, Total time taken : " + timeTaken/1000 + " seconds");
+                log && console.log("Initialized Stripe service, Total time taken : " + timeTaken/1000 + " seconds");
             } catch {
-                console.log("Failed to set up stripe service");
+                log && console.log("Failed to set up stripe service");
             }
         },
         async initializeLanguage(): Promise<string>{

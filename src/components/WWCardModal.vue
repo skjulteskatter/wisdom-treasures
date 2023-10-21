@@ -25,6 +25,7 @@ import WWShowCard from "./WWShowCard.vue";
 import BaseButton from "./BaseButton.vue";
 import { RefreshIcon } from "@heroicons/vue/outline";
 import { history } from "@/services/localStorage";
+import { log } from '@/services/logger'
 
 export default defineComponent({
     name: "wwcard-modal",
@@ -75,10 +76,10 @@ export default defineComponent({
     methods: {
         favoriteButton(){
             if (!this.favorite){
-                console.log("Adding to favorites");
+                log && console.log("Adding to favorites");
                 this.store.addFavorite([this.article.id]);
             } else {
-                console.log("Removing from favorites");
+                log && console.log("Removing from favorites");
                 this.store.removeFavorite([this.article.id]);
             }
         },

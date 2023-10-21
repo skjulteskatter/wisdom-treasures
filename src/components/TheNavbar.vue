@@ -1,5 +1,5 @@
 <template>
-	<nav class="shadow-md z-50 max-h-16 sm:max-h-16" @mouseup="store.globalCloseModal = !store.globalCloseModal">
+	<nav class="mainNav shadow-md z-50 max-h-16 sm:max-h-16" @mouseup="store.globalCloseModal = !store.globalCloseModal">
 		<div id="glassEffect" class="absolute glass w-full h-full" />
 		<div class="w-full bg-white">
 			<div
@@ -34,15 +34,7 @@
 					<BaseInput v-model="store.searchWord" :placeholder="$t('common.search')" style-type="search"
 						class="self-center" @search-action="search($event)" />
 					<div v-if="currentUser !== null" class="flex gap-x-3 ml-2">
-						<!--
-						We don't need notifications yet
-						<BaseButton theme="menuButton" size="small" class="self-center w-8 max-h-8">
-							<QuestionMarkCircleIcon class="h-6 opacity-50" />
-						</BaseButton>
-						<BaseButton theme="menuButton" size="small" class="w-8 self-center max-h-8">
-							<BellIcon class="h-6 opacity-50" @click="addNotification()" />
-						</BaseButton>
-						-->
+
 						<img :src="currentUser?.photoURL || '/img/user.svg'"
 							class="w-8 h-8 rounded-full border-primary border cursor-pointer"
 							@click="navigate('profile')" alt="YourPicture"/>
@@ -66,7 +58,7 @@
 							leave-active-class="transition duration-75 ease-in"
 							leave-from-class="transform scale-100 opacity-100"
 							leave-to-class="transform scale-95 opacity-0">
-							<!--			MOBILE MENU			 -->
+							<!--			MOBILE MENU			    -->
 							<MenuItems
 								class="h-screen px-8 sm:px-0 py-20 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-2/3 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right sm:w-40 sm:rounded-md 
 								glassDropDown opacity-90 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
@@ -124,21 +116,6 @@
 											{{ $t('common.profile') }}</BaseButton>
 									</div>
 									</MenuItem>
-									<!--
-										We don't need notifications yet
-									<MenuItem>
-									<div class="flex">
-										<BaseButton class="w-full" theme="menuButton" :center-text="false"
-											@click="{ }">{{ $t('common.notifications') }}</BaseButton>
-									</div>
-									</MenuItem>
-									<MenuItem>
-									<div class="flex">
-										<BaseButton class="w-full" theme="menuButton" :center-text="false"
-											@click="{ }">{{ $t('common.help') }}</BaseButton>
-									</div>
-									</MenuItem>
-									-->
 								</div>
 								<img class="w-10 fixed left-8 buttom-5 mt-16 cursor-pointer" src="/img/logo.svg"/>
 							</MenuItems>
@@ -164,6 +141,7 @@ import type { User } from "firebase/auth";
 import breakpoints from "@/style/breakpoints";
 import { Menu as HUMenu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue'
 import SearchModal from "./Search/SearchModal.vue";
+import { log } from '@/services/logger'
 
 export default defineComponent({
 	name: "the-navbar",
@@ -191,7 +169,7 @@ export default defineComponent({
 	},
 	methods: {
 		search(searchWord: string | undefined) {
-			console.log("SearchedWord: ", searchWord);
+			log && console.log("SearchedWord: ", searchWord);
 			if (searchWord === undefined) return;
 
 			if (!this.$route.matched.some((x: { name: string; }) => x.name === "search"))
@@ -226,6 +204,9 @@ export default defineComponent({
 	}
 }
 
-/* .glassDropDown > div {
-	background: rgba(255, 255, 255, 0.5);
-} */</style>
+.mainNav{
+	-webkit-transform:translate3d(0,0,1);
+	transform: translate3d(0,0,1);
+}
+
+</style>

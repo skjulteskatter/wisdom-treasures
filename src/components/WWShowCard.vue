@@ -49,6 +49,7 @@
   import BaseButton from './BaseButton.vue';
   import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
   import { HeartIcon, ClipboardCopyIcon } from '@heroicons/vue/outline';
+  import { log } from '@/services/logger'
 
     export default defineComponent({
       name: "WWShowCard",
@@ -134,17 +135,22 @@
       methods: {
         favoriteButton(){
             if (!this.favorite){
-                console.log("Adding to favorites");
+                log && console.log("Adding to favorites");
                 this.store.addFavorite([this.article.id]);
             } else {
-                console.log("Removing from favorites");
+                log && console.log("Removing from favorites");
                 this.store.removeFavorite([this.article.id]);
             }
         },
         copyToClipBoard() {
             this.copyToClipBoardKey = uuid.v4();
             if (!this.article.content?.content) return;
-            navigator.clipboard.writeText(`${this.article.content?.content.replace(/<.+?>/g, "").trim()}\n${(this.authorName != '' ? ' - ' + this.authorName : '')}${(this.getArticleYearWritten) > 1000 ? ", " + this.getArticleYearWritten.toString() : ""}${this.originName.length > 0 ? ", " + this.originName : ""}`);
+
+            let contentPart = this.article.content?.content.replace(/<.+?>/g, "").trim();
+            let yearWritten = this.getArticleYearWritten > 1000 ? this.getArticleYearWritten.toString() : "";
+            let tail = [this.authorName, yearWritten, this.originName].filter(x => x.length > 0).join(", ");
+
+            navigator.clipboard.writeText(`${contentPart}${(tail.length > 0) ? "\n-" : ""}${tail}`);
 
             this.openCopyToClipBoardPopUpSemaphore++;
             setTimeout(() => {
