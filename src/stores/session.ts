@@ -8,7 +8,7 @@ import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
 import { dbPromise, putArticles, putAuthors, putPublications, putOrigins, putAudioClips } from '@/services/cache'
 import type { HTUser } from '@/classes/HTUser'
-import { language, favorites, lastUpdated } from '@/services/localStorage'
+import { language, favorites, lastUpdated, lastUserHasSubscription } from '@/services/localStorage'
 import Fuse from 'fuse.js'
 import type { IApiProduct } from '@/Interfaces/IApiProduct'
 import StripeService from '@/services/stripe'
@@ -356,20 +356,20 @@ export const useSessionStore = defineStore('session', {
             }
 
             try {
-                this.userHasSubscription = (await stripe.getSubscriptions()).some(x => x.productIds.includes(WT_PRODUCT_ID) && x.expired === false); //TODO find a better way than hardcode product id
-                log && console.log("Got subscription from stripe: ", this.userHasSubscription);
-                if (this.userHasSubscription === undefined || this.userHasSubscription === false){
-                    log && console.log("Product doesn't macth up. let's get an article!")
+                this.userHasSubscription = (await stripe.getSubscriptions()).some(x => x.productIds.includes(WT_PRODUCT_ID) && x.expired === false);
+                if (this.userHasSubscription === false){
                     this.userHasSubscription = (await articles.postOneRandom()).length > 0;
                     if (this.userHasSubscription) log && console.log("Ahh your the admin");
-                    else log && console.log("Article didn't appear. Sorry m8")
-                } else log && console.log("product checks out")
+                } else if (this.userHasSubscription === undefined){
+                    this.userHasSubscription = lastUserHasSubscription.get();
+                }
             } catch
             {
                 log && console.log("Failed to get subscriptions");
-                this.userHasSubscription = false;
+                this.userHasSubscription = lastUserHasSubscription.get();
             } 
 
+            lastUserHasSubscription.setOrReplace(this.userHasSubscription);
             return this.userHasSubscription;
         },
         async intitializeStripeService(){

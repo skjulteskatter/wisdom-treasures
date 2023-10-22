@@ -2,7 +2,7 @@
   <main>
     <BaseButton class="z-50" @click="() => { buttonClick() }" theme="wisdomMannaBtn">
       <template #firstIcon>
-        <SparklesIcon class="h-4 text-white sm:text-inherit" />
+        <SparklesIcon class="h-4 sm:text-inherit" />
       </template>
       Get Manna
     </BaseButton>

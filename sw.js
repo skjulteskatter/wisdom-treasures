@@ -1,5 +1,9 @@
 const staticCacheName = `site-static-5`;
-const assets = [];
+const assets = [
+    '/public/locales/en.json',
+    '/public/locales/no.json',
+    
+];
 
 self.addEventListener('install', async evt => {
     evt.waitUntil(

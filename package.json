@@ -1,6 +1,6 @@
 {
   "name": "wisdom-treasures",
-  "version": "0.0.42",
+  "version": "0.0.45",
   "dbVersion": 24,
   "scripts": {
     "dev": "vite --port 8080",

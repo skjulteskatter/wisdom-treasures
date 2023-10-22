@@ -9,7 +9,7 @@
 
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between py-4">
       <BackButton />
-      <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
+      <h1 class="text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
         {{ publication?.title ?? "" }}
       </h1>
       <MannaButton :manna-article-id-list="Array.from(store.articles.values()).filter(x => x.publicationId == $route.params.themeId).map(x => x.id)"></MannaButton>

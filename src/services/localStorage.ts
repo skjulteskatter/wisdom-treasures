@@ -156,12 +156,25 @@ export const language = {
 
 export const lastUpdated = {
 
-    languagePrefix: "lastUpdated:",
+    prefix: "lastUpdated:",
 
     setOrReplace(lastUpdatedUTC: number, objectsName: "articles" | "authors" | "origins" | "publications" | "audioclips") {
-        localStorage.setItem(`${objectsName}_${this.languagePrefix}`, lastUpdatedUTC.toString());
+        localStorage.setItem(`${objectsName}_${this.prefix}`, lastUpdatedUTC.toString());
     },
     get(objectsName: "articles" | "authors" | "origins" | "publications" | "audioclips"){
-        return localStorage.getItem(`${objectsName}_${this.languagePrefix}`);
+        return localStorage.getItem(`${objectsName}_${this.prefix}`);
+    }
+};
+
+//This is just for the sake of beeing offline friendly
+export const lastUserHasSubscription = {
+
+    prefix: "lastUserHasSubscription:",
+
+    setOrReplace(lastUserHasSubscription: boolean) {
+        localStorage.setItem(this.prefix, lastUserHasSubscription ? "true" : "false");
+    },
+    get(): boolean{
+        return localStorage.getItem(this.prefix) == "true";
     }
 };

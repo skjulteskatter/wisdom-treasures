@@ -48,78 +48,88 @@
 					</div>
 				</div>
 				<div id="rightNavBurger" class="self-center flex gap-x-3 max-h-8 lg:hidden z-20">
-					<HUMenu as="div" class="self-center flex">
-						<MenuButton class="self-center">
+					<HUMenu as="div" class="self-center flex" :key="refreshBurgerNav ? 'a' : 'b'">
+						<MenuButton class="self-center" @click="showBurgerNavBar = true">
 							<MenuIcon class="w-6 text-[color:var(--wt-color-text-grey)]" />
 						</MenuButton>
 
-						<transition enter-active-class="transition duration-100 ease-out"
-							enter-from-class="transform scale-95 opacity-0" enter-to-class="transform scale-100 opacity-100"
-							leave-active-class="transition duration-75 ease-in"
-							leave-from-class="transform scale-100 opacity-100"
-							leave-to-class="transform scale-95 opacity-0">
+						<transition 
+							v-show="showBurgerNavBar"
+							enter-active-class="transition ease-in-out duration-200 transform"
+							enter-from-class="-translate-x-full"
+							enter-to-class="translate-x-0"
+							leave-active-class="transition ease-in-out duration-200 transform"
+							leave-from-class="translate-x-0"
+							leave-to-class="-translate-x-full"
+							>
 							<!--			MOBILE MENU			    -->
 							<MenuItems
-								class="h-screen px-8 sm:px-0 py-20 sm:py-0 sm:h-auto fixed left-0 sm:left-auto w-2/3 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right sm:w-40 sm:rounded-md 
-								glassDropDown opacity-90 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden">
-								
-								<div class="flex flex-col sm:hidden">
-									<MenuItem>
-									<BaseButton theme="menuButton" :center-text="false"
-										:clicked="shouldBeHighlighted('dashboard')" @click="navigate('dashboard')">
-										{{ $t('common.home') }}</BaseButton>
-									</MenuItem>
-									<MenuItem>
-									<BaseButton theme="menuButton" :center-text="false"
-										:clicked="shouldBeHighlighted('favorites')" @click="navigate('favorites')">
-										{{ $t('common.favorites') }}</BaseButton>
-									</MenuItem>
-									<MenuItem>
-									<BaseButton theme="menuButton" :center-text="false"
-										:clicked="shouldBeHighlighted('themes')" @click="navigate('themes')">
-										{{ $t('common.themes') }}</BaseButton>
-									</MenuItem>
-									<MenuItem>
-									<BaseButton theme="menuButton" :center-text="false"
-										:clicked="shouldBeHighlighted('history')" @click="navigate('history')">
-										{{ $t('common.history') }}</BaseButton>
-									</MenuItem>
-									<MenuItem>
-									<BaseButton theme="menuButton" :center-text="false"
-										:clicked="shouldBeHighlighted('origins')" @click="navigate('origins')">
-										{{ $t('common.origin') }}</BaseButton>
-									</MenuItem>
-								</div>
-								<div v-if="currentUser === null" class="">
-									<MenuItem>
-									<div class="flex gap-2 max-h-8">
-										<BaseButton theme="tertiary" @click="navigate('login')"
-											class="border grow border-primary"><b>{{ $t('signIn.logIn') }}</b></BaseButton>
-										<BaseButton theme="magic" @click="navigate('register')" class="grow">
-											<b>{{ $t('signIn.createAccount') }}</b>
-										</BaseButton>
+								class="h-screen sm:h-auto fixed left-0 sm:left-auto w-2/3 sm:right-0 ml-auto mr-auto bottom-0 sm:bottom-auto sm:top-16 sm:origin-top-right sm:w-40 sm:rounded-md 
+								glass bg-white/60 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none overflow-hidden"
+								>
+								<div class="w-full h-full py-20 px-8 sm:px-0 sm:py-0" 
+									@mousedown="(e) => swipeNavBurgerMouseDownX = e.clientX"
+									@mouseup="(e) => {if (swipeNavBurgerMouseDownX > (e.clientX + 20)) {showBurgerNavBar = false; setRefreshBurgerNav();} }"
+									@touchstart="(e) => swipeNavBurgerMouseDownX = e.touches[0].clientX"
+									@touchend="(e) => {if (swipeNavBurgerMouseDownX > (e.changedTouches[0].clientX + 20)) {showBurgerNavBar = false; setRefreshBurgerNav();} }"
+									>
+									<div class="flex flex-col sm:hidden">
+										<MenuItem>
+										<BaseButton theme="menuButton" :center-text="false"
+											:clicked="shouldBeHighlighted('dashboard')" @click="navigate('dashboard')">
+											{{ $t('common.home') }}</BaseButton>
+										</MenuItem>
+										<MenuItem>
+										<BaseButton :theme="store.userHasSubscription ? 'menuButton' : 'disabled'" :center-text="false"
+											:clicked="shouldBeHighlighted('favorites')" @click="store.userHasSubscription && navigate('favorites')">
+											{{ $t('common.favorites') }}</BaseButton>
+										</MenuItem>
+										<MenuItem>
+										<BaseButton :theme="store.userHasSubscription ? 'menuButton' : 'disabled'" :center-text="false"
+											:clicked="shouldBeHighlighted('themes')" @click="store.userHasSubscription && navigate('themes')">
+											{{ $t('common.themes') }}</BaseButton>
+										</MenuItem>
+										<MenuItem>
+										<BaseButton :theme="store.userHasSubscription ? 'menuButton' : 'disabled'" :center-text="false"
+											:clicked="shouldBeHighlighted('history')" @click="store.userHasSubscription && navigate('history')">
+											{{ $t('common.history') }}</BaseButton>
+										</MenuItem>
+										<MenuItem>
+										<BaseButton :theme="store.userHasSubscription ? 'menuButton' : 'disabled'" :center-text="false"
+											:clicked="shouldBeHighlighted('origins')" @click="store.userHasSubscription && navigate('origins')">
+											{{ $t('common.origin') }}</BaseButton>
+										</MenuItem>
 									</div>
-									</MenuItem>
-								</div>
-								<div v-else class=" border-t border-white/30 sm:border-black/30">
-									<MenuItem>
-									<div class="flex">
-										<BaseButton class="w-full" theme="menuButton" :center-text="false"
-											:clicked="shouldBeHighlighted('search')" @click="navigate('search')">
-											{{ $t('common.search') }}</BaseButton>
+									<div v-if="currentUser === null" class="">
+										<MenuItem>
+										<div class="flex gap-2 max-h-8">
+											<BaseButton theme="tertiary" @click="navigate('login')"
+												class="border grow border-primary"><b>{{ $t('signIn.logIn') }}</b></BaseButton>
+											<BaseButton theme="magic" @click="navigate('register')" class="grow">
+												<b>{{ $t('signIn.createAccount') }}</b>
+											</BaseButton>
+										</div>
+										</MenuItem>
 									</div>
-									</MenuItem>
-									<MenuItem>
-									<div class="flex">
-										<BaseButton class="w-full" theme="menuButton" :center-text="false"
-											:clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">
-											{{ $t('common.profile') }}</BaseButton>
+									<div v-else class=" border-t border-white/30 sm:border-black/30">
+										<MenuItem>
+										<div class="flex">
+											<BaseButton class="w-full" :theme="store.userHasSubscription ? 'menuButton' : 'disabled'" :center-text="false"
+												:clicked="shouldBeHighlighted('search')" @click="store.userHasSubscription && navigate('search')">
+												{{ $t('common.search') }}</BaseButton>
+										</div>
+										</MenuItem>
+										<MenuItem>
+										<div class="flex">
+											<BaseButton class="w-full" theme="menuButton" :center-text="false"
+												:clicked="shouldBeHighlighted('profile')" @click="navigate('profile')">
+												{{ $t('common.profile') }}</BaseButton>
+										</div>
+										</MenuItem>
 									</div>
-									</MenuItem>
+									<img class="w-10 fixed left-8 buttom-5 mt-16" src="/img/logo.svg"/>
 								</div>
-								<img class="w-10 fixed left-8 buttom-5 mt-16 cursor-pointer" src="/img/logo.svg"/>
 							</MenuItems>
-
 						</transition>
 
 					</HUMenu>
@@ -163,11 +173,19 @@ export default defineComponent({
 		store: useSessionStore(),
 		breakpoints: breakpoints,
 		showSearchModal: false,
+		swipeNavBurgerMouseDownX: 0 as number,
+		showBurgerNavBar: true as boolean,
+		refreshBurgerNav: false as boolean,
 	}),
 	async beforeMount() {
 		this.currentUser = await getCurrentUserPromise();
 	},
 	methods: {
+		setRefreshBurgerNav(){
+			setTimeout(() => {
+				this.refreshBurgerNav = !this.refreshBurgerNav;
+			}, 200);
+		},
 		search(searchWord: string | undefined) {
 			log && console.log("SearchedWord: ", searchWord);
 			if (searchWord === undefined) return;
@@ -192,17 +210,6 @@ export default defineComponent({
 </script>
 
 <style scoped>
-.glassDropDown {
-	background: #ffffff;
-	backdrop-filter: blur(20px);
-	-webkit-backdrop-filter: blur(20px);
-}
-
-@media(min-width:640px) {
-	.glassDropDown {
-		background: rgba(255, 255, 255, 0.5);
-	}
-}
 
 .mainNav{
 	-webkit-transform:translate3d(0,0,1);
