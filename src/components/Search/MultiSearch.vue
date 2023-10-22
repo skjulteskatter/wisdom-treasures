@@ -30,10 +30,9 @@ import BaseInput from '../BaseInput.vue';
 import BaseButton from '../BaseButton.vue';
 import { AdjustmentsIcon } from '@heroicons/vue/outline';
 import FilterModal from './FilterModal.vue';
-import type Fuse from 'fuse.js';
+import Fuse from 'fuse.js';
 import type { Origin } from '@/classes/Origin';
 import type { AudioClip } from '@/classes/AudioClip';
-import { log } from '@/services/logger'
 import FilterButtonGroup from './FilterButtonGroup.vue';
 
 export default defineComponent({
@@ -117,21 +116,6 @@ export default defineComponent({
         originIdFilterOrigins(): Origin[] {
             return this.allOrigins.filter((x: Origin) => this.store.originIdSearchFilter.includes(x.id));
         },
-        fuseArticles() : Fuse<Article> | undefined {
-            return this.store.fuseArticles;
-        },
-        fuseAudioClips() : Fuse<AudioClip> | undefined {
-            return this.store.fuseAudioClips;
-        },
-        fusePublications() : Fuse<Publication> | undefined{
-            return this.store.fusePublications;
-        },
-        fuseAuthors(): Fuse<Contributor> | undefined{
-            return this.store.fuseAuthors;
-        },
-        fuseOrigins(): Fuse<Origin> | undefined{
-            return this.store.fuseOrigins;
-        },
     },
     methods: {
         async search() {
@@ -139,24 +123,77 @@ export default defineComponent({
             this.$emit('searchLoading:searchLoading', true);
             
             setTimeout(() => {
+
+                let articles = this.allArticles;
+                let audioClips = this.allAudioClips;
+
+                if (this.store.onlyFavoriteSearchFilter)
+                {
+                    articles = articles.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
+                    audioClips = audioClips.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
+                }
+
+                if (this.initialThemeFilter.length > 0){
+                    articles = articles.filter((x: { publicationId: any; }) => this.initialThemeFilter.includes(x.publicationId));
+                    audioClips = audioClips.filter((x: { publicationId: any; }) => this.initialThemeFilter.includes(x.publicationId));
+                }
+                else if (this.store.publicationIdSearchFilter.length > 0){
+                    articles = articles.filter((x: { publicationId: any; }) => this.store.publicationIdSearchFilter.includes(x.publicationId));
+                    audioClips = audioClips.filter((x: { publicationId: any; }) => this.store.publicationIdSearchFilter.includes(x.publicationId));
+                }
+
+                if (this.initialAuthorFilter.length > 0){
+                    articles = articles.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
+                    audioClips = audioClips.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
+                }
+                else if (this.store.authorIdSearchFilter.length > 0){
+                    articles = articles.filter((x: { authorId: any; }) => this.store.authorIdSearchFilter.includes(x.authorId));
+                    audioClips = audioClips.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
+                }
+
+                if (this.initialOriginFilter.length > 0){
+                    articles = articles.filter((x: Article) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
+                    audioClips = audioClips.filter((x: AudioClip) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
+                }
+                else if (this.store.originIdSearchFilter.length > 0){
+                    articles = articles.filter((x: Article) => this.store.originIdSearchFilter.includes(x.sourceId || "⛄"));
+                    audioClips = audioClips.filter((x: AudioClip) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
+                }
+                
+                const fuseArticlesOption = {
+                    keys: ['content.content', 'dateWritten', 'number', 'id', 'publicationId', 'authorId'],
+                    includeScore: true,
+                    threshold: 0.2
+                };
+                console.log("DIOJDD: ", articles.length);
+                const fuseArticles = new Fuse(articles, fuseArticlesOption, Fuse.createIndex(fuseArticlesOption.keys, articles));
+
+                const fuseAudioClipsOption = {
+                    keys: ['introduction', 'date', 'title'],
+                    includeScore: true,
+                    threshold: 0.2
+                };
+                const fuseAudioClips = new Fuse(audioClips, fuseAudioClipsOption, Fuse.createIndex(fuseAudioClipsOption.keys, audioClips));
+
+
                 let searchWord = this.store.searchWord;
 
-                if (this.fusePublications !== undefined){
-                    const result = this.fusePublications.search(searchWord);
+                if (this.store.fusePublications !== undefined){
+                    const result = this.store.fusePublications.search(searchWord);
                     this.themeHits = result.map((x: { item: any; }) => x.item);
                 }
 
                 this.$emit('themes:themeHits', this.onlySearchForArticlesAndAudioClips ? [] : this.themeHits);
 
-                if (this.fuseAuthors !== undefined){
-                    const result = this.fuseAuthors.search(searchWord);
+                if (this.store.fuseAuthors !== undefined){
+                    const result = this.store.fuseAuthors.search(searchWord);
                     this.authorHits = result.map((x: { item: any; }) => x.item);
                 }
 
                 this.$emit('authors:authorHits', this.onlySearchForArticlesAndAudioClips ? [] : this.authorHits);
 
-                if (this.fuseOrigins !== undefined){
-                    const result = this.fuseOrigins.search(searchWord);
+                if (this.store.fuseOrigins !== undefined){
+                    const result = this.store.fuseOrigins.search(searchWord);
                     this.originHits = result.map((x: { item: any; }) => x.item);
                 }
 
@@ -185,62 +222,28 @@ export default defineComponent({
                     query = query.$and![0];
                 }
 
-                log && console.log(JSON.stringify(query, null, 2));
-                if (this.fuseArticles !== undefined){
+                if (fuseArticles !== undefined){
                     
                     let result: Fuse.FuseResult<Article>[] = [];
-                    if ('$and' in query && query.$and?.length){ result = this.fuseArticles.search(query) }
-                    else if ('$or' in query && query.$or?.length){ result = this.fuseArticles.search(query) }
+                    if ('$and' in query && query.$and?.length){ result = fuseArticles.search(query) }
+                    else if ('$or' in query && query.$or?.length){ result = fuseArticles.search(query) }
 
-                    this.articleHits = (result.length ? result.map(x => x.item) : this.allArticles);
+                    console.log("OK: ", result.length);
+                    this.articleHits = (result.length ? result.map(x => x.item) : articles);
                 }
 
-                log && console.log(JSON.stringify(query, null, 2));
-                if (this.fuseAudioClips !== undefined){
+                if (fuseAudioClips !== undefined){
                     
                     let result: Fuse.FuseResult<AudioClip>[] = [];
-                    if ('$and' in query && query.$and?.length){ result = this.fuseAudioClips.search(query) }
-                    else if ('$or' in query && query.$or?.length){ result = this.fuseAudioClips.search(query) }
+                    if ('$and' in query && query.$and?.length){ result = fuseAudioClips.search(query) }
+                    else if ('$or' in query && query.$or?.length){ result = fuseAudioClips.search(query) }
 
-                    this.audioClipHits = (result.length ? result.map(x => x.item) : this.allAudioClips);
+                    this.audioClipHits = (result.length ? result.map(x => x.item) : audioClips);
                 }
 
                 if (this.returnAllIfNoHits && this.articleHits.length <= 0){
-                    this.articleHits = Array.from(this.store.articles.values());
-                    this.audioClipHits = Array.from(this.store.audioClips.values());
-                }
-
-                if (this.store.onlyFavoriteSearchFilter)
-                {
-                    this.articleHits = this.articleHits.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
-                    this.audioClipHits = this.audioClipHits.filter((x: { id: any; }) => this.store.favorites.includes(x.id));
-                }
-
-                if (this.initialThemeFilter.length > 0){
-                    this.articleHits = this.articleHits.filter((x: { publicationId: any; }) => this.initialThemeFilter.includes(x.publicationId));
-                    this.audioClipHits = this.audioClipHits.filter((x: { publicationId: any; }) => this.initialThemeFilter.includes(x.publicationId));
-                }
-                else if (this.store.publicationIdSearchFilter.length > 0){
-                    this.articleHits = this.articleHits.filter((x: { publicationId: any; }) => this.store.publicationIdSearchFilter.includes(x.publicationId));
-                    this.audioClipHits = this.audioClipHits.filter((x: { publicationId: any; }) => this.store.publicationIdSearchFilter.includes(x.publicationId));
-                }
-
-                if (this.initialAuthorFilter.length > 0){
-                    this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
-                    this.audioClipHits = this.audioClipHits.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
-                }
-                else if (this.store.authorIdSearchFilter.length > 0){
-                    this.articleHits = this.articleHits.filter((x: { authorId: any; }) => this.store.authorIdSearchFilter.includes(x.authorId));
-                    this.audioClipHits = this.audioClipHits.filter((x: { authorId: any; }) => this.initialAuthorFilter.includes(x.authorId));
-                }
-
-                if (this.initialOriginFilter.length > 0){
-                    this.articleHits = this.articleHits.filter((x: Article) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
-                    this.audioClipHits = this.audioClipHits.filter((x: AudioClip) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
-                }
-                else if (this.store.originIdSearchFilter.length > 0){
-                    this.articleHits = this.articleHits.filter((x: Article) => this.store.originIdSearchFilter.includes(x.sourceId || "⛄"));
-                    this.audioClipHits = this.audioClipHits.filter((x: AudioClip) => this.initialOriginFilter.includes(x.sourceId || "⛄"));
+                    this.articleHits = articles;
+                    this.audioClipHits = audioClips;
                 }
 
                 this.articleHits = this.articleHits.slice(0,this.maxNumberOfArticlesOrAudioClipsDisplayed);

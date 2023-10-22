@@ -41,7 +41,6 @@ export const useSessionStore = defineStore('session', {
             fusePublications: undefined as Fuse<Publication> | undefined,
 
             articles: shallowRef(new Map) as unknown as Map<string, Article>,
-            fuseArticles: undefined as Fuse<Article> | undefined,
 
             authors: shallowRef(new Map) as unknown as Map<string, Contributor>,
             fuseAuthors: undefined as Fuse<Contributor> | undefined,
@@ -50,7 +49,6 @@ export const useSessionStore = defineStore('session', {
             fuseOrigins: undefined as Fuse<Origin> | undefined,
 
             audioClips: shallowRef(new Map) as unknown as Map<string, AudioClip>,
-            fuseAudioClips: undefined as Fuse<AudioClip> | undefined,
 
             collectionId: "" as string,
 
@@ -256,12 +254,7 @@ export const useSessionStore = defineStore('session', {
 
             lastUpdated.setOrReplace(Date.now(), "articles");
 
-            const option = {
-                keys: ['content.content', 'dateWritten', 'number', 'id', 'publicationId', 'authorId'],
-                includeScore: true,
-                threshold: 0.3
-            };
-            this.fuseArticles = new Fuse(oldArticlesArray.concat(newArticlesArray), option, Fuse.createIndex(option.keys, oldArticlesArray.concat(newArticlesArray)));
+
             const timeTaken = Date.now() - start;
             log && console.log("Initialized Articles, Total time taken : " + timeTaken/1000 + " seconds");
 
@@ -295,12 +288,6 @@ export const useSessionStore = defineStore('session', {
 
             lastUpdated.setOrReplace(Date.now(), "audioclips");
 
-            const option = {
-                keys: ['introduction', 'date', 'title'],
-                includeScore: true,
-                threshold: 0.3
-            };
-            this.fuseAudioClips = new Fuse(oldAudioClipsArray.concat(newAudioClipsArray), option, Fuse.createIndex(option.keys, oldAudioClipsArray.concat(newAudioClipsArray)));
             const timeTaken = Date.now() - start;
             log && console.log("Initialized AudioClips, Total time taken : " + timeTaken/1000 + " seconds");
 
