@@ -165,7 +165,6 @@ export default defineComponent({
                     includeScore: true,
                     threshold: 0.2
                 };
-                console.log("DIOJDD: ", articles.length);
                 const fuseArticles = new Fuse(articles, fuseArticlesOption, Fuse.createIndex(fuseArticlesOption.keys, articles));
 
                 const fuseAudioClipsOption = {
@@ -228,7 +227,6 @@ export default defineComponent({
                     if ('$and' in query && query.$and?.length){ result = fuseArticles.search(query) }
                     else if ('$or' in query && query.$or?.length){ result = fuseArticles.search(query) }
 
-                    console.log("OK: ", result.length);
                     this.articleHits = (result.length ? result.map(x => x.item) : articles);
                 }
 

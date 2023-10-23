@@ -83,7 +83,7 @@ export async function putPublications(publications: Publication[]) {
     await Promise.all(promises);
 }
 
-export async function putOrigins(sources: Origin[], expirySeconds: number = 7200) {
+export async function putOrigins(sources: Origin[]) {
   const storeName = 'origins';
   const tx = (await dbPromise).transaction(storeName, 'readwrite');
 
@@ -93,11 +93,6 @@ export async function putOrigins(sources: Origin[], expirySeconds: number = 7200
   }
 
   await Promise.all(promises);
-
-  setTimeout(() => {
-      clearStoreCache(storeName);
-      log && console.log("Cleared cache for store: " + storeName);
-  }, expirySeconds * 1000 * 1000)
 }
 
 export async function putAudioClips(audioClips: AudioClip[]) {

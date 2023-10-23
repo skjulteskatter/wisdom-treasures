@@ -18,7 +18,7 @@ export default defineConfig({
       },
       injectRegister: 'auto',
       workbox: {
-        globPatterns: ['**/*.{js,css,html,ico,png,svg,vue}'],
+        globPatterns: ['**/*.{js,css,html,ico,png,svg,vue}', '**/locales/*.json'],
       },
     })
   ],

@@ -138,15 +138,19 @@ export const useSessionStore = defineStore('session', {
             //Get latest date
             this.latestUpdatedPublication = oldPublicationArray.length > 0 ? +(lastUpdated.get("publications") || "0") : 0;
 
-            const newPublicationArray: Publication[] = await publications.post(this.locale, new Date(this.latestUpdatedPublication), 0);
-            
-            for (const publication of newPublicationArray) {
-                this.publications.set(publication.id, publication);
+            try {
+                const newPublicationArray: Publication[] = await publications.post(this.locale, new Date(this.latestUpdatedPublication), 0);
+                
+                for (const publication of newPublicationArray) {
+                    this.publications.set(publication.id, publication);
+                }
+
+                await putPublications(newPublicationArray);
+
+                lastUpdated.setOrReplace(Date.now(), "publications");
+            } catch (e){
+                log && console.log("couldn't get new publications");
             }
-
-            await putPublications(newPublicationArray);
-
-            lastUpdated.setOrReplace(Date.now(), "publications");
 
             const option = {
                 keys: ['title', 'id', 'description'],
@@ -154,7 +158,7 @@ export const useSessionStore = defineStore('session', {
                 threshold: 0.3
             }
 
-            this.fusePublications = new Fuse(oldPublicationArray.concat(newPublicationArray), option, Fuse.createIndex(option.keys, oldPublicationArray.concat(newPublicationArray)));
+            this.fusePublications = new Fuse(Array.from(this.publications.values()), option, Fuse.createIndex(option.keys, Array.from(this.publications.values())));
             const timeTaken = Date.now() - start;
             log && console.log("Initialized Publications, Total time taken : " + timeTaken/1000 + " seconds");
         },
@@ -175,22 +179,26 @@ export const useSessionStore = defineStore('session', {
 
             const authorIdsFromArticles = Array.from(this.articles.values()).map(x => x.authorId);
 
-            const newAuthorsArray: Contributor[] = await authors.post(this.locale, new Date(this.latestUpdatedAuthor), 0, authorIdsFromArticles);
-            
-            for (const author of newAuthorsArray) {
-                this.authors.set(author.id, author);
+            try{
+                const newAuthorsArray: Contributor[] = await authors.post(this.locale, new Date(this.latestUpdatedAuthor), 0, authorIdsFromArticles);
+                
+                for (const author of newAuthorsArray) {
+                    this.authors.set(author.id, author);
+                }
+
+                await putAuthors(newAuthorsArray);
+
+                lastUpdated.setOrReplace(Date.now(), "authors");
+            } catch (e){
+                log && console.log("couldn't get new authors");
             }
-
-            await putAuthors(newAuthorsArray);
-
-            lastUpdated.setOrReplace(Date.now(), "authors");
 
             const option = {
                 keys: ['name', 'id', 'subtitle', 'biography'],
                 includeScore: true,
                 threshold: 0.3,
             }
-            this.fuseAuthors = new Fuse(oldAuthorArray.concat(newAuthorsArray), option, Fuse.createIndex(option.keys, oldAuthorArray.concat(newAuthorsArray)));
+            this.fuseAuthors = new Fuse(Array.from(this.authors.values()), option, Fuse.createIndex(option.keys, Array.from(this.authors.values())));
             const timeTaken = Date.now() - start;
             log && console.log("Initialized Authors, Total time taken : " + timeTaken/1000 + " seconds");
         },
@@ -209,22 +217,26 @@ export const useSessionStore = defineStore('session', {
             //Get latest date
             this.latestUpdatedOrigin = oldOriginArray.length > 0 ? +(lastUpdated.get("origins") || "0") : 0;
 
-            const newOriginssArray: Origin[] = await origins.post(this.locale, new Date(this.latestUpdatedOrigin), 0);
-            
-            for (const origin of newOriginssArray) {
-                this.origins.set(origin.id, origin);
+            try{
+                const newOriginssArray: Origin[] = await origins.post(this.locale, new Date(this.latestUpdatedOrigin), 0);
+                
+                for (const origin of newOriginssArray) {
+                    this.origins.set(origin.id, origin);
+                }
+
+                await putOrigins(newOriginssArray);
+
+                lastUpdated.setOrReplace(Date.now(), "origins");
+            } catch (e){
+                log && console.log("couldn't get new origins");
             }
-
-            await putOrigins(newOriginssArray);
-
-            lastUpdated.setOrReplace(Date.now(), "origins");
 
             const option = {
                 keys: ['name', 'id' ],
                 includeScore: true,
                 threshold: 0.3,
             }
-            this.fuseOrigins = new Fuse(oldOriginArray.concat(newOriginssArray), option, Fuse.createIndex(option.keys, oldOriginArray.concat(newOriginssArray)));
+            this.fuseOrigins = new Fuse(Array.from(this.origins.values()), option, Fuse.createIndex(option.keys, Array.from(this.origins.values())));
         },
         async initializeArticles(fromIndexDb: boolean = true) {
             const start = Date.now();
@@ -244,15 +256,19 @@ export const useSessionStore = defineStore('session', {
                 ? this.latestUpdatedArticle
                 : (oldArticlesArray.reduce((oa, u) => Math.max(oa, Date.parse(u.dateWritten)), 0)) + 1; // Get latest date 
 
-            const newArticlesArray: Article[] = await articles.post(this.locale, new Date(this.latestUpdatedArticle), 0);
-            
-            for (const article of newArticlesArray) {
-                this.articles.set(article.id, article);
+            try{
+                const newArticlesArray: Article[] = await articles.post(this.locale, new Date(this.latestUpdatedArticle), 0);
+                
+                for (const article of newArticlesArray) {
+                    this.articles.set(article.id, article);
+                }
+
+                await putArticles(newArticlesArray);
+
+                lastUpdated.setOrReplace(Date.now(), "articles");
+            } catch (e){
+                log && console.log("couldn't get new articles");
             }
-
-            await putArticles(newArticlesArray);
-
-            lastUpdated.setOrReplace(Date.now(), "articles");
 
 
             const timeTaken = Date.now() - start;
@@ -277,16 +293,20 @@ export const useSessionStore = defineStore('session', {
                 ? this.latestUpdatedAudioClip
                 : (oldAudioClipsArray.reduce((oa, u) => Math.max(oa, Date.parse(u.date)), 0)) + 1; // Get latest date 
 
-            const newAudioClipsArray: AudioClip[] = await audioClips.post(this.locale, new Date(this.latestUpdatedAudioClip), 0);
-            
-            for (const audioClip of newAudioClipsArray) {
-                if (audioClip.audioFile == undefined || audioClip.audioFile == null || audioClip.audioFile == "") continue;
-                this.audioClips.set(audioClip.id, audioClip);
+            try{
+                const newAudioClipsArray: AudioClip[] = await audioClips.post(this.locale, new Date(this.latestUpdatedAudioClip), 0);
+                
+                for (const audioClip of newAudioClipsArray) {
+                    if (audioClip.audioFile == undefined || audioClip.audioFile == null || audioClip.audioFile == "") continue;
+                    this.audioClips.set(audioClip.id, audioClip);
+                }
+
+                await putAudioClips(newAudioClipsArray);
+
+                lastUpdated.setOrReplace(Date.now(), "audioclips");
+            } catch (e){
+                log && console.log("couldn't get new audioclips");
             }
-
-            await putAudioClips(newAudioClipsArray);
-
-            lastUpdated.setOrReplace(Date.now(), "audioclips");
 
             const timeTaken = Date.now() - start;
             log && console.log("Initialized AudioClips, Total time taken : " + timeTaken/1000 + " seconds");

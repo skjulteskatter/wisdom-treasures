@@ -1,9 +1,6 @@
-const staticCacheName = `site-static-5`;
-const assets = [
-    '/public/locales/en.json',
-    '/public/locales/no.json',
-    
-];
+import { swVersion } from './package.json'
+const staticCacheName = `site-static-${swVersion}`;
+const assets = [];
 
 self.addEventListener('install', async evt => {
     evt.waitUntil(
