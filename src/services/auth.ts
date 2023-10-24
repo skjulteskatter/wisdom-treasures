@@ -28,8 +28,8 @@ export const auth = getAuth(firebaseApp);
 auth.useDeviceLanguage();
 
 //Configure providers
-const googleAuthProvider = new GoogleAuthProvider();
-const appleAuthProvider = new OAuthProvider("apple.com");
+export const googleAuthProvider = new GoogleAuthProvider();
+export const appleAuthProvider = new OAuthProvider("apple.com");
 appleAuthProvider.addScope("email");
 appleAuthProvider.addScope("name");
 
@@ -47,39 +47,7 @@ export async function loginWithEmailAndPassword(email: string, password: string,
     return true;
 }
 
-export async function loginWithProvider(providerName : string, rememberMe: boolean) {
-
-    await setPersistence(rememberMe);
-    let provider = undefined;
-    switch (providerName) {
-        case "google":
-            provider = googleAuthProvider;
-            break;
-        case "apple":
-            provider = appleAuthProvider;
-            break;
-        default:
-            return;
-    }
-
-    if (getDeviceType() == "desktop"){
-        const userCredentials : UserCredential = await signInWithPopup(auth, provider);
-        log && console.log("1: ", userCredentials);
-    } else {
-        try{    
-            const userCredentials : UserCredential = await signInWithPopup(auth, provider);
-            log && console.log("2: ", userCredentials);
-        } catch (e){
-            log && console.log("Failed to log in with redirect. Trying popup.\nError: " + e);
-            const userCredentials : UserCredential = await signInWithPopup(auth, provider);
-            log && console.log("3: ", userCredentials);
-        }
-    }
-    
-    pushToDashboardOrRedirectLink();
-}
-
-function pushToDashboardOrRedirectLink(){
+export function pushToDashboardOrRedirectLink(){
     const store = useSessionStore();
 
     let name = store.$state.redirectAfterLoginName;
@@ -205,7 +173,6 @@ export async function logOut(){
 async function setPersistence(rememberMe : boolean = false){
     if (rememberMe)
         return await auth.setPersistence(browserLocalPersistence);
-
     await auth.setPersistence(browserSessionPersistence);
 }
 

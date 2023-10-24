@@ -149,7 +149,7 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue';
-import { loginWithEmailAndPassword, signupWithEmailAndPassword, loginWithProvider, auth} from '@/services/auth';
+import { loginWithEmailAndPassword, signupWithEmailAndPassword, auth, pushToDashboardOrRedirectLink} from '@/services/auth';
 import BaseCard from '../components/BaseCard.vue'
 import BaseButton from '../components/BaseButton.vue'
 import BaseInput from '../components/BaseInput.vue'
@@ -159,7 +159,7 @@ import BaseCheckbox from '@/components/BaseCheckbox.vue';
 import { useSessionStore } from '@/stores/session';
 import FooterComponent from '@/components/FooterComponent.vue';
 import TermsModal from '@/components/TermsModal.vue';
-import type { User } from 'firebase/auth';
+import { browserLocalPersistence, browserSessionPersistence, GoogleAuthProvider, OAuthProvider, signInWithPopup, type User, type UserCredential } from 'firebase/auth';
 import {version} from '../../package.json';
 import { log } from '@/services/logger';
 
@@ -248,6 +248,33 @@ import { log } from '@/services/logger';
       }
     },
     methods: {
+
+      async loginWithProvider(providerName : string, rememberMe: boolean) {
+
+        const googleAuthProvider = new GoogleAuthProvider();
+        const appleAuthProvider = new OAuthProvider("apple.com");
+        appleAuthProvider.addScope("email");
+        appleAuthProvider.addScope("name");
+
+        let provider = undefined;
+        switch (providerName) {
+            case "google":
+                provider = googleAuthProvider;
+                break;
+            case "apple":
+                provider = appleAuthProvider;
+                break;
+            default:
+                return;
+        }
+
+        const userCredentials : UserCredential = await signInWithPopup(auth, provider);
+
+        log && console.log("Success!", userCredentials);
+
+        pushToDashboardOrRedirectLink();
+      },
+
       async action(provider : string | undefined = undefined){
 
         if (!provider && !(await this.isValidForm())) 
@@ -260,7 +287,7 @@ import { log } from '@/services/logger';
           this.errors = {email: "", password: "", fullName: "", terms: "",}
 
           if (provider)
-            return await loginWithProvider(provider, this.rememberMe);
+            return await this.loginWithProvider(provider, this.rememberMe);
 
           if (this.include([this.forms.register])) 
           {
