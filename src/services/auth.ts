@@ -164,6 +164,27 @@ export async function updateUser(displayName : string = auth.currentUser?.displa
     }
 }
 
+export async function loginWithProvider(providerName : string, rememberMe: boolean) {
+
+    let provider = undefined;
+    switch (providerName) {
+        case "google":
+            provider = googleAuthProvider;
+            break;
+        case "apple":
+            provider = appleAuthProvider;
+            break;
+        default:
+            return;
+    }
+
+    const userCredentials : UserCredential = await signInWithPopup(auth, provider);
+
+    log && console.log("Success!", userCredentials);
+
+    pushToDashboardOrRedirectLink();
+}
+
 export async function logOut(){
     const store = useSessionStore();
     store.reset()
