@@ -2,8 +2,8 @@
 <template>
     <div class="flex flex-col px-5 sm:px-0 pb-4 sm:pb-0 bg-primary sm:bg-transparent">
         <div class="flex">
-        <BaseInput v-model="store.searchWord" style-type="search" class="sm:hidden grow" size="" :whiteText="true" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
-        <BaseInput v-model="store.searchWord" style-type="search" class="hidden sm:block grow" size="" :forMultiSearch="true" placeholder="Search..." @search-action="search()"/>
+        <BaseInput v-model="store.searchWord" style-type="search" class="sm:hidden grow" size="" :whiteText="true" :forMultiSearch="true" :placeholder="$t('common.search')" @search-action="search()"/>
+        <BaseInput v-model="store.searchWord" style-type="search" class="hidden sm:block grow" size="" :forMultiSearch="true" :placeholder="$t('common.search')" @search-action="search()"/>
         <BaseButton theme="menuButton" class="flex h-min w-min " @click="showFilterModal = !showFilterModal" :forMultiSearch="true" :whiteText="true">
             <template #icon>
                 <AdjustmentsIcon class="w-4"/>

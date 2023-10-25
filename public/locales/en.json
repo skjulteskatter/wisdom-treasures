@@ -1,6 +1,6 @@
 {
   "common": {
-    "welcome": "Welcome",
+    "welcome": "Welcome\n",
     "add": "Add",
     "cancel": "Cancel",
     "save": "Save",
@@ -17,10 +17,10 @@
     "upload": "Upload",
     "loading": "Loading",
     "origin": "Origin",
-    "wisdomManna": "Wisdom manna",
-    "wisdomWord": "Wisdom word",
-    "wisdomWords": "Wisdom words",
-    "search": "Search",
+    "wisdomManna": "Wisdom Manna",
+    "wisdomWord": "Word of wisdom",
+    "wisdomWords": "Words of wisdom",
+    "search": "Search...",
     "home": "Home",
     "favorites": "Favorites",
     "themes": "Themes",
@@ -39,10 +39,12 @@
     "thisMonth": "This month",
     "thisYear": "This year",
     "earlier": "Earlier",
-    "dailyword": "Daily Word",
+    "dailyword": "Todays Word",
     "getWisdomMannaFromTheme": "Get a wisdom manna from this theme",
     "noHistory": "Looks like you have no history yet 😢",
-    "noFavories": "Looks like you have no favorites yet 😢"
+    "noFavories": "Looks like you have no favorites yet 😢",
+    "audioClips": "Audio clips",
+    "logOut": "Log out"
   },
   "signIn": {
     "logIn": "Sign in",
@@ -75,15 +77,15 @@
     "passwordDontMatchMsg": "The passwords does not match",
     "passwordChange": "Change password",
     "loginST": "This is the same login as SongTreasures",
-    "logInInfo": "This is the same login as SongTreasures"
+    "logInInfo": "If you already have a SongTreasures account, you can use the SongTreasure login here on WisdomTreasures"
   },
   "home": {
     "welcometo": "Welcome to",
     "getWisdomManna": "Get wisdom manna",
-    "otherWisdomWords": "Other wisdom words",
+    "otherWisdomWords": "Other words of wisdom",
     "dailyWord": "Todays Word",
     "couldNotFindArticleNumber": "Could not find article number: ",
-    "clickSeeWisdomManna": "Click on the button above to get a Wisdom Word"
+    "clickSeeWisdomManna": "Click on the button above to get a word of wisdom"
   },
   "custom": {
     "notificationMsg": "Hello, this is just a notification. Don't mind me!"
@@ -115,21 +117,21 @@
   "themes": {
     "showing": "Showing",
     "resultsFor": "results for",
-    "searchTheme": "Search theme...",
-    "restWWTheme": "Rest of the Wisdom Words in the theme:",
+    "searchTheme": "Search for origin...",
+    "restWWTheme": "Rest of the words in the theme:",
     "getWisdomMannaThisTheme": "Get a wisdom manna from this theme"
   },
   "form": {
-    "suggest": "Suggest a Wisdom Word",
-    "what": "Write the wisdom word you would like to submit",
+    "suggest": "Suggest a word of wisdom",
+    "what": "Write the word of wisdom you would like to submit",
     "who": "Who said or wrote this?",
     "when": "When was this said/written?",
     "context": "In what context was this said?",
     "email": "Your Email",
     "name": "Full Name",
     "submit": "Submit",
-    "thankYou": "Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any notification if this wisdom word is included in the app.",
-    "success": "Thank you for suggesting content for Wisdom Words! We handle all suggestions. You won't receive any notification if this wisdom word is included in the app."
+    "thankYou": "Thank you for suggesting content for WisdomTreasures! We handle all suggestions. You won't receive any notification if this word of wisdom is included in the app.",
+    "success": "Thank you for suggesting content for WisdomTreasures! We handle all suggestions. You won't receive any notification if this word of wisdom is included in the app."
   },
   "nosub": {
     "todaysword": {
@@ -138,23 +140,31 @@
     },
     "events": {
       "title": "Catch up on latest events",
-      "description": "Wisdom Treasures is continuously updated with wisdom words from recent         events globally! "
+      "description": "Wisdom Treasures is continuously updated with words of wisdom from recent         events globally! "
     },
     "manna": {
       "title": "Draw wisdom manna",
-      "description": "Wisdom treasures lets you draw wisdom words from our large collection           of over 8000 wisdom words!  "
+      "description": "Wisdom treasures lets you draw words of wisdom from our large collection           of over 8000 words of wisdom!  "
     },
     "favorites": {
       "title": "Favorites",
-      "description": "Save and collect your favourite wisdom words! "
+      "description": "Save and collect your favourite words of wisdom! "
     },
     "themes": {
       "title": "Browse themes",
       "description": "Browse through our library of more than 250 themes of wisdoms words!"
     },
     "title": "Buy subscription to use Wisdom Treasures",
-    "subtitle": "You do not currently have any active subscriptions. With a             subscription for Wisdom Treasures you will always have a wisdom word             right at your hand, at any time.",
+    "subtitle": "You do not currently have any active subscriptions. With a             subscription for Wisdom Treasures you will always have a word of wisdom             right at your hand, at any time.",
     "buy": "Buy subscription"
   },
-  "common.origin": "Origins"
+  "common.origin": "Origins",
+  "store": {
+    "q1": "How do I get a subscription?",
+    "q1a": "Click on the button above and continue to checkout",
+    "q2": "When will my purchase be available?",
+    "q2a": "Your purchase or access should be available as soon as your payment has been processed. This can take several minutes, but in most cases just a few seconds. If you experience any problems, feel free to contact us",
+    "q3": "Does my subscription auto renew?",
+    "q3a": "No, you can buy a new subscription when the previous one is outdated"
+  }
 }

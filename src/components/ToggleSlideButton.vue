@@ -8,10 +8,10 @@
                         id="toggleThree" />
                     <div class="h-8 py-1 flex rounded-full bg-[#ACC0C5] shadow-lg items-center">
                         <p class="z-10 text-sm text-white font-semibold w-1/2 text-center" :class="{ 'text-white': modelValue }">
-                            Wisdom words
+                            {{ $t('common.wisdomWords') }}
                         </p>
                         <p class="z-10 text-sm font-semibold w-1/2 text-white text-center" :class="{ 'text-white': modelValue }">
-                            Audio clips
+                            {{ $t('common.audioClips') }}
                         </p>
                     </div>
 

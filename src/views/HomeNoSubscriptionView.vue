@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <main class="">
     <div>
       <img
         id="background-img"
@@ -43,12 +43,31 @@
             {{ $t("nosub.subtitle") }}
           </p>
           <BaseButton
+          :loading="loadingCheckoutCard == 'month'"
             class="rounded-full"
-            @click="$router.push({ name: 'store' })"
-            theme="wisdomMannaBtn"
+            @click="() => { checkout('month')}"
+            theme="primary"
           >
             {{ $t("nosub.buy") }}
           </BaseButton>
+          <p class="text-[color:var(--wt-color-text-grey)] opacity-50">
+            13NOK/month
+            <!--billed annually-->
+          </p>
+          <div id="FAQ" class="text-center mx-5 py-8 mt-5 sm:ml-auto sm:mr-auto sm:w-3/4 max-w-2xl">
+          <div>
+            <h3 class="font-bold">{{ $t('store.q1') }}</h3>
+            <p class="leading-5 text-[color:var(--wt-color-text-grey)] opacity-50 ml-auto mr-auto">{{ $t('store.q1a') }}</p>
+          </div>
+          <div class="mt-5">
+            <h3 class="font-bold">{{ $t('store.q2') }}</h3>
+            <p class="leading-5 text-[color:var(--wt-color-text-grey)] opacity-50 ml-auto mr-auto">{{ $t('store.q2a') }}</p>
+          </div>
+          <div class="mt-5">
+            <h3 class="font-bold">{{ $t('store.q3') }}</h3>
+            <p class="leading-5 text-[color:var(--wt-color-text-grey)] opacity-50 ml-auto mr-auto">{{ $t('store.q3a') }}</p>
+          </div>
+        </div>
         </div>
 
         <div class="h-screen md:w-1/2 px-5">
@@ -62,32 +81,20 @@
 <script lang="ts">
 import { getCurrentUserPromise } from "@/services/auth";
 import type { User } from "@firebase/auth";
-import type { Article, Publication } from "hiddentreasures-js";
 import { defineComponent } from "vue";
 import { useSessionStore } from "@/stores/session";
-import { InlineNotification } from "@/classes/notification";
-import router from "@/router";
-import { mannaHistory, history } from "@/services/localStorage";
 import BaseButton from "@/components/BaseButton.vue";
 import NoSubscriptionSlider from "@/components/NoSubScriptionSlider.vue";
+import { WISDOM_WORDS_ID } from '@/stores/session'
+import { log } from '@/services/logger';
 
 export default defineComponent({
   name: "HomeView",
   data() {
     return {
-      publications: [] as Publication[],
-      currentUser: null as User | null,
       store: useSessionStore(),
-      randomArticle: null as Article | null,
-      wordOfTheDay: null as Article | null,
-      showWordOfTheDay: false as boolean,
-      randomArticleList: [] as Article[],
-      shuffeledArticleKeys: [] as string[],
-      loadingMoreArticles: false as boolean,
-      dataFavorites: undefined as string[] | undefined,
-      displayFavorites: false as boolean,
-      displayWordOfTheDay: true as boolean,
-      displayHistory: false as boolean,
+      loadingCheckoutCard: "" as string,
+      currentUser: null as User | null,
     };
   },
   components: {
@@ -95,71 +102,9 @@ export default defineComponent({
     NoSubscriptionSlider,
   },
   computed: {
-    historyArticles(): Article[] {
-      let historyArticlesIds: string[] = [];
-      for (let [key, value] of history.getAll()) {
-        historyArticlesIds.push(key);
+    wwProducts() : string[]{
+        return this.store.apiProducts.filter(x => x.collectionIds.includes(WISDOM_WORDS_ID)).map(x => x.id);
       }
-      for (let [key, value] of mannaHistory.getAll()) {
-        historyArticlesIds.push(key);
-      }
-      return this.articles.filter((x) => historyArticlesIds.includes(x.id));
-    },
-    articles(): Article[] {
-      const articles = Array.from(this.store.articles.values());
-      return articles;
-    },
-    linkedArticle(): null | Article {
-      if (this.homePath === this.currentPath) return null;
-      const articleId = this.store.articleNumberLookup.get(
-        this.currentPathNumber ?? -1
-      );
-      if (articleId === undefined) {
-        this.articleNotFound(this.currentPathNumber ?? -1);
-        return null;
-      }
-
-      const article = this.store.articles.get(articleId || "");
-      if (article === undefined) {
-        this.articleNotFound(this.currentPathNumber ?? -1);
-        return null;
-      }
-
-      return article;
-    },
-    currentPath(): string {
-      return !this.$route.path.endsWith("/")
-        ? this.$route.path
-        : this.$route.path.slice(0, this.$route.path.length - 1);
-    },
-    homePath(): string {
-      let route =
-        router.getRoutes().find((x) => x.name == "dashboard")?.path || "⛄";
-      return !route.endsWith("/") ? route : route.slice(0, route.length - 1);
-    },
-    currentPathNumber(): number | null {
-      let match = (this.currentPath.match(/[0-9]+$/) ?? [null])[0];
-      if (match == null) return null;
-      return parseInt(match);
-    },
-    sessionInitialized(): boolean {
-      return this.store.sessionInitialized;
-    },
-    storeFavorites(): string[] {
-      return this.store.favorites;
-    },
-    favorites(): string[] {
-      return this.dataFavorites ?? this.storeFavorites;
-    },
-    favoriteArticles(): Article[] {
-      const favoriteArticles = [];
-      for (const favorite of this.favorites) {
-        const article = this.store.articles.get(favorite);
-        if (article === null || article === undefined) continue;
-        favoriteArticles.push(article);
-      }
-      return favoriteArticles;
-    },
   },
   watch: {
     sessionInitialized(initialized) {
@@ -180,79 +125,11 @@ export default defineComponent({
     Notification.requestPermission();
   },
   methods: {
-    navigate(name: string, e?: Event) {
-      if (name === "register") {
-        //Just to mmake sure the login forms appears as 'register' and not as 'login'
-        this.store.loginFormBridge = "register";
-        name = "login";
+    checkout( type: "month" | "year" ){
+        this.loadingCheckoutCard = type;
+        log && console.log(type);
+        this.store.stripeService?.checkout([this.wwProducts[0]], type);
       }
-      router.push({ name: name });
-    },
-    articleNotFound(num: number): void {
-      //Should probably navigate back 🤷‍♂️
-      this.store.notifications.push(
-        new InlineNotification(
-          this.$t("home.couldNotFindArticleNumber") + num.toString(),
-          "error"
-        )
-      );
-      router.push({ name: "dashboard" });
-    },
-    checkArticleNumberPath() {
-      if (this.homePath === this.currentPath) return;
-
-      const articleId = this.store.articleNumberLookup.get(
-        this.currentPathNumber || -1
-      );
-      if (articleId === undefined) {
-        this.articleNotFound(this.currentPathNumber || NaN);
-        return;
-      }
-
-      if (this.articles.some((x) => x.id == articleId)) return null;
-
-      if (this.linkedArticle === null) this.articleNotFound(2);
-    },
-    getAndSetWordOfTheDayArticle(): void {
-      let date: Date = new Date();
-      let dateNumber: number =
-        +`${date.getDay()}${date.getMonth()}${date.getFullYear()}999`;
-      let randomNumber: number = this.mulberry32(dateNumber);
-      let adjustedRandomNumber = Math.round(
-        randomNumber * (this.articles.length - 1)
-      );
-      if (
-        adjustedRandomNumber < 0 ||
-        adjustedRandomNumber > this.articles.length - 1
-      )
-        adjustedRandomNumber = 0;
-      this.wordOfTheDay = this.articles[adjustedRandomNumber] || null;
-      this.showWordOfTheDay = true;
-    },
-    mulberry32(a: number): number {
-      let t = (a += 0x6d2b79f5);
-      t = Math.imul(t ^ (t >>> 15), t | 1);
-      t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-      return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-    },
-    refreshDataFavorites() {
-      this.dataFavorites = [...this.storeFavorites];
-    },
-    changeDisplayFavorites() {
-      this.displayFavorites = true;
-      this.displayWordOfTheDay = false;
-      this.displayHistory = false;
-    },
-    changeDisplayHistory() {
-      this.displayFavorites = false;
-      this.displayWordOfTheDay = false;
-      this.displayHistory = true;
-    },
-    changeDisplayWOTD() {
-      this.displayFavorites = false;
-      this.displayWordOfTheDay = true;
-      this.displayHistory = false;
-    },
   },
 });
 </script>

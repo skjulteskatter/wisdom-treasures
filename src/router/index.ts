@@ -327,7 +327,7 @@ router.beforeEach(async (to, from, next) => {
   // If user has no subscription and the site requires a subscription
   else if (loggedIn && hasSubscription === false && requiresSubscription) {
     log && console.log('INDEX: This side requires subscription, and you are logged in - sending you to buy subscription');
-    next({ name: "dashboardNoSub" });
+    next({ name: "store" });
   }
   
   else {

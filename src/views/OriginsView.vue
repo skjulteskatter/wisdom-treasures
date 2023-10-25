@@ -16,9 +16,9 @@
     <div v-if="searchedWord" class=" ml-5 mt-4 sm:ml-0 text-[color:var(--wt-color-text-grey)] opacity-80">
         {{ $t('themes.showing') }} {{numberOfResults}} {{ $t('themes.resultsFor') }} "{{searchedWord}}"
     </div>
-    <div id="wrapper" class="flex pl-5 sm:pl-0 pt-5 sm:px-0" :class="{'pr-5' : searchedWord}">
+    <div id="wrapper" class="mt-10 flex pl-5 sm:pl-0 pt-5 sm:px-0" :class="{'pr-5' : searchedWord}">
       <div class="w-full">
-        <div id="ThemeCards" class="flex flex-wrap sm:gap-10 gap-2 justify-around">
+        <div id="ThemeCards" class="md:flex md:flex-wrap sm:gap-10 gap-2 justify-around">
           <div v-for="(origin, index) in searchedOrigins" :key="origin.id" class="flex flex-col">
             <!--<ThemeCard :publication="publication" class="grow" 
               :strech-y="true"/>-->

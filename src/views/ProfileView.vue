@@ -1,6 +1,6 @@
 <template>
   <main>
-    <div id="topPart" class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none items-center justify-between py-4">
+    <div id="topPart" class="flex bg-primary sm:bg-transparent shadow-md sm:shadow-none items-center justify-between py-4 pr-4">
       <div class="flex">
         <BackButton/>
         <p id="justForLayout" class="hidden sm:block opacity-0 mr-2">{{$t('signIn.logOut')}}</p>
@@ -10,8 +10,7 @@
       {{$t('common.profile')}}
       </h1>
       <div class="place-self-center">
-        <BaseButton theme="threeDBtn" @click="async () => {await logout()}">
-          <p class="hidden sm:block ">{{$t('signIn.logOut')}}</p>
+        <BaseButton theme="wisdomMannaBtn" @click="async () => {await logout()}">
           <template #icon>
             <LogoutIcon class="h-5"/>
           </template>
@@ -63,11 +62,17 @@
         </BaseButton>
       </div>
 
-      <div class="flex mt-8 pb-5 pr-10 sm:pr-5 w-full place-content-end">
+      <div class="flex mt-8 pb-5  sm:pr-5 w-full space-x-4 justify-center">
         <BaseButton theme='threeDBtn' @click="async ()=> {await saveLocalSettings()}">
           {{$t('profile.saveSetting')}}
           <template #icon>
             <SaveIcon class="h-5"></SaveIcon>
+          </template>
+        </BaseButton>
+        <BaseButton theme="threeDBtn" @click="async () => {await logout()}">
+          {{$t('common.logOut')}}
+          <template #icon>
+            <LogoutIcon class="h-5"/>
           </template>
         </BaseButton>
       </div>

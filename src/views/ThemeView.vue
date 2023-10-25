@@ -7,7 +7,7 @@
       <div id="spacerDiv2" class="grow pointer-events-none h-0 -z-50" />
     </div>
 
-    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between py-4">
+    <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center justify-between py-4 pr-4">
       <BackButton />
       <h1 class="text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">
         {{ publication?.title ?? "" }}

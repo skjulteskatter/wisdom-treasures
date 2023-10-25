@@ -24,7 +24,7 @@
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('history')" @click="navigate('history')" :disabled="!store.userHasSubscription">
 						{{ $t('common.history') }}</BaseButton>
 					<BaseButton theme="menuButton" :clicked="shouldBeHighlighted('origins')" @click="navigate('origins')" :disabled="!store.userHasSubscription">
-						Origins
+						{{ $t('common.origin') }}
 					</BaseButton>
 				</div>
 				<div class="flex sm:hidden self-center place-content-center cursor-pointer" @click="navigate('dashboard')">

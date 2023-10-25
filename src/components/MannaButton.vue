@@ -4,7 +4,6 @@
       <template #firstIcon>
         <SparklesIcon class="h-4 sm:text-inherit" />
       </template>
-      Get Manna
     </BaseButton>
     <WWCardModal :show="showMannaModal" @close="(e: Event | undefined) => { navigateBack(e); $emit('closeModal', e) }"
       :mannaArticleIdList="shuffeledMannaArticleIdList"

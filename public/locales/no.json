@@ -17,10 +17,10 @@
     "upload": "Last opp",
     "loading": "Laster",
     "origin": "Kilder",
-    "wisdomManna": "Visdoms-manna",
+    "wisdomManna": "Visdomsmanna",
     "wisdomWord": "Visdomsord",
     "wisdomWords": "Visdomsord",
-    "search": "Søk",
+    "search": "Søk...",
     "home": "Hjem",
     "favorites": "Favoritter",
     "themes": "Temaer",
@@ -41,7 +41,9 @@
     "earlier": "Tidligere",
     "noHistory": "Du har ingen historie enda 😢",
     "dailyword": "Dagens ord",
-    "noFavories": "Du har ikke lagret noen favoritter enda 😢"
+    "noFavories": "Du har ikke lagret noen favoritter enda 😢",
+    "audioClips": "Lydklipp",
+    "logOut": "Logg ut"
   },
   "signIn": {
     "logIn": "Logg inn",
@@ -66,24 +68,24 @@
     "createdAccountSuccessMsg": "Brukeren er opprettet, en verifiseringsemail har blitt sent til din innboks",
     "emailNotVerifiedMsg": "Email er enda ikke verifisert",
     "passwordResetMsg": "Nullstill passord",
-    "emailRequiredMsg": "Email er obligatorisk ",
+    "emailRequiredMsg": "Email er påkrevd",
     "invalidEmailMsg": "Ugyldig email",
-    "nameRequiredMsg": "Navn er obligatorisk ",
+    "nameRequiredMsg": "Navn er påkrevd",
     "tosMsg": "Vilkår og Betingelser",
     "passwordRequiredMsg": "Passord er obligatorisk",
-    "passwordDontMatchMsg": "Passordene stemmer ikke overens",
+    "passwordDontMatchMsg": "Passordene er ikke like",
     "change": "Endre passord",
     "passwordChange": "Endre Passord",
     "loginST": "Dette er samme login som SongTreasures",
-    "logInInfo": "Dette er samme login som SongTreasures"
+    "logInInfo": "Hvis du allerede har en SongTreasures-konto, kan du bruke SongTreasure-påloggingen her på WisdomTreasures"
   },
   "home": {
     "welcometo": "Velkommen til",
-    "getWisdomManna": "Trekk et visdoms-mannakorn",
+    "getWisdomManna": "Trekk et visdomord",
     "otherWisdomWords": "Andre visdomsord",
     "dailyWord": "Dagens ord",
     "couldNotFindArticleNumber": "Finner ikke visdomsord med id nummer: ",
-    "clickSeeWisdomManna": "Klikk på knappen over for å trekke et visdoms-manna"
+    "clickSeeWisdomManna": "Klikk på knappen over for å trekke et visdomsmanna"
   },
   "custom": {
     "notificationMsg": "Hei, dette er bare en melding. Ikke bry deg om meg!"
@@ -94,7 +96,7 @@
     "typeMsg": "Type your message here"
   },
   "history": {
-    "onlyManna": "Vis kun seneste visdoms-manna",
+    "onlyManna": "Vis kun seneste visdomsmanna",
     "noWW": "Just now"
   },
   "notFound": {
@@ -111,7 +113,7 @@
   "themes": {
     "showing": "Viser",
     "resultsFor": "resultat for",
-    "searchTheme": "Søk i tema...",
+    "searchTheme": "Søk etter kilde...",
     "restWWTheme": "De resterende visdomsord i tema:",
     "getWisdomMannaThisTheme": "Trekk et visdoms manna fra dette tema"
   },
@@ -154,5 +156,13 @@
     "title": "Kjøp abonnement for å bruke Wisdom Treasures",
     "subtitle": "Du har for øyeblikket ingen aktive abonnementer. Med et abonnement på Wisdom Treasures vil du alltid ha et visdomsord rett ved hånden, når som helst.",
     "buy": "Kjøp abonnement"
+  },
+  "store": {
+    "q1": "Hvordan får jeg et abonnement?",
+    "q1a": "Klikk på knappen over og fortsett til kassen",
+    "q2": "Når vil kjøpet mitt være tilgjengelig?",
+    "q2a": "Ditt kjøp eller tilgang bør være tilgjengelig så snart betalingen din er behandlet. Dette kan ta flere minutter, men i de fleste tilfeller bare noen få sekunder. Hvis du opplever problemer, ikke nøl med å kontakte oss.",
+    "q3": "Fornyes abonnementet mitt automatisk?",
+    "q3a": "Nei, du kan kjøpe et nytt abonnement når det forrige er utdatert."
   }
 }
