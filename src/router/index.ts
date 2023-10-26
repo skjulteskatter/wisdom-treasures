@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router';
 import { getCurrentUserPromise } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
 
 const WWCard = {
   path: ':wwNumber(\\d{1,5}$)',

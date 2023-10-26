@@ -158,11 +158,11 @@ export const lastUpdated = {
 
     prefix: "lastUpdated:",
 
-    setOrReplace(lastUpdatedUTC: number, objectsName: "articles" | "authors" | "origins" | "publications" | "audioclips") {
-        localStorage.setItem(`${objectsName}_${this.prefix}`, lastUpdatedUTC.toString());
+    setOrReplace(lastUpdatedUTC: number, objectsName: "articles" | "authors" | "origins" | "publications" | "audioclips", lang: string) {
+        localStorage.setItem(`${objectsName}_${this.prefix}_${lang}`, lastUpdatedUTC.toString());
     },
-    get(objectsName: "articles" | "authors" | "origins" | "publications" | "audioclips"){
-        return localStorage.getItem(`${objectsName}_${this.prefix}`);
+    get(objectsName: "articles" | "authors" | "origins" | "publications" | "audioclips", lang: string){
+        return localStorage.getItem(`${objectsName}_${this.prefix}_${lang}`);
     }
 };
 
@@ -171,10 +171,10 @@ export const lastUserHasSubscription = {
 
     prefix: "lastUserHasSubscription:",
 
-    setOrReplace(lastUserHasSubscription: boolean) {
-        localStorage.setItem(this.prefix, lastUserHasSubscription ? "true" : "false");
+    setOrReplace(expiresUTC: number) {
+        localStorage.setItem(this.prefix, expiresUTC.toString());
     },
     get(): boolean{
-        return localStorage.getItem(this.prefix) == "true";
+        return (+(localStorage.getItem(this.prefix) ?? "0")) > Date.now();
     }
 };

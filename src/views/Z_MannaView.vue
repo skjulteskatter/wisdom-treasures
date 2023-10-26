@@ -37,7 +37,7 @@
   import type { Manna } from '@/classes/manna';
   import Loader from '@/components/Loader.vue';
   import BackButton from '@/components/BackButton.vue';
-  import { log } from '@/services/logger';
+  import { log } from '@/services/env';
   
     export default defineComponent({
       name: "MannaView",

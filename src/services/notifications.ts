@@ -1,5 +1,5 @@
 import { AuthErrorCodes as aec } from "@firebase/auth";
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
 
 export const AuthErrorCodesDict = new Map<string, string>([
     [aec.INVALID_PASSWORD,"Invalid password"],

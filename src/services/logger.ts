@@ -1,1 +1,0 @@
-export const log : boolean = import.meta.env.VITE_APP_LOGGING == "true";

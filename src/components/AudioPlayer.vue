@@ -19,7 +19,7 @@ import { defineComponent, type PropType } from 'vue';
 import type { AudioClip } from '@/classes/AudioClip';
 import { history } from '@/services/localStorage';
 import { useSessionStore } from '@/stores/session';
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
 
 export default defineComponent({
     name: "audio-player",

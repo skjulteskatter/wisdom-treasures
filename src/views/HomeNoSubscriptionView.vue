@@ -86,7 +86,7 @@ import { useSessionStore } from "@/stores/session";
 import BaseButton from "@/components/BaseButton.vue";
 import NoSubscriptionSlider from "@/components/NoSubScriptionSlider.vue";
 import { WISDOM_WORDS_ID } from '@/stores/session'
-import { log } from '@/services/logger';
+import { log } from '@/services/env';
 
 export default defineComponent({
   name: "HomeView",

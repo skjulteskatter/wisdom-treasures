@@ -160,7 +160,7 @@ import { useSessionStore } from '@/stores/session';
 import FooterComponent from '@/components/FooterComponent.vue';
 import TermsModal from '@/components/TermsModal.vue';
 import {version} from '../../package.json';
-import { log } from '@/services/logger';
+import { log } from '@/services/env';
 import type { User } from 'firebase/auth';
 
   export default defineComponent({

@@ -52,7 +52,7 @@ import type { Publication } from 'hiddentreasures-js';
 import BaseInput from '@/components/BaseInput.vue';
 import type Fuse from 'fuse.js';
 import BackButton from '@/components/BackButton.vue';
-import { log } from '@/services/logger';
+import { log } from '@/services/env';
 
 import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 

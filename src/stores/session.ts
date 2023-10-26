@@ -1,12 +1,12 @@
 import { defineStore } from 'pinia'
-import {setLocaleFromSessionStore} from '@/i18n'
+import {fallbackLocale, setLocaleFromSessionStore} from '@/i18n'
 import i18n from '@/i18n'
 import type { InlineNotification } from '@/classes/notification'
 import { articles, audioClips, authors, favorites as favoritesApi, origins, publications, stripe} from '@/services/api'
 import type {Article, Contributor, Publication } from 'hiddentreasures-js'
 import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
-import { dbPromise, putArticles, putAuthors, putPublications, putOrigins, putAudioClips } from '@/services/cache'
+import { dbPromises, putArticles, putAuthors, putPublications, putOrigins, putAudioClips } from '@/services/cache'
 import type { HTUser } from '@/classes/HTUser'
 import { language, favorites, lastUpdated, lastUserHasSubscription } from '@/services/localStorage'
 import Fuse from 'fuse.js'
@@ -15,7 +15,7 @@ import StripeService from '@/services/stripe'
 import type { Origin } from '@/classes/Origin'
 import { auth } from '@/services/auth'
 import type { AudioClip } from '@/classes/AudioClip'
-import { log } from '@/services/logger'
+import { enableAudioClips, log } from '@/services/env'
 
 export const WISDOM_WORDS_ID : string = "aa7d92e3-c92f-41f8-87a1-333375125a1c";
 export const WT_PRODUCT_ID : string = "prod_NnqNtVfJjpCCOy";
@@ -25,7 +25,7 @@ export const useSessionStore = defineStore('session', {
     state: ()=> {
         return {
             // When store is created take language from i18n if it exist
-            locale: i18n.global.locale ?? "en",
+            locale: i18n.global.locale ?? fallbackLocale,
             // The name of the page to redirect to if trying to reach restricted to auth site when not logged in
             redirectAfterLoginName: "",
             // The login form to start from when pushing from another view.
@@ -128,7 +128,7 @@ export const useSessionStore = defineStore('session', {
             let oldPublicationArray: Publication[] = [];
 
             if (fromIndexDb) {
-                oldPublicationArray = await (await dbPromise).getAll('publications');
+                oldPublicationArray = await (await dbPromises[this.locale]).getAll('publications');
             }
 
             for (const publication of oldPublicationArray) {
@@ -136,7 +136,7 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedPublication = oldPublicationArray.length > 0 ? +(lastUpdated.get("publications") || "0") : 0;
+            this.latestUpdatedPublication = oldPublicationArray.length > 0 ? +(lastUpdated.get("publications", this.locale) || "0") : 0;
 
             try {
                 const newPublicationArray: Publication[] = await publications.post(this.locale, new Date(this.latestUpdatedPublication), 0);
@@ -145,9 +145,9 @@ export const useSessionStore = defineStore('session', {
                     this.publications.set(publication.id, publication);
                 }
 
-                await putPublications(newPublicationArray);
+                await putPublications(newPublicationArray, this.locale);
 
-                lastUpdated.setOrReplace(Date.now(), "publications");
+                lastUpdated.setOrReplace(Date.now(), "publications", this.locale);
             } catch (e){
                 log && console.log("couldn't get new publications");
             }
@@ -167,7 +167,7 @@ export const useSessionStore = defineStore('session', {
             let oldAuthorArray: Contributor[] = [];
 
             if (fromIndexDb){
-                oldAuthorArray = await (await dbPromise).getAll('authors');
+                oldAuthorArray = await (await dbPromises[this.locale]).getAll('authors');
             }
             
             for (const author of oldAuthorArray) {
@@ -175,7 +175,7 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedAuthor = oldAuthorArray.length > 0 ? +(lastUpdated.get("authors") || "0") : 0;
+            this.latestUpdatedAuthor = oldAuthorArray.length > 0 ? +(lastUpdated.get("authors", this.locale) || "0") : 0;
 
             const authorIdsFromArticles = Array.from(this.articles.values()).map(x => x.authorId);
 
@@ -186,9 +186,9 @@ export const useSessionStore = defineStore('session', {
                     this.authors.set(author.id, author);
                 }
 
-                await putAuthors(newAuthorsArray);
+                await putAuthors(newAuthorsArray, this.locale);
 
-                lastUpdated.setOrReplace(Date.now(), "authors");
+                lastUpdated.setOrReplace(Date.now(), "authors", this.locale);
             } catch (e){
                 log && console.log("couldn't get new authors");
             }
@@ -207,7 +207,7 @@ export const useSessionStore = defineStore('session', {
             let oldOriginArray: Origin[] = [];
 
             if (fromIndexDb){
-                oldOriginArray = await (await dbPromise).getAll('origins');
+                oldOriginArray = await (await dbPromises[this.locale]).getAll('origins');
             }
             
             for (const origin of oldOriginArray) {
@@ -215,7 +215,7 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedOrigin = oldOriginArray.length > 0 ? +(lastUpdated.get("origins") || "0") : 0;
+            this.latestUpdatedOrigin = oldOriginArray.length > 0 ? +(lastUpdated.get("origins", this.locale) || "0") : 0;
 
             try{
                 const newOriginssArray: Origin[] = await origins.post(this.locale, new Date(this.latestUpdatedOrigin), 0);
@@ -224,9 +224,9 @@ export const useSessionStore = defineStore('session', {
                     this.origins.set(origin.id, origin);
                 }
 
-                await putOrigins(newOriginssArray);
+                await putOrigins(newOriginssArray, this.locale);
 
-                lastUpdated.setOrReplace(Date.now(), "origins");
+                lastUpdated.setOrReplace(Date.now(), "origins", this.locale);
             } catch (e){
                 log && console.log("couldn't get new origins");
             }
@@ -243,7 +243,7 @@ export const useSessionStore = defineStore('session', {
             let oldArticlesArray: Article[] = [];
 
             if (fromIndexDb){
-                oldArticlesArray = await (await dbPromise).getAll('articles');
+                oldArticlesArray = await (await dbPromises[this.locale]).getAll('articles');
             }
 
             for (const article of oldArticlesArray) {
@@ -251,7 +251,7 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedArticle = oldArticlesArray.length > 0 ? +(lastUpdated.get("articles") || "0") : 0;
+            this.latestUpdatedArticle = oldArticlesArray.length > 0 ? +(lastUpdated.get("articles", this.locale) || "0") : 0;
             this.latestUpdatedArticle = this.latestUpdatedArticle > 0
                 ? this.latestUpdatedArticle
                 : (oldArticlesArray.reduce((oa, u) => Math.max(oa, Date.parse(u.dateWritten)), 0)) + 1; // Get latest date 
@@ -263,9 +263,9 @@ export const useSessionStore = defineStore('session', {
                     this.articles.set(article.id, article);
                 }
 
-                await putArticles(newArticlesArray);
+                await putArticles(newArticlesArray,this.locale);
 
-                lastUpdated.setOrReplace(Date.now(), "articles");
+                lastUpdated.setOrReplace(Date.now(), "articles", this.locale);
             } catch (e){
                 log && console.log("couldn't get new articles");
             }
@@ -276,11 +276,14 @@ export const useSessionStore = defineStore('session', {
 
         },
         async initializeAudioClips(fromIndexDb: boolean = true) {
+
+            if (!enableAudioClips) return; // TODO remove this when audioclips are ready
+
             const start = Date.now();
             let oldAudioClipsArray: AudioClip[] = [];
 
             if (fromIndexDb){
-                oldAudioClipsArray = await (await dbPromise).getAll('audioclips');
+                oldAudioClipsArray = await (await dbPromises[this.locale]).getAll('audioclips');
             }
 
             for (const audioClip of oldAudioClipsArray) {
@@ -288,7 +291,7 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedAudioClip = oldAudioClipsArray.length > 0 ? +(lastUpdated.get("audioclips") || "0") : 0;
+            this.latestUpdatedAudioClip = oldAudioClipsArray.length > 0 ? +(lastUpdated.get("audioclips", this.locale) || "0") : 0;
             this.latestUpdatedAudioClip = this.latestUpdatedAudioClip > 0
                 ? this.latestUpdatedAudioClip
                 : (oldAudioClipsArray.reduce((oa, u) => Math.max(oa, Date.parse(u.date)), 0)) + 1; // Get latest date 
@@ -301,9 +304,9 @@ export const useSessionStore = defineStore('session', {
                     this.audioClips.set(audioClip.id, audioClip);
                 }
 
-                await putAudioClips(newAudioClipsArray);
+                await putAudioClips(newAudioClipsArray, this.locale);
 
-                lastUpdated.setOrReplace(Date.now(), "audioclips");
+                lastUpdated.setOrReplace(Date.now(), "audioclips", this.locale);
             } catch (e){
                 log && console.log("couldn't get new audioclips");
             }
@@ -362,21 +365,29 @@ export const useSessionStore = defineStore('session', {
                 return false;
             }
 
+            let expieryDate = 0;
+
             try {
-                this.userHasSubscription = (await stripe.getSubscriptions()).some(x => x.productIds.includes(WT_PRODUCT_ID) && x.expired === false);
-                if (this.userHasSubscription === false){
-                    this.userHasSubscription = (await articles.postOneRandom()).length > 0;
-                    if (this.userHasSubscription) log && console.log("Ahh your the admin");
-                } else if (this.userHasSubscription === undefined){
-                    this.userHasSubscription = lastUserHasSubscription.get();
-                }
+                // Set ex to last subscription expire date
+                const wtSubscriptions = (await stripe.getSubscriptions()).filter(x => x.productIds.includes(WT_PRODUCT_ID));
+                expieryDate = Math.max(...wtSubscriptions.map(x => { 
+                    const date = new Date(x.expireAt);
+                    if (!isNaN(date.getTime())) {
+                        return date.getTime();
+                      } 
+                      return 0;
+                } ));
+                if (expieryDate <= 0){
+                    // If user is admin set ex to max. Else 0
+                    expieryDate = (await articles.postOneRandom()).length > 0 ? Number.MAX_SAFE_INTEGER : 0;
+                } 
+                lastUserHasSubscription.setOrReplace(expieryDate);
             } catch
             {
                 log && console.log("Failed to get subscriptions");
-                this.userHasSubscription = lastUserHasSubscription.get();
             } 
 
-            lastUserHasSubscription.setOrReplace(this.userHasSubscription);
+            this.userHasSubscription = expieryDate > Date.now();
             return this.userHasSubscription;
         },
         async intitializeStripeService(){
@@ -391,7 +402,7 @@ export const useSessionStore = defineStore('session', {
         },
         async initializeLanguage(): Promise<string>{
             const lang = language.get();
-            return await this.setLocale(lang ?? undefined);
+            return await this.setLocale(lang ?? fallbackLocale);
         }
     },
 })

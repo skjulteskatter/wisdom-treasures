@@ -1,6 +1,6 @@
 import { createI18n } from "vue-i18n";
 import "isomorphic-fetch"
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
 
 export const validLanguages = new Map<string, string>([
     ["no", "Norsk"],

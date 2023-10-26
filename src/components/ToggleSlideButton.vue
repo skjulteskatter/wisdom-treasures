@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <main v-if="enableAudioClips">
         <label for="toggleThree"
             class="flex select-none items-center relative w-full cursor-pointer">
             <div class="justify-center mx-auto w-full">
@@ -26,13 +26,15 @@
   
     
 <script lang="ts">
+import { enableAudioClips } from '@/services/env';
 import { defineComponent } from 'vue';
 
 export default defineComponent({
     name: "ToggleSlideButton",
     data() {
         return {
-            chosen: 'Words'
+            chosen: 'Words',
+            enableAudioClips: enableAudioClips,
         }
     },
     props: {

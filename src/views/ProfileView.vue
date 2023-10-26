@@ -63,7 +63,7 @@
       </div>
 
       <div class="flex mt-8 pb-5  sm:pr-5 w-full space-x-4 justify-center">
-        <BaseButton theme='threeDBtn' @click="async ()=> {await saveLocalSettings()}">
+        <BaseButton theme='threeDBtn' :loading="loadingLanguage" @click="async ()=> {await saveLocalSettings()}">
           {{$t('profile.saveSetting')}}
           <template #icon>
             <SaveIcon class="h-5"></SaveIcon>
@@ -85,7 +85,7 @@
 </template>
 
 <script lang="ts">
-import { getCurrentUserPromise } from '@/services/auth';
+import { getCurrentUserPromise, userLoggedInCallback } from '@/services/auth';
 import { useSessionStore } from '@/stores/session';
 import { defineComponent } from 'vue';
 import type { User } from "firebase/auth";
@@ -112,6 +112,7 @@ import { STRIPE_MANAGE_LINK } from '@/stores/session';
         showPasswordModal: false,
         selectedLanguage: "" as string,
         supportEmail: "support@wisdomtreasures.no" as string,
+        loadingLanguage: false as boolean,
       }
     },
     props: {
@@ -153,16 +154,19 @@ import { STRIPE_MANAGE_LINK } from '@/stores/session';
       goToManageSubscriptions(){
         window.location.href = STRIPE_MANAGE_LINK;
       },
-      changeLanguage(newLanguage : string){
+      async changeLanguage(newLanguage : string){
         if (this.store.locale == newLanguage) return;
         this.store.setLocale(newLanguage);
+        await userLoggedInCallback(newLanguage);
       },
       setSelectedLanguage(language: string){
         this.selectedLanguage = language;
       },
       async saveLocalSettings(): Promise<void> {
-        this.changeLanguage(this.selectedLanguage);
+        this.loadingLanguage = true;
+        await this.changeLanguage(this.selectedLanguage);
         this.store.notifications.push(new InlineNotification(this.$t('profile.settingUpdatedMsg')));
+        this.loadingLanguage = false;
       },
       async logout(){
         await logOut();

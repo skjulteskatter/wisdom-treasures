@@ -49,7 +49,7 @@
   import BaseButton from './BaseButton.vue';
   import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
   import { HeartIcon, ClipboardCopyIcon } from '@heroicons/vue/outline';
-  import { log } from '@/services/logger'
+  import { log } from '@/services/env'
 
     export default defineComponent({
       name: "WWShowCard",

@@ -20,7 +20,7 @@ import "firebase/compat/performance";
 import config from "@/config";
 import router from "@/router";
 import { useSessionStore } from "@/stores/session";
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
 
 export const firebaseApp = initializeApp(config.firebaseConfig);
 
@@ -111,12 +111,14 @@ export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
 /**
  * Things you do when the user logs in, no matter which method
  */
-export async function userLoggedInCallback(){
+export async function userLoggedInCallback(lang: string = undefined){
     //Should be done without await maybe for asynchronous running
+    log && console.log("callback")
 
     const store = useSessionStore();
-    await store.initializeLanguage();
 
+    if (lang == undefined)
+        await store.initializeLanguage();
 
     log && console.log("UserLoggedInCallback: Getting ready to initialize! What is user status: ", auth.currentUser);
     if (auth.currentUser == null) return;
@@ -147,7 +149,7 @@ export async function userLoggedInCallback(){
     await store.intitializeArticleNumberLookup(),
     await store.initializeAuthors();
     store.sessionInitialized = true;
-    log && console.log('UserLoggedInCallback: Store initialized, subscription')
+    log && console.log('UserLoggedInCallback: Store initialized, subscription');
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? ""): Promise<boolean> {

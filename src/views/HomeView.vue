@@ -143,7 +143,7 @@ import WWShowCard from '@/components/WWShowCard.vue';
 import ThreeDButton from '@/components/ThreeDButton.vue';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
 
 export default defineComponent({
   name: "HomeView",

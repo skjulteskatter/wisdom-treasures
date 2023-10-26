@@ -37,7 +37,7 @@ import BaseCard from "@/components/BaseCard.vue";
 import NotificationCard from "@/components/Notification/NotificationCard.vue";
 import NotificationContainer from "@/components/Notification/NotificationContainer.vue";
 import { useSessionStore } from "@/stores/session";
-import { log } from '@/services/logger';
+import { log } from '@/services/env';
 
 export default defineComponent({
 	name: "main-layout",

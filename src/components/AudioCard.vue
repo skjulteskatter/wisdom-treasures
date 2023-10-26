@@ -44,7 +44,7 @@
   import ClickableLink from './ClickableLink.vue';
   import { HeartIcon as HeartIconSolid } from '@heroicons/vue/solid';
   import { HeartIcon, MicrophoneIcon } from '@heroicons/vue/outline';
-  import { log } from '@/services/logger'
+  import { log } from '@/services/env'
   
     export default defineComponent({
       name: "AudioCard",

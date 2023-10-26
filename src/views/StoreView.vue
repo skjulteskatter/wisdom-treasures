@@ -79,17 +79,16 @@
 </template>
 
 <script lang="ts">
-import { getCurrentUserPromise } from "@/services/auth";
 import type { User } from "@firebase/auth";
 import { defineComponent } from "vue";
 import { useSessionStore } from "@/stores/session";
 import BaseButton from "@/components/BaseButton.vue";
 import NoSubscriptionSlider from "@/components/NoSubScriptionSlider.vue";
 import { WISDOM_WORDS_ID } from '@/stores/session'
-import { log } from '@/services/logger';
+import { log } from '@/services/env';
 
 export default defineComponent({
-  name: "HomeView",
+  name: "StoreView",
   data() {
     return {
       store: useSessionStore(),
@@ -103,26 +102,8 @@ export default defineComponent({
   },
   computed: {
     wwProducts() : string[]{
-        return this.store.apiProducts.filter(x => x.collectionIds.includes(WISDOM_WORDS_ID)).map(x => x.id);
-      }
-  },
-  watch: {
-    sessionInitialized(initialized) {
-      if (initialized) {
-        this.checkArticleNumberPath();
-        this.getAndSetWordOfTheDayArticle();
-      }
-    },
-  },
-  async mounted() {
-    this.currentUser = (await getCurrentUserPromise()) as User;
-    if (this.sessionInitialized) this.getAndSetWordOfTheDayArticle();
-
-    for (const key of this.store.articles.keys()) {
-      this.shuffeledArticleKeys.push(key);
+      return this.store.apiProducts.filter(x => x.collectionIds.includes(WISDOM_WORDS_ID)).map(x => x.id);
     }
-
-    Notification.requestPermission();
   },
   methods: {
     checkout( type: "month" | "year" ){

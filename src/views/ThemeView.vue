@@ -70,7 +70,7 @@ import AudioCard from '@/components/AudioCard.vue';
 import Loader from '@/components/Loader.vue';
 import MannaButton from '@/components/MannaButton.vue';
 import type { AudioClip } from '@/classes/AudioClip';
-import { log } from '@/services/logger';
+import { log } from '@/services/env';
 
 export default defineComponent({
   name: "ThemeView",

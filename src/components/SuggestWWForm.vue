@@ -49,7 +49,7 @@
 
 <script lang="ts">
 import BaseModal from "../components/BaseModal.vue"
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
 export default {
   name: "form-suggestion",
   data() {

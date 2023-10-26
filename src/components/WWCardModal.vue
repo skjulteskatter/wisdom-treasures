@@ -25,7 +25,7 @@ import WWShowCard from "./WWShowCard.vue";
 import BaseButton from "./BaseButton.vue";
 import { RefreshIcon } from "@heroicons/vue/outline";
 import { history } from "@/services/localStorage";
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
 
 export default defineComponent({
     name: "wwcard-modal",

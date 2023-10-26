@@ -1,6 +1,6 @@
 import config from "../config";
 import { auth } from "./auth";
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
 
 export type Result<T> = {
     result: T;

@@ -4,7 +4,8 @@ import type { Article, Contributor, Publication } from 'hiddentreasures-js';
 import type { Origin } from '@/classes/Origin';
 import { dbVersion as dbv } from '../../package.json'
 import type { AudioClip } from '@/classes/AudioClip';
-import { log } from '@/services/logger'
+import { log } from '@/services/env'
+import { validLanguages } from '@/i18n'
 const dbPrefix : string = "WTDB"
 
 //Clean up old databases async
@@ -12,11 +13,14 @@ log && console.log("Running on dbVersion: " + dbv);
 const promise = indexedDB.databases();
 promise.then((databases) => {
   for (const database of databases) {
-    const name = (database.name ?? "");
-    if (name.startsWith(dbPrefix) && name != dbPrefix + dbVersion().toString())
+    for (const lang in validLanguages.keys())
     {
-      log && console.log("Deleting old database: " + name);
-      deleteDB(name);
+      const name = (database.name ?? "");
+      if (name.startsWith(dbPrefix) && name != dbName(lang))
+      {
+        log && console.log("Deleting old database: " + name);
+        deleteDB(name);
+      }
     }
   }
 });
@@ -44,19 +48,23 @@ interface WTDBSchema extends DBSchema {
   };
 }
 
-export const dbPromise : Promise<IDBPDatabase<WTDBSchema>> = openDB<WTDBSchema>(dbPrefix + dbVersion().toString(), dbVersion(), {
-  upgrade(db : IDBPDatabase<WTDBSchema>) {
-    db.createObjectStore('articles');
-    db.createObjectStore('publications');
-    db.createObjectStore('authors');
-    db.createObjectStore('origins');
-    db.createObjectStore('audioclips');
-  }
+export const dbPromises: { [key: string]: Promise<IDBPDatabase<WTDBSchema>> } = {};
+
+Array.from(validLanguages.keys()).forEach(lang => {
+  dbPromises[lang] = openDB<WTDBSchema>(dbName(lang), dbVersion(), {
+    upgrade(db: IDBPDatabase<WTDBSchema>) {
+      db.createObjectStore('articles');
+      db.createObjectStore('publications');
+      db.createObjectStore('authors');
+      db.createObjectStore('origins');
+      db.createObjectStore('audioclips');
+    }
+  });
 });
 
-export async function putArticles(articles: Article[]) {
+export async function putArticles(articles: Article[], lang: string) {
     const storeName = 'articles';
-    const tx = (await dbPromise).transaction(storeName, 'readwrite');
+    const tx = (await dbPromises[lang]).transaction(storeName, 'readwrite');
 
     const promises: Promise<string>[] = []
     for (const article of articles) {
@@ -71,9 +79,14 @@ function dbVersion(): number
   return dbv;
 }
 
-export async function putPublications(publications: Publication[]) {
+function dbName(lang: string): string
+{
+  return `${dbPrefix}${dbVersion().toString()}_${lang}`
+}
+
+export async function putPublications(publications: Publication[], lang: string) {
     const storeName = 'publications';
-    const tx = (await dbPromise).transaction(storeName, 'readwrite');
+    const tx = (await dbPromises[lang]).transaction(storeName, 'readwrite');
 
     const promises: Promise<string>[] = []
     for (const publication of publications) {
@@ -83,9 +96,9 @@ export async function putPublications(publications: Publication[]) {
     await Promise.all(promises);
 }
 
-export async function putOrigins(sources: Origin[]) {
+export async function putOrigins(sources: Origin[], lang: string) {
   const storeName = 'origins';
-  const tx = (await dbPromise).transaction(storeName, 'readwrite');
+  const tx = (await dbPromises[lang]).transaction(storeName, 'readwrite');
 
   const promises: Promise<string>[] = []
   for (const source of sources) {
@@ -95,9 +108,9 @@ export async function putOrigins(sources: Origin[]) {
   await Promise.all(promises);
 }
 
-export async function putAudioClips(audioClips: AudioClip[]) {
+export async function putAudioClips(audioClips: AudioClip[], lang: string) {
   const storeName = 'audioclips';
-  const tx = (await dbPromise).transaction(storeName, 'readwrite');
+  const tx = (await dbPromises[lang]).transaction(storeName, 'readwrite');
 
   const promises: Promise<string>[] = []
   for (const audioClip of audioClips) {
@@ -108,9 +121,9 @@ export async function putAudioClips(audioClips: AudioClip[]) {
 }
 
 
-export async function putAuthors(authors: Contributor[]) {
+export async function putAuthors(authors: Contributor[], lang: string) {
     const storeName = 'authors';
-    const tx = (await dbPromise).transaction(storeName, 'readwrite');
+    const tx = (await dbPromises[lang]).transaction(storeName, 'readwrite');
 
     const promises: Promise<string>[] = []
     for (const author of authors) {
@@ -121,11 +134,15 @@ export async function putAuthors(authors: Contributor[]) {
 }
 
 export async function clearCache() {
-    for (const storeName of (await dbPromise).objectStoreNames) {
-        (await dbPromise).clear(storeName);
+  for (const lang in validLanguages.keys()){
+    for (const storeName of (await dbPromises[lang]).objectStoreNames) {
+        (await dbPromises[lang]).clear(storeName);
     }
+  }
 }
 
 export async function clearStoreCache(storeName: "articles" | "publications" | "authors" | "origins" | "audioclips") {
-    (await dbPromise).clear(storeName);
+  for (const lang in validLanguages.keys()){
+    (await dbPromises[lang]).clear(storeName);
+  }
 }
