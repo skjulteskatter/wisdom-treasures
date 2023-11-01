@@ -1,7 +1,7 @@
 // Don't edit! This is just for registering the service worker
 // For more info: https://vite-pwa-org.netlify.app/guide/register-service-worker.html
 
-import { log } from './src/services/logger'
+import { log } from './src/services/env'
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {

@@ -1,8 +1,8 @@
 {
   "name": "wisdom-treasures",
-  "version": "0.0.53",
+  "version": "0.0.54",
   "dbVersion": 27,
-  "swVersion": 10,
+  "swVersion": 11,
   "scripts": {
     "dev": "vite --port 8080",
     "build": "run-p type-check build-only",
