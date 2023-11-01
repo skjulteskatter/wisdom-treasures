@@ -43,7 +43,8 @@
     "dailyword": "Dagens ord",
     "noFavories": "Du har ikke lagret noen favoritter enda 😢",
     "audioClips": "Lydklipp",
-    "logOut": "Logg ut"
+    "logOut": "Logg ut",
+    "getNewManna": "Trekk nytt visdomsmanna"
   },
   "signIn": {
     "logIn": "Logg inn",
@@ -77,11 +78,11 @@
     "change": "Endre passord",
     "passwordChange": "Endre Passord",
     "loginST": "Dette er samme login som SongTreasures",
-    "logInInfo": "Hvis du allerede har en SongTreasures-konto, kan du bruke SongTreasure-påloggingen her på WisdomTreasures"
+    "logInInfo": "Dette er samme login som SongTreasures"
   },
   "home": {
     "welcometo": "Velkommen til",
-    "getWisdomManna": "Trekk et visdomord",
+    "getWisdomManna": "Trekk et visdomsmanna",
     "otherWisdomWords": "Andre visdomsord",
     "dailyWord": "Dagens ord",
     "couldNotFindArticleNumber": "Finner ikke visdomsord med id nummer: ",

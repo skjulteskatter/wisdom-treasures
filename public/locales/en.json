@@ -44,7 +44,8 @@
     "noHistory": "Looks like you have no history yet 😢",
     "noFavories": "Looks like you have no favorites yet 😢",
     "audioClips": "Audio clips",
-    "logOut": "Log out"
+    "logOut": "Log out",
+    "getNewManna": "Draw a new wisdom manna"
   },
   "signIn": {
     "logIn": "Sign in",
@@ -77,11 +78,11 @@
     "passwordDontMatchMsg": "The passwords does not match",
     "passwordChange": "Change password",
     "loginST": "This is the same login as SongTreasures",
-    "logInInfo": "If you already have a SongTreasures account, you can use the SongTreasure login here on WisdomTreasures"
+    "logInInfo": "This is the same login as SongTreasures"
   },
   "home": {
     "welcometo": "Welcome to",
-    "getWisdomManna": "Get wisdom manna",
+    "getWisdomManna": "Draw a wisdom manna",
     "otherWisdomWords": "Other words of wisdom",
     "dailyWord": "Todays Word",
     "couldNotFindArticleNumber": "Could not find article number: ",

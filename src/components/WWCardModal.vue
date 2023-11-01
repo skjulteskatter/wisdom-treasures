@@ -3,7 +3,7 @@
         <WWShowCard :article="currentArticle"/>
         <div v-if="mannaArticleIdList.length > 0" class="w-full h-16 flex items-end justify-center">
             <BaseButton theme="threeDBtn" @click="changeManna()">
-                Generate new Word
+                {{ $t('common.getNewManna') }}
                 <template #icon>
                     <RefreshIcon class="h-5"></RefreshIcon>
                 </template>
