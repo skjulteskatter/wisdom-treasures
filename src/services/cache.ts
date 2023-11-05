@@ -13,7 +13,7 @@ log && console.log("Running on dbVersion: " + dbv);
 const promise = indexedDB.databases();
 promise.then((databases) => {
   for (const database of databases) {
-    for (const lang in validLanguages.keys())
+    for (const lang of validLanguages.keys())
     {
       const name = (database.name ?? "");
       if (name.startsWith(dbPrefix) && name != dbName(lang))

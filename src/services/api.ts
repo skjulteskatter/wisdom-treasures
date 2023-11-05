@@ -62,15 +62,13 @@ export const favorites = {
     },
 };
 
-type ArticleInputBody = {
-    //itemIds: string[] //GUIDS
+type InputBody = {
+    itemIds: string[]
     limit?: number,
     skip: number,
     orderBy: string,
-    //orderByDirection: string,
-    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
-    collectionIds: string[] //GUIDS
-    //parentIds: string[] //GUIDS
+    lastUpdated: string,
+    collectionIds: string[] 
     withContent: boolean
 }
 
@@ -85,7 +83,7 @@ export const articles = {
                 skip: skip,
                 limit: limit,
                 orderBy: "id"
-            } as ArticleInputBody,
+            } as InputBody,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -102,7 +100,7 @@ export const articles = {
             {
                 collectionIds: [WISDOM_WORDS_ID],
                 limit: 1
-            } as ArticleInputBody,
+            } as InputBody,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -113,15 +111,6 @@ export const articles = {
             "4"
         )
     }
-}
-
-type AudioClipInputBody = {
-    limit?: number,
-    skip: number,
-    orderBy: string,
-    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
-    collectionIds: string[] //GUIDS
-    withContent: boolean
 }
 
 export const audioClips = {
@@ -135,7 +124,7 @@ export const audioClips = {
                 skip: skip,
                 limit: limit,
                 orderBy: "id"
-            } as AudioClipInputBody,
+            } as InputBody,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -146,18 +135,6 @@ export const audioClips = {
             "4"
         )
     }
-}
-
-type PublicationInputBody = {
-    //itemIds: string[] //GUIDS
-    limit?: number,
-    skip: number,
-    orderBy: string,
-    //orderByDirection: string,
-    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
-    collectionIds: string[] //GUIDS
-    //parentIds: string[] //GUIDS
-    withContent: boolean
 }
 
 export const publications = {
@@ -171,7 +148,7 @@ export const publications = {
                 skip: skip,
                 limit: limit,
                 orderBy: "id"
-            } as PublicationInputBody,
+            } as InputBody,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -182,16 +159,6 @@ export const publications = {
             "4"
         )
     }
-}
-
-type OriginInputBody = {
-    //itemIds: string[] //GUIDS
-    limit?: number,
-    skip: number,
-    orderBy: string,
-    //orderByDirection: string,
-    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
-    //parentIds: string[] //GUIDS
 }
 
 export const origins = {
@@ -203,7 +170,7 @@ export const origins = {
                 skip: skip,
                 limit: limit,
                 orderBy: "id"
-            } as OriginInputBody,
+            } as InputBody,
             {
                 headers: {
                     "Content-Type": "application/json",
@@ -214,16 +181,6 @@ export const origins = {
             "4"
         )
     }
-}
-
-type AuthorInputBody = {
-    itemIds: string[] //GUIDS
-    limit?: number,
-    skip: number,
-    orderBy: string,
-    //orderByDirection: string,
-    lastUpdated: string, //"2023-08-19T10:36:50.594Z",
-    //parentIds: string[] //GUIDS
 }
 
 export const authors = {
@@ -236,7 +193,7 @@ export const authors = {
                 skip: skip,
                 limit: limit,
                 orderBy: "id"
-            } as AuthorInputBody,
+            } as InputBody,
             {
                 headers: {
                     "Content-Type": "application/json",

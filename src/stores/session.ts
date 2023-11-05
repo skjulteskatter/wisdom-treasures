@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import {fallbackLocale, setLocaleFromSessionStore} from '@/i18n'
+import {fallbackLocale, setLocaleFromSessionStore, validLanguages} from '@/i18n'
 import i18n from '@/i18n'
 import type { InlineNotification } from '@/classes/notification'
 import { articles, audioClips, authors, favorites as favoritesApi, origins, publications, stripe} from '@/services/api'
@@ -258,12 +258,24 @@ export const useSessionStore = defineStore('session', {
 
             try{
                 const newArticlesArray: Article[] = await articles.post(this.locale, new Date(this.latestUpdatedArticle), 0);
-                
+
+                const langArrayMap = new Map<string, Article[]>();
                 for (const article of newArticlesArray) {
-                    this.articles.set(article.id, article);
+                    const language = article.content?.language ?? "";
+                    if (validLanguages.get(language) === undefined) continue
+
+                    const arr = langArrayMap.get(language) || [];
+                    arr.push(article);
+                    langArrayMap.set(language, arr);
+
+                    if (language === this.locale) {
+                        this.articles.set(article.id, article);
+                    }
                 }
 
-                await putArticles(newArticlesArray,this.locale);
+                for (const langArray of langArrayMap){
+                    await putArticles(langArray[1], langArray[0]);
+                }
 
                 lastUpdated.setOrReplace(Date.now(), "articles", this.locale);
             } catch (e){
@@ -299,12 +311,23 @@ export const useSessionStore = defineStore('session', {
             try{
                 const newAudioClipsArray: AudioClip[] = await audioClips.post(this.locale, new Date(this.latestUpdatedAudioClip), 0);
                 
+                const langAudioClipMap = new Map<string, AudioClip[]>();
                 for (const audioClip of newAudioClipsArray) {
-                    if (audioClip.audioFile == undefined || audioClip.audioFile == null || audioClip.audioFile == "") continue;
-                    this.audioClips.set(audioClip.id, audioClip);
+                    const language = audioClip.language ?? "";
+                    if (audioClip.audioFile == undefined || audioClip.audioFile == null || audioClip.audioFile == "" || validLanguages.get(language) === undefined) continue;
+
+                    const arr = langAudioClipMap.get(language) || [];
+                    arr.push(audioClip);
+                    langAudioClipMap.set(language, arr);
+
+                    if (language === this.locale) {
+                        this.audioClips.set(audioClip.id, audioClip);
+                    }
                 }
 
-                await putAudioClips(newAudioClipsArray, this.locale);
+                for (const langArray of langAudioClipMap){
+                    await putAudioClips(langArray[1], langArray[0]);
+                }
 
                 lastUpdated.setOrReplace(Date.now(), "audioclips", this.locale);
             } catch (e){
