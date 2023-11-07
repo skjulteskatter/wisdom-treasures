@@ -111,7 +111,7 @@ export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
 /**
  * Things you do when the user logs in, no matter which method
  */
-export async function userLoggedInCallback(lang: string = undefined){
+export async function userLoggedInCallback(lang: string | undefined = undefined){
     //Should be done without await maybe for asynchronous running
     log && console.log("callback")
 
@@ -166,9 +166,10 @@ export async function updateUser(displayName : string = auth.currentUser?.displa
     }
 }
 
-export async function loginWithProvider(providerName : string, rememberMe: boolean) {
+export async function loginWithProvider(providerName : string) {
 
     let provider = undefined;
+    
     switch (providerName) {
         case "google":
             provider = googleAuthProvider;

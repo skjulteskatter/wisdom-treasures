@@ -1,6 +1,5 @@
-import type { IUser, ISettings, Article, Publication, Contributor, Subscription } from "hiddentreasures-js";
+import type { Article, Publication, Contributor, Subscription } from "hiddentreasures-js";
 import http from "./http";
-import type { HTUser } from "@/classes/HTUser";
 import type { RedirectToCheckoutOptions } from "@stripe/stripe-js";
 import type { IApiProduct } from "@/Interfaces/IApiProduct";
 import type { SessionRequest, SetupResponse } from "songtreasures-api/checkout";
@@ -9,39 +8,11 @@ import type { Origin } from "@/classes/Origin";
 import type { AudioClip } from "@/classes/AudioClip";
 
 export const session = {
-    async getCurrentUser() {
-        return await http.get<HTUser>("api/Session");
-    },
-    saveUser(settings: ISettings) {
-        return http.patch<HTUser>("api/Session", settings);
-    },
-    createUser(displayName: string) {
-        return http.put("api/Session", { displayName });
-    },
-    uploadImage(fileName: string, base64Image: string) {
-        return http.patch<{ image: string }>("api/Session/Image", { fileName, base64Image });
-    },
-    saveProfile(options: {
-        gender?: string;
-        birthDay?: string;
-        address?: {
-            addressLine: string;
-            secondaryAddressLine: string;
-            zipCode: number;
-            city: string;
-            country: string;
-        };
-    }, firstTimeRegistration = false) {
-        return http.patch<IUser>("api/Session/Profile?firstTimeRegistration=" + firstTimeRegistration, options);
-    },
     acceptPrivacyPolicy() {
         return http.get("api/Session/AcceptPolicies?privacyPolicy=true");
     },
     acceptTermsOfService() {
         return http.get("api/Session/AcceptPolicies?termsAndConditions=true");
-    },
-    verifyEmail() {
-        return http.get("api/Session/VerifyEmail");
     },
     resetPassword(email: string) {
         email = encodeURIComponent(email);
@@ -50,7 +21,6 @@ export const session = {
 };
 
 export const favorites = {
-
     get() {
         return http.get<string[]>("api/favorites/items");
     },

@@ -8,22 +8,7 @@ import { log } from '@/services/env'
 import { validLanguages } from '@/i18n'
 const dbPrefix : string = "WTDB"
 
-//Clean up old databases async
-log && console.log("Running on dbVersion: " + dbv);
-const promise = indexedDB.databases();
-promise.then((databases) => {
-  for (const database of databases) {
-    for (const lang of validLanguages.keys())
-    {
-      const name = (database.name ?? "");
-      if (name.startsWith(dbPrefix) && name != dbName(lang))
-      {
-        log && console.log("Deleting old database: " + name);
-        deleteDB(name);
-      }
-    }
-  }
-});
+CleanUpOutdatedCache();
 
 interface WTDBSchema extends DBSchema {
   'articles': {
@@ -61,6 +46,22 @@ Array.from(validLanguages.keys()).forEach(lang => {
     }
   });
 });
+
+function CleanUpOutdatedCache() {
+  log && console.log("Running on dbVersion: " + dbv);
+  const promise = indexedDB.databases();
+  promise.then((databases) => {
+    for (const database of databases) {
+      for (const lang of validLanguages.keys()) {
+        const name = (database.name ?? "");
+        if (name.startsWith(dbPrefix) && name != dbName(lang)) {
+          log && console.log("Deleting old database: " + name);
+          deleteDB(name);
+        }
+      }
+    }
+  });
+}
 
 export async function putArticles(articles: Article[], lang: string) {
     const storeName = 'articles';
