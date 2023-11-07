@@ -288,7 +288,6 @@ import type { User } from 'firebase/auth';
           }
 
         } catch (e: any) {
-          //Use email field as general purpose error message because it gets checked and displayed first.
           this.errors = {email: e.toString(), password: " ", fullName: " ", terms: " ",};
         }
 

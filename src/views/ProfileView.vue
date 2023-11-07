@@ -28,9 +28,6 @@
           <h1 class="text-4xl font-bold font-sans">
             {{getFullName}}
           </h1>
-          <!-- <div class="flex justify-center items-center">
-            <BaseInput :model-value="displayName" :placeholder="getFullName" :nameInput="true"></BaseInput>
-          </div> -->
           <p class="text-sm font-sans opacity-70 mt-1">
             {{getEmail}}
           </p>

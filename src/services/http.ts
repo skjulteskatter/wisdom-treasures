@@ -9,10 +9,17 @@ export type Result<T> = {
     lastUpdated: string;
 }
 
-type ResultError = {
+class ResultError extends Error {
     status: number;
     value: string;
-};
+  
+    constructor(status: number, value: string) {
+        super(value);
+        this.name = 'ResultError';
+        this.status = status;
+        this.value = value;
+    }
+}
 
 class Http {
     public async getCountry(): Promise<string> {

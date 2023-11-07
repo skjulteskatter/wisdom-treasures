@@ -24,7 +24,7 @@
           </span>
           <span v-else class="sm:font-bold text-lg tracking-075">
             {{ $t("home.welcometo") }}
-            <span class="animated-gradient font-bold"> WisdomTreasures </span>
+            <span class="animated-gradient font-bold">WisdomTreasures</span>
           </span>
         </h1>
       </div>
