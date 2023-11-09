@@ -1,10 +1,14 @@
 import { createI18n } from "vue-i18n";
 import "isomorphic-fetch"
-import { log } from '@/services/env'
+import { log, onlyNorwegian } from '@/services/env'
 
-export const validLanguages = new Map<string, string>([
+console.log("onlyNorwegian: ", onlyNorwegian)
+
+export const validLanguages = onlyNorwegian ? new Map<string, string>([
     ["no", "Norsk"],
-    ["en", "English"]
+]) : new Map<string, string>([
+    ["no", "Norsk"],
+    ["en", "English"] 
 ]);
 
 export const fallbackLocale = "no";
@@ -22,7 +26,7 @@ async function fetchTranslations(language: string) : Promise<{ [key: string]: st
     } catch (e) {
         log && console.log("Couldn't fetch translation: " + language + "\nReturn test message");
         return {
-            "test": "This is a test (for vitest)",
+            "": "",
         };
     }
 

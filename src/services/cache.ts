@@ -52,12 +52,10 @@ function CleanUpOutdatedCache() {
   const promise = indexedDB.databases();
   promise.then((databases) => {
     for (const database of databases) {
-      for (const lang of validLanguages.keys()) {
-        const name = (database.name ?? "");
-        if (name.startsWith(dbPrefix) && name != dbName(lang)) {
-          log && console.log("Deleting old database: " + name);
-          deleteDB(name);
-        }
+      const name = (database.name ?? "");
+      if (name.startsWith(dbPrefix) && !allDbNames().includes(name)) {
+        log && console.log("Deleting old database: " + name);
+        deleteDB(name);
       }
     }
   });
@@ -83,6 +81,15 @@ function dbVersion(): number
 function dbName(lang: string): string
 {
   return `${dbPrefix}${dbVersion().toString()}_${lang}`
+}
+
+function allDbNames() : string[]
+{
+  const arr : string [] = [];
+  for (const lang of validLanguages.keys()){
+    arr.push(dbName(lang));
+  }
+  return arr;
 }
 
 export async function putPublications(publications: Publication[], lang: string) {

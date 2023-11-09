@@ -88,30 +88,17 @@ export function getCurrentUserPromise(): Promise<User | null> {
 
         if (user != null) { // Fires only when user logs in
             log && console.log("Lets init store");
-            await userLoggedInCallback();
+            storeInitialized || await userLoggedInCallback();
         }
      }, reject);
   });
 }
 
-export function getDeviceType() : "mobile" | "desktop" | "tablet" | "unknown" {
-    let deviceType = "unknown" as "mobile" | "desktop" | "tablet" | "unknown";
-    const platform = navigator.platform.toLowerCase();
-    if (/(android|webos|iphone|ipad|ipod|blackberry|windows phone)/.test(platform)) {
-        deviceType = 'mobile';
-    } else if (/mac|win|linux/i.test(platform)) {
-        deviceType = 'desktop';
-    } else if (/tablet|ipad/i.test(platform)) {
-        deviceType = 'tablet';
-    } 
-
-    return deviceType
-}
-
 /**
- * Things you do when the user logs in, no matter which method
+ * Things you do when the user logs in
  */
 export async function userLoggedInCallback(lang: string | undefined = undefined){
+    storeInitialized = true;
     //Should be done without await maybe for asynchronous running
     log && console.log("callback")
 
@@ -137,13 +124,12 @@ export async function userLoggedInCallback(lang: string | undefined = undefined)
     ];
 
     if (await store.userHasSubscriptionPromise() == false){
-        store.sessionInitialized = true;
         log && console.log('UserLoggedInCallback: Store initialized, no subscription')
         await Promise.all(withoutSubscription);
+        store.sessionInitialized = true;
         return;
     }
     
-    storeInitialized = true;
     await Promise.all(withoutSubscription.concat(withSubscription));
 
     await store.intitializeArticleNumberLookup(),

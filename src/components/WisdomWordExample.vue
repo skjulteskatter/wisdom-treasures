@@ -20,7 +20,6 @@
 </script>
 
 <style>
-/* @import url('https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&family=Montserrat:wght@400;800&display=swap'); */
 
 /* wisdom Words display */
     .wisdomWordExample{

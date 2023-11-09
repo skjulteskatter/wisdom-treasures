@@ -7,7 +7,6 @@ import type {Article, Contributor, Publication } from 'hiddentreasures-js'
 import { reactive, shallowRef } from 'vue'
 import type { Manna } from '@/classes/manna'
 import { dbPromises, putArticles, putAuthors, putPublications, putOrigins, putAudioClips } from '@/services/cache'
-import type { HTUser } from '@/classes/HTUser'
 import { language, favorites, lastUpdated, lastUserHasSubscription } from '@/services/localStorage'
 import Fuse from 'fuse.js'
 import type { IApiProduct } from '@/Interfaces/IApiProduct'
@@ -62,8 +61,6 @@ export const useSessionStore = defineStore('session', {
             stripeService: undefined as StripeService | undefined,
 
             mannaHistory: [] as Manna[],
-            //Not used
-            HTUser: null as HTUser | null,
 
             publicationIdSearchFilter: [] as string[],
             onlyFavoriteSearchFilter: false as boolean,
@@ -163,6 +160,7 @@ export const useSessionStore = defineStore('session', {
             log && console.log("Initialized Publications, Total time taken : " + timeTaken/1000 + " seconds");
         },
         async initializeAuthors(fromIndexDb: boolean = true) {
+            this.authors = new Map();
             const start = Date.now()
             let oldAuthorArray: Contributor[] = [];
 
@@ -203,7 +201,7 @@ export const useSessionStore = defineStore('session', {
             log && console.log("Initialized Authors, Total time taken : " + timeTaken/1000 + " seconds");
         },
         async initializeSources(fromIndexDb: boolean = true) {
-
+            this.origins = new Map();
             let oldOriginArray: Origin[] = [];
 
             if (fromIndexDb){
@@ -240,6 +238,7 @@ export const useSessionStore = defineStore('session', {
         },
         async initializeArticles(fromIndexDb: boolean = true) {
             const start = Date.now();
+            this.articles = new Map();
             let oldArticlesArray: Article[] = [];
 
             if (fromIndexDb){
@@ -249,12 +248,13 @@ export const useSessionStore = defineStore('session', {
             for (const article of oldArticlesArray) {
                 this.articles.set(article.id, article);
             }
-
             //Get latest date
             this.latestUpdatedArticle = oldArticlesArray.length > 0 ? +(lastUpdated.get("articles", this.locale) || "0") : 0;
             this.latestUpdatedArticle = this.latestUpdatedArticle > 0
                 ? this.latestUpdatedArticle
                 : (oldArticlesArray.reduce((oa, u) => Math.max(oa, Date.parse(u.dateWritten)), 0)) + 1; // Get latest date 
+
+                log && console.log("Articles for language: " + this.locale + " is: ", oldArticlesArray.length);
 
             try{
                 const newArticlesArray: Article[] = await articles.post(this.locale, new Date(this.latestUpdatedArticle), 0);
@@ -292,6 +292,7 @@ export const useSessionStore = defineStore('session', {
             if (!enableAudioClips) return; // TODO remove this when audioclips are ready
 
             const start = Date.now();
+            this.audioClips = new Map();
             let oldAudioClipsArray: AudioClip[] = [];
 
             if (fromIndexDb){

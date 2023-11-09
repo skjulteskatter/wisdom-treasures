@@ -153,7 +153,7 @@ import { STRIPE_MANAGE_LINK } from '@/stores/session';
       },
       async changeLanguage(newLanguage : string){
         if (this.store.locale == newLanguage) return;
-        this.store.setLocale(newLanguage);
+        await this.store.setLocale(newLanguage);
         await userLoggedInCallback(newLanguage);
       },
       setSelectedLanguage(language: string){
