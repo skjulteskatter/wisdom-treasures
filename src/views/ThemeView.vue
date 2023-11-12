@@ -53,10 +53,10 @@
   </div>
 
   
-  <div v-if="(showAudioClips && numberOfAudioClipHits <= 0) || (!showAudioClips && numberOfArticleHits <= 0)" class="grow flex flex-col mt-6">
+  <div v-if="sessionInitialized && ((showAudioClips && numberOfAudioClipHits <= 0) || (!showAudioClips && numberOfArticleHits <= 0))" class="grow flex flex-col mt-6">
       <div class="grow" />
       <QuestionMarkCircleIcon class="w-20 grayscale opacity-80 place-self-center" />
-      <div class="place-self-center">No results found</div>
+      <div class="place-self-center">{{ $t('no-results-found.in-search') }}</div>
       <div class="grow" />
     </div>
 

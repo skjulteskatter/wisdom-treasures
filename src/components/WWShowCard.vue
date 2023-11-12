@@ -29,7 +29,7 @@
                 {{$t('common.seeMore')}}&nbsp;
                 <ClickableLink class="inline-block text-secondary" v-on:link-clicked="navigateToThemePage">{{categoryName}}</ClickableLink>
                 <div v-if="originName.length > 0">
-                  &nbsp;or&nbsp;
+                  &nbsp;or
                   <ClickableLink v-if="originName.length > 0" class="inline-block text-secondary" v-on:link-clicked="navigateToOriginPage">{{originName}}</ClickableLink>
                 </div>
             </div>

@@ -170,5 +170,6 @@
   },
   "reset-all-filters": "Nullstill",
   "save-filters": "Lagre",
-  "back-to-the-top-button-text": "Tilbake til toppen"
+  "back-to-the-top-button-text": "Tilbake til toppen",
+  "no-results-found.in-search": "Ingen treff"
 }

@@ -174,5 +174,6 @@
   "save-filters": "Save",
   "common.theme": "Theme",
   "common.author": "Author",
-  "back-to-the-top-button-text": "Back to the top"
+  "back-to-the-top-button-text": "Back to the top",
+  "no-results-found.in-search": "No results found"
 }
