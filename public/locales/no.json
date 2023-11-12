@@ -17,6 +17,8 @@
     "upload": "Last opp",
     "loading": "Laster",
     "origin": "Kilder",
+    "theme": "Tema",
+    "author": "Forfatter",
     "wisdomManna": "Visdomsmanna",
     "wisdomWord": "Visdomsord",
     "wisdomWords": "Visdomsord",
@@ -165,5 +167,8 @@
     "q2a": "Ditt kjøp eller tilgang bør være tilgjengelig så snart betalingen din er behandlet. Dette kan ta flere minutter, men i de fleste tilfeller bare noen få sekunder. Hvis du opplever problemer, ikke nøl med å kontakte oss.",
     "q3": "Fornyes abonnementet mitt automatisk?",
     "q3a": "Nei, du kan kjøpe et nytt abonnement når det forrige er utdatert."
-  }
+  },
+  "reset-all-filters": "Nullstill",
+  "save-filters": "Lagre",
+  "back-to-the-top-button-text": "Tilbake til toppen"
 }

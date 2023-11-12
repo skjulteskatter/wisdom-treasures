@@ -1,6 +1,6 @@
 <template>
     <BaseButton @click="scrollToTop" theme="threeDBtn" class="opacity-0 shadow-xl" :class="[{'buttonAppear': showButton === true, 'buttonDisAppear' : showButton === false, 'hidden' : initialOff}]">
-        Back to the top
+        {{ $t('back-to-the-top-button-text') }}
     </BaseButton>
 </template>
 

@@ -17,6 +17,8 @@
     "upload": "Upload",
     "loading": "Loading",
     "origin": "Origin",
+    "theme": "Theme",
+    "author": "Author",
     "wisdomManna": "Wisdom Manna",
     "wisdomWord": "Word of wisdom",
     "wisdomWords": "Words of wisdom",
@@ -167,5 +169,10 @@
     "q2a": "Your purchase or access should be available as soon as your payment has been processed. This can take several minutes, but in most cases just a few seconds. If you experience any problems, feel free to contact us",
     "q3": "Does my subscription auto renew?",
     "q3a": "No, you can buy a new subscription when the previous one is outdated"
-  }
+  },
+  "reset-all-filters": "Reset all",
+  "save-filters": "Save",
+  "common.theme": "Theme",
+  "common.author": "Author",
+  "back-to-the-top-button-text": "Back to the top"
 }

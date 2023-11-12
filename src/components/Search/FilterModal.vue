@@ -8,15 +8,15 @@
 		leave-to-class="transform scale-95 opacity-0"
 		>
         <div :show="true" v-if="show" @close="closeWithReturnArrays">
-                <div class="grid grid-cols-4 gap-2 mt-4 items-center sm:w-1/2">
-                    <div id="favorites" @click="showPublications = false, showAuthors = false" class="rounded-md border-2 sm:border-none border-white/80 flex justify-center items-center transition cursor-pointer">
+                <div class="flex gap-2 mt-4  sm:w-1/2">
+                    <div id="favorites" @click="showPublications = false, showAuthors = false" class="rounded-md border-2 sm:border-none border-white/80 flex justify-center items-center transition cursor-pointer grow">
                         <label class="w-full h-full flex justify-center items-center">
                             <BaseCheckbox class="w-full h-full absolute opacity-0 cursor-pointer " v-model="store.onlyFavoriteSearchFilter" @click="closeWithReturnArrays(true)"/>
-                            <p :class="[store.onlyFavoriteSearchFilter ? 'bg-[#acc0c572] sm:bg-[#ACC0C5]  shadow-inner' : 'bg-primary shadow-md'  ]" class="w-full h-full rounded-md text-center py-1 text-white/90 text-sm sm:font-semibold  cursor-pointer">Favorites</p>
+                            <p :class="[store.onlyFavoriteSearchFilter ? 'bg-[#acc0c572] sm:bg-[#ACC0C5]  shadow-inner' : 'bg-primary shadow-md'  ]" class="w-full h-full rounded-md text-center py-1 text-white/90 text-sm sm:font-semibold  cursor-pointer">{{ $t('nosub.favorites.title') }}</p>
                         </label>
                     </div>
-                    <div id="authors">
-                        <button v-if="!hideAuthors" @click="showAuthors = !showAuthors, showPublications = false, showOrigins = false" class="rounded-md border-2 sm:border-none border-white/80 w-full py-1 text-sm bg-primary shadow-md text-white/90 sm:font-semibold">Author</button>
+                    <div id="authors" v-if="!hideAuthors" class="grow">
+                        <button @click="showAuthors = !showAuthors, showPublications = false, showOrigins = false" class="rounded-md border-2 sm:border-none border-white/80 w-full py-1 text-sm bg-primary shadow-md text-white/90 sm:font-semibold">{{ $t('common.author') }}</button>
                         <transition
                             enter-active-class="transition duration-100 ease-out"
                             enter-from-class="transform scale-95 opacity-0"
@@ -33,14 +33,14 @@
                                     </label>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 sticky w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
-                                    <button @click="resetAuthorFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
-                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
+                                    <button @click="resetAuthorFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">{{ $t('reset-all-filters') }}</button>
+                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">{{ $t('save-filters') }}</button>
                                 </div>
                             </div>
                         </transition>
                     </div>
-                    <div id="publications">
-                        <button v-if="!hidePublications" @click="showPublications = !showPublications, showAuthors = false, showOrigins = false" class="rounded-md border-2 sm:border-none border-white/80 w-full py-1 bg-primary text-sm shadow-md text-white/90 sm:font-semibold">Publication</button>
+                    <div id="publications" v-if="!hidePublications" class="grow">
+                        <button @click="showPublications = !showPublications, showAuthors = false, showOrigins = false" class="rounded-md border-2 sm:border-none border-white/80 w-full py-1 bg-primary text-sm shadow-md text-white/90 sm:font-semibold">{{ $t('common.theme') }}</button>
                         <transition
                             enter-active-class="transition duration-100 ease-out"
                             enter-from-class="transform scale-95 opacity-0"
@@ -57,15 +57,15 @@
                                     </label>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 sticky w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
-                                    <button @click="resetPublicationFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
-                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
+                                    <button @click="resetPublicationFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">{{ $t('reset-all-filters') }}</button>
+                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">{{ $t('save-filters') }}</button>
                                 </div>
                             </div>
                             
                         </transition>
                     </div>
-                    <div id="origins">
-                        <button v-if="!hideOrigins" @click="showOrigins = !showOrigins, showAuthors = false, showPublications = false" class="rounded-md border-2 sm:border-none border-white/80 w-full py-1 bg-primary text-sm shadow-md text-white/90 sm:font-semibold">Origin</button>
+                    <div id="origins" v-if="!hideOrigins" class="grow">
+                        <button @click="showOrigins = !showOrigins, showAuthors = false, showPublications = false" class="rounded-md border-2 sm:border-none border-white/80 w-full py-1 bg-primary text-sm shadow-md text-white/90 sm:font-semibold">{{ $t('common.origin') }}</button>
                         <transition
                             enter-active-class="transition duration-100 ease-out"
                             enter-from-class="transform scale-95 opacity-0"
@@ -82,8 +82,8 @@
                                     </label>
                                 </div>
                                 <div class="grid grid-cols-2 gap-2 sticky w-full bottom-0 left-0 p-2 bg-[color:var(--wt-c-white-soft)]">
-                                    <button @click="resetOriginFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Reset all</button>
-                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">Save</button>
+                                    <button @click="resetOriginFilters()" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">{{ $t('reset-all-filters') }}</button>
+                                    <button @click="closeWithReturnArrays(false)" class="py-1 font-semibold text-white/90 bg-primary rounded-md shadow-lg">{{ $t('save-filters') }}</button>
                                 </div>
                             </div>
                         </transition>
