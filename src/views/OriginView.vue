@@ -51,6 +51,14 @@
         <Loader :loading="loadingMore" class="mt-2" />
       </div>
     </div>
+
+    <div v-if="(showAudioClips && numberOfAudioClipHits <= 0) || (!showAudioClips && numberOfArticleHits <= 0)" class="grow flex flex-col mt-6">
+      <div class="grow" />
+      <QuestionMarkCircleIcon class="w-20 grayscale opacity-80 place-self-center" />
+      <div class="place-self-center">No results found</div>
+      <div class="grow" />
+    </div>
+
     <WWCard id="placeHolderWWforlinkedwords" v-if="linkedArticle !== null" :article="linkedArticle" class="hidden"/>
 
   </main>
@@ -74,6 +82,7 @@ import MannaButton from '@/components/MannaButton.vue';
 import type { Origin } from '@/classes/Origin';
 import type { AudioClip } from '@/classes/AudioClip';
 import { log } from '@/services/env';
+import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
 
 export default defineComponent({
   name: "ThemeView",
@@ -106,7 +115,8 @@ export default defineComponent({
     AudioCard,
     Loader,
     MannaButton,
-    MultiSearch
+    MultiSearch,
+    QuestionMarkCircleIcon
   },
   computed: {
     linkedArticle(): null | Article {
@@ -156,6 +166,12 @@ export default defineComponent({
     },
     articleIds(): string[] {
       return this.articles.map(x => x.id);
+    },
+    numberOfArticleHits(): number {
+      return this.searchArticles.length + this.articleHitsPagination.length;
+    },
+    numberOfAudioClipHits(): number {
+      return this.searchAudioClips.length + this.audioClipHitsPagination.length;
     },
   },
   watch: {

@@ -245,24 +245,12 @@ export default defineComponent({
         },
         resetAuthorFilters(){
             this.authorCheckBoxArray = [];
-            this.store.authorIdSearchFilter = [];
-
-            this.syncFilter();
         },
         resetPublicationFilters(){
             this.publicationCheckBoxArray = [];
-            this.store.publicationIdSearchFilter = [];
-
-            this.syncFilter();
         },
         resetOriginFilters(){
             this.originCheckBoxArray = [];
-            this.store.originIdSearchFilter = [];
-
-            this.syncFilter();
-        },
-        syncFilter(){
-            this.store.syncSearchFilter++;
         }
     },
 });

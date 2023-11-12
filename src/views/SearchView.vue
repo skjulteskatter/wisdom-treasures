@@ -57,6 +57,14 @@
             <Loader :loading="loadingMore" class="mt-2"/>
         </div>
     </div>
+
+    
+    <div v-if="(showAudioClips && numberOfAudioClipHits <= 0) || (!showAudioClips && numberOfArticleHits <= 0)" class="grow flex flex-col mt-6">
+      <div class="grow" />
+      <QuestionMarkCircleIcon class="w-20 grayscale opacity-80 place-self-center" />
+      <div class="place-self-center">No results found</div>
+      <div class="grow" />
+    </div>
     
   </main>
 </template>
@@ -74,6 +82,7 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
 import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import AudioCard from '@/components/AudioCard.vue';
 import type { AudioClip } from '@/classes/AudioClip';
+import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
 
   export default defineComponent({
     name: "SearchView",
@@ -104,6 +113,7 @@ import type { AudioClip } from '@/classes/AudioClip';
         ScrollToTopButton,
         ToggleSlideButton,
         AudioCard,
+        QuestionMarkCircleIcon
     },
     mounted() {
         window.addEventListener('scroll', this.onScroll);
@@ -189,6 +199,12 @@ import type { AudioClip } from '@/classes/AudioClip';
         homePath(): string {
           let route = (this.$router.getRoutes().find(x => x.name == 'search')?.path || "⛄");
           return !route.endsWith("/") ? route : route.slice(0, route.length - 1);
+        },
+        numberOfArticleHits(): number {
+          return this.articleHits.length + this.articleHitsPagination.length;
+        },
+        numberOfAudioClipHits(): number {
+          return this.audioClipHits.length + this.audioClipHitsPagination.length;
         },
     }
   });

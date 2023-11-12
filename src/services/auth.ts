@@ -108,7 +108,11 @@ export async function userLoggedInCallback(lang: string | undefined = undefined)
         await store.initializeLanguage();
 
     log && console.log("UserLoggedInCallback: Getting ready to initialize! What is user status: ", auth.currentUser);
-    if (auth.currentUser == null) return;
+    if (auth.currentUser == null) 
+    {
+        storeInitialized = false;
+        return;
+    }
 
     const withoutSubscription = [
         store.intitializeStripeService(),
