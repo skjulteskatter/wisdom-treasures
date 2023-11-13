@@ -49,7 +49,6 @@ export async function loginWithEmailAndPassword(email: string, password: string,
 
 export function pushToDashboardOrRedirectLink(){
     const store = useSessionStore();
-
     let name = store.$state.redirectAfterLoginName;
     store.$state.redirectAfterLoginName = "";
 
@@ -64,33 +63,33 @@ export async function signupWithEmailAndPassword(email: string, password: string
     await sendEmailVerification(userCredentials.user);
 }
 
-let storeInitialized = false;
 let userLoaded: boolean = false || !!auth.currentUser;
 export function getCurrentUserPromise(): Promise<User | null> {
 
   // eslint-disable-next-line no-async-promise-executor
   return new Promise(async (resolve, reject) => {
-     if (userLoaded) {
-            resolve(auth.currentUser);
-            if (!storeInitialized){
-                log && console.log("getCurrentUserPromise: Initializing store");
-                await userLoggedInCallback();
-            } else {
-                log && console.log("getCurrentUserPromise: Store alreday init");
-            }
-            return;
-     }
-     const unsubscribe = auth.onAuthStateChanged(async (user : User | null) => {
-        log && console.log("Inside onAuthStateChanges promise");
-        userLoaded = true;
-        unsubscribe();
-        resolve(user);
-
-        if (user != null) { // Fires only when user logs in
-            log && console.log("Lets init store");
-            storeInitialized || await userLoggedInCallback();
+    const store = useSessionStore();
+    if (userLoaded) {
+        resolve(auth.currentUser);
+        if (!store.userLoggedInCallbackHasbeenCalled){
+            log && console.log("getCurrentUserPromise: Initializing store");
+            await userLoggedInCallback();
+        } else {
+            log && console.log("getCurrentUserPromise: Store alreday init");
         }
-     }, reject);
+        return;
+    }
+    const unsubscribe = auth.onAuthStateChanged(async (user : User | null) => {
+       log && console.log("Inside onAuthStateChanges promise");
+       userLoaded = true;
+       unsubscribe();
+       resolve(user);
+
+       if (user != null) { // Fires only when user logs in
+           log && console.log("Lets init store");
+           store.userLoggedInCallbackHasbeenCalled || await userLoggedInCallback();
+       }
+    }, reject);
   });
 }
 
@@ -98,11 +97,10 @@ export function getCurrentUserPromise(): Promise<User | null> {
  * Things you do when the user logs in
  */
 export async function userLoggedInCallback(lang: string | undefined = undefined){
-    storeInitialized = true;
+    const store = useSessionStore();
+    store.userLoggedInCallbackHasbeenCalled = true;
     //Should be done without await maybe for asynchronous running
     log && console.log("callback")
-
-    const store = useSessionStore();
 
     if (lang == undefined)
         await store.initializeLanguage();
@@ -110,7 +108,7 @@ export async function userLoggedInCallback(lang: string | undefined = undefined)
     log && console.log("UserLoggedInCallback: Getting ready to initialize! What is user status: ", auth.currentUser);
     if (auth.currentUser == null) 
     {
-        storeInitialized = false;
+        store.userLoggedInCallbackHasbeenCalled = false;
         return;
     }
 
@@ -203,5 +201,4 @@ export async function resetPassword(oldPassword: string, password: string) : Pro
         log && console.log(e);
         return false;
     }
-   
 }

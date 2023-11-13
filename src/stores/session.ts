@@ -82,6 +82,8 @@ export const useSessionStore = defineStore('session', {
             latestUpdatedAudioClip: 0 as number,
 
             currentAudioPlayingId: "" as string,
+
+            userLoggedInCallbackHasbeenCalled: false as boolean,
         }
     },
     actions: {
@@ -425,6 +427,10 @@ export const useSessionStore = defineStore('session', {
             }
         },
         async initializeLanguage(): Promise<string>{
+            const lang = language.get();
+            return await this.setLocale(lang ?? fallbackLocale);
+        },
+        async resetStore(){
             const lang = language.get();
             return await this.setLocale(lang ?? fallbackLocale);
         }
