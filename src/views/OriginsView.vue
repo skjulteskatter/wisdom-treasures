@@ -18,10 +18,8 @@
     </div>
     <div id="wrapper" class="mt-10 flex pl-5 sm:pl-0 pt-5 sm:px-0" :class="{'pr-5' : searchedWord}">
       <div class="w-full">
-        <div id="ThemeCards" class="md:flex md:flex-wrap sm:gap-10 gap-2 justify-around">
-          <div v-for="(origin, index) in searchedOrigins" :key="origin.id" class="flex flex-col">
-            <!--<ThemeCard :publication="publication" class="grow" 
-              :strech-y="true"/>-->
+        <div id="OriginCards" class="flex flex-wrap">
+          <div v-for="(origin, index) in searchedOrigins" :key="origin.id" class="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex-shrink-0">
               <Origin :origin="origin"></Origin>
               <div :id="`${idLookUp.get(getFirstLetter(origin)) === index ? getFirstLetter(origin) : index.toString()}${idSalt}`"
                 class="absolute -top-[4.5rem] thisIsJustForScrollingpurposes"

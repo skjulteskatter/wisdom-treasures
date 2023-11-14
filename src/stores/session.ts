@@ -57,6 +57,7 @@ export const useSessionStore = defineStore('session', {
             articleNumberLookup: reactive(new Map) as Map<number, string>,
 
             sessionInitialized: false as boolean,
+            articlesInitialized: false as boolean,
 
             stripeService: undefined as StripeService | undefined,
 
@@ -74,12 +75,6 @@ export const useSessionStore = defineStore('session', {
             serachEvent: false as boolean,
 
             userHasSubscription: undefined as boolean | undefined,
-
-            latestUpdatedArticle: 0 as number,
-            latestUpdatedAuthor: 0 as number,
-            latestUpdatedPublication: 0 as number,
-            latestUpdatedOrigin: 0 as number,
-            latestUpdatedAudioClip: 0 as number,
 
             currentAudioPlayingId: "" as string,
 
@@ -135,10 +130,10 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedPublication = oldPublicationArray.length > 0 ? +(lastUpdated.get("publications", this.locale) || "0") : 0;
+            const latestUpdatedPublication = oldPublicationArray.length > 0 ? +(lastUpdated.get("publications", this.locale) || "0") : 0;
 
             try {
-                const newPublicationArray: Publication[] = await publications.post(this.locale, new Date(this.latestUpdatedPublication), 0);
+                const newPublicationArray: Publication[] = await publications.post(this.locale, new Date(latestUpdatedPublication), 0);
                 
                 for (const publication of newPublicationArray) {
                     this.publications.set(publication.id, publication);
@@ -161,26 +156,25 @@ export const useSessionStore = defineStore('session', {
             const timeTaken = Date.now() - start;
             log && console.log("Initialized Publications, Total time taken : " + timeTaken/1000 + " seconds");
         },
-        async initializeAuthors(fromIndexDb: boolean = true) {
+        async initializeAuthors(authorIds: string[] | undefined = undefined) {
             this.authors = new Map();
             const start = Date.now()
             let oldAuthorArray: Contributor[] = [];
 
-            if (fromIndexDb){
-                oldAuthorArray = await (await dbPromises[this.locale]).getAll('authors');
-            }
+            oldAuthorArray = await (await dbPromises[this.locale]).getAll('authors');
             
             for (const author of oldAuthorArray) {
                 this.authors.set(author.id, author);
             }
 
             //Get latest date
-            this.latestUpdatedAuthor = oldAuthorArray.length > 0 ? +(lastUpdated.get("authors", this.locale) || "0") : 0;
+            const latestUpdatedAuthor = oldAuthorArray.length > 0 ? +(lastUpdated.get("authors", this.locale) || "0") : 0;
 
-            const authorIdsFromArticles = Array.from(this.articles.values()).map(x => x.authorId);
+            authorIds = authorIds ?? Array.from(this.articles.values()).map(x => x.authorId);
+            if (authorIds.length == 0) return;
 
             try{
-                const newAuthorsArray: Contributor[] = await authors.post(this.locale, new Date(this.latestUpdatedAuthor), 0, authorIdsFromArticles);
+                const newAuthorsArray: Contributor[] = await authors.post(this.locale, new Date(latestUpdatedAuthor), 0, authorIds);
                 
                 for (const author of newAuthorsArray) {
                     this.authors.set(author.id, author);
@@ -215,10 +209,10 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedOrigin = oldOriginArray.length > 0 ? +(lastUpdated.get("origins", this.locale) || "0") : 0;
+            const latestUpdatedOrigin = oldOriginArray.length > 0 ? +(lastUpdated.get("origins", this.locale) || "0") : 0;
 
             try{
-                const newOriginssArray: Origin[] = await origins.post(this.locale, new Date(this.latestUpdatedOrigin), 0);
+                const newOriginssArray: Origin[] = await origins.post(this.locale, new Date(latestUpdatedOrigin), 0);
                 
                 for (const origin of newOriginssArray) {
                     this.origins.set(origin.id, origin);
@@ -238,46 +232,66 @@ export const useSessionStore = defineStore('session', {
             }
             this.fuseOrigins = new Fuse(Array.from(this.origins.values()), option, Fuse.createIndex(option.keys, Array.from(this.origins.values())));
         },
-        async initializeArticles(fromIndexDb: boolean = true) {
-            const start = Date.now();
+        async initializeOldArticles() {
             this.articles = new Map();
             let oldArticlesArray: Article[] = [];
 
-            if (fromIndexDb){
-                oldArticlesArray = await (await dbPromises[this.locale]).getAll('articles');
-            }
-
+            oldArticlesArray = await (await dbPromises[this.locale]).getAll('articles');
+            
             for (const article of oldArticlesArray) {
                 this.articles.set(article.id, article);
             }
-            //Get latest date
-            this.latestUpdatedArticle = oldArticlesArray.length > 0 ? +(lastUpdated.get("articles", this.locale) || "0") : 0;
-            this.latestUpdatedArticle = this.latestUpdatedArticle > 0
-                ? this.latestUpdatedArticle
-                : (oldArticlesArray.reduce((oa, u) => Math.max(oa, Date.parse(u.dateWritten)), 0)) + 1; // Get latest date 
 
-                log && console.log("Articles for language: " + this.locale + " is: ", oldArticlesArray.length);
+            await this.initializeAuthors();
+
+            for (const article of oldArticlesArray){
+                this.articleNumberLookup.set(article.number, article.id);
+            }
+        },
+        async initializeNewArticles() {
+            const start = Date.now();
+
+            //Get latest date
+            let latestUpdatedArticle = this.articles.size > 0 ? +(lastUpdated.get("articles", this.locale) || "0") : 0;
+            latestUpdatedArticle = latestUpdatedArticle > 0
+                ? latestUpdatedArticle
+                : (Array.from(this.articles.values()).reduce((oa, u) => Math.max(oa, Date.parse(u.dateWritten)), 0)) + 1; // Get latest date 
 
             try{
-                const newArticlesArray: Article[] = await articles.post(this.locale, new Date(this.latestUpdatedArticle), 0);
 
-                const langArrayMap = new Map<string, Article[]>();
-                for (const article of newArticlesArray) {
-                    const language = article.content?.language ?? "";
-                    if (validLanguages.get(language) === undefined) continue
+                const paginationInterval = 200;
+                let paginationIndex = 0;
+                let newArticlesArray: Article[] = [];
+                do {
 
-                    const arr = langArrayMap.get(language) || [];
-                    arr.push(article);
-                    langArrayMap.set(language, arr);
+                    newArticlesArray = await articles.post(this.locale, new Date(latestUpdatedArticle), paginationIndex, paginationInterval);
 
-                    if (language === this.locale) {
-                        this.articles.set(article.id, article);
+                    const langArrayMap = new Map<string, Article[]>();
+                    for (const article of newArticlesArray) {
+                        const language = article.content?.language ?? "";
+                        if (validLanguages.get(language) === undefined) continue
+
+                        const arr = langArrayMap.get(language) || [];
+                        arr.push(article);
+                        langArrayMap.set(language, arr);
+
+                        if (language === this.locale) {
+                            this.articles.set(article.id, article);
+                        }
                     }
-                }
 
-                for (const langArray of langArrayMap){
-                    await putArticles(langArray[1], langArray[0]);
-                }
+                    for (const langArray of langArrayMap){
+                        await putArticles(langArray[1], langArray[0]);
+                    }
+
+                    await this.initializeAuthors(newArticlesArray.filter(x => !Array.from(this.authors.values()).some(y => y.id == x.authorId)).map(x => x.authorId));
+
+                    for (const article of newArticlesArray){
+                        this.articleNumberLookup.set(article.number, article.id);
+                    }
+
+                    paginationIndex += paginationInterval;
+                } while (newArticlesArray.length >= paginationInterval)
 
                 lastUpdated.setOrReplace(Date.now(), "articles", this.locale);
             } catch (e){
@@ -290,7 +304,7 @@ export const useSessionStore = defineStore('session', {
 
         },
         async initializeAudioClips(fromIndexDb: boolean = true) {
-
+            
             if (!enableAudioClips) return; // TODO remove this when audioclips are ready
 
             const start = Date.now();
@@ -306,13 +320,13 @@ export const useSessionStore = defineStore('session', {
             }
 
             //Get latest date
-            this.latestUpdatedAudioClip = oldAudioClipsArray.length > 0 ? +(lastUpdated.get("audioclips", this.locale) || "0") : 0;
-            this.latestUpdatedAudioClip = this.latestUpdatedAudioClip > 0
-                ? this.latestUpdatedAudioClip
+            let latestUpdatedAudioClip = oldAudioClipsArray.length > 0 ? +(lastUpdated.get("audioclips", this.locale) || "0") : 0;
+            latestUpdatedAudioClip = latestUpdatedAudioClip > 0
+                ? latestUpdatedAudioClip
                 : (oldAudioClipsArray.reduce((oa, u) => Math.max(oa, Date.parse(u.date)), 0)) + 1; // Get latest date 
 
             try{
-                const newAudioClipsArray: AudioClip[] = await audioClips.post(this.locale, new Date(this.latestUpdatedAudioClip), 0);
+                const newAudioClipsArray: AudioClip[] = await audioClips.post(this.locale, new Date(latestUpdatedAudioClip), 0);
                 
                 const langAudioClipMap = new Map<string, AudioClip[]>();
                 for (const audioClip of newAudioClipsArray) {
@@ -359,14 +373,6 @@ export const useSessionStore = defineStore('session', {
                     this.favorites.push(key);
                 }
             }
-        },
-        async intitializeArticleNumberLookup(){
-            const start = Date.now()
-            for (const [key,value] of this.articles){
-                this.articleNumberLookup.set(value.number, key);
-            }
-            const timeTaken = Date.now() - start;
-            log && console.log("Initialized Articlenumberlookup, Total time taken : " + timeTaken/1000 + " seconds");
         },
         async initializeProducts(){
             try {

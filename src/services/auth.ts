@@ -120,9 +120,9 @@ export async function userLoggedInCallback(lang: string | undefined = undefined)
     const withSubscription = [
         store.initializeFavorites(),
         store.initializePublications(),
-        store.initializeArticles(),
         store.initializeAudioClips(),
         store.initializeSources(),
+        store.initializeOldArticles(),
     ];
 
     if (await store.userHasSubscriptionPromise() == false){
@@ -134,9 +134,9 @@ export async function userLoggedInCallback(lang: string | undefined = undefined)
     
     await Promise.all(withoutSubscription.concat(withSubscription));
 
-    await store.intitializeArticleNumberLookup(),
-    await store.initializeAuthors();
     store.sessionInitialized = true;
+    await store.initializeNewArticles();
+    store.articlesInitialized = true;
     log && console.log('UserLoggedInCallback: Store initialized, subscription');
 }
 

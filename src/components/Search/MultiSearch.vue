@@ -190,11 +190,14 @@ export default defineComponent({
                 }
 
                 this.$emit('authors:authorHits', this.onlySearchForArticlesAndAudioClips ? [] : this.authorHits);
-
                 if (this.store.fuseOrigins !== undefined){
                     const result = this.store.fuseOrigins.search(searchWord);
                     this.originHits = result.map((x: { item: any; }) => x.item);
                 }
+
+                console.log("this.originHits:", this.originHits.length);
+                console.log("onlySearchForArticlesAndAudioClips:", this.onlySearchForArticlesAndAudioClips);
+                
 
                 this.$emit('origins:originHits', this.onlySearchForArticlesAndAudioClips ? [] : this.originHits);
 

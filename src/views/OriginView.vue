@@ -223,20 +223,20 @@ export default defineComponent({
     fillRandomArticles(paginationCount: number) {
       let articleHitsMax = this.searchArticles.length;
       for (let i = 0; i < Math.min(paginationCount, articleHitsMax); i++) {
-        let nextArticle = this.searchArticles[i]
+        let nextArticle = this.searchArticles[0]
         if (nextArticle != undefined) {
           this.articleHitsPagination.push(nextArticle);
-          this.searchArticles.splice(i, 1);
+          this.searchArticles.splice(0, 1);
         }
       }
     },
     fillRandomAudioClips(paginationCount: number) {
       let audioClipHitsMax = this.searchAudioClips.length;
       for (let i = 0; i < Math.min(paginationCount, audioClipHitsMax); i++) {
-        let nextAudioClip = this.searchAudioClips[i]
+        let nextAudioClip = this.searchAudioClips[0]
         if (nextAudioClip != undefined) {
           this.audioClipHitsPagination.push(nextAudioClip);
-          this.searchAudioClips.splice(i, 1);
+          this.searchAudioClips.splice(0, 1);
         }
       }
     },

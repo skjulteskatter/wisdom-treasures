@@ -7,7 +7,7 @@
     </div>
     <div class="bg-primary sm:bg-transparent shadow-md sm:shadow-none flex items-center py-4">
         <BackButton/>
-        <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">Search</h1>
+        <h1 class="absolute left-0 right-0 text-center text-base sm:text-xl font-bold text-white sm:text-inherit tracking-wide">{{ $t('search') }}</h1>
     </div>
     <MultiSearch 
         @articles:article-hits="setArticles"
@@ -15,14 +15,12 @@
         @searched-word:searched-word="setSearchedWord"
         @authors:author-hits="setAuthors"
         @themes:theme-hits="setThemes"
+        @origins:originHits="setOrigins"
         @search-loading:search-loading="setSearchLoading"
         :search-on-load="true">
     </MultiSearch>
 
     <ToggleSlideButton :label="'Show audio files'" class="sm:w-1/2 mt-6 mx-10 sm:ml-auto sm:mr-auto" v-model="showAudioClips" @change="resetPagination()" />
-    <div v-if="searchedWord && themeHits.length+articleHitsPagination.length === 0" class=" ml-5 mt-5 sm:ml-0 text-[color:var(--wt-color-text-grey)] opacity-80">
-        Looks like we don't have what you're looking for...
-    </div>
     <div class="mx-5 sm:mx-0">
         <div v-if="searchLoading" class="absolute h-full w-full z-40 glass">
             <div class="h-40">
@@ -30,15 +28,23 @@
             </div>
         </div>
         <div v-if="searchedWord.length > 0 && themeHits.length > 0" id="ThemeSection" class="mt-4">
-            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">THEMES</h1>
+            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{ ($t('common.themes')).toUpperCase() }}</h1>
             <div id="ThemeCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(theme, index) in themeHits" :key="index.toString() + forLoopKey.toString()" class="flex flex-col">
                     <ThemeCard :publication="theme" class="grow" :strech-y="true"/>
                 </div>
             </div>
         </div>
+        <div v-if="searchedWord.length > 0 && originHits.length > 0" id="OriginSection" class="mt-4">
+            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{ $t('common.origin').toUpperCase() }}</h1>
+            <div id="OriginCards" class="flex flex-wrap mt-4">
+                <div v-for="(origin, index) in originHits" :key="index.toString() + forLoopKey.toString()" class="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/5 xl:w-1/6 flex-shrink-0 mt-4">
+                    <Origin :origin="origin"/>
+                </div>
+            </div>
+        </div>
         <div v-show="!showAudioClips" v-if="articleHitsPagination.length > 0" id="WordSection" class="mt-4">
-            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">WORDS</h1>
+            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{ $t('common.wisdomWords').toUpperCase() }}</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(article, index) in articleHitsPagination" :key="index.toString() + forLoopKey.toString()" class="flex flex-col">
                     <WWCard :article="article" class="grow" :strech-y="true"/>
@@ -46,7 +52,7 @@
             </div>
         </div>
         <div v-show="showAudioClips" v-if="audioClipHitsPagination.length > 0" id="WordSection" class="mt-4">
-            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">AUDIOCLIPS</h1>
+            <h1 class="text-base font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80">{{ $t('common.audioClips').toUpperCase() }}</h1>
             <div id="WWCards" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2 mt-4">
                 <div v-for="(audioClip, index) in audioClipHitsPagination" :key="index.toString() + forLoopKey.toString()" class="flex flex-col">
                     <AudioCard :audio-clip="audioClip" class="grow" :strech-y="true"/>
@@ -83,6 +89,8 @@ import ToggleSlideButton from '@/components/ToggleSlideButton.vue';
 import AudioCard from '@/components/AudioCard.vue';
 import type { AudioClip } from '@/classes/AudioClip';
 import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
+import Origin from '@/components/Origin.vue';
+import type { Origin as OriginClass } from '@/classes/Origin';
 
   export default defineComponent({
     name: "SearchView",
@@ -94,6 +102,7 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
             audioClipHits: [] as AudioClip[],
             authorHits: [] as Contributor[],
             themeHits: [] as Publication[],
+            originHits: [] as OriginClass[],
             searchLoading: false as boolean,
             loadingMore: false as boolean,
             articleHitsPagination: [] as Article[],
@@ -113,7 +122,8 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
         ScrollToTopButton,
         ToggleSlideButton,
         AudioCard,
-        QuestionMarkCircleIcon
+        QuestionMarkCircleIcon,
+        Origin
     },
     mounted() {
         window.addEventListener('scroll', this.onScroll);
@@ -142,6 +152,11 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
         },
         setThemes(value : Publication[]){
             this.themeHits = value;
+            this.refreshForLoopKey();
+        },
+        setOrigins(value : OriginClass[]){
+            console.log(value.length);
+            this.originHits = value;
             this.refreshForLoopKey();
         },
         setAuthors(value : Contributor[]){
@@ -174,20 +189,20 @@ import { QuestionMarkCircleIcon } from '@heroicons/vue/outline';
         fillRandomArticles(paginationCount : number){
             let articleHitsMax = this.articleHits.length;
             for (let i = 0; i < Math.min(paginationCount, articleHitsMax); i++) {
-                let nextArticle = this.articleHits[i]
+                let nextArticle = this.articleHits[0]
                 if (nextArticle != undefined){
                     this.articleHitsPagination.push(nextArticle);
-                    this.articleHits.splice(i, 1);
+                    this.articleHits.splice(0, 1);
                 }
             }
         },
         fillRandomAudioClips(paginationCount : number){
             let audioClipHitsMax = this.audioClipHits.length;
             for (let i = 0; i < Math.min(paginationCount, audioClipHitsMax); i++) {
-                let nextAudioClip = this.audioClipHits[i]
+                let nextAudioClip = this.audioClipHits[0]
                 if (nextAudioClip != undefined){
                     this.audioClipHitsPagination.push(nextAudioClip);
-                    this.audioClipHits.splice(i, 1);
+                    this.audioClipHits.splice(0, 1);
                 }
             }
         },

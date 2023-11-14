@@ -175,5 +175,10 @@
   "common.theme": "Theme",
   "common.author": "Author",
   "back-to-the-top-button-text": "Back to the top",
-  "no-results-found.in-search": "No results found"
+  "no-results-found.in-search": "No results found",
+  "search": "Search",
+  "common.themes": "Themes",
+  "common.history": "History",
+  "common.favorites": "Favorites",
+  "common.home": "Home"
 }
