@@ -103,24 +103,11 @@ export default defineComponent({
   },
   computed: {
     wwProducts() : string[]{
-        return this.store.apiProducts.filter(x => x.collectionIds.includes(WISDOM_WORDS_ID)).map(x => x.id);
-      }
-  },
-  watch: {
-    sessionInitialized(initialized) {
-      if (initialized) {
-        this.checkArticleNumberPath();
-        this.getAndSetWordOfTheDayArticle();
-      }
+      return this.store.apiProducts.filter(x => x.collectionIds.includes(WISDOM_WORDS_ID)).map(x => x.id);
     },
   },
   async mounted() {
     this.currentUser = (await getCurrentUserPromise()) as User;
-    if (this.sessionInitialized) this.getAndSetWordOfTheDayArticle();
-
-    for (const key of this.store.articles.keys()) {
-      this.shuffeledArticleKeys.push(key);
-    }
 
     Notification.requestPermission();
   },

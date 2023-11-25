@@ -164,6 +164,9 @@ export default defineComponent({
     sessionInitialized(): boolean {
       return this.store.sessionInitialized;
     },
+    articlesInitialized(): boolean {
+      return this.store.articlesInitialized;
+    },
     articleIds(): string[] {
       return this.articles.map(x => x.id);
     },
@@ -180,6 +183,9 @@ export default defineComponent({
       log && console.log(this.$route.params.themeId.toString());
       this.getAndSetSource();
       this.assureCorrectSlug();
+    },
+    articlesInitialized(oldVal, newVal) {
+      if (!newVal) return;
       this.assureCorrectArticleNumber();
     },
     currentPath() {
@@ -319,6 +325,9 @@ export default defineComponent({
     if (this.sessionInitialized) {
       this.getAndSetSource();
       this.assureCorrectSlug();
+    }
+
+    if (this.articlesInitialized) {
       this.assureCorrectArticleNumber();
     }
 

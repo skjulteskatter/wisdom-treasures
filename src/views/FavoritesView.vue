@@ -104,13 +104,13 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
         if (match == null) return null;
         return parseInt(match);
       },
-      sessionInitialized(): boolean {
-        return this.store.sessionInitialized;
+      articlesInitialized(): boolean {
+        return this.store.articlesInitialized;
       },
     },
 
     watch: {
-      sessionInitialized(initialized) {
+      articlesInitialized(initialized) {
         if (initialized) {
           this.checkArticleNumberPath();
         }
@@ -144,7 +144,7 @@ import ScrollToTopButton from '@/components/ScrollToTopButton.vue';
     },
     mounted(){
       this.sync();
-      if (this.sessionInitialized) this.checkArticleNumberPath();
+      if (this.articlesInitialized) this.checkArticleNumberPath();
     }
   });
 </script>

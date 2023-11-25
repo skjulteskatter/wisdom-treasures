@@ -89,7 +89,6 @@ export const audioClips = {
         return http.post<AudioClip[]>(`api/AudioClip?language=${language}&updatedAt=${updatedAt.toISOString()}`, 
             {
                 lastUpdated: updatedAt.toISOString(),
-                collectionIds: [WISDOM_WORDS_ID],
                 withContent: true,
                 skip: skip,
                 limit: limit,

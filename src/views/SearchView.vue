@@ -65,7 +65,7 @@
     </div>
 
     
-    <div v-if="sessionInitialized && ((showAudioClips && numberOfAudioClipHits <= 0) || (!showAudioClips && numberOfArticleHits <= 0))" class="grow flex flex-col mt-6">
+    <div v-if="articlesInitialized && ((showAudioClips && numberOfAudioClipHits <= 0) || (!showAudioClips && numberOfArticleHits <= 0))" class="grow flex flex-col mt-6">
       <div class="grow" />
       <QuestionMarkCircleIcon class="w-20 grayscale opacity-80 place-self-center" />
       <div class="place-self-center">{{ $t('no-results-found.in-search') }}</div>
@@ -208,9 +208,9 @@ import type { Origin as OriginClass } from '@/classes/Origin';
         },
     },
     computed: {
-        sessionInitialized(): boolean 
+        articlesInitialized(): boolean 
         {
-            return this.store.sessionInitialized;
+            return this.store.articlesInitialized;
         },
         currentPath(): string {
             return !this.$route.path.endsWith("/") ? this.$route.path : this.$route.path.slice(0, this.$route.path.length - 1);

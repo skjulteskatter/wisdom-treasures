@@ -19,95 +19,93 @@
         </h1>
       </div>
 
-      <div id="wordOfTheDayCotainer"
-        class="flex flex-col justify-between mt-8 sm:mt-0 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
+      <Loader :loading="!articlesInitialized" class="mt-8">
+        <div id="wordOfTheDayCotainer" class="flex flex-col justify-between mt-8 sm:mt-0 mb-0 md:mb-5 px-4 sm:px-0 pb-8 sm:pb-5">
+          <div class="flex sm:flex-row-reverse">
+            <div
+              class="flex flex-col sm:w-1/6 justify-between py-16 sm:py-0 -ml-4 sm:ml-6 sm:pl-6 sm:my-10 sm:border-l-2 sm:border-[#dcdcdc]">
+              <div class="flex flex-col items-center sm:items-start">
+                <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayWOTD()">
+                  <span
+                    class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
+                    :class="{ 'highlighted': displayWordOfTheDay }">{{ $t('common.dailyword')}}</span>
+                  <div v-if="displayWordOfTheDay"
+                    class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col items-center sm:items-start">
+                <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayFavorites()">
+                  <span
+                    class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
+                    :class="{ 'highlighted': displayFavorites }">{{ $t('common.favorites') }}</span>
+                  <div v-if="displayFavorites"
+                    class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
+                  </div>
+                </div>
+              </div>
+              <div class="flex flex-col items-center sm:items-start">
+                <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayHistory()">
+                  <span
+                    class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
+                    :class="{ 'highlighted': displayHistory }">{{ $t('common.history') }}</span>
+                  <div v-if="displayHistory" 
+                    class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
+                  </div>
+                </div>
+              </div>
+            </div>
 
-        <div class="flex sm:flex-row-reverse">
+            <WWShowCard v-if="wordOfTheDay && displayWordOfTheDay" class="w-11/12 sm:w-full" :article="wordOfTheDay"
+            :WWCardHomeView="true"/>
 
-          <div
-            class="flex flex-col sm:w-1/6 justify-between py-16 sm:py-0 -ml-4 sm:ml-6 sm:pl-6 sm:my-10 sm:border-l-2 sm:border-[#dcdcdc]">
-            <div class="flex flex-col items-center sm:items-start">
-              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayWOTD()">
-                <span
-                  class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
-                  :class="{ 'highlighted': displayWordOfTheDay }">{{ $t('common.dailyword')}}</span>
-                <div v-if="displayWordOfTheDay"
-                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
+            <!-- DIV for favourites -->
+            <div v-if="displayFavorites" id="WWCards"
+              class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
+              <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
+                <div v-if="favoriteArticles.length > 0">
+                  <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
+                    <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites"
+                      class="mb-2" />
+                  </div>
+                </div>
+                <div v-else class="h-full grid place-content-center bg-white/50">{{ $t('common.noFavories') }}
                 </div>
               </div>
-            </div>
-            <div class="flex flex-col items-center sm:items-start">
-              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayFavorites()">
-                <span
-                  class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
-                  :class="{ 'highlighted': displayFavorites }">{{ $t('common.favorites') }}</span>
-                <div v-if="displayFavorites"
-                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
-                </div>
+
+              <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent z-10">
               </div>
             </div>
-            <div class="flex flex-col items-center sm:items-start">
-              <div class="w-max -rotate-90 sm:rotate-0 cursor-pointer" @click="changeDisplayHistory()">
-                <span
-                  class="text-base sm:text-lg font-bold tracking-075 text-[color:var(--wt-color-text-grey)] opacity-80"
-                  :class="{ 'highlighted': displayHistory }">{{ $t('common.history') }}</span>
-                <div v-if="displayHistory" 
-                  class="border-b-2 border-[color:var(--wt-color-secondary-light)] w-full h-1/5">
+
+            <!-- DIV for History -->
+            <div v-if="displayHistory" id="WWCards"
+            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative custom-scrollbar">
+              <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
+                <div v-if="historyArticles.length > 0">
+                  <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
+                    <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites"
+                      class="mb-2" />
+                  </div>
                 </div>
+                <div v-else class="h-full grid place-content-center bg-white/50">{{ $t('common.noHistory') }}</div>
+              </div>
+
+
+              <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent z-10">
               </div>
             </div>
+
           </div>
-
-
-          <WWShowCard v-if="wordOfTheDay && displayWordOfTheDay" :article="wordOfTheDay" class="w-11/12 sm:w-full"
-            :WWCardHomeView="true" />
-
-          <!-- DIV for favourites -->
-          <div v-if="displayFavorites" id="WWCards"
-            class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative">
-            <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
-              <div v-if="favoriteArticles.length > 0">
-                <div v-for="(article, index) in favoriteArticles" :key="index" class="flex flex-col">
-                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites"
-                    class="mb-2" />
-                </div>
-              </div>
-              <div v-else class="h-full grid place-content-center bg-white/50">{{ $t('common.noFavories') }}
-              </div>
-            </div>
-
-            <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent z-10">
-            </div>
-          </div>
-
-          <!-- DIV for History -->
-          <div v-if="displayHistory" id="WWCards"
-          class="w-11/12 sm:w-full h-custom fav-his grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg relative custom-scrollbar">
-            <div class="grid grid-cols-1 gap-2 justify-between overflow-y-auto rounded-lg">
-              <div v-if="historyArticles.length > 0">
-                <div v-for="(article, index) in historyArticles" :key="index" class="flex flex-col">
-                  <WWCard :article="article" @close-modal="refreshDataFavorites" @click="refreshDataFavorites"
-                    class="mb-2" />
-                </div>
-              </div>
-              <div v-else class="h-full grid place-content-center bg-white/50">{{ $t('common.noHistory') }}</div>
-            </div>
-
-            
-            <div id="shadowDiv" class="absolute inset-x-0 bottom-0 h-12 bg-gradient-to-t from-[#F1F1F1] to-transparent z-10">
-            </div>
-          </div>
-
+          <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
         </div>
-        <div id="bgDiv" class="sm:hidden bg-[#F1F1F1] w-full h-3/4 absolute bottom-0 left-0 -z-50 rounded-t-4xl"></div>
-      </div>
+      </Loader>
 
 
-      <div class="ml-5 sm:ml-0 justify-center">
+      <div class="mx-5 sm:mx-0 justify-center">
         <h1 class="text-base font-bold tracking-075 my-5 sm:mt-0 text-[color:var(--wt-color-text-grey)] opacity-80">
           {{ $t('common.origin').toUpperCase() }}</h1>
-        <div class=" rounded-lg shadow-md bg-white/80 my-5">
-          <OriginsSwiper class="z-0  px-5" />
+        <div class=" rounded-lg shadow-md bg-white/80 my-5 ">
+          <OriginsSwiper class="z-0 px-5" />
         </div>
       </div>
 
@@ -144,6 +142,7 @@ import ThreeDButton from '@/components/ThreeDButton.vue';
 import OriginsSwiper from '@/components/OriginsSwiper.vue';
 import { mannaHistory, history } from '@/services/localStorage';
 import { log } from '@/services/env'
+import Loader from '@/components/Loader.vue';
 
 export default defineComponent({
   name: "HomeView",
@@ -169,6 +168,7 @@ export default defineComponent({
     WWShowCard,
     ThreeDButton,
     OriginsSwiper,
+    Loader,
   },
   computed: {
     historyArticles(): Article[] {
@@ -219,9 +219,6 @@ export default defineComponent({
       if (match == null) return null;
       return parseInt(match);
     },
-    sessionInitialized(): boolean {
-      return this.store.sessionInitialized;
-    },
     storeFavorites(): string[] {
       return this.store.favorites;
     },
@@ -237,9 +234,12 @@ export default defineComponent({
       }
       return favoriteArticles;
     },
+    articlesInitialized(){
+      return this.store.articlesInitialized;
+    }
   },
   watch: {
-    sessionInitialized(initialized) {
+    articlesInitialized(initialized) {
       if (initialized) {
         this.checkArticleNumberPath();
         this.getAndSetWordOfTheDayArticle();
@@ -248,7 +248,7 @@ export default defineComponent({
   },
   async mounted() {
     this.currentUser = await getCurrentUserPromise() as User;
-    if (this.sessionInitialized) {
+    if (this.articlesInitialized) {
       this.getAndSetWordOfTheDayArticle();
       this.checkArticleNumberPath();
     }

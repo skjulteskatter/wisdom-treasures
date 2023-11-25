@@ -135,9 +135,10 @@ export async function userLoggedInCallback(lang: string | undefined = undefined)
     await Promise.all(withoutSubscription.concat(withSubscription));
 
     store.sessionInitialized = true;
+    log && console.log('UserLoggedInCallback: Store initialized');
     await store.initializeNewArticles();
     store.articlesInitialized = true;
-    log && console.log('UserLoggedInCallback: Store initialized, subscription');
+    log && console.log('UserLoggedInCallback: Articles initialized');
 }
 
 export async function updateUser(displayName : string = auth.currentUser?.displayName ?? "", photoURL : string = auth.currentUser?.photoURL ?? ""): Promise<boolean> {

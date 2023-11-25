@@ -79,32 +79,32 @@ import { log } from '@/services/env';
     computed: {
       origins(): OriginDto[]{
 
-        let sources : OriginDto[] = Array.from(this.store.origins.values());
-        sources.sort((a: OriginDto,b : OriginDto) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), "no"));
+        let origins : OriginDto[] = Array.from(this.store.origins.values());
+        origins.sort((a: OriginDto,b : OriginDto) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), "no"));
 
         //If the publications refs is not indexed
         if (this.idLookUp.size <= 0){
-          for (let i = 0; i < sources.length; i++) {
-            const pub = sources[i];
+          for (let i = 0; i < origins.length; i++) {
+            const pub = origins[i];
             if (this.idLookUp.get(this.getFirstLetter(pub)) === undefined) 
               this.idLookUp.set(this.getFirstLetter(pub), i)
           }
         }
-        return sources;
+        return origins;
       },
       fuseSources() : Fuse<OriginDto> | undefined{
             return this.store.fuseOrigins;
         },
       searchedOrigins() : OriginDto[]{
-        let sources = [] as OriginDto[];
+        let origins = [] as OriginDto[];
         if (this.fuseSources == undefined || this.searchedWord.length <= 0){
-          sources = this.origins;
+          origins = this.origins;
         } else {
           const result = this.fuseSources?.search(this.searchedWord);
-          sources = result.map(x => x.item).sort((a: OriginDto,b : OriginDto) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), "no"));
+          origins = result.map(x => x.item).sort((a: OriginDto,b : OriginDto) => this.getFirstLetter(a).localeCompare(this.getFirstLetter(b), "no"));
         }
         
-        return sources;
+        return origins;
       },
       mouseDownAndOverAlphabetEvent() : string {
         if (this.mouseDownOverAlphabet == false || this.mouseOverAlphabet == "" ) return "";
