@@ -11,7 +11,7 @@ const firebaseConfigProduction = {
 const firebaseConfig = firebaseConfigProduction;
 
 const basePath = 
-    "https://api.songtreasures.app/";
+    "https://songtreasures.azurewebsites.net/";
 
 const config = {
     api: {
